@@ -12,8 +12,10 @@
                 "/usr/lib/gcc/i686-linux-gnu/5/include-fixed",
                 "/usr/include/i386-linux-gnu",
                 "/usr/include",
-                "${workspaceFolder}/include",
-                "../shared/include"
+                "${workspaceFolder}/include/shared/include",
+                "../shared/include",
+                "${workspaceFolder}/discordiador/include",
+                "${workspaceFolder}/imongostore/include"
             ],
             "defines": [
                 "_GNU_SOURCE"
@@ -23,7 +25,7 @@
                 "path": [
                     "${workspaceFolder}",
                     "${workspaceFolder}/include",
-                    "../shared/include",
+                    "../shared/include/",
                     "/usr/include/c++/5",
                     "/usr/include/i386-linux-gnu/c++/5",
                     "/usr/include/c++/5/backward",
