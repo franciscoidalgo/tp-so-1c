@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}",
+                "${workspaceFolder}/include",
                 "/usr/include/c++/5",
                 "/usr/include/i386-linux-gnu/c++/5",
                 "/usr/include/c++/5/backward",
@@ -12,10 +13,7 @@
                 "/usr/lib/gcc/i686-linux-gnu/5/include-fixed",
                 "/usr/include/i386-linux-gnu",
                 "/usr/include",
-                "${workspaceFolder}/include/shared/include",
-                "../shared/include",
-                "${workspaceFolder}/discordiador/include",
-                "${workspaceFolder}/imongostore/include"
+                "../shared/include"
             ],
             "defines": [
                 "_GNU_SOURCE"

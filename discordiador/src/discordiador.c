@@ -3,7 +3,8 @@
 
 int main(int argc, char ** argv){
 
-t_log* logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
+// t_log* logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
+t_log* logger = iniciar_logger("discordiador");
 log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
 
 
@@ -14,11 +15,10 @@ char* puerto;
 char* valor;
 
 
-logger = iniciar_logger();
 //Loggear "soy un log"
 log_info(logger,"soy un log");
 
-t_config* config = leer_config();
+t_config* config = leer_config("discordiador");
 
 log_info(logger,config_get_string_value(config,"CLAVE"));
 
@@ -43,29 +43,31 @@ log_info(logger,valor);
 	log_info(logger,ip);
 	log_info(logger,puerto);
 
+	// conexion = crear_conexion(ip,puerto);
 	conexion = crear_conexion(ip,puerto);
 
 	//enviar CLAVE al servirdor
-	//enviar_mensaje(valor,conexion);
+	log_info(logger,valor);
+	enviar_mensaje(valor,conexion);
 
-	enviar_msj(valor,conexion,logger);
+	// enviar_msj(valor,conexion,logger);
 
-	paquete(conexion);
+	// paquete(conexion);
 
 	terminar_programa(conexion, logger, config);
 }
 
 
 
-t_log* iniciar_logger(void)
-{
-	return log_create("discordiador.log","discordiador",true,LOG_LEVEL_INFO);
-}
+// t_log* iniciar_logger(void)
+// {
+// 	return log_create("discordiador.log","discordiador",true,LOG_LEVEL_INFO);
+// }
 
-t_config* leer_config(void)
-{
-	return config_create("cfg/discordiador.config");
-}
+// t_config* leer_config(void)
+// {
+// 	return config_create("cfg/discordiador.config");
+// }
 
 void leer_consola(t_log* logger)
 {
@@ -76,28 +78,30 @@ void leer_consola(t_log* logger)
 
 	while (strcmp(leido,"") != 0)
 	{
-		log_info(logger,leido);
+		log_info(logger,(char*)leido);
 		free(leido);
 		leido = readline(">");
 	}
-
+	free(leido);
 }
 
-void paquete(int conexion)
-{
-	//Ahora toca lo divertido!
+// void paquete(int conexion)
+// {
+// 	//Ahora toca lo divertido!
 
-	char* leido;
-	t_paquete* paquete;
+// 	char* leido;
+// 	t_paquete* paquete;
 
 
-}
+// }
 
-void terminar_programa(int conexion, t_log* logger, t_config* config)
-{
-	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
-log_destroy(logger);
-}
+// void terminar_programa(int conexion, t_log* logger, t_config* config)
+// {
+// 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+// 	log_destroy(logger);
+// 	liberar_conexion(conexion);
+// 	config_destroy(config);
+// }
 
 void enviar_msj(char* mensaje, int socket_cliente,t_log* logger)
 {

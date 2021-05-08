@@ -12,25 +12,24 @@ int server_fd = iniciar_servidor(logger);
 // 	 printf("%s\n", value);
 // }
 //log_info(logger,cliente_fd);
-	t_list* lista;
+	// t_list* lista;  //descomentar esto cuando se use el envio de paquete
 	while(1)
-	{	//int cliente_fd = esperar_cliente(server_fd,logger);
-		struct sockaddr_in dir_cliente;
-		int tam_direccion = sizeof(struct sockaddr_in);
-		int cliente_fd = accept(server_fd, (void*) &dir_cliente, &tam_direccion);
-		log_info(logger, "Se conecto un cliente!");
+	{	
+		int cliente_fd = esperar_cliente(server_fd,logger);
 		int cod_op = recibir_operacion(cliente_fd);
+		
 		switch(cod_op)
 		{
-		case MENSAJE:
-			recibir_mensaje(cliente_fd,logger);
+		case MENSAJE: ;
 			int size;
-		char* buffer = recibir_buffer(&size, cliente_fd);
-		log_info(logger, "Me llego el mensaje %s", buffer);
-		free(buffer);
+            // char* buffer;
+			recibir_mensaje(cliente_fd,logger,&size);
+            // void* buffer = recibir_buffer(&size, cliente_fd);
+            // log_info(logger, "Me llego el mensaje %p", buffer);
+            // free(buffer);
 			break;
 		case PAQUETE:
-			lista = recibir_paquete(cliente_fd);
+			// lista = recibir_paquete(cliente_fd);
 			printf("Me llegaron los siguientes valores:\n");
 			// list_iterate(lista, (void*) iterator);
 			break;
