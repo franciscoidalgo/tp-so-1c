@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "shared_utils.h": "c",
+        "imongostore.h": "c",
+        "discordiador.h": "c",
+        "stdbool.h": "c",
+        "tests.h": "c",
+        "config.h": "c",
+        "stdio.h": "c",
+        "log.h": "c",
+        "string.h": "c"
+    }
+}
