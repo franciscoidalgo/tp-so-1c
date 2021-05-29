@@ -4,7 +4,7 @@ char* mi_funcion_compartida(){
     return "Hice uso de la shared!";
 }
 
-int iniciar_servidor(t_log* logger)
+int iniciar_servidor(t_log* logger,t_config* config)
 {
 	int socket_servidor;
 
@@ -15,7 +15,7 @@ int iniciar_servidor(t_log* logger)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
-    getaddrinfo("127.0.0.1", "4444", &hints, &servinfo);
+    getaddrinfo((char*) config_get_string_value(config,"IP"), (char*) config_get_string_value(config,"PUERTO"), &hints, &servinfo);
 
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
@@ -41,8 +41,8 @@ int iniciar_servidor(t_log* logger)
 int esperar_cliente(int socket_servidor,t_log* logger)
 {
 	struct sockaddr_in dir_cliente;
-	// socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
-	socklen_t tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
+	// socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 	/*
@@ -50,7 +50,6 @@ int esperar_cliente(int socket_servidor,t_log* logger)
 	*/
 
 	log_info(logger, "Se conecto un cliente!");
-
 	return socket_cliente;
 }
 
@@ -80,33 +79,35 @@ void* recibir_buffer(int* direccion_size, int socket_cliente)
 void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
 {
 	// int size;
-	char* buffer = recibir_buffer(direccion_size, socket_cliente);
-	log_info(logger, "Me llego el mensaje %s", buffer);
+	void* buffer = recibir_buffer(direccion_size, socket_cliente);
+	log_info(logger, "Me llego el mensaje %s", (char*) buffer);
 	free(buffer);
 }
 
 //podemos usar la lista de valores para poder hablar del for y de como recorrer la lista
-t_list* recibir_paquete(int socket_cliente)
+void recibir_paquete(int socket_cliente, t_list* direccion_lista)
 {
 	int size;
 	int desplazamiento = 0;
 	void * buffer;
-	t_list* valores = list_create();
+	// t_list* valores = list_create();
 	int tamanio;
+
+	char* valor;
 
 	buffer = recibir_buffer(&size, socket_cliente);
 	while(desplazamiento < size)
 	{
 		memcpy(&tamanio, buffer + desplazamiento, sizeof(int));
 		desplazamiento+=sizeof(int);
-		char* valor = malloc(tamanio);
+		valor = malloc(tamanio);
 		memcpy(valor, buffer+desplazamiento, tamanio);
 		desplazamiento+=tamanio;
-		list_add(valores, valor);
+		list_add(direccion_lista,(void*) valor);
+		// free(valor);
 	}
 	free(buffer);
-	return valores;
-	return NULL;
+	// return valores;
 }
 
 
@@ -187,10 +188,10 @@ void crear_buffer(t_paquete* paquete)
 // 	return paquete;
 // }
 
-t_paquete* crear_paquete(void)
+t_paquete* crear_paquete(int cod_operacion)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
-	paquete->codigo_operacion = PAQUETE;
+	paquete->codigo_operacion = cod_operacion;
 	crear_buffer(paquete);
 	return paquete;
 }

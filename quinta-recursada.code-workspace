@@ -21,7 +21,9 @@
 			"list.h": "c",
 			"miramhq.h": "c",
 			"config.h": "c",
-			"string.h": "c"
+			"string.h": "c",
+			"type_traits": "c",
+			"pthread.h": "c"
 		}
 	}
 }
