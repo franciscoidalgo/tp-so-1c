@@ -4,8 +4,8 @@ int main(void){
 t_log* logger = log_create("./cfg/imongostore.logger", "Imongostore", true, LOG_LEVEL_INFO);
 log_info(logger, "Soy I Mongo Store! %s", mi_funcion_compartida());
 
-
-int server_fd = iniciar_servidor(logger);
+t_config* config = leer_config("imongostore");
+int server_fd = iniciar_servidor(logger,config);
 
 // void iterator(char* value)
 // {
