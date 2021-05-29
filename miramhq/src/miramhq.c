@@ -143,7 +143,6 @@ int main(int argc, char ** argv){
 			// list_destroy(lista);
             list_clean_and_destroy_elements(tareas, (void*) iterator_destroy_tarea);
 			list_destroy(tareas);
-            // free(cant_tripulantes);
             break;
 		case INICIAR_TRIPULANTE:
             log_info(logger,"Un tripulante se ha iniciado");
