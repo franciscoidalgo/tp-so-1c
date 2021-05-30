@@ -15,7 +15,8 @@
                 "${workspaceFolder}/include/shared/include",
                 "../shared/include",
                 "${workspaceFolder}/discordiador/include",
-                "${workspaceFolder}/imongostore/include"
+                "${workspaceFolder}/imongostore/include",
+                "${workspaceFolder}/include"
             ],
             "defines": [
                 "_GNU_SOURCE"

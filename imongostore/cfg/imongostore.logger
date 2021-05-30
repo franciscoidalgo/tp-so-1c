@@ -14068,3 +14068,130 @@
 [INFO] 21:12:11:681 Imongostore/(11151:11151): Me llego el mensaje HolaSoyUnValor
 [INFO] 21:12:11:681 Imongostore/(11151:11151): Me llego el mensaje °t·°t·1:12:11:681 Imongostore/(11151:11151): Me llego el mensaje HolaSoyUnValor
 [0m
+[INFO] 20:20:59:294 Imongostore/(8447:8447): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:20:59:294 Imongostore/(8447:8447): Listo para escuchar a mi cliente
+[INFO] 20:21:03:351 Imongostore/(8447:8447): Se conecto un cliente!
+[INFO] 20:21:03:351 Imongostore/(8447:8447): Me llego el mensaje HolaSoyUnValor
+[INFO] 20:21:03:351 Imongostore/(8447:8447): Me llego el mensaje °çi·°çi·0:21:03:351 Imongostore/(8447:8447): Me llego el mensaje HolaSoyUnValor
+[0m
+[INFO] 01:02:27:314 Imongostore/(2622:2622): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:02:27:315 Imongostore/(2622:2622): Listo para escuchar a mi cliente
+[INFO] 01:02:38:560 Imongostore/(2622:2622): Se conecto un cliente!
+[ERROR] 01:02:38:561 Imongostore/(2622:2622): el cliente se desconecto. Terminando servidor
+[INFO] 01:07:03:273 Imongostore/(2935:2935): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:07:03:276 Imongostore/(2935:2935): Listo para escuchar a mi cliente
+[INFO] 01:07:07:983 Imongostore/(2935:2935): Se conecto un cliente!
+[ERROR] 01:07:07:984 Imongostore/(2935:2935): el cliente se desconecto. Terminando servidor
+[INFO] 01:34:00:225 Imongostore/(4122:4122): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:34:00:234 Imongostore/(4122:4122): Listo para escuchar a mi cliente
+[INFO] 01:34:05:187 Imongostore/(4122:4122): Se conecto un cliente!
+[ERROR] 01:34:05:664 Imongostore/(4122:4122): el cliente se desconecto. Terminando servidor
+[INFO] 01:36:12:800 Imongostore/(4179:4179): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:36:12:809 Imongostore/(4179:4179): Listo para escuchar a mi cliente
+[INFO] 01:36:16:638 Imongostore/(4179:4179): Se conecto un cliente!
+[ERROR] 01:36:17:126 Imongostore/(4179:4179): el cliente se desconecto. Terminando servidor
+[INFO] 01:37:05:698 Imongostore/(4235:4235): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:37:05:698 Imongostore/(4235:4235): Listo para escuchar a mi cliente
+[INFO] 01:37:09:313 Imongostore/(4235:4235): Se conecto un cliente!
+[ERROR] 01:37:09:775 Imongostore/(4235:4235): el cliente se desconecto. Terminando servidor
+[INFO] 01:37:33:187 Imongostore/(4280:4280): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:37:33:192 Imongostore/(4280:4280): Listo para escuchar a mi cliente
+[INFO] 01:37:36:609 Imongostore/(4280:4280): Se conecto un cliente!
+[ERROR] 01:37:37:45 Imongostore/(4280:4280): el cliente se desconecto. Terminando servidor
+[INFO] 01:38:07:391 Imongostore/(4323:4323): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:38:07:391 Imongostore/(4323:4323): Listo para escuchar a mi cliente
+[INFO] 01:38:10:765 Imongostore/(4323:4323): Se conecto un cliente!
+[ERROR] 01:38:11:264 Imongostore/(4323:4323): el cliente se desconecto. Terminando servidor
+[INFO] 01:48:10:492 Imongostore/(4981:4981): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:48:10:497 Imongostore/(4981:4981): Listo para escuchar a mi cliente
+[INFO] 01:48:13:429 Imongostore/(4981:4981): Se conecto un cliente!
+[INFO] 01:48:13:429 Imongostore/(4981:4981): Me llego el mensaje HolaSoyUnValor
+[INFO] 01:48:13:430 Imongostore/(4981:4981): Me llego el mensaje  8u· 8u·
+[INFO] 01:48:23:543 Imongostore/(4981:4981): Se conecto un cliente!
+[INFO] 01:48:23:544 Imongostore/(4981:4981): Me llego el mensaje HolaSoyUnValor
+[INFO] 01:48:23:544 Imongostore/(4981:4981): Me llego el mensaje ð7u·ð7u· el mensaje HolaSoyUnValor
+[INFO] 10:32:58:966 Imongostore/(6224:6224): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 10:32:58:967 Imongostore/(6224:6224): Listo para escuchar a mi cliente
+[INFO] 10:33:02:232 Imongostore/(6224:6224): Se conecto un cliente!
+[INFO] 10:33:02:233 Imongostore/(6224:6224): Me llego el mensaje CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 10:33:02:234 Imongostore/(6224:6224): Me llego el mensaje 
+[INFO] 10:33:52:582 Imongostore/(6224:6224): Se conecto un cliente!
+[INFO] 10:33:52:582 Imongostore/(6224:6224): Me llego el mensaje GENERAR_COMIDA 4;2;3;1
+
+[INFO] 10:33:52:582 Imongostore/(6224:6224): Me llego el mensaje øwt·øwt·
+
+[INFO] 10:34:08:895 Imongostore/(6224:6224): Se conecto un cliente!
+[ERROR] 10:34:09:332 Imongostore/(6224:6224): el cliente se desconecto. Terminando servidor
+[INFO] 10:35:36:532 Imongostore/(6335:6335): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 10:35:36:539 Imongostore/(6335:6335): Listo para escuchar a mi cliente
+[INFO] 10:35:38:664 Imongostore/(6335:6335): Se conecto un cliente!
+[INFO] 10:35:38:665 Imongostore/(6335:6335): Me llego el mensaje GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 10:35:38:666 Imongostore/(6335:6335): Me llego el mensaje ÀWv·ÀWv·:664
+[INFO] 10:35:50:341 Imongostore/(6335:6335): Se conecto un cliente!
+[INFO] 10:35:50:342 Imongostore/(6335:6335): Me llego el mensaje GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 10:35:50:342 Imongostore/(6335:6335): Me llego el mensaje ÀWv·ÀWv·:341
+[INFO] 10:36:53:99 Imongostore/(6335:6335): Se conecto un cliente!
+[ERROR] 10:36:53:527 Imongostore/(6335:6335): el cliente se desconecto. Terminando servidor
+[INFO] 11:23:25:768 Imongostore/(7429:7429): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 11:23:25:775 Imongostore/(7429:7429): Listo para escuchar a mi cliente
+[INFO] 11:23:30:493 Imongostore/(7429:7429): Se conecto un cliente!
+[INFO] 11:23:39:417 Imongostore/(7429:7429): Se conecto un cliente!
+[INFO] 11:30:47:153 Imongostore/(7561:7561): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 11:30:47:160 Imongostore/(7561:7561): Listo para escuchar a mi cliente
+[INFO] 11:30:50:245 Imongostore/(7561:7561): Se conecto un cliente!
+[ERROR] 11:30:50:730 Imongostore/(7561:7561): el cliente se desconecto. Terminando servidor
+[INFO] 11:40:13:572 Imongostore/(7887:7887): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 11:40:13:572 Imongostore/(7887:7887): Listo para escuchar a mi cliente
+[INFO] 11:40:17:783 Imongostore/(7887:7887): Se conecto un cliente!
+[INFO] 11:44:45:79 Imongostore/(7955:7955): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 11:44:45:85 Imongostore/(7955:7955): Listo para escuchar a mi cliente
+[INFO] 11:44:49:554 Imongostore/(7955:7955): Se conecto un cliente!
+[INFO] 11:45:37:774 Imongostore/(7955:7955): Se conecto un cliente!
+[INFO] 11:45:58:987 Imongostore/(7955:7955): Se conecto un cliente!
+[INFO] 12:03:37:635 Imongostore/(8414:8414): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:03:37:636 Imongostore/(8414:8414): Listo para escuchar a mi cliente
+[INFO] 12:03:41:536 Imongostore/(8414:8414): Se conecto un cliente!
+[INFO] 12:20:26:417 Imongostore/(8772:8772): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:20:26:418 Imongostore/(8772:8772): Listo para escuchar a mi cliente
+[INFO] 12:20:38:391 Imongostore/(8786:8786): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:20:38:393 Imongostore/(8786:8786): Listo para escuchar a mi cliente
+[INFO] 12:20:41:794 Imongostore/(8786:8786): Se conecto un cliente!
+[INFO] 12:33:17:798 Imongostore/(9195:9195): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:33:17:800 Imongostore/(9195:9195): Listo para escuchar a mi cliente
+[INFO] 12:33:20:265 Imongostore/(9195:9195): Se conecto un cliente!
+[INFO] 12:40:37:684 Imongostore/(9401:9401): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:40:37:689 Imongostore/(9401:9401): Listo para escuchar a mi cliente
+[INFO] 12:40:40:328 Imongostore/(9401:9401): Se conecto un cliente!
+[INFO] 12:43:30:432 Imongostore/(9542:9542): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:43:30:437 Imongostore/(9542:9542): Listo para escuchar a mi cliente
+[INFO] 12:43:33:758 Imongostore/(9542:9542): Se conecto un cliente!
+[INFO] 12:43:33:759 Imongostore/(9542:9542): 0
+[INFO] 12:44:05:503 Imongostore/(9573:9573): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:44:05:510 Imongostore/(9573:9573): Listo para escuchar a mi cliente
+[INFO] 12:44:08:760 Imongostore/(9573:9573): Se conecto un cliente!
+[INFO] 12:44:08:762 Imongostore/(9573:9573): 0
+[INFO] 12:44:35:935 Imongostore/(9623:9623): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:44:35:941 Imongostore/(9623:9623): Listo para escuchar a mi cliente
+[INFO] 12:46:35:720 Imongostore/(9724:9724): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:46:35:721 Imongostore/(9724:9724): Listo para escuchar a mi cliente
+[INFO] 12:46:38:395 Imongostore/(9724:9724): Se conecto un cliente!
+[INFO] 12:46:38:395 Imongostore/(9724:9724): 0
+[INFO] 12:48:54:808 Imongostore/(9790:9790): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:48:54:825 Imongostore/(9790:9790): Listo para escuchar a mi cliente
+[INFO] 12:48:58:970 Imongostore/(9790:9790): Se conecto un cliente!
+[INFO] 12:48:58:980 Imongostore/(9790:9790): 5
+[INFO] 12:50:04:723 Imongostore/(9861:9861): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:50:04:727 Imongostore/(9861:9861): Listo para escuchar a mi cliente
+[INFO] 12:50:07:75 Imongostore/(9861:9861): Se conecto un cliente!
+[INFO] 12:51:38:757 Imongostore/(9942:9942): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:51:38:760 Imongostore/(9942:9942): Listo para escuchar a mi cliente
+[INFO] 12:51:43:862 Imongostore/(9942:9942): Se conecto un cliente!
+[INFO] 12:54:51:595 Imongostore/(10004:10004): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 12:54:51:595 Imongostore/(10004:10004): Listo para escuchar a mi cliente
+[INFO] 12:54:56:342 Imongostore/(10004:10004): Se conecto un cliente!
+[INFO] 12:54:56:346 Imongostore/(10004:10004): 4
+[INFO] 12:55:15:409 Imongostore/(10004:10004): Se conecto un cliente!
+[INFO] 12:55:15:410 Imongostore/(10004:10004): 4

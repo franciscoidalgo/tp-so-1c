@@ -7,11 +7,24 @@ log_info(logger, "Soy I Mongo Store! %s", mi_funcion_compartida());
 
 int server_fd = iniciar_servidor(logger);
 
-// void iterator(char* value)
-// {
-// 	 printf("%s\n", value);
-// }
-//log_info(logger,cliente_fd);
+int contador = 0;
+TAREAS_GLOBAL = malloc(sizeof(t_tareas));
+TAREAS_GLOBAL->tareas_tripu = malloc(sizeof(t_list));
+
+t_list* list_aux = list_create();
+void iterator(char* value)
+{
+	if(contador==0){
+		TAREAS_GLOBAL->pid = atoi(value);
+		contador = contador + 1;
+	}else{
+		list_add(TAREAS_GLOBAL->tareas_tripu,value); 
+	}
+	 printf("%s\n", value);
+}
+
+
+
 	t_list* lista;
 	while(1)
 	{	//int cliente_fd = esperar_cliente(server_fd,logger);
@@ -32,7 +45,9 @@ int server_fd = iniciar_servidor(logger);
 		case PAQUETE:
 			lista = recibir_paquete(cliente_fd);
 			printf("Me llegaron los siguientes valores:\n");
-			// list_iterate(lista, (void*) iterator);
+			list_iterate(lista, (void*) iterator);
+
+			log_info(logger, string_itoa(TAREAS_GLOBAL->pid));
 			break;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");
@@ -48,6 +63,34 @@ int server_fd = iniciar_servidor(logger);
 
 
 log_destroy(logger);
+}
+
+//////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
+
+
+t_tareas* recibir_tareas(int socket_cliente)
+{
+	int size;
+	int desplazamiento = 0;
+	void * buffer;
+	t_list* valores = list_create();
+	int tamanio;
+
+	t_tareas* tareas = malloc(sizeof(t_tareas));
+
+	buffer = recibir_buffer(&size, socket_cliente);
+	while(desplazamiento < size)
+	{
+		memcpy(&tamanio, buffer + desplazamiento, sizeof(int));
+		desplazamiento+=sizeof(int);
+		char* valor = malloc(tamanio);
+		memcpy(valor, buffer+desplazamiento, tamanio);
+		desplazamiento+=tamanio;
+		list_add(valores, valor);
+	}
+	free(buffer);
+	return valores;
+	return NULL;
 }
 
 

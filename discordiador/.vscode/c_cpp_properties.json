@@ -13,7 +13,8 @@
                 "/usr/include/i386-linux-gnu",
                 "/usr/include",
                 "${workspaceFolder}/include/shared/include",
-                "../shared/include"
+                "../shared/include",
+                "${workspaceFolder}/include"
             ],
             "defines": [
                 "_GNU_SOURCE"
