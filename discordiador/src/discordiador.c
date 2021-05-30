@@ -1,6 +1,5 @@
 #include "discordiador.h"
 
-
 int main(int argc, char** argv){
 
 logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
@@ -10,11 +9,6 @@ t_config* config = leer_config();
 READY =(t_tcb*) list_create();
 NEW  =(t_tcb*) list_create();
 
-	      //init de los datos compartidos
-        barrera.n =0;
-        pthread_mutex_init(&barrera.mutex, NULL);
-        pthread_cond_init(&barrera.llegaron, NULL);
-
 char* ip = config_get_string_value(config,"IP");
 char* puerto = config_get_string_value(config,"PUERTO");
 char* valor;
@@ -22,7 +16,7 @@ char* valor;
 valor=config_get_string_value(config,"CLAVE");
 
 int conexion = crear_conexion(ip,puerto);
-//////////////////////leer archivo y enviar tares
+//////////////////////leer archivo y enviar tareas a MI-RAM
 // FILE *f = fopen("/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/tareasPatota5.txt", "r");
 // if (f==NULL)
 // {
@@ -42,31 +36,49 @@ int conexion = crear_conexion(ip,puerto);
 // }
 // enviar_paquete(paquete, conexion);
 //fclose(f);
+//char* aaa =  string_new();
+ for (uint32_t i = 1 ; i <= atoi(argv[1]); i++){	
+	log_info(logger,"INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %s",i,argv[i+2]);
+		int posx;
+		int posy;
+	if(argv[i+2]==NULL){
+	posx = 0;
+	posy = 0;
+	}else{
+	char** a = string_split(argv[i+2],",");
+	posx = atoi(a[0]);
+	posy = atoi(a[1]);
+	}
 
-NEW = (t_tcb*) list_create();
-uint32_t lim = 3 ;
- for (uint32_t i = 1 ; i <= lim; i++){	
-	log_info(logger,"INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %d",i,lim);
-	list_add(NEW, crear_tripulante(lim,  i+1,  i+2, i));
+	log_info(logger,"Tripulante %d posx:%d posy:%d patota:%d",i,posx,posy,atoi(argv[1]));
+	//list_add(NEW, crear_tripulante(lim,  i+1,  i+2, i));
  }
 
-list_iterate(NEW, (void*) iterator);
+//list_iterate(NEW, (void*) iterator);
 
+
+exit(1);
 //simular busqueda de tarea en simutaneo por tripulantes e ingresan a la lista de READY
 
-// while (list_size(NEW)!= 0)
-// {	
-	t_tcb* tripulante = malloc(sizeof(t_tcb));
-	tripulante = list_remove(NEW,0); // voy sacando de a uno los tripulantes
+while (list_size(NEW)!= 0)
+{	
+	t_tcb* tripulante;// = malloc(sizeof(t_tcb));
+	tripulante = (t_tcb*) list_remove(NEW,0); // voy sacando de a uno los tripulantes
 
-	buscar_tarea_a_RAM((void*) tripulante);
+	//buscar_tarea_a_RAM((void*) tripulante);
 
-	// pthread_t hilo[tripulante->tid];
-	// pthread_create(&hilo[tripulante->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripulante));
-    // pthread_join(hilo[tripulante->tid], NULL);
+	pthread_t hilo[tripulante->tid];
+	if (0 == pthread_create(&hilo[tripulante->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripulante)))
+	{
+		log_info(logger,"Tripulante %d de Patota %d busco la tarea en MI-RAM y se posicionó en READY",tripulante->tid,tripulante->puntero_pcb);
+	}else{
+		log_info(logger,"Tripulante %d no pudo ejecutar",tripulante->tid);
+	}
+	 
+    pthread_join(hilo[tripulante->tid], NULL);
 
-	free(tripulante);
-// }
+	//free(tripulante);
+}
 
 list_iterate(READY, (void*) iterator);
 list_iterate(NEW, (void*) iterator);
@@ -86,7 +98,6 @@ terminar_programa(conexion, logger, config);
 
 //////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
 void iterator(t_tcb* t){
-
 	 log_info(logger,"TID:%d POSX:%d POSY:%d ProximaInst:%d PCB:%d", t->tid,t->posicion_x,t->posicion_y,t->proxima_instruccion,t->puntero_pcb);
 	 log_info(logger,"Estado: %c",t->estado);
  }
@@ -174,12 +185,10 @@ t_tcb* crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t 
 void buscar_tarea_a_RAM(void* tripu){
 
 	t_tcb* t = (t_tcb*) tripu;
-	t->proxima_instruccion = (uint32_t) 2;
+	t->proxima_instruccion = (uint32_t) rand() % 11;;
 	t->estado='R';
 
-	pthread_mutex_lock(&barrera.mutex);
-
+	pthread_mutex_lock(&mutexSalirDeNEW);
 	 	list_add(READY,t);		
-	
-    pthread_mutex_unlock(&barrera.mutex);  
+    pthread_mutex_unlock(&mutexSalirDeNEW);  
 }

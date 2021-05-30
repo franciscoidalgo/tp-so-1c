@@ -15,11 +15,11 @@
 typedef struct    // Tamanio de 21 Bytes
 {
     uint32_t tid;        // Id del tripulante
-    char estado;        // Estado del tripulante (New/Ready/Exec/Blocked)
     uint32_t posicion_x;    // Pos x
     uint32_t posicion_y;    // Pos y
     uint32_t proxima_instruccion;    // instruccion que el tripulante debera hacer
     uint32_t puntero_pcb;    // quien es mi patota?
+    char estado;        // Estado del tripulante (New/Ready/Exec/Blocked)
 }__attribute__ ((packed)) t_tcb;
 
 t_list* BLOCKED;
@@ -27,14 +27,9 @@ t_list* EXIT;
 t_list* READY;
 t_list* NEW;
 
-struct barrera_s {
-        int n;
-        pthread_mutex_t mutex;
-        pthread_cond_t llegaron;
-} barrera;
-
-
 t_log* logger;
+
+pthread_mutex_t mutexSalirDeNEW = PTHREAD_MUTEX_INITIALIZER;
 
 t_log* iniciar_logger(void);
 void terminar_programa(int conexion, t_log* logger, t_config* config);
