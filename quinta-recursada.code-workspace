@@ -12,5 +12,16 @@
 		{
 			"path": "shared"
 		}
-	]
+	],
+	"settings": {
+		"files.associations": {
+			"imongostore.h": "c",
+			"shared_utils.h": "c",
+			"discordiador.h": "c",
+			"list.h": "c",
+			"miramhq.h": "c",
+			"config.h": "c",
+			"string.h": "c"
+		}
+	}
 }

@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}",
+                "${workspaceFolder}/include",
                 "/usr/include/c++/5",
                 "/usr/include/i386-linux-gnu/c++/5",
                 "/usr/include/c++/5/backward",
@@ -12,9 +13,13 @@
                 "/usr/lib/gcc/i686-linux-gnu/5/include-fixed",
                 "/usr/include/i386-linux-gnu",
                 "/usr/include",
+<<<<<<< HEAD
                 "${workspaceFolder}/include/shared/include",
                 "../shared/include",
                 "${workspaceFolder}/include"
+=======
+                "../shared/include"
+>>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
             ],
             "defines": [
                 "_GNU_SOURCE"

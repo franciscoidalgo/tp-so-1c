@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [INFO] 07:30:36:472 Imongostore/(4649:4649): Soy I Mongo Store! Hice uso de la shared!
 [INFO] 07:43:31:924 Imongostore/(5183:5183): Soy I Mongo Store! Hice uso de la shared!
 [INFO] 07:43:31:934 Imongostore/(5183:5183): POIN1
@@ -14533,3 +14534,84 @@
 
 [INFO] 23:04:02:225 Imongostore/(28570:28570): DESCARTAR_BASURA;3;1;7
 [INFO] 23:04:02:225 Imongostore/(28570:28570): 3
+=======
+[INFO] 19:36:57:713 Imongostore/(23018:23018): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:36:57:713 Imongostore/(23018:23018): Listo para escuchar a mi cliente
+[INFO] 19:37:06:368 Imongostore/(23018:23018): Se conecto un cliente!
+[INFO] 19:37:06:368 Imongostore/(23018:23018): Me llego el mensaje (null)
+[INFO] 19:37:25:177 Imongostore/(23109:23109): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:37:25:178 Imongostore/(23109:23109): Listo para escuchar a mi cliente
+[INFO] 19:37:47:265 Imongostore/(23169:23169): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:37:47:268 Imongostore/(23169:23169): Listo para escuchar a mi cliente
+[INFO] 19:39:02:588 Imongostore/(23333:23333): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:39:02:589 Imongostore/(23333:23333): Listo para escuchar a mi cliente
+[INFO] 19:39:43:945 Imongostore/(23444:23444): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:39:43:945 Imongostore/(23444:23444): Listo para escuchar a mi cliente
+[INFO] 19:39:46:283 Imongostore/(23444:23444): Se conecto un cliente!
+[INFO] 19:39:46:283 Imongostore/(23444:23444): Me llego el mensaje (null)
+[INFO] 19:39:48:415 Imongostore/(23444:23444): Se conecto un cliente!
+[INFO] 19:39:48:415 Imongostore/(23444:23444): Me llego el mensaje (null)
+[INFO] 19:52:43:106 Imongostore/(25051:25051): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:52:43:106 Imongostore/(25051:25051): Listo para escuchar a mi cliente
+[INFO] 19:54:50:297 Imongostore/(25051:25051): Se conecto un cliente!
+[INFO] 19:54:50:297 Imongostore/(25051:25051): Me llego el mensaje (null)
+[INFO] 19:55:29:025 Imongostore/(25051:25051): Se conecto un cliente!
+[INFO] 19:55:29:025 Imongostore/(25051:25051): Me llego el mensaje (null)
+[INFO] 19:59:56:780 Imongostore/(26156:26156): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:59:56:780 Imongostore/(26156:26156): Listo para escuchar a mi cliente
+[INFO] 20:00:12:727 Imongostore/(26156:26156): Se conecto un cliente!
+[INFO] 20:00:12:727 Imongostore/(26156:26156): Me llego el mensaje (null)
+[INFO] 20:01:57:127 Imongostore/(26468:26468): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:01:57:127 Imongostore/(26468:26468): Listo para escuchar a mi cliente
+[INFO] 20:02:06:147 Imongostore/(26468:26468): Se conecto un cliente!
+[INFO] 20:02:32:846 Imongostore/(26567:26567): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:02:32:846 Imongostore/(26567:26567): Listo para escuchar a mi cliente
+[INFO] 20:02:44:198 Imongostore/(26645:26645): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:02:44:198 Imongostore/(26645:26645): Listo para escuchar a mi cliente
+[INFO] 20:03:25:262 Imongostore/(26645:26645): Se conecto un cliente!
+[INFO] 20:04:52:726 Imongostore/(26982:26982): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:04:52:726 Imongostore/(26982:26982): Listo para escuchar a mi cliente
+[INFO] 20:04:56:060 Imongostore/(26982:26982): Se conecto un cliente!
+[INFO] 20:04:59:686 Imongostore/(26982:26982): Me llego el mensaje (null)
+[INFO] 20:05:50:279 Imongostore/(27201:27201): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:05:50:280 Imongostore/(27201:27201): Listo para escuchar a mi cliente
+[INFO] 20:05:51:843 Imongostore/(27201:27201): Se conecto un cliente!
+[INFO] 20:05:51:843 Imongostore/(27201:27201): Me llego el mensaje (null)
+[INFO] 20:08:57:110 Imongostore/(27694:27694): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:08:57:110 Imongostore/(27694:27694): Listo para escuchar a mi cliente
+[INFO] 20:10:23:570 Imongostore/(28204:28204): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:10:23:570 Imongostore/(28204:28204): Listo para escuchar a mi cliente
+[INFO] 20:10:27:375 Imongostore/(28204:28204): Se conecto un cliente!
+[INFO] 20:11:58:859 Imongostore/(28456:28456): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:11:58:859 Imongostore/(28456:28456): Listo para escuchar a mi cliente
+[INFO] 20:12:26:108 Imongostore/(28540:28540): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:12:26:110 Imongostore/(28540:28540): Listo para escuchar a mi cliente
+[INFO] 20:12:28:259 Imongostore/(28540:28540): Se conecto un cliente!
+[INFO] 20:12:28:259 Imongostore/(28540:28540): Me llego el mensaje HolaSoyMiRAMar
+[INFO] 20:13:42:582 Imongostore/(28735:28735): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:13:42:583 Imongostore/(28735:28735): Listo para escuchar a mi cliente
+[INFO] 20:13:59:677 Imongostore/(28796:28796): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:13:59:679 Imongostore/(28796:28796): Listo para escuchar a mi cliente
+[INFO] 20:14:10:028 Imongostore/(28839:28839): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:14:10:028 Imongostore/(28839:28839): Listo para escuchar a mi cliente
+[INFO] 20:14:12:123 Imongostore/(28839:28839): Se conecto un cliente!
+[WARNING] 20:14:12:123 Imongostore/(28839:28839): Operacion desconocida. No quieras meter la pata
+[INFO] 20:16:25:398 Imongostore/(29147:29147): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:16:25:398 Imongostore/(29147:29147): Listo para escuchar a mi cliente
+[INFO] 20:16:27:077 Imongostore/(29147:29147): Se conecto un cliente!
+[INFO] 20:16:27:077 Imongostore/(29147:29147): Me llego el mensaje (null)
+[INFO] 20:17:57:823 Imongostore/(29374:29374): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:17:57:824 Imongostore/(29374:29374): Listo para escuchar a mi cliente
+[INFO] 20:17:59:494 Imongostore/(29374:29374): Se conecto un cliente!
+[INFO] 20:17:59:494 Imongostore/(29374:29374): Me llego el mensaje (null)
+[INFO] 20:18:04:795 Imongostore/(29420:29420): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:18:04:795 Imongostore/(29420:29420): Listo para escuchar a mi cliente
+[INFO] 20:18:06:711 Imongostore/(29420:29420): Se conecto un cliente!
+[INFO] 20:18:06:712 Imongostore/(29420:29420): Me llego el mensaje HolaSoyMiRAMar
+[INFO] 20:23:50:655 Imongostore/(30161:30161): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:23:50:656 Imongostore/(30161:30161): Listo para escuchar a mi cliente
+[INFO] 20:23:54:548 Imongostore/(30161:30161): Se conecto un cliente!
+[INFO] 20:23:54:549 Imongostore/(30161:30161): Me llego el mensaje HolaSoyUnValor
+[INFO] 20:24:01:423 Imongostore/(30161:30161): Se conecto un cliente!
+[INFO] 20:24:01:423 Imongostore/(30161:30161): Me llego el mensaje HolaSoyMiRAMar
+>>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8

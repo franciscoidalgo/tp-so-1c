@@ -41,7 +41,8 @@ int iniciar_servidor(t_log* logger)
 int esperar_cliente(int socket_servidor,t_log* logger)
 {
 	struct sockaddr_in dir_cliente;
-	int tam_direccion = sizeof(struct sockaddr_in);
+	// socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
+	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 	/*
@@ -65,21 +66,21 @@ int recibir_operacion(int socket_cliente)
 	}
 }
 
-void* recibir_buffer(int* size, int socket_cliente)
+void* recibir_buffer(int* direccion_size, int socket_cliente)
 {
 	void * buffer;
 
-	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
-	buffer = malloc(*size);
-	recv(socket_cliente, buffer, *size, MSG_WAITALL);
+	recv(socket_cliente, direccion_size, sizeof(int), MSG_WAITALL);
+	buffer = malloc(*direccion_size);
+	recv(socket_cliente, buffer, *direccion_size, MSG_WAITALL);
 
 	return buffer;
 }
 
-void recibir_mensaje(int socket_cliente, t_log* logger)
+void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
 {
-	int size;
-	char* buffer = recibir_buffer(&size, socket_cliente);
+	// int size;
+	char* buffer = recibir_buffer(direccion_size, socket_cliente);
 	log_info(logger, "Me llego el mensaje %s", buffer);
 	free(buffer);
 }
@@ -112,17 +113,17 @@ t_list* recibir_paquete(int socket_cliente)
 
 void* serializar_paquete(t_paquete* paquete, int bytes)
 {
-	void * magic = malloc(bytes);
+	void * ptr_inicio_paquete = malloc(bytes);
 	int desplazamiento = 0;
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
+	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
 	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
+	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->buffer->size), sizeof(int));
 	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	desplazamiento+= paquete->buffer->size;
+	memcpy(ptr_inicio_paquete + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
+	// desplazamiento+= paquete->buffer->size;
 
-	return magic;
+	return ptr_inicio_paquete;
 }
 
 int crear_conexion(char *ip, char* puerto)
@@ -178,16 +179,16 @@ void crear_buffer(t_paquete* paquete)
 	paquete->buffer->stream = NULL;
 }
 
-t_paquete* crear_super_paquete(void)
-{
-	//me falta un malloc!
-	t_paquete* paquete;
+// t_paquete* crear_super_paquete(void)
+// {
+// 	//me falta un malloc!
+// 	t_paquete* paquete;
 
-	//descomentar despues de arreglar
-	//paquete->codigo_operacion = PAQUETE;
-	//crear_buffer(paquete);
-	return paquete;
-}
+// 	//descomentar despues de arreglar
+// 	// paquete->codigo_operacion = PAQUETE;
+// 	//crear_buffer(paquete);
+// 	return paquete;
+// }
 
 t_paquete* crear_paquete(void)
 {
@@ -227,4 +228,62 @@ void eliminar_paquete(t_paquete* paquete)
 void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
+}
+
+t_log* iniciar_logger(char* name)
+{
+	char* path = string_new();
+	char* name_mayus = string_new();
+	
+	string_append(&path, "./cfg/");
+	string_append(&path, name);
+	string_append(&path, ".log");
+
+	string_append(&name_mayus, name);
+	string_to_upper(name_mayus);
+	t_log* logger = log_create(path,name_mayus,true,LOG_LEVEL_INFO);
+	
+	free(path);
+	free(name_mayus);
+
+	return logger;
+}
+
+t_config* leer_config(char* name)
+{
+	char* path = string_new();
+	string_append(&path, "cfg/");
+	string_append(&path, name);
+	string_append(&path, ".config");
+	
+	t_config* config = config_create(path);
+
+	free(path);
+
+	return config;
+}
+
+void terminar_programa(int conexion, t_log* logger, t_config* config)
+{
+	log_destroy(logger);
+	liberar_conexion(conexion);
+	config_destroy(config);
+}
+
+void validar_logger(t_log* logger)
+{
+	if(logger == NULL)
+    {
+        printf("No se pudo crear el logger\n");
+		fflush(stdout);
+    }
+}
+
+void validar_config(t_config* config)
+{
+	if(config == NULL)
+    {
+        printf("No se pudo crear el config\n");
+		fflush(stdout);
+    }
 }
