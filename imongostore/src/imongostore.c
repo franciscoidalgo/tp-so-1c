@@ -20,7 +20,7 @@ void iterator(char* value)
 	}else{
 		list_add(TAREAS_GLOBAL->tareas_tripu,value); 
 	}
-	 printf("%s\n", value);
+	 log_info(logger, value);
 }
 
 
@@ -44,7 +44,7 @@ void iterator(char* value)
 			break;
 		case PAQUETE:
 			lista = recibir_paquete(cliente_fd);
-			printf("Me llegaron los siguientes valores:\n");
+			log_info(logger,"Me llegaron los siguientes valores:");
 			list_iterate(lista, (void*) iterator);
 
 			log_info(logger, string_itoa(TAREAS_GLOBAL->pid));
