@@ -14615,3 +14615,35 @@
 [INFO] 20:24:01:423 Imongostore/(30161:30161): Se conecto un cliente!
 [INFO] 20:24:01:423 Imongostore/(30161:30161): Me llego el mensaje HolaSoyMiRAMar
 >>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
+[INFO] 23:53:33:966 Imongostore/(29550:29550): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:53:33:966 Imongostore/(29550:29550): Listo para escuchar a mi cliente
+[INFO] 23:53:40:78 Imongostore/(29550:29550): Se conecto un cliente!
+[INFO] 23:53:42:80 Imongostore/(29550:29550): Me llegaron los siguientes valores:
+[INFO] 23:53:42:81 Imongostore/(29550:29550): 3
+[INFO] 23:53:42:81 Imongostore/(29550:29550): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:53:42:82 Imongostore/(29550:29550): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:53:42:82 Imongostore/(29550:29550): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:53:42:82 Imongostore/(29550:29550): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:53:42:82 Imongostore/(29550:29550): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:53:42:83 Imongostore/(29550:29550): DESCARTAR_BASURA;3;1;7
+[INFO] 23:53:42:83 Imongostore/(29550:29550): 3
+[INFO] 23:53:52:893 Imongostore/(29550:29550): Se conecto un cliente!
+[INFO] 23:53:54:894 Imongostore/(29550:29550): Me llegaron los siguientes valores:
+[INFO] 23:53:54:894 Imongostore/(29550:29550): 3
+[INFO] 23:53:54:895 Imongostore/(29550:29550): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:53:54:895 Imongostore/(29550:29550): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:53:54:896 Imongostore/(29550:29550): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:53:54:896 Imongostore/(29550:29550): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:53:54:896 Imongostore/(29550:29550): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:53:54:897 Imongostore/(29550:29550): DESCARTAR_BASURA;3;1;7
+[INFO] 23:53:54:897 Imongostore/(29550:29550): 3

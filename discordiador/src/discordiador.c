@@ -2,7 +2,6 @@
 
 int main(int argc, char** argv){
 
-<<<<<<< HEAD
 /////////////////////inicializo variables globales y locales//////////////////////////////////////////////////
 logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
 log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
@@ -22,26 +21,6 @@ if (archivo==NULL)
    perror ("Error al abrir fichero.txt");
    return -1;
 }
-=======
-int main(int argc, char ** argv){
-
-// t_log* logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
-t_log* logger = iniciar_logger("discordiador");
-log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
-
-
-/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
-int conexion;
-char* ip;
-char* puerto;
-char* valor;
-
-
-//Loggear "soy un log"
-log_info(logger,"soy un log");
-
-t_config* config = leer_config("discordiador");
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 
 char cadena[50]; /* Un array lo suficientemente grande como para guardar la línea más larga del fichero */
 char* palabra = malloc(sizeof(char));//= string_itoa(a);//numero de la patota
@@ -96,27 +75,14 @@ while (list_size(NEW)!= 0)
 		log_info(logger,"Tripulante %d no pudo ejecutar",tripulante->tid);
 	}
 	 
-    //pthread_join(hilo[tripulante->tid], NULL);
+    pthread_join(hilo[tripulante->tid], NULL);
 
-<<<<<<< HEAD
 }
 
 list_iterate(READY, (void*) iterator);
 
 //Ejecucion de tarea por cada tripulante con semaforo contador
 
-=======
-	// conexion = crear_conexion(ip,puerto);
-	conexion = crear_conexion(ip,puerto);
-
-	//enviar CLAVE al servirdor
-	log_info(logger,valor);
-	enviar_mensaje(valor,conexion);
-
-	// enviar_msj(valor,conexion,logger);
-
-	// paquete(conexion);
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 
 terminar_programa(conexion, logger, config);
 }
@@ -132,17 +98,10 @@ void iterator(t_tcb* t){
 // 	return log_create("discordiador.log","discordiador",true,LOG_LEVEL_INFO);
 // }
 
-<<<<<<< HEAD
 t_config* leer_config(void)
 {
 	return config_create("/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/cfg/discordiador.config");
 }
-=======
-// t_config* leer_config(void)
-// {
-// 	return config_create("cfg/discordiador.config");
-// }
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 
 void leer_consola(t_log* logger)
 {
@@ -159,7 +118,6 @@ void leer_consola(t_log* logger)
 	free(leido);
 }
 
-<<<<<<< HEAD
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
@@ -167,25 +125,6 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
 log_destroy(logger);
 }
-=======
-// void paquete(int conexion)
-// {
-// 	//Ahora toca lo divertido!
-
-// 	char* leido;
-// 	t_paquete* paquete;
-
-
-// }
-
-// void terminar_programa(int conexion, t_log* logger, t_config* config)
-// {
-// 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
-// 	log_destroy(logger);
-// 	liberar_conexion(conexion);
-// 	config_destroy(config);
-// }
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 
 
 void enviar_msj(char* mensaje, int socket_cliente)
