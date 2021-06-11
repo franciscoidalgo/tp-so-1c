@@ -28,17 +28,21 @@ t_list* READY;
 t_list* NEW;
 
 t_log* logger;
+t_log* config;
+char* IP;
+char* PUERTO;
 
 pthread_mutex_t mutexSalirDeNEW = PTHREAD_MUTEX_INITIALIZER;
 
-t_log* iniciar_logger(void);
-void terminar_programa(int conexion, t_log* logger, t_config* config);
-t_config* leer_config(void);
 void enviar_msj(char* mensaje, int socket_cliente);
 void perder_tiempo(int* i);
 void iterator(t_tcb* t);
 t_paquete* armar_paquete(char* palabra);
 t_tcb* crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t id);
 void buscar_tarea_a_RAM(void* tripu);
-
+void inicializar_variables();
+void terminar_variables_globales(int socket);
+void enviar_tareas_a_RAM(int conexion,char** argv);
+void recepcionar_patota(char** argv); //agregar tripulantes a lista NEW
+void busqueda_de_tareas_por_patota();
 #endif

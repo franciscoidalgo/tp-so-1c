@@ -7,7 +7,6 @@ log_info(logger, "Soy I Mongo Store! %s", mi_funcion_compartida());
 
 int server_fd = iniciar_servidor(logger);
 
-<<<<<<< HEAD
 int contador = 0;
 TAREAS_GLOBAL = malloc(sizeof(t_tareas));
 TAREAS_GLOBAL->tareas_tripu = malloc(sizeof(t_list));
@@ -27,14 +26,6 @@ void iterator(char* value)
 
 
 	t_list* lista;
-=======
-// void iterator(char* value)
-// {
-// 	 printf("%s\n", value);
-// }
-//log_info(logger,cliente_fd);
-	// t_list* lista;  //descomentar esto cuando se use el envio de paquete
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 	while(1)
 	{	
 		int cliente_fd = esperar_cliente(server_fd,logger);
@@ -51,17 +42,11 @@ void iterator(char* value)
             // free(buffer);
 			break;
 		case PAQUETE:
-<<<<<<< HEAD
 			lista = recibir_paquete(cliente_fd);
 			log_info(logger,"Me llegaron los siguientes valores:");
 			list_iterate(lista, (void*) iterator);
 
 			log_info(logger, string_itoa(TAREAS_GLOBAL->pid));
-=======
-			// lista = recibir_paquete(cliente_fd);
-			printf("Me llegaron los siguientes valores:\n");
-			// list_iterate(lista, (void*) iterator);
->>>>>>> 522ee03dbce4d3a36dd32af226b70488c0200ba8
 			break;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");

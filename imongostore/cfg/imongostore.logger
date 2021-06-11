@@ -14647,3 +14647,720 @@
 
 [INFO] 23:53:54:897 Imongostore/(29550:29550): DESCARTAR_BASURA;3;1;7
 [INFO] 23:53:54:897 Imongostore/(29550:29550): 3
+[INFO] 00:13:27:556 Imongostore/(30235:30235): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:13:27:557 Imongostore/(30235:30235): Listo para escuchar a mi cliente
+[INFO] 00:15:54:889 Imongostore/(30342:30342): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:15:54:889 Imongostore/(30342:30342): Listo para escuchar a mi cliente
+[INFO] 00:15:58:223 Imongostore/(30342:30342): Se conecto un cliente!
+[INFO] 00:16:00:224 Imongostore/(30342:30342): Me llegaron los siguientes valores:
+[INFO] 00:16:00:224 Imongostore/(30342:30342): 3
+[INFO] 00:16:00:224 Imongostore/(30342:30342): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:16:00:224 Imongostore/(30342:30342): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:16:00:224 Imongostore/(30342:30342): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:16:00:224 Imongostore/(30342:30342): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:16:00:224 Imongostore/(30342:30342): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:16:00:224 Imongostore/(30342:30342): DESCARTAR_BASURA;3;1;7
+[INFO] 00:16:00:224 Imongostore/(30342:30342): 3
+[INFO] 00:24:32:150 Imongostore/(30463:30463): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:24:32:150 Imongostore/(30463:30463): Listo para escuchar a mi cliente
+[INFO] 00:24:42:150 Imongostore/(30463:30463): Se conecto un cliente!
+[INFO] 00:24:44:151 Imongostore/(30463:30463): Me llegaron los siguientes valores:
+[INFO] 00:24:44:151 Imongostore/(30463:30463): 4
+[INFO] 00:24:44:151 Imongostore/(30463:30463): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:24:44:152 Imongostore/(30463:30463): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:24:44:152 Imongostore/(30463:30463): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:24:44:152 Imongostore/(30463:30463): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:24:44:153 Imongostore/(30463:30463): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:24:44:153 Imongostore/(30463:30463): DESCARTAR_BASURA;3;1;7
+[INFO] 00:24:44:153 Imongostore/(30463:30463): 4
+[INFO] 00:29:32:89 Imongostore/(30505:30505): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:29:32:90 Imongostore/(30505:30505): Listo para escuchar a mi cliente
+[INFO] 00:29:35:28 Imongostore/(30505:30505): Se conecto un cliente!
+[INFO] 00:29:37:29 Imongostore/(30505:30505): Me llegaron los siguientes valores:
+[INFO] 00:29:37:30 Imongostore/(30505:30505): 2
+[INFO] 00:29:37:30 Imongostore/(30505:30505): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:29:37:31 Imongostore/(30505:30505): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:29:37:31 Imongostore/(30505:30505): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:29:37:31 Imongostore/(30505:30505): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:29:37:32 Imongostore/(30505:30505): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:29:37:33 Imongostore/(30505:30505): DESCARTAR_BASURA;3;1;7
+[INFO] 00:29:37:36 Imongostore/(30505:30505): 2
+[INFO] 22:11:01:503 Imongostore/(8649:8649): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:11:01:531 Imongostore/(8649:8649): Listo para escuchar a mi cliente
+[INFO] 22:11:05:863 Imongostore/(8649:8649): Se conecto un cliente!
+[INFO] 22:11:07:867 Imongostore/(8649:8649): Me llegaron los siguientes valores:
+[INFO] 22:11:07:867 Imongostore/(8649:8649): 5
+[INFO] 22:11:07:868 Imongostore/(8649:8649): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:11:07:868 Imongostore/(8649:8649): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:11:07:868 Imongostore/(8649:8649): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:11:07:868 Imongostore/(8649:8649): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:11:07:868 Imongostore/(8649:8649): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:11:07:868 Imongostore/(8649:8649): DESCARTAR_BASURA;3;1;7
+[INFO] 22:11:07:869 Imongostore/(8649:8649): 5
+[INFO] 22:21:27:95 Imongostore/(8949:8949): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:21:27:95 Imongostore/(8949:8949): Listo para escuchar a mi cliente
+[INFO] 22:22:44:596 Imongostore/(8949:8949): Se conecto un cliente!
+[INFO] 22:22:46:597 Imongostore/(8949:8949): Me llegaron los siguientes valores:
+[INFO] 22:22:46:597 Imongostore/(8949:8949): 4
+[INFO] 22:22:46:598 Imongostore/(8949:8949): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:22:46:598 Imongostore/(8949:8949): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:22:46:598 Imongostore/(8949:8949): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:22:46:598 Imongostore/(8949:8949): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:22:46:598 Imongostore/(8949:8949): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:22:46:599 Imongostore/(8949:8949): DESCARTAR_BASURA;3;1;7
+[INFO] 22:22:46:599 Imongostore/(8949:8949): 4
+[INFO] 22:25:34:422 Imongostore/(9150:9150): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:25:34:422 Imongostore/(9150:9150): Listo para escuchar a mi cliente
+[INFO] 22:25:41:454 Imongostore/(9150:9150): Se conecto un cliente!
+[INFO] 22:25:43:455 Imongostore/(9150:9150): Me llegaron los siguientes valores:
+[INFO] 22:25:43:455 Imongostore/(9150:9150): 4
+[INFO] 22:25:43:456 Imongostore/(9150:9150): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:25:43:456 Imongostore/(9150:9150): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:25:43:456 Imongostore/(9150:9150): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:25:43:456 Imongostore/(9150:9150): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:25:43:456 Imongostore/(9150:9150): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:25:43:456 Imongostore/(9150:9150): DESCARTAR_BASURA;3;1;7
+[INFO] 22:25:43:457 Imongostore/(9150:9150): 4
+[INFO] 22:25:59:54 Imongostore/(9150:9150): Se conecto un cliente!
+[INFO] 22:26:01:79 Imongostore/(9150:9150): Me llegaron los siguientes valores:
+[INFO] 22:26:01:79 Imongostore/(9150:9150): 4
+[INFO] 22:26:01:79 Imongostore/(9150:9150): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:26:01:79 Imongostore/(9150:9150): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:26:01:79 Imongostore/(9150:9150): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:26:01:80 Imongostore/(9150:9150): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:26:01:80 Imongostore/(9150:9150): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:26:01:80 Imongostore/(9150:9150): DESCARTAR_BASURA;3;1;7
+[INFO] 22:26:01:80 Imongostore/(9150:9150): 4
+[INFO] 22:27:04:666 Imongostore/(9150:9150): Se conecto un cliente!
+[INFO] 22:27:06:666 Imongostore/(9150:9150): Me llegaron los siguientes valores:
+[INFO] 22:27:06:667 Imongostore/(9150:9150): 4
+[INFO] 22:27:06:667 Imongostore/(9150:9150): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:27:06:667 Imongostore/(9150:9150): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:27:06:667 Imongostore/(9150:9150): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:27:06:668 Imongostore/(9150:9150): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:27:06:670 Imongostore/(9150:9150): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:27:06:670 Imongostore/(9150:9150): DESCARTAR_BASURA;3;1;7
+[INFO] 22:27:06:671 Imongostore/(9150:9150): 4
+[INFO] 22:27:53:670 Imongostore/(9150:9150): Se conecto un cliente!
+[INFO] 22:27:55:670 Imongostore/(9150:9150): Me llegaron los siguientes valores:
+[INFO] 22:27:55:670 Imongostore/(9150:9150): 4
+[INFO] 22:27:55:671 Imongostore/(9150:9150): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:27:55:671 Imongostore/(9150:9150): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:27:55:671 Imongostore/(9150:9150): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:27:55:671 Imongostore/(9150:9150): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:27:55:671 Imongostore/(9150:9150): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:27:55:675 Imongostore/(9150:9150): DESCARTAR_BASURA;3;1;7
+[INFO] 22:27:55:675 Imongostore/(9150:9150): 4
+[INFO] 22:28:37:901 Imongostore/(9150:9150): Se conecto un cliente!
+[INFO] 22:28:39:901 Imongostore/(9150:9150): Me llegaron los siguientes valores:
+[INFO] 22:28:39:902 Imongostore/(9150:9150): 4
+[INFO] 22:28:39:902 Imongostore/(9150:9150): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:28:39:902 Imongostore/(9150:9150): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:28:39:902 Imongostore/(9150:9150): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:28:39:902 Imongostore/(9150:9150): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:28:39:906 Imongostore/(9150:9150): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:28:39:906 Imongostore/(9150:9150): DESCARTAR_BASURA;3;1;7
+[INFO] 22:28:39:906 Imongostore/(9150:9150): 4
+[INFO] 22:34:26:789 Imongostore/(9931:9931): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:34:26:789 Imongostore/(9931:9931): Listo para escuchar a mi cliente
+[INFO] 22:34:37:812 Imongostore/(9931:9931): Se conecto un cliente!
+[INFO] 22:34:39:814 Imongostore/(9931:9931): Me llegaron los siguientes valores:
+[INFO] 22:34:39:815 Imongostore/(9931:9931): 4
+[INFO] 22:34:39:815 Imongostore/(9931:9931): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:34:39:815 Imongostore/(9931:9931): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:34:39:816 Imongostore/(9931:9931): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:34:39:816 Imongostore/(9931:9931): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:34:39:816 Imongostore/(9931:9931): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:34:39:816 Imongostore/(9931:9931): DESCARTAR_BASURA;3;1;7
+[INFO] 22:34:39:816 Imongostore/(9931:9931): 4
+[INFO] 22:35:39:470 Imongostore/(10004:10004): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:35:39:470 Imongostore/(10004:10004): Listo para escuchar a mi cliente
+[INFO] 22:35:43:488 Imongostore/(10004:10004): Se conecto un cliente!
+[INFO] 22:35:45:488 Imongostore/(10004:10004): Me llegaron los siguientes valores:
+[INFO] 22:35:45:489 Imongostore/(10004:10004): 4
+[INFO] 22:35:45:489 Imongostore/(10004:10004): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:35:45:489 Imongostore/(10004:10004): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:35:45:489 Imongostore/(10004:10004): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:35:45:489 Imongostore/(10004:10004): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:35:45:489 Imongostore/(10004:10004): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:35:45:489 Imongostore/(10004:10004): DESCARTAR_BASURA;3;1;7
+[INFO] 22:35:45:489 Imongostore/(10004:10004): 4
+[INFO] 22:48:54:580 Imongostore/(10180:10180): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:48:54:580 Imongostore/(10180:10180): Listo para escuchar a mi cliente
+[INFO] 22:48:57:249 Imongostore/(10180:10180): Se conecto un cliente!
+[INFO] 22:48:59:250 Imongostore/(10180:10180): Me llegaron los siguientes valores:
+[INFO] 22:48:59:250 Imongostore/(10180:10180): 4
+[INFO] 22:48:59:250 Imongostore/(10180:10180): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:48:59:250 Imongostore/(10180:10180): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:48:59:250 Imongostore/(10180:10180): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:48:59:251 Imongostore/(10180:10180): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:48:59:251 Imongostore/(10180:10180): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:48:59:251 Imongostore/(10180:10180): DESCARTAR_BASURA;3;1;7
+[INFO] 22:48:59:251 Imongostore/(10180:10180): 4
+[INFO] 22:53:55:87 Imongostore/(10371:10371): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:53:55:87 Imongostore/(10371:10371): Listo para escuchar a mi cliente
+[INFO] 22:53:58:541 Imongostore/(10371:10371): Se conecto un cliente!
+[INFO] 22:54:00:541 Imongostore/(10371:10371): Me llegaron los siguientes valores:
+[INFO] 22:54:00:542 Imongostore/(10371:10371): 4
+[INFO] 22:54:00:542 Imongostore/(10371:10371): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:54:00:542 Imongostore/(10371:10371): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:54:00:542 Imongostore/(10371:10371): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:54:00:543 Imongostore/(10371:10371): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:54:00:543 Imongostore/(10371:10371): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:54:00:544 Imongostore/(10371:10371): DESCARTAR_BASURA;3;1;7
+[INFO] 22:54:00:544 Imongostore/(10371:10371): 4
+[INFO] 22:55:33:698 Imongostore/(10468:10468): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:55:33:698 Imongostore/(10468:10468): Listo para escuchar a mi cliente
+[INFO] 22:55:37:403 Imongostore/(10468:10468): Se conecto un cliente!
+[INFO] 22:55:39:404 Imongostore/(10468:10468): Me llegaron los siguientes valores:
+[INFO] 22:55:39:404 Imongostore/(10468:10468): 4
+[INFO] 22:55:39:404 Imongostore/(10468:10468): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 22:55:39:404 Imongostore/(10468:10468): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 22:55:39:404 Imongostore/(10468:10468): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 22:55:39:405 Imongostore/(10468:10468): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 22:55:39:405 Imongostore/(10468:10468): GENERAR_BASURA 12;2;3;5
+
+[INFO] 22:55:39:406 Imongostore/(10468:10468): DESCARTAR_BASURA;3;1;7
+[INFO] 22:55:39:406 Imongostore/(10468:10468): 4
+[INFO] 23:10:35:13 Imongostore/(10617:10617): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:10:35:13 Imongostore/(10617:10617): Listo para escuchar a mi cliente
+[INFO] 23:10:51:284 Imongostore/(10620:10620): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:10:51:284 Imongostore/(10620:10620): Listo para escuchar a mi cliente
+[INFO] 23:24:48:225 Imongostore/(10791:10791): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:24:48:225 Imongostore/(10791:10791): Listo para escuchar a mi cliente
+[INFO] 23:24:51:774 Imongostore/(10791:10791): Se conecto un cliente!
+[INFO] 23:24:53:775 Imongostore/(10791:10791): Me llegaron los siguientes valores:
+[INFO] 23:24:53:775 Imongostore/(10791:10791): 4
+[INFO] 23:24:53:775 Imongostore/(10791:10791): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:24:53:775 Imongostore/(10791:10791): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:24:53:775 Imongostore/(10791:10791): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:24:53:775 Imongostore/(10791:10791): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:24:53:775 Imongostore/(10791:10791): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:24:53:775 Imongostore/(10791:10791): DESCARTAR_BASURA;3;1;7
+[INFO] 23:24:53:775 Imongostore/(10791:10791): 4
+[INFO] 23:29:02:553 Imongostore/(10926:10926): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:29:02:553 Imongostore/(10926:10926): Listo para escuchar a mi cliente
+[INFO] 23:29:06:845 Imongostore/(10926:10926): Se conecto un cliente!
+[INFO] 23:29:08:849 Imongostore/(10926:10926): Me llegaron los siguientes valores:
+[INFO] 23:29:08:849 Imongostore/(10926:10926): 4
+[INFO] 23:29:08:850 Imongostore/(10926:10926): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:29:08:850 Imongostore/(10926:10926): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:29:08:850 Imongostore/(10926:10926): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:29:08:850 Imongostore/(10926:10926): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:29:08:850 Imongostore/(10926:10926): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:29:08:851 Imongostore/(10926:10926): DESCARTAR_BASURA;3;1;7
+[INFO] 23:29:08:851 Imongostore/(10926:10926): 4
+[INFO] 23:30:34:59 Imongostore/(11016:11016): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:30:34:60 Imongostore/(11016:11016): Listo para escuchar a mi cliente
+[INFO] 23:30:47:535 Imongostore/(11016:11016): Se conecto un cliente!
+[INFO] 23:30:49:535 Imongostore/(11016:11016): Me llegaron los siguientes valores:
+[INFO] 23:30:49:535 Imongostore/(11016:11016): 4
+[INFO] 23:30:49:536 Imongostore/(11016:11016): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:30:49:536 Imongostore/(11016:11016): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:30:49:536 Imongostore/(11016:11016): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:30:49:536 Imongostore/(11016:11016): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:30:49:536 Imongostore/(11016:11016): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:30:49:536 Imongostore/(11016:11016): DESCARTAR_BASURA;3;1;7
+[INFO] 23:30:49:538 Imongostore/(11016:11016): 4
+[INFO] 23:31:27:340 Imongostore/(11048:11048): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:31:27:341 Imongostore/(11048:11048): Listo para escuchar a mi cliente
+[INFO] 23:31:44:334 Imongostore/(11048:11048): Se conecto un cliente!
+[INFO] 23:31:46:335 Imongostore/(11048:11048): Me llegaron los siguientes valores:
+[INFO] 23:31:46:342 Imongostore/(11048:11048): 4
+[INFO] 23:31:46:343 Imongostore/(11048:11048): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:31:46:343 Imongostore/(11048:11048): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:31:46:343 Imongostore/(11048:11048): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:31:46:343 Imongostore/(11048:11048): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:31:46:343 Imongostore/(11048:11048): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:31:46:344 Imongostore/(11048:11048): DESCARTAR_BASURA;3;1;7
+[INFO] 23:31:46:344 Imongostore/(11048:11048): 4
+[INFO] 23:38:32:379 Imongostore/(11048:11048): Se conecto un cliente!
+[INFO] 23:38:34:381 Imongostore/(11048:11048): Me llegaron los siguientes valores:
+[INFO] 23:38:34:382 Imongostore/(11048:11048): 4
+[INFO] 23:38:34:382 Imongostore/(11048:11048): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:38:34:386 Imongostore/(11048:11048): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:38:34:387 Imongostore/(11048:11048): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:38:34:387 Imongostore/(11048:11048): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:38:34:387 Imongostore/(11048:11048): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:38:34:387 Imongostore/(11048:11048): DESCARTAR_BASURA;3;1;7
+[INFO] 23:38:34:387 Imongostore/(11048:11048): 4
+[INFO] 23:41:58:64 Imongostore/(11048:11048): Se conecto un cliente!
+[INFO] 23:42:00:65 Imongostore/(11048:11048): Me llegaron los siguientes valores:
+[INFO] 23:42:00:70 Imongostore/(11048:11048): 4
+[INFO] 23:42:00:70 Imongostore/(11048:11048): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:42:00:70 Imongostore/(11048:11048): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:42:00:70 Imongostore/(11048:11048): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:42:00:70 Imongostore/(11048:11048): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:42:00:74 Imongostore/(11048:11048): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:42:00:74 Imongostore/(11048:11048): DESCARTAR_BASURA;3;1;7
+[INFO] 23:42:00:74 Imongostore/(11048:11048): 4
+[INFO] 23:45:21:277 Imongostore/(11525:11525): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 23:45:21:277 Imongostore/(11525:11525): Listo para escuchar a mi cliente
+[INFO] 23:45:30:332 Imongostore/(11525:11525): Se conecto un cliente!
+[INFO] 23:45:32:332 Imongostore/(11525:11525): Me llegaron los siguientes valores:
+[INFO] 23:45:32:332 Imongostore/(11525:11525): 4
+[INFO] 23:45:32:332 Imongostore/(11525:11525): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:45:32:332 Imongostore/(11525:11525): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:45:32:332 Imongostore/(11525:11525): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:45:32:333 Imongostore/(11525:11525): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:45:32:333 Imongostore/(11525:11525): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:45:32:333 Imongostore/(11525:11525): DESCARTAR_BASURA;3;1;7
+[INFO] 23:45:32:333 Imongostore/(11525:11525): 4
+[INFO] 23:46:44:4 Imongostore/(11525:11525): Se conecto un cliente!
+[INFO] 23:46:46:6 Imongostore/(11525:11525): Me llegaron los siguientes valores:
+[INFO] 23:46:47:9 Imongostore/(11525:11525): 4
+[INFO] 23:46:47:11 Imongostore/(11525:11525): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:46:47:12 Imongostore/(11525:11525): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:46:47:12 Imongostore/(11525:11525): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:46:47:13 Imongostore/(11525:11525): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:46:47:14 Imongostore/(11525:11525): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:46:47:15 Imongostore/(11525:11525): DESCARTAR_BASURA;3;1;7
+[INFO] 23:46:47:16 Imongostore/(11525:11525): 4
+[INFO] 23:47:23:41 Imongostore/(11525:11525): Se conecto un cliente!
+[INFO] 23:47:25:42 Imongostore/(11525:11525): Me llegaron los siguientes valores:
+[INFO] 23:47:25:42 Imongostore/(11525:11525): 4
+[INFO] 23:47:25:42 Imongostore/(11525:11525): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:47:25:42 Imongostore/(11525:11525): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:47:25:42 Imongostore/(11525:11525): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:47:25:42 Imongostore/(11525:11525): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:47:25:43 Imongostore/(11525:11525): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:47:25:43 Imongostore/(11525:11525): DESCARTAR_BASURA;3;1;7
+[INFO] 23:47:25:43 Imongostore/(11525:11525): 4
+[INFO] 23:49:40:61 Imongostore/(11525:11525): Se conecto un cliente!
+[INFO] 23:49:42:137 Imongostore/(11525:11525): Me llegaron los siguientes valores:
+[INFO] 23:49:42:138 Imongostore/(11525:11525): 4
+[INFO] 23:49:42:138 Imongostore/(11525:11525): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 23:49:42:138 Imongostore/(11525:11525): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 23:49:42:138 Imongostore/(11525:11525): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 23:49:42:138 Imongostore/(11525:11525): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 23:49:42:138 Imongostore/(11525:11525): GENERAR_BASURA 12;2;3;5
+
+[INFO] 23:49:42:138 Imongostore/(11525:11525): DESCARTAR_BASURA;3;1;7
+[INFO] 23:49:42:139 Imongostore/(11525:11525): 4
+[INFO] 00:16:24:947 Imongostore/(12170:12170): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:16:24:947 Imongostore/(12170:12170): Listo para escuchar a mi cliente
+[INFO] 00:16:28:70 Imongostore/(12170:12170): Se conecto un cliente!
+[INFO] 00:16:30:71 Imongostore/(12170:12170): Me llegaron los siguientes valores:
+[INFO] 00:16:30:71 Imongostore/(12170:12170): 4
+[INFO] 00:16:30:71 Imongostore/(12170:12170): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:16:30:71 Imongostore/(12170:12170): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:16:30:71 Imongostore/(12170:12170): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:16:30:71 Imongostore/(12170:12170): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:16:30:72 Imongostore/(12170:12170): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:16:30:72 Imongostore/(12170:12170): DESCARTAR_BASURA;3;1;7
+[INFO] 00:16:30:72 Imongostore/(12170:12170): 4
+[INFO] 00:21:46:357 Imongostore/(12365:12365): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:21:46:360 Imongostore/(12365:12365): Listo para escuchar a mi cliente
+[INFO] 00:21:49:45 Imongostore/(12365:12365): Se conecto un cliente!
+[INFO] 00:21:51:45 Imongostore/(12365:12365): Me llegaron los siguientes valores:
+[INFO] 00:21:51:46 Imongostore/(12365:12365): 4
+[INFO] 00:21:51:46 Imongostore/(12365:12365): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:21:51:46 Imongostore/(12365:12365): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:21:51:46 Imongostore/(12365:12365): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:21:51:46 Imongostore/(12365:12365): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:21:51:46 Imongostore/(12365:12365): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:21:51:46 Imongostore/(12365:12365): DESCARTAR_BASURA;3;1;7
+[INFO] 00:21:51:46 Imongostore/(12365:12365): 4
+[INFO] 18:45:35:322 Imongostore/(13530:13530): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 18:45:35:322 Imongostore/(13530:13530): Listo para escuchar a mi cliente
+[INFO] 18:45:39:445 Imongostore/(13530:13530): Se conecto un cliente!
+[INFO] 18:45:41:446 Imongostore/(13530:13530): Me llegaron los siguientes valores:
+[INFO] 18:45:41:446 Imongostore/(13530:13530): 4
+[INFO] 18:45:41:446 Imongostore/(13530:13530): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 18:45:41:446 Imongostore/(13530:13530): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 18:45:41:446 Imongostore/(13530:13530): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 18:45:41:446 Imongostore/(13530:13530): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 18:45:41:446 Imongostore/(13530:13530): GENERAR_BASURA 12;2;3;5
+
+[INFO] 18:45:41:446 Imongostore/(13530:13530): DESCARTAR_BASURA;3;1;7
+[INFO] 18:45:41:446 Imongostore/(13530:13530): 4
+[INFO] 19:07:35:725 Imongostore/(13821:13821): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:07:35:726 Imongostore/(13821:13821): Listo para escuchar a mi cliente
+[INFO] 19:07:40:370 Imongostore/(13821:13821): Se conecto un cliente!
+[INFO] 19:07:42:371 Imongostore/(13821:13821): Me llegaron los siguientes valores:
+[INFO] 19:07:42:371 Imongostore/(13821:13821): 4
+[INFO] 19:07:42:371 Imongostore/(13821:13821): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 19:07:42:371 Imongostore/(13821:13821): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 19:07:42:372 Imongostore/(13821:13821): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 19:07:42:372 Imongostore/(13821:13821): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 19:07:42:372 Imongostore/(13821:13821): GENERAR_BASURA 12;2;3;5
+
+[INFO] 19:07:42:372 Imongostore/(13821:13821): DESCARTAR_BASURA;3;1;7
+[INFO] 19:07:42:372 Imongostore/(13821:13821): 4
+[INFO] 19:09:56:207 Imongostore/(13888:13888): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 19:09:56:207 Imongostore/(13888:13888): Listo para escuchar a mi cliente
+[INFO] 19:09:59:40 Imongostore/(13888:13888): Se conecto un cliente!
+[INFO] 19:10:01:41 Imongostore/(13888:13888): Me llegaron los siguientes valores:
+[INFO] 19:10:01:41 Imongostore/(13888:13888): 4
+[INFO] 19:10:01:41 Imongostore/(13888:13888): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 19:10:01:41 Imongostore/(13888:13888): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 19:10:01:41 Imongostore/(13888:13888): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 19:10:01:41 Imongostore/(13888:13888): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 19:10:01:41 Imongostore/(13888:13888): GENERAR_BASURA 12;2;3;5
+
+[INFO] 19:10:01:41 Imongostore/(13888:13888): DESCARTAR_BASURA;3;1;7
+[INFO] 19:10:01:41 Imongostore/(13888:13888): 4
+[INFO] 19:11:54:887 Imongostore/(13888:13888): Se conecto un cliente!
+[INFO] 19:11:56:888 Imongostore/(13888:13888): Me llegaron los siguientes valores:
+[INFO] 19:11:56:888 Imongostore/(13888:13888): 4
+[INFO] 19:11:56:888 Imongostore/(13888:13888): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 19:11:56:888 Imongostore/(13888:13888): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 19:11:56:888 Imongostore/(13888:13888): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 19:11:56:888 Imongostore/(13888:13888): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 19:11:56:888 Imongostore/(13888:13888): GENERAR_BASURA 12;2;3;5
+
+[INFO] 19:11:56:888 Imongostore/(13888:13888): DESCARTAR_BASURA;3;1;7
+[INFO] 19:11:56:889 Imongostore/(13888:13888): 4
+[INFO] 19:19:22:274 Imongostore/(13888:13888): Se conecto un cliente!
+[INFO] 19:19:24:275 Imongostore/(13888:13888): Me llegaron los siguientes valores:
+[INFO] 19:19:24:275 Imongostore/(13888:13888): 4
+[INFO] 19:19:24:275 Imongostore/(13888:13888): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 19:19:24:275 Imongostore/(13888:13888): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 19:19:24:275 Imongostore/(13888:13888): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 19:19:24:275 Imongostore/(13888:13888): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 19:19:24:275 Imongostore/(13888:13888): GENERAR_BASURA 12;2;3;5
+
+[INFO] 19:19:24:275 Imongostore/(13888:13888): DESCARTAR_BASURA;3;1;7
+[INFO] 19:19:24:275 Imongostore/(13888:13888): 4
+[INFO] 19:19:55:933 Imongostore/(13888:13888): Se conecto un cliente!
+[INFO] 19:19:57:934 Imongostore/(13888:13888): Me llegaron los siguientes valores:
+[INFO] 19:19:57:934 Imongostore/(13888:13888): 4
+[INFO] 19:19:57:934 Imongostore/(13888:13888): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 19:19:57:934 Imongostore/(13888:13888): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 19:19:57:934 Imongostore/(13888:13888): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 19:19:57:934 Imongostore/(13888:13888): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 19:19:57:934 Imongostore/(13888:13888): GENERAR_BASURA 12;2;3;5
+
+[INFO] 19:19:57:934 Imongostore/(13888:13888): DESCARTAR_BASURA;3;1;7
+[INFO] 19:19:57:934 Imongostore/(13888:13888): 4
+[INFO] 20:39:06:604 Imongostore/(15557:15557): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:39:06:605 Imongostore/(15557:15557): Listo para escuchar a mi cliente
+[INFO] 20:39:26:594 Imongostore/(15557:15557): Se conecto un cliente!
+[INFO] 20:39:28:594 Imongostore/(15557:15557): Me llegaron los siguientes valores:
+[INFO] 20:39:28:594 Imongostore/(15557:15557): 4
+[INFO] 20:39:28:594 Imongostore/(15557:15557): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 20:39:28:594 Imongostore/(15557:15557): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 20:39:28:595 Imongostore/(15557:15557): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 20:39:28:595 Imongostore/(15557:15557): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 20:39:28:595 Imongostore/(15557:15557): GENERAR_BASURA 12;2;3;5
+
+[INFO] 20:39:28:595 Imongostore/(15557:15557): DESCARTAR_BASURA;3;1;7
+[INFO] 20:39:28:595 Imongostore/(15557:15557): 4
+[INFO] 20:56:04:940 Imongostore/(16059:16059): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 20:56:04:940 Imongostore/(16059:16059): Listo para escuchar a mi cliente
+[INFO] 20:56:10:680 Imongostore/(16059:16059): Se conecto un cliente!
+[INFO] 20:56:12:680 Imongostore/(16059:16059): Me llegaron los siguientes valores:
+[INFO] 20:56:12:680 Imongostore/(16059:16059): 4
+[INFO] 20:56:12:680 Imongostore/(16059:16059): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 20:56:12:680 Imongostore/(16059:16059): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 20:56:12:680 Imongostore/(16059:16059): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 20:56:12:681 Imongostore/(16059:16059): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 20:56:12:681 Imongostore/(16059:16059): GENERAR_BASURA 12;2;3;5
+
+[INFO] 20:56:12:681 Imongostore/(16059:16059): DESCARTAR_BASURA;3;1;7
+[INFO] 20:56:12:681 Imongostore/(16059:16059): 4
+[INFO] 21:03:59:77 Imongostore/(16263:16263): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 21:03:59:77 Imongostore/(16263:16263): Listo para escuchar a mi cliente
+[INFO] 21:04:06:251 Imongostore/(16263:16263): Se conecto un cliente!
+[INFO] 21:04:08:251 Imongostore/(16263:16263): Me llegaron los siguientes valores:
+[INFO] 21:04:08:251 Imongostore/(16263:16263): 4
+[INFO] 21:04:08:251 Imongostore/(16263:16263): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 21:04:08:252 Imongostore/(16263:16263): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 21:04:08:252 Imongostore/(16263:16263): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 21:04:08:252 Imongostore/(16263:16263): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 21:04:08:252 Imongostore/(16263:16263): GENERAR_BASURA 12;2;3;5
+
+[INFO] 21:04:08:252 Imongostore/(16263:16263): DESCARTAR_BASURA;3;1;7
+[INFO] 21:04:08:252 Imongostore/(16263:16263): 4
+[INFO] 22:14:19:841 Imongostore/(17894:17894): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:14:19:842 Imongostore/(17894:17894): Listo para escuchar a mi cliente
+[INFO] 22:14:23:543 Imongostore/(17894:17894): Se conecto un cliente!
+[ERROR] 22:14:31:550 Imongostore/(17894:17894): el cliente se desconecto. Terminando servidor
+[INFO] 22:14:39:155 Imongostore/(17909:17909): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:14:39:155 Imongostore/(17909:17909): Listo para escuchar a mi cliente
+[INFO] 22:14:42:601 Imongostore/(17909:17909): Se conecto un cliente!
+[ERROR] 22:14:50:612 Imongostore/(17909:17909): el cliente se desconecto. Terminando servidor
+[INFO] 22:26:04:684 Imongostore/(18137:18137): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:26:04:684 Imongostore/(18137:18137): Listo para escuchar a mi cliente
+[INFO] 22:26:09:320 Imongostore/(18137:18137): Se conecto un cliente!
+[ERROR] 22:26:09:320 Imongostore/(18137:18137): el cliente se desconecto. Terminando servidor
+[INFO] 22:26:58:382 Imongostore/(18198:18198): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:26:58:383 Imongostore/(18198:18198): Listo para escuchar a mi cliente
+[INFO] 22:27:02:131 Imongostore/(18198:18198): Se conecto un cliente!
+[ERROR] 22:27:02:131 Imongostore/(18198:18198): el cliente se desconecto. Terminando servidor
+[INFO] 22:28:52:594 Imongostore/(18301:18301): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:28:52:594 Imongostore/(18301:18301): Listo para escuchar a mi cliente
+[INFO] 22:28:55:704 Imongostore/(18301:18301): Se conecto un cliente!
+[ERROR] 22:28:55:705 Imongostore/(18301:18301): el cliente se desconecto. Terminando servidor
+[INFO] 22:31:39:29 Imongostore/(18430:18430): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:31:39:29 Imongostore/(18430:18430): Listo para escuchar a mi cliente
+[INFO] 22:31:41:950 Imongostore/(18430:18430): Se conecto un cliente!
+[ERROR] 22:31:41:950 Imongostore/(18430:18430): el cliente se desconecto. Terminando servidor
+[INFO] 22:34:33:881 Imongostore/(18547:18547): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:34:33:881 Imongostore/(18547:18547): Listo para escuchar a mi cliente
+[INFO] 22:34:36:833 Imongostore/(18547:18547): Se conecto un cliente!
+[ERROR] 22:34:44:841 Imongostore/(18547:18547): el cliente se desconecto. Terminando servidor
+[INFO] 22:39:07:478 Imongostore/(18683:18683): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 22:39:07:478 Imongostore/(18683:18683): Listo para escuchar a mi cliente
+[INFO] 22:39:10:154 Imongostore/(18683:18683): Se conecto un cliente!
+[ERROR] 22:39:18:164 Imongostore/(18683:18683): el cliente se desconecto. Terminando servidor
+[INFO] 00:08:37:467 Imongostore/(3709:3709): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:08:37:685 Imongostore/(3709:3709): Listo para escuchar a mi cliente
+[INFO] 00:08:41:724 Imongostore/(3709:3709): Se conecto un cliente!
+[ERROR] 00:08:48:422 Imongostore/(3709:3709): el cliente se desconecto. Terminando servidor
+[INFO] 00:23:34:677 Imongostore/(4271:4271): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:23:34:677 Imongostore/(4271:4271): Listo para escuchar a mi cliente
+[INFO] 00:23:38:577 Imongostore/(4271:4271): Se conecto un cliente!
+[ERROR] 00:23:42:309 Imongostore/(4271:4271): el cliente se desconecto. Terminando servidor
+[INFO] 00:25:18:139 Imongostore/(4373:4373): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:25:18:139 Imongostore/(4373:4373): Listo para escuchar a mi cliente
+[INFO] 00:25:20:552 Imongostore/(4373:4373): Se conecto un cliente!
+[ERROR] 00:25:20:950 Imongostore/(4373:4373): el cliente se desconecto. Terminando servidor
+[INFO] 00:27:06:131 Imongostore/(4493:4493): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:27:06:131 Imongostore/(4493:4493): Listo para escuchar a mi cliente
+[INFO] 00:27:08:934 Imongostore/(4493:4493): Se conecto un cliente!
+[ERROR] 00:27:09:171 Imongostore/(4493:4493): el cliente se desconecto. Terminando servidor
+[INFO] 00:42:42:795 Imongostore/(5535:5535): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:42:42:795 Imongostore/(5535:5535): Listo para escuchar a mi cliente
+[INFO] 00:42:45:300 Imongostore/(5535:5535): Se conecto un cliente!
+[ERROR] 00:42:45:520 Imongostore/(5535:5535): el cliente se desconecto. Terminando servidor
+[INFO] 00:48:57:252 Imongostore/(5927:5927): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:48:57:252 Imongostore/(5927:5927): Listo para escuchar a mi cliente
+[INFO] 00:48:59:958 Imongostore/(5927:5927): Se conecto un cliente!
+[ERROR] 00:49:00:267 Imongostore/(5927:5927): el cliente se desconecto. Terminando servidor
+[INFO] 00:50:42:114 Imongostore/(5990:5990): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:50:42:114 Imongostore/(5990:5990): Listo para escuchar a mi cliente
+[INFO] 00:50:46:43 Imongostore/(5990:5990): Se conecto un cliente!
+[ERROR] 00:50:46:269 Imongostore/(5990:5990): el cliente se desconecto. Terminando servidor
+[INFO] 00:51:31:143 Imongostore/(6051:6051): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:51:31:144 Imongostore/(6051:6051): Listo para escuchar a mi cliente
+[INFO] 00:51:33:868 Imongostore/(6051:6051): Se conecto un cliente!
+[ERROR] 00:51:41:880 Imongostore/(6051:6051): el cliente se desconecto. Terminando servidor
+[INFO] 00:53:16:862 Imongostore/(6155:6155): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:53:16:862 Imongostore/(6155:6155): Listo para escuchar a mi cliente
+[INFO] 00:53:19:596 Imongostore/(6155:6155): Se conecto un cliente!
+[ERROR] 00:53:19:841 Imongostore/(6155:6155): el cliente se desconecto. Terminando servidor
+[INFO] 00:54:38:284 Imongostore/(6255:6255): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:54:38:284 Imongostore/(6255:6255): Listo para escuchar a mi cliente
+[INFO] 00:54:40:581 Imongostore/(6255:6255): Se conecto un cliente!
+[INFO] 00:54:42:675 Imongostore/(6255:6255): Me llegaron los siguientes valores:
+[INFO] 00:54:42:676 Imongostore/(6255:6255): 4
+[INFO] 00:54:42:676 Imongostore/(6255:6255): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:54:42:677 Imongostore/(6255:6255): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:54:42:677 Imongostore/(6255:6255): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:54:42:678 Imongostore/(6255:6255): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:54:42:679 Imongostore/(6255:6255): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:54:42:680 Imongostore/(6255:6255): DESCARTAR_BASURA;3;1;7
+[INFO] 00:54:42:680 Imongostore/(6255:6255): 4
+[INFO] 00:55:54:856 Imongostore/(6334:6334): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:55:54:856 Imongostore/(6334:6334): Listo para escuchar a mi cliente
+[INFO] 00:55:57:293 Imongostore/(6334:6334): Se conecto un cliente!
+[ERROR] 00:55:57:558 Imongostore/(6334:6334): el cliente se desconecto. Terminando servidor
+[INFO] 00:58:39:201 Imongostore/(6653:6653): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 00:58:39:201 Imongostore/(6653:6653): Listo para escuchar a mi cliente
+[INFO] 00:58:41:798 Imongostore/(6653:6653): Se conecto un cliente!
+[INFO] 00:58:43:799 Imongostore/(6653:6653): Me llegaron los siguientes valores:
+[INFO] 00:58:43:800 Imongostore/(6653:6653): 4
+[INFO] 00:58:43:800 Imongostore/(6653:6653): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 00:58:43:800 Imongostore/(6653:6653): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 00:58:43:800 Imongostore/(6653:6653): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 00:58:43:801 Imongostore/(6653:6653): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 00:58:43:801 Imongostore/(6653:6653): GENERAR_BASURA 12;2;3;5
+
+[INFO] 00:58:43:801 Imongostore/(6653:6653): DESCARTAR_BASURA;3;1;7
+[INFO] 00:58:43:802 Imongostore/(6653:6653): 4
+[INFO] 01:03:55:5 Imongostore/(6908:6908): Soy I Mongo Store! Hice uso de la shared!
+[INFO] 01:03:55:5 Imongostore/(6908:6908): Listo para escuchar a mi cliente
+[INFO] 01:03:57:877 Imongostore/(6908:6908): Se conecto un cliente!
+[INFO] 01:03:59:878 Imongostore/(6908:6908): Me llegaron los siguientes valores:
+[INFO] 01:03:59:880 Imongostore/(6908:6908): 4
+[INFO] 01:03:59:880 Imongostore/(6908:6908): GENERAR_OXIGENO 12;2;3;5
+
+[INFO] 01:03:59:881 Imongostore/(6908:6908): CONSUMIR_OXIGENO 120;2;3;1
+
+[INFO] 01:03:59:881 Imongostore/(6908:6908): GENERAR_COMIDA 4;2;3;1
+
+[INFO] 01:03:59:882 Imongostore/(6908:6908): CONSUMIR_COMIDA 1;2;3;4
+
+[INFO] 01:03:59:883 Imongostore/(6908:6908): GENERAR_BASURA 12;2;3;5
+
+[INFO] 01:03:59:883 Imongostore/(6908:6908): DESCARTAR_BASURA;3;1;7
+[INFO] 01:03:59:884 Imongostore/(6908:6908): 4

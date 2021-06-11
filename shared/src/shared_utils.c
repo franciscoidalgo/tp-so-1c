@@ -265,6 +265,7 @@ t_config* leer_config(char* name)
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
+	log_info(logger,"POINT1");
 	log_destroy(logger);
 	liberar_conexion(conexion);
 	config_destroy(config);
