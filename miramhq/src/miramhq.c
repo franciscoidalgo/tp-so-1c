@@ -2,6 +2,14 @@
 
 t_log* logger;
 t_config* config;
+administrador_de_segmentacion* admin_segmentacion;
+
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* ---------------------------Iteradores------------------------------ */
 
 void iterator_agregar_tareas(char* value)
 {
@@ -25,7 +33,7 @@ void iterator_destroy_tarea(t_tarea* tarea)
     free(tarea);
 };
 
-void iterator_lines_split(char* string)
+void iterator_lines_free(char* string)
 {
     free(string);
 };
@@ -41,10 +49,55 @@ void iterator_tarea(t_tarea* tarea)
     // free(numero);
 };
 
+void iterator_segmento_libre(t_segmento_libre* segmento_libre)
+{
+    log_info(logger,"Inicio: %d", segmento_libre->inicio);
+    log_info(logger,"Fin: %d", segmento_libre->fin);
+};
+
+bool orden_lista_admin_segmentacion(t_segmento_libre* segmento_libre_A, t_segmento_libre* segmento_libreB)
+{
+    return segmento_libre_A->inicio < segmento_libreB->inicio;
+}
+
+void iterator_tarea_cargar_a_memoria(t_tarea* tarea)
+{
+    // Buscar proximo hueco libre -- HACER FUNCION
+    int desplazamiento = 0;
+    char delimitador_entre_accion_parametro = (char) ' ';
+    char delimitador_entre_tareas = (char) ';';
+    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->accion), strlen(tarea->accion));
+    desplazamiento += strlen(tarea->accion);
+    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_accion_parametro), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->parametro), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->posicion_x), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->posicion_y), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
+    desplazamiento += sizeof(char);
+    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->tiempo), sizeof(char));
+    desplazamiento += sizeof(char);
+
+};
+
 void iterator(char* value)
 {
     log_info(logger,value);
 };
+
+/* -------------------------Fin Iteradores---------------------------- */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
 
 int main(int argc, char ** argv){
 
@@ -65,7 +118,18 @@ int main(int argc, char ** argv){
 
     /* -------------------------Primer Paso----------------------------------- */
     // Reservar espacio de memoria
-    // void* RAM = reservar_espacio_de_memoria();
+    reservar_espacio_de_memoria();
+
+    iniciar_segmentacion();
+
+    printf("Cantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+
+    // testear_asignar_y_liberar_segmentacion();
+
+
+    liberar_espacio_de_memoria();
+    /* -----------------------Fin Primer Paso--------------------------------- */
 
     // conexion = crear_conexion((char*)config_get_string_value(config,"IP"),(char*)config_get_string_value(config,"PUERTO"));
     
@@ -77,6 +141,7 @@ int main(int argc, char ** argv){
     /* -------------------------Segundo Paso----------------------------------- */
     // Crear el mapa
 
+    /* -----------------------Fin Segundo Paso-------------------------------- */
 
     /* -------------------------Tercer Paso----------------------------------- */
     // int i;
@@ -88,18 +153,6 @@ int main(int argc, char ** argv){
     // Iniciar Servidor
     int server_fd = iniciar_servidor(logger,config);
 
-    // void iterator_test(char* value)
-    // {
-    //     char* string = strtok(value,"-");
-
-    //     while(string != NULL)
-    //     {
-    //         log_info(logger,string);
-    //         string = strtok(NULL,"-");
-    //     }
-    //     // printf("%s\n", value);
-    // };
-
 
     // Continuara
     int cod_op = MENSAJE;
@@ -108,6 +161,8 @@ int main(int argc, char ** argv){
     {
         // Bloqueamos al servidor hasta que reciba algun connect
         int cliente_fd = esperar_cliente(server_fd,logger);
+
+        // Crear el hilo aca con el cliente que acaba de llegar
         cod_op = recibir_operacion(cliente_fd);
 
 
@@ -143,6 +198,7 @@ int main(int argc, char ** argv){
 			// list_destroy(lista);
             list_clean_and_destroy_elements(tareas, (void*) iterator_destroy_tarea);
 			list_destroy(tareas);
+            // liberar_espacio_de_memoria(); // BORRAR ESTOOO!
             break;
 		case INICIAR_TRIPULANTE:
             log_info(logger,"Un tripulante se ha iniciado");
@@ -177,12 +233,137 @@ int main(int argc, char ** argv){
     // list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
     // list_iterate(lista, (void*) iterator_destroy);
     list_destroy(lista);
+    /* -----------------------Fin Tercer Paso-------------------------------- */
 
     
     // terminamos el proceso, eliminamos todo
-    // free(RAM); 
+    free(MEMORIA); 
     terminar_miramhq(logger,config);
+
 }
+
+
+
+
+
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*FUNCIONES*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+
+
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* ----------------------Administrar Memoria-------------------------- */
+
+void reservar_espacio_de_memoria()
+{
+
+    MEMORIA = (void*) malloc (config_get_int_value(config,"TAMANIO_MEMORIA"));
+
+};
+
+void liberar_espacio_de_memoria()
+{
+    list_clean_and_destroy_elements(admin_segmentacion->segmentos_libres, (void*) iterator_destroy);   
+    list_destroy(admin_segmentacion->segmentos_libres);
+    free(admin_segmentacion);
+
+    free(MEMORIA);
+};
+
+/* --------------------Fin Administrar Memoria------------------------ */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* --------------------------Segmentacion----------------------------- */
+
+void iniciar_segmentacion()
+{
+    admin_segmentacion = malloc(sizeof(administrador_de_segmentacion));
+    t_list* segmentos_libre = list_create();
+    t_segmento_libre* segmento = malloc(sizeof(t_segmento_libre));
+
+    segmento->inicio = (uint32_t) 0;
+    segmento->fin = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
+
+    list_add(segmentos_libre,segmento);
+    admin_segmentacion->bytes_libres = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
+    admin_segmentacion->segmentos_libres = segmentos_libre;
+};
+
+
+void asignar_segmento(uint32_t bytes_ocupados)
+{
+    t_segmento_libre* segmento = buscar_segmento_libre(bytes_ocupados);
+
+
+    free(segmento);
+};
+
+t_segmento_libre* buscar_segmento_libre(uint32_t bytes_ocupados)
+{
+    t_list_iterator* list_iterator = list_iterator_create(admin_segmentacion->segmentos_libres);
+    bool encontrado = false;
+
+    t_segmento_libre* segmento = malloc(sizeof(t_segmento_libre));
+
+    while(!encontrado && list_iterator_has_next(list_iterator))
+    {
+        segmento = (t_segmento_libre*) list_iterator_next(list_iterator);
+        int diferencia = (segmento->fin - segmento->inicio);
+
+        if (bytes_ocupados <= diferencia)
+        {
+            if (bytes_ocupados < diferencia)
+            {
+                t_segmento_libre* segmento_nuevo = malloc(sizeof(t_segmento_libre));
+                segmento_nuevo->inicio = segmento->inicio+bytes_ocupados;
+                segmento_nuevo->fin = segmento->fin;
+                list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_nuevo);
+                // list_replace_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_nuevo,iterator_destroy);
+            }else
+            {
+                list_remove_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,iterator_destroy);
+            }
+            segmento->fin = segmento->inicio + bytes_ocupados; 
+            encontrado = true;
+        }
+        
+        // free(segmento);
+    }
+
+    if (encontrado)
+    {
+        return segmento;
+    }
+    else{
+        log_info(logger,"No hay espacio para colocar esta cantidad de bytes, te recomendaria compactar");
+        return NULL;
+    }
+}
+
+
+void liberar_segmento(t_segmento_libre* segmento)
+{
+    list_add(admin_segmentacion->segmentos_libres, segmento);
+    list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
+}
+
+
+/* ------------------------Fin Segmentacion--------------------------- */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* -----------Creaciones de Estructuras administrativas--------------- */
+
+/* -------------Creacion de Patota--------------- */
 
 void crear_patota(int pid,t_list* lista)
 {
@@ -192,17 +373,23 @@ void crear_patota(int pid,t_list* lista)
 
     // t_list* lista = recibir_paquete(cliente_fd);
 
-    t_list* tareas = crear_tareas(lista);
+    // t_list* tareas = crear_tareas(lista);  EN ESTE MOMENTO NO ESTA SIENDO USADA DESCOMENTAR CUANDO SE NECESITE
     // list_iterate(tareas, (void*) iterator);
 
     
     // list_clean_and_destroy_elements(tareas, (void*) iterator_destroy);   
 };
 
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* -----------Creacion de tareas--------------- */
+
 t_list* crear_tareas(t_list* lista)
 {
-    t_list* tareas = (t_tarea*) list_create();
-    t_list_iterator* list_iterator = (char*) list_iterator_create(lista);
+    // t_list* tareas = (t_tarea*) list_create();  initialization from incompatible pointer
+    t_list* tareas = list_create();
+    // t_list_iterator* list_iterator = (char*) list_iterator_create(lista);  idem tareas
+    t_list_iterator* list_iterator = list_iterator_create(lista);
     // char** substrings;
 
     while(list_iterator_has_next(list_iterator))
@@ -230,10 +417,11 @@ t_list* crear_tareas(t_list* lista)
         tarea->tiempo = (uint32_t) atoi(substrings[3]);
 
         list_add(tareas,tarea);
-        // string_iterate_lines(substrings, iterator_lines_split);
-        string_iterate_lines(substrings, free);
+        string_iterate_lines(substrings, iterator_lines_free);
+        // string_iterate_lines(substrings, free);
         free(substrings);
-        string_iterate_lines(linea_tarea, free);
+        string_iterate_lines(linea_tarea, iterator_lines_free);
+        // string_iterate_lines(linea_tarea, free);
         free(linea_tarea);
     }
 
@@ -241,6 +429,16 @@ t_list* crear_tareas(t_list* lista)
 
     return tareas;
 };
+
+
+/* ---------Fin Creaciones de Estructuras administrativas------------- */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+
+/* --------------------------Recibir---------------------------------- */
 
 uint32_t recibir_catidad_de_tripulantes(t_list* lista)
 {
@@ -250,8 +448,9 @@ uint32_t recibir_catidad_de_tripulantes(t_list* lista)
     // log_info(logger,(uint32_t) t_pcb->pid);
     free(pid);
     return cant_de_tripulantes;
-}
+};
 
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
 void* recibir_patota(int socket_cliente, t_log* logger,int* direccion_size)
 {
@@ -261,34 +460,56 @@ void* recibir_patota(int socket_cliente, t_log* logger,int* direccion_size)
 	log_info(logger, "Me llego el mensaje %s", buffer);
 	free(buffer);
     return NULL;
+};
+
+
+/* ------------------------Fin Recibir-------------------------------- */
+
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* ------------------Finalizacion de proceso-------------------------- */
+
+void terminar_miramhq(t_log* logger, t_config* config)
+{
+	log_destroy(logger);
+	// liberar_conexion(conexion);
+	config_destroy(config);
 }
 
-void* reservar_espacio_de_memoria()
-{
+/* ----------------Fin de finalizacion de proceso--------------------- */
 
-    return (void*) malloc (config_get_int_value(config,"TAMANIO_MEMORIA"));
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
-};
+/* -------------------------Testeos----------------------------------- */
 
 void validar_malloc()
 {   
     // Como no se puede validar (no existe una funcion) metemos un valor
     // se debe ejecutar con ./vexec (valgrid) para saber si se produce un robo de memoria por derecha
     int bytes = config_get_int_value(config,"TAMANIO_MEMORIA"); //modificar a 7 el VALOR de TAMAIO_MEMORIA
-    void* RAM = reservar_espacio_de_memoria(config);
-    strcpy(RAM, "abeef");  // se carga la ram  con 6 + '\0' bytes de datos
+    reservar_espacio_de_memoria(config);
+    strcpy(MEMORIA, "abeef");  // se carga la ram  con 6 + '\0' bytes de datos
     // Decomentar para que verlo romper
     // strcpy(RAM, "abeefe");  // se carga la ram  con 7 + '\0' bytes de datos - este lo hace romper
     printf("bytes de la ram %d\n",bytes);
-    printf("bytes de lo que esta cargado dentro de la ram %d\n",strlen(RAM)+1);
-    free(RAM);
+    printf("bytes de lo que esta cargado dentro de la ram %d\n",strlen(MEMORIA)+1);
+    free(MEMORIA);
 };
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
 void testear_biblioteca_compartida()
 {
     // se testea que haya vinculado el logger y funciona el shared
     log_info(logger, "Soy el Mi-RAMar en HD! %s", mi_funcion_compartida());
 }
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
 void testear_enviar_mensaje(int conexion)
 {
@@ -302,14 +523,42 @@ void testear_enviar_mensaje(int conexion)
     enviar_mensaje(mensaje,conexion);
     // liberar_conexion(conexion);
 }
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
-
-void terminar_miramhq(t_log* logger, t_config* config)
+void testear_asignar_y_liberar_segmentacion()
 {
-	log_destroy(logger);
-	// liberar_conexion(conexion);
-	config_destroy(config);
+    t_segmento_libre* segmento48,*segmento20,*segmento32;
+    segmento48 = buscar_segmento_libre(48);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    log_info(logger,"El inicio del segmento 48 es %d y el fin %d\n", segmento48->inicio,segmento48->fin);
+    // printf("El inicio del segmento 48 es %d y el fin %d\n",segmento48->inicio,segmento48->fin);
+
+ 
+    segmento20 = buscar_segmento_libre(20);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    log_info(logger,"El inicio del segmento 20 es %d y el fin %d\n", segmento20->inicio,segmento20->fin);
+    // printf("El inicio del segmento 20 es %d y el fin %d\n",segmento20->inicio,segmento20->fin);
+
+    segmento32 = buscar_segmento_libre(32);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    log_info(logger,"El inicio del segmento 32 es %d y el fin %d\n", segmento32->inicio,segmento32->fin);
+    // printf("El inicio del segmento 32 es %d y el fin %d\n",segmento32->inicio,segmento32->fin);
+
+    liberar_segmento(segmento20);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    // printf("El inicio nuevo es %d y el fin %d\n",segmento20->inicio,segmento20->fin);
+
+    free(segmento48);
+    free(segmento20);
+    free(segmento32);
 }
+
+
+/* -------------------------Fin Testeos------------------------------- */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
 void atender_cliente(int cliente_fd)
 {
@@ -338,6 +587,9 @@ void atender_cliente(int cliente_fd)
     // }
 }
 
+/* ------------------------------------------------------------------- */
+/* --------------------------Archivos--------------------------------- */
+/* ------------------------------------------------------------------- */
 
 void leer_archivo(char* path)
 {

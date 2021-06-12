@@ -233,9 +233,9 @@ t_log* iniciar_logger(char* name)
 	char* path = string_new();
 	char* name_mayus = string_new();
 	
-	string_append(&path, "./cfg/");
-	string_append(&path, name);
-	string_append(&path, ".log");
+	string_append(&path,"cfg/");
+	string_append(&path,name);
+	string_append(&path,".log");
 
 	string_append(&name_mayus, name);
 	string_to_upper(name_mayus);

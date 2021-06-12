@@ -23,7 +23,9 @@
 			"config.h": "c",
 			"string.h": "c",
 			"type_traits": "c",
-			"pthread.h": "c"
+			"pthread.h": "c",
+			"stdio.h": "c",
+			"tests.h": "c"
 		}
 	}
 }
