@@ -1,5 +1,10 @@
 #include "discordiador.h"
 
+t_list * patotas;
+typedef struct datosPatotas{
+	int pid;
+}t_patota;
+
 
 int main(int argc, char ** argv){
 
@@ -73,7 +78,6 @@ void leer_consola(t_log* logger)
 {
 	char* leido;
 
-	//El primero te lo dejo de yapa
 	leido = readline(">");
 
 	while (strcmp(leido,"") != 0)
@@ -116,7 +120,7 @@ void enviar_msj(char* mensaje, int socket_cliente,t_log* logger)
 	int bytes = paquete->buffer->size + 2*sizeof(int);
 
 	//void* a_enviar = serializar_paquete(paquete, bytes);
-		void * magic = malloc(bytes);
+	void * magic = malloc(bytes);
 	int desplazamiento = 0;
 
 	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));

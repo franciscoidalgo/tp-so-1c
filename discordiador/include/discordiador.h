@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include "shared_utils.h"
 #include "tests.h"
+#include <commons/collections/list.h>
 
 
 // t_log* iniciar_logger(void);
