@@ -1,9 +1,48 @@
 #include "discordiador.h"
+bool band;
+
+void integranteBorrado(int signum){
+	puts("procesosHijos = procesosHijos - 1\n");
+	band = true;
+}
 
 t_list * patotas;
 typedef struct datosPatotas{
 	int pid;
+	char *nom
 }t_patota;
+
+void eliminarIntegrante(void * integrante){
+	t_patota* patota = integrante;
+	if(0 != kill(patota->pid, 0)){
+		patota_destroy(integrante);
+	}
+}
+
+void patota_destroy(t_patota* self){
+	printf("Eliminado %s, con el PID: %d\n", self->pid);
+	//free(self->nom);
+	free(self);
+}
+void ejecutarPatota(int pidIntegrante){
+	printf("Creado un wachin nuevo--> Documento: %d \n", pidIntegrante);
+	list_add(patotas, chld_create("Sospechoso", pidIntegrante));
+	sleep(4);
+}
+
+t_patota * chld_create(char* name, int pid){
+	t_patota *integrante = malloc(sizeof(t_patota));
+	integrante->nombre = strdup(name);
+	integrante->pid = pid;
+	return integrante;
+}
+
+void ejecutarIntegranteDeLaPatota(int pid){
+	while(pid == 0){
+		printf("PID: %d, El integrante ejecutado es: %d \n", getpid(), getppid());
+		sleep(2);
+	}
+}
 
 
 int main(int argc, char ** argv){
@@ -59,6 +98,24 @@ log_info(logger,valor);
 
 	// paquete(conexion);
 
+	signal(SIGCHLD, integranteBorrado);
+
+	//lista de patotas
+	patotas = list_create();
+	band = false;
+
+	int pidIntegrante = 0;
+
+	for(int i = 0; i < 10; i++){
+		pidIntegrante = fork();
+		ejecutarIntegranteDeLaPatota(pidIntegrante);
+		ejecutarPatota(pidIntegrante);
+	}
+
+	while(pidIntegrante != 0){
+		sleep(10);
+	}
+
 	terminar_programa(conexion, logger, config);
 }
 
@@ -74,8 +131,7 @@ log_info(logger,valor);
 // 	return config_create("cfg/discordiador.config");
 // }
 
-void leer_consola(t_log* logger)
-{
+void leer_consola(t_log* logger) {
 	char* leido;
 
 	leido = readline(">");
@@ -107,8 +163,7 @@ void leer_consola(t_log* logger)
 // 	config_destroy(config);
 // }
 
-void enviar_msj(char* mensaje, int socket_cliente,t_log* logger)
-{
+void enviar_msj(char* mensaje, int socket_cliente,t_log* logger) {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 
 	paquete->codigo_operacion = MENSAJE;
