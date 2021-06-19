@@ -45,8 +45,6 @@ void iterator(char* value)
 			lista = recibir_paquete(cliente_fd);
 			log_info(logger,"Me llegaron los siguientes valores:");
 			list_iterate(lista, (void*) iterator);
-
-			log_info(logger, string_itoa(TAREAS_GLOBAL->pid));
 			break;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");

@@ -15,7 +15,7 @@ int iniciar_servidor(t_log* logger)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
-    getaddrinfo("127.0.0.1", "4444", &hints, &servinfo);
+    getaddrinfo("127.0.0.1", "4001", &hints, &servinfo);
 
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
@@ -106,7 +106,6 @@ t_list* recibir_paquete(int socket_cliente)
 	}
 	free(buffer);
 	return valores;
-	return NULL;
 }
 
 
