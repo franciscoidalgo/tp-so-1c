@@ -25,7 +25,7 @@ typedef struct
     uint32_t fin;
 
 }__attribute__((packed))
-t_segmento_libre;
+t_segmento;
 
 
 typedef struct
@@ -36,11 +36,22 @@ typedef struct
 administrador_de_segmentacion;
 
 
+typedef struct
+{
+    t_segmento* pcb_byte_inicial;
+    t_list* tcb;
+    t_segmento* tareas_byte_inicial;
+}__attribute__((packed))
+t_tabla_de_segmentos;
+
+
+
 // Orden de listas
-bool orden_lista_admin_segmentacion(t_segmento_libre* segmento_libre_A, t_segmento_libre* segmento_libreB);
+bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB);
 
 // administrador_de_segmentacion* admin_segmentacion;
 
+/* -------------------------MEMORIA----------------------------- */
 // Memoria
 void reservar_espacio_de_memoria();
 void liberar_espacio_de_memoria();
@@ -48,18 +59,24 @@ void liberar_espacio_de_memoria();
 // Segmentacion
 void iniciar_segmentacion();
 void asignar_segmento(uint32_t);
-t_segmento_libre* buscar_segmento_libre(uint32_t bytes_ocupados);
-void liberar_segmento(t_segmento_libre* segmento);
+t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados);
+void liberar_segmento(t_segmento* segmento);
 
+// Tarea
+void guardar_tarea_segmentacion(t_tarea* tarea);
+
+/* -----------------------Fin MEMORIA--------------------------- */
 
 // void* reservar_espacio_de_memoria(t_config*);
 
 // Creaciones de Estructuras administrativas
 void crear_patota(int pid,t_list* lista);
 t_list* crear_tareas(t_list* lista);
+t_list* crear_tcbs(t_list* tripulantes_ubicados,int cant_tripulantes);
 
 // Recibir
 uint32_t recibir_catidad_de_tripulantes(t_list* lista);
+t_list* recibir_posiciones_de_los_tripulantes(t_list* lista);
 
 
 

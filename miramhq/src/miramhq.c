@@ -27,6 +27,10 @@ void iterator_destroy(char* value)
     free(value);
 };
 
+void iterator_destroy_tcb(t_tcb* tcb)
+{
+    free(tcb);
+};
 void iterator_destroy_tarea(t_tarea* tarea)
 {
     free(tarea->accion);
@@ -36,6 +40,26 @@ void iterator_destroy_tarea(t_tarea* tarea)
 void iterator_lines_free(char* string)
 {
     free(string);
+};
+
+void iterator_segmentos_free(t_segmento* segmento)
+{
+    free(segmento);
+};
+
+void iterator_posicion(char* pos)
+{
+    log_info(logger,"Posicion X|Y: %s", pos);
+};
+
+void iterator_tcb(t_tcb* tcb)
+{
+    log_info(logger,"\tTID: %d", tcb->tid);
+    log_info(logger,"Estado: %c", tcb->estado);
+    log_info(logger,"Posicion X: %d", tcb->posicion_x);
+    log_info(logger,"Posicion Y: %d", tcb->posicion_y);
+    log_info(logger,"Proxima Instruccion: %d", tcb->proxima_instruccion);
+    log_info(logger,"PCB: %d", tcb->puntero_pcb);
 };
 
 void iterator_tarea(t_tarea* tarea)
@@ -49,13 +73,13 @@ void iterator_tarea(t_tarea* tarea)
     // free(numero);
 };
 
-void iterator_segmento_libre(t_segmento_libre* segmento_libre)
+void iterator_segmento(t_segmento* segmento_libre)
 {
     log_info(logger,"Inicio: %d", segmento_libre->inicio);
     log_info(logger,"Fin: %d", segmento_libre->fin);
 };
 
-bool orden_lista_admin_segmentacion(t_segmento_libre* segmento_libre_A, t_segmento_libre* segmento_libreB)
+bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB)
 {
     return segmento_libre_A->inicio < segmento_libreB->inicio;
 }
@@ -122,8 +146,9 @@ int main(int argc, char ** argv){
 
     iniciar_segmentacion();
 
-    printf("Cantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
-    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
+    printf("\n");
 
     // testear_asignar_y_liberar_segmentacion();
 
@@ -188,6 +213,12 @@ int main(int argc, char ** argv){
 
             int cant_tripulantes = recibir_catidad_de_tripulantes(lista);
             log_info(logger," La cant de tripulantes son %d\n",cant_tripulantes);
+
+            t_list* tripulantes_ubicados = recibir_posiciones_de_los_tripulantes(lista);
+            t_list* tcbs = crear_tcbs(tripulantes_ubicados,cant_tripulantes);
+
+            list_iterate(tcbs, (void*) iterator_tcb);
+
             t_list* tareas;
             // crear_patota(5,lista);
             tareas = crear_tareas(lista);
@@ -196,6 +227,10 @@ int main(int argc, char ** argv){
 
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);   
 			// list_destroy(lista);
+            // list_clean_and_destroy_elements(tripulantes_ubicados, (void*) iterator_destroy_tarea);
+			// list_destroy(tripulantes_ubicados);
+            list_clean_and_destroy_elements(tcbs, (void*) iterator_destroy_tcb);
+			list_destroy(tcbs);
             list_clean_and_destroy_elements(tareas, (void*) iterator_destroy_tarea);
 			list_destroy(tareas);
             // liberar_espacio_de_memoria(); // BORRAR ESTOOO!
@@ -269,7 +304,9 @@ void reservar_espacio_de_memoria()
 
 void liberar_espacio_de_memoria()
 {
-    list_clean_and_destroy_elements(admin_segmentacion->segmentos_libres, (void*) iterator_destroy);   
+    // list_clean_and_destroy_elements(admin_segmentacion->segmentos_libres, (void*) iterator_destroy);
+    list_iterate(admin_segmentacion->segmentos_libres,iterator_segmentos_free);
+    // free(list_remove(admin_segmentacion->segmentos_libres,2));
     list_destroy(admin_segmentacion->segmentos_libres);
     free(admin_segmentacion);
 
@@ -286,12 +323,14 @@ void iniciar_segmentacion()
 {
     admin_segmentacion = malloc(sizeof(administrador_de_segmentacion));
     t_list* segmentos_libre = list_create();
-    t_segmento_libre* segmento = malloc(sizeof(t_segmento_libre));
+    // admin_segmentacion->segmentos_libres = list_create();
+    t_segmento* segmento = malloc(sizeof(t_segmento));
 
     segmento->inicio = (uint32_t) 0;
     segmento->fin = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
 
     list_add(segmentos_libre,segmento);
+    // list_add(admin_segmentacion->segmentos_libres,segmento);
     admin_segmentacion->bytes_libres = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
     admin_segmentacion->segmentos_libres = segmentos_libre;
 };
@@ -299,47 +338,59 @@ void iniciar_segmentacion()
 
 void asignar_segmento(uint32_t bytes_ocupados)
 {
-    t_segmento_libre* segmento = buscar_segmento_libre(bytes_ocupados);
+    t_segmento* segmento = buscar_segmento_libre(bytes_ocupados);
 
 
     free(segmento);
 };
 
-t_segmento_libre* buscar_segmento_libre(uint32_t bytes_ocupados)
+t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados)
 {
     t_list_iterator* list_iterator = list_iterator_create(admin_segmentacion->segmentos_libres);
     bool encontrado = false;
 
-    t_segmento_libre* segmento = malloc(sizeof(t_segmento_libre));
+    t_segmento* segmento_libre,* segmento_ocupado;
 
     while(!encontrado && list_iterator_has_next(list_iterator))
     {
-        segmento = (t_segmento_libre*) list_iterator_next(list_iterator);
-        int diferencia = (segmento->fin - segmento->inicio);
+        segmento_libre = (t_segmento*) list_iterator_next(list_iterator);
+        int diferencia = (segmento_libre->fin - segmento_libre->inicio);
 
         if (bytes_ocupados <= diferencia)
         {
             if (bytes_ocupados < diferencia)
             {
-                t_segmento_libre* segmento_nuevo = malloc(sizeof(t_segmento_libre));
-                segmento_nuevo->inicio = segmento->inicio+bytes_ocupados;
-                segmento_nuevo->fin = segmento->fin;
-                list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_nuevo);
-                // list_replace_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_nuevo,iterator_destroy);
+                segmento_ocupado = malloc(sizeof(t_segmento));
+                segmento_ocupado->inicio = (uint32_t) segmento_libre->inicio;
+                segmento_ocupado->fin = (uint32_t) segmento_libre->inicio + (uint32_t) bytes_ocupados;
+
+                segmento_libre->inicio += bytes_ocupados;
+                
+                admin_segmentacion->bytes_libres -= bytes_ocupados;
+                
+                // list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado);
+                // t_segmento* segmento_a_borrar = list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado);
+                // list_replace_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado,iterator_destroy);
+                // free(segmento_a_borrar);
+                // free(segmento_ocupado);
             }else
             {
-                list_remove_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,iterator_destroy);
+                segmento_ocupado = list_remove(admin_segmentacion->segmentos_libres,list_iterator->index);
+                // list_remove_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,iterator_segmentos_free);
             }
-            segmento->fin = segmento->inicio + bytes_ocupados; 
+            // segmento->fin = segmento->inicio + bytes_ocupados; 
             encontrado = true;
         }
         
         // free(segmento);
     }
 
+    // string_iterate_lines(list_iterator, iterator_segmentos_free);
+    free(list_iterator);
+
     if (encontrado)
     {
-        return segmento;
+        return segmento_ocupado;
     }
     else{
         log_info(logger,"No hay espacio para colocar esta cantidad de bytes, te recomendaria compactar");
@@ -348,14 +399,28 @@ t_segmento_libre* buscar_segmento_libre(uint32_t bytes_ocupados)
 }
 
 
-void liberar_segmento(t_segmento_libre* segmento)
+void liberar_segmento(t_segmento* segmento)
 {
+    admin_segmentacion->bytes_libres += segmento->fin - segmento->inicio; 
     list_add(admin_segmentacion->segmentos_libres, segmento);
+    // list_add_sorted(admin_segmentacion->segmentos_libres, segmento,orden_lista_admin_segmentacion);
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
 }
 
 
 /* ------------------------Fin Segmentacion--------------------------- */
+
+/* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
+
+/* ------------------------------Tarea-------------------------------- */
+
+void guardar_tarea_segmentacion(t_tarea* tarea)
+{
+    t_segmento* tarea_segmento = buscar_segmento_libre(sizeof(t_tarea)+strlen(tarea->accion));
+
+}
+
+/* ------------------------------Tarea-------------------------------- */
 
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
@@ -430,6 +495,52 @@ t_list* crear_tareas(t_list* lista)
     return tareas;
 };
 
+/* -----------Creacion de tcbs--------------- */
+
+t_list* crear_tcbs(t_list* tripulantes_ubicados,int cant_tripulantes)
+{
+    t_list* lista_tcbs = list_create();
+    for (int i = 0; i < cant_tripulantes; i++)
+    {
+        t_tcb* tcb = malloc(sizeof(t_tcb));
+        tcb->tid = (uint32_t) i;
+        tcb->estado = (char) 'N';
+        tcb->posicion_x = (uint32_t) 0;
+        tcb->posicion_y = (uint32_t) 0;
+        tcb->proxima_instruccion = (uint32_t) 0;
+        tcb->puntero_pcb = (uint32_t) cant_tripulantes;
+        // log_info(logger,(uint32_t) tcb->tid);
+        list_add(lista_tcbs,(t_tcb*) tcb);
+    }
+    
+    char* posiciones_del_tripulate;
+
+    // list_iterate(tripulantes_ubicados,iterator_posicion);
+    t_list_iterator* list_iterator = list_iterator_create(tripulantes_ubicados);
+
+
+    while(list_iterator_has_next(list_iterator))
+    {
+        posiciones_del_tripulate = (char*) list_iterator_next(list_iterator);
+        char** posiciones = string_split(posiciones_del_tripulate,"|");
+
+        t_tcb* tcb_a_ubicar;
+        tcb_a_ubicar = list_get(lista_tcbs,list_iterator->index);
+        tcb_a_ubicar->posicion_x =  (uint32_t) atoi(posiciones[0]);
+        tcb_a_ubicar->posicion_y = (uint32_t) atoi(posiciones[1]);
+
+        // prinf("%d \n",posiciones[0]);
+        // log_info(logger,posiciones[0]);
+        string_iterate_lines(posiciones, iterator_lines_free);
+        free(posiciones);
+    }
+    free(list_iterator);
+
+    list_clean_and_destroy_elements(tripulantes_ubicados, (void*) iterator_lines_free);   
+    free(tripulantes_ubicados);
+
+    return lista_tcbs;
+}
 
 /* ---------Fin Creaciones de Estructuras administrativas------------- */
 
@@ -449,6 +560,44 @@ uint32_t recibir_catidad_de_tripulantes(t_list* lista)
     free(pid);
     return cant_de_tripulantes;
 };
+
+
+t_list* recibir_posiciones_de_los_tripulantes(t_list* lista)
+{
+    char* linea = list_remove(lista,list_size(lista)-1);
+    log_info(logger,linea);
+
+    char** posiciones_por_tripulate = string_split(linea,";");
+    // char** posiciones = string_split(posiciones_por_tripulate,"|");
+    
+
+    t_list* tripulantes_ubicados = list_create();
+    for (int i = 0; posiciones_por_tripulate[i] != NULL; i++)
+    {
+        // log_info(logger,posiciones_por_tripulate[i]);
+        list_add(tripulantes_ubicados,(uint32_t) posiciones_por_tripulate[i]);
+    }
+    
+    // t_list_iterator* list_iterator = list_iterator_create(posiciones_por_tripulate);
+    // string_iterate_lines(posiciones_por_tripulate, iterator_posiciones);
+    
+    // t_list* lista_de_ubicados;
+    // while(list_iterator_has_next(list_iterator))
+    // {
+    //     prinf("entre en el while\n");
+    // }
+
+    // string_iterate_lines(posiciones, iterator_lines_free);
+    // free(posiciones);
+    // string_iterate_lines(posiciones_por_tripulate, iterator_lines_free);
+    free(posiciones_por_tripulate);
+
+
+    free(linea);
+    // list_iterator_destroy(list_iterator);
+    return tripulantes_ubicados;
+};
+
 
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
@@ -527,30 +676,43 @@ void testear_enviar_mensaje(int conexion)
 
 void testear_asignar_y_liberar_segmentacion()
 {
-    t_segmento_libre* segmento48,*segmento20,*segmento32;
-    segmento48 = buscar_segmento_libre(48);
-    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
-    log_info(logger,"El inicio del segmento 48 es %d y el fin %d\n", segmento48->inicio,segmento48->fin);
-    // printf("El inicio del segmento 48 es %d y el fin %d\n",segmento48->inicio,segmento48->fin);
+    t_segmento* segmento48,*segmento20,*segmento32;
+    // segmento48 = buscar_segmento_libre(48);
+    // printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
+    // log_info(logger,"El inicio del segmento 48 es %d y el fin %d\n", segmento48->inicio,segmento48->fin);
+    // // // printf("El inicio del segmento 48 es %d y el fin %d\n",segmento48->inicio,segmento48->fin);
+    // printf("\n");
 
  
     segmento20 = buscar_segmento_libre(20);
-    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
-    log_info(logger,"El inicio del segmento 20 es %d y el fin %d\n", segmento20->inicio,segmento20->fin);
+    printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
+    log_info(logger,"El inicio del segmento 20 es %d y el fin %d\n", segmento20->inicio, segmento20->fin);
     // printf("El inicio del segmento 20 es %d y el fin %d\n",segmento20->inicio,segmento20->fin);
+    printf("\n");
 
     segmento32 = buscar_segmento_libre(32);
-    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
     log_info(logger,"El inicio del segmento 32 es %d y el fin %d\n", segmento32->inicio,segmento32->fin);
     // printf("El inicio del segmento 32 es %d y el fin %d\n",segmento32->inicio,segmento32->fin);
+    printf("\n");
 
     liberar_segmento(segmento20);
-    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento_libre);
+    printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
     // printf("El inicio nuevo es %d y el fin %d\n",segmento20->inicio,segmento20->fin);
+    printf("\n");
 
-    free(segmento48);
-    free(segmento20);
-    free(segmento32);
+    liberar_segmento(segmento32);
+    printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
+    list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
+    printf("\n");
+
+    // free(segmento48);
+    // free(segmento32);
+    // free(segmento20);
 }
 
 
