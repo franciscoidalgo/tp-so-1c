@@ -38,7 +38,7 @@ void iterator(char* value)
             // char* buffer;
 			recibir_mensaje(cliente_fd,logger,&size);
             // void* buffer = recibir_buffer(&size, cliente_fd);
-            // log_info(logger, "Me llego el mensaje %p", buffer);
+            log_info(logger, "Me llego el mensaje %p", buffer);
             // free(buffer);
 			break;
 		case PAQUETE:

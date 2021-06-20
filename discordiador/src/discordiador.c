@@ -17,57 +17,103 @@ inicializar_variables();
 // doWait(semaforo,0);
 
 //int conexion = crear_conexion(IP,PUERTO);
-int conexion;
+	int conexion;
 while(1){
-conexion = crear_conexion(IP,PUERTO);
 	char* linea_consola = readline(">>");
+
 	char** array_parametros = string_split(linea_consola," ");
 	free(linea_consola);
-
-int accion = dictionary_get(dic_datos_consola,array_parametros[0]);
-
-switch(accion){
+switch(get_diccionario_accion(array_parametros[0])){
 case INICIAR_PATOTA:
+	conexion = crear_conexion(IP,PUERTO);
 	enviar_tareas_a_RAM(conexion,(char*) array_parametros);
 	recepcionar_patota(array_parametros);
 	string_iterate_lines(array_parametros, iterator_lines_free);
 	free(array_parametros);
+	liberar_conexion(conexion);
 	break;
 case INICIAR_PLANIFICACION:
-	busqueda_de_tareas_por_patota();
+	//busqueda_de_tareas_por_patota();
+	list_iterate(NEW,iterator_buscar_tarea);
+	list_iterate(READY,iterator_volver_join);
 	break;
-case LISTAR_TRIPULNATE:
-
+case LISTAR_TRIPULANTE:
+	list_iterate(NEW, (void*) iterator);
+	list_iterate(READY, (void*) iterator);
 	break;
 case EXPULSAR_TRIPULANTE:
-
+	expulsar_tripu(NEW,atoi(array_parametros[1]));
+	expulsar_tripu(READY,atoi(array_parametros[1]));
+	//enviar_aviso_a_MI-RAM
 	break;
 case OBTENER_BITACORA:
-
 	break;
 default:
+	log_info(logger,"accion no disponible, pifiaste en el tipeo hermano");
 	break;
 }
 }
-list_iterate(NEW, (void*) iterator);
 
-busqueda_de_tareas_por_patota();
-
-list_iterate(READY, (void*) iterator);
-
-terminar_variables_globales(conexion);
+log_destroy(logger);
+	
+//terminar_variables_globales(conexion);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void iterator(t_tcb* t)
 {
 	 log_info(logger,"TID:%d POSX:%d POSY:%d PCB:%d ESTADO:%c", t->tid,t->posicion_x,t->posicion_y,t->puntero_pcb,t->estado);
 }
 
+void iterator_buscar_tarea(t_tcb* tripu)
+{
+	 	pthread_t hilo[tripu->tid];
+	if (0 != pthread_create(&hilo[tripu->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripu)))
+	{
+		log_info(logger,"Tripulante %d no pudo ejecutar",tripu->tid);
+	}
+}
+
+void iterator_volver_join(t_tcb* tripu)
+{	//EL SEND SERA BLOQUEANTE??
+	pthread_mutex_lock(&mutexSalirDeNEW);
+	pthread_t hilo[tripu->tid];
+	pthread_join(hilo[tripu->tid], NULL);
+	pthread_mutex_unlock(&mutexSalirDeNEW);
+}
+	 
 void terminar_variables_globales(int socket){
 	log_destroy(logger);
 	liberar_conexion(socket);
 	//config_destroy(config);
 }
+
+bool es_tripu_de_id(int id,t_tcb* tripulante){
+    return tripulante->tid == id;
+}
+
+void expulsar_tripu(t_list* lista, int id_tripu){
+//inner_function
+	bool _el_tripulante_que_limpio(void *elemento){
+		return es_tripu_de_id(id_tripu,elemento);
+	}
+
+	t_tcb* tripulante = list_remove_by_condition(lista,_el_tripulante_que_limpio);
+		free(tripulante);
+}
+
+t_tcb* remover_tripu(t_list* lista, int id_tripu){
+//inner_function
+	bool _el_tripulante_que_limpio(void *elemento){
+		return es_tripu_de_id(id_tripu,elemento);
+	}
+
+	return list_remove_by_condition(lista,_el_tripulante_que_limpio);
+}
+
 
 void inicializar_variables(){
 logger = iniciar_logger("discordiador");
@@ -91,10 +137,14 @@ dictionary_put(dic_datos_consola,"INICIAR_PATOTA",INICIAR_PATOTA);
 dictionary_put(dic_datos_consola,"INICIAR_PLANIFICACION",INICIAR_PLANIFICACION);
 dictionary_put(dic_datos_consola,"PAUSAR_PLANIFICACION",PAUSAR_PLANIFICACION);
 dictionary_put(dic_datos_consola,"EXPULSAR_TRIPULANTE",EXPULSAR_TRIPULANTE);
-dictionary_put(dic_datos_consola,"LISTAR_TRIPULNATE",LISTAR_TRIPULNATE);
+dictionary_put(dic_datos_consola,"LISTAR_TRIPULANTE",LISTAR_TRIPULANTE);
 dictionary_put(dic_datos_consola,"OBTENER_BITACORA",OBTENER_BITACORA);
 }
 
+int get_diccionario_accion(char* accion){
+	if(dictionary_has_key(dic_datos_consola,accion)){ return dictionary_get(dic_datos_consola,accion);
+	}else{return (-1);}
+}
 void enviar_msj(char* mensaje, int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -141,19 +191,29 @@ t_tcb* crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t 
 }
 
 void buscar_tarea_a_RAM(void* tripu){
-	t_tcb* t = (t_tcb*) tripu;
-	t->estado='R';
-	log_info(logger,"Buscando tarea a MI-RAM soy tripulante %d de patota %d",t->tid,t->puntero_pcb);
-	sleep(2);
+
+	//no creo que la region critica contenga tantas variables
 	pthread_mutex_lock(&mutexSalirDeNEW);
-	 	list_add(READY,t);		
+	t_tcb* t = (t_tcb*) tripu;
+	log_info(logger,"Buscando tarea a MI-RAM soy tripulante %d de patota %d",t->tid,t->puntero_pcb);
+	//utilizar strcat
+	char* patota_tripulante = string_new();
+	string_append(&patota_tripulante,(string_itoa(t->puntero_pcb)));
+	string_append(&patota_tripulante,"-");
+	string_append(&patota_tripulante,(string_itoa(t->tid)));
+	int	socket_cliente = crear_conexion(IP,PUERTO);
+		enviar_msj(patota_tripulante,socket_cliente);
+		t_tcb* tripu_removido_de_NEW = remover_tripu(NEW,t->tid);
+		tripu_removido_de_NEW->estado='R';
+		list_add(READY,tripu_removido_de_NEW);	
+	liberar_conexion(socket_cliente);
+	free(patota_tripulante);
     pthread_mutex_unlock(&mutexSalirDeNEW);  
 }
 
 void enviar_tareas_a_RAM(int conexion,char** linea_consola){
 
-//"/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/tareasPatota5.txt"
-char* path = string_new();// = malloc(strlen("/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/"));
+char* path = string_new();
 string_append(&path,"/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/");
 string_append(&path,linea_consola[2]);
 
@@ -174,7 +234,6 @@ agregar_a_paquete(paquete,linea_consola[1],strlen(linea_consola[1])+1);
 while(fgets(cadena, 50, archivo) != NULL)
 {	
 	strcpy(palabra,cadena);
-	//log_info(logger,"%s",palabra);
 	agregar_a_paquete(paquete,palabra,strlen(palabra)+1);	
 }
 
@@ -190,45 +249,39 @@ agregar_a_paquete(paquete,posiciones_linea,strlen(posiciones_linea)+1);
 free(palabra);
 free(posiciones_linea);
 log_info(logger,"Enviando tareas a MI-RAM");
-sleep(2);
 enviar_paquete(paquete, conexion);
 fclose(archivo);
 }
 
-void recepcionar_patota(char** a){
+void recepcionar_patota(char** linea_consola){
  int posx, posy;
- for (uint32_t i = 1 ; i <= atoi(a[1]); i++){	
-	log_info(logger,"INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %d",i,atoi(a[1]));
+ for (uint32_t i = 1 ; i <= atoi(linea_consola[1]); i++){	
+	log_info(logger,"INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %d",i,atoi(linea_consola[1]));
 	posx = 0;
 	posy = 0;
 	char** posiciones;
 
-	if(a[i+2]!=NULL){
-		posiciones = string_split(a[i+2],"|");
+	if(linea_consola[i+2]!=NULL){//las posiciones comienzan desde el argumento 3 en adelante.
+		posiciones = string_split(linea_consola[i+2],"|");
 		posx = atoi(posiciones[0]);
 		posy = atoi(posiciones[1]);
 	}
 
-	list_add(NEW, crear_tripulante(atoi(a[1]), posx,  posy, i));
-	// string_iterate_lines(posiciones, free);
-    // free(posiciones);
+	list_add(NEW, crear_tripulante(atoi(linea_consola[1]), posx,  posy, i));
  }
 }
 
 void busqueda_de_tareas_por_patota(){//tendria que agregar como argumento el numero de patota y buscar en lista
-while (list_size(NEW)!= 0)
-{	
-	t_tcb* tripulante;// = malloc(sizeof(t_tcb));
-	tripulante = (t_tcb*) list_remove(NEW,0); // voy sacando de a uno los tripulantes
+int cantidad_de_tripulantes = list_size(NEW);
+t_tcb* tripulante;
 
-	//buscar_tarea_a_RAM((void*) tripulante);
+for (size_t i = 0; i <= cantidad_de_tripulantes; i++)
+{	
 	pthread_t hilo[tripulante->tid];
 	if (0 != pthread_create(&hilo[tripulante->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripulante)))
 	{
 		log_info(logger,"Tripulante %d no pudo ejecutar",tripulante->tid);
 	}
-	 
-    pthread_join(hilo[tripulante->tid], NULL);
 }
 }
 

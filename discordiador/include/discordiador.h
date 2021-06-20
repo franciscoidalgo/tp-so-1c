@@ -50,7 +50,7 @@ INICIAR_PATOTA,
 INICIAR_PLANIFICACION,
 PAUSAR_PLANIFICACION,
 EXPULSAR_TRIPULANTE,
-LISTAR_TRIPULNATE,
+LISTAR_TRIPULANTE,
 OBTENER_BITACORA,
 };
 
@@ -72,4 +72,10 @@ void enviar_tareas_a_RAM(int conexion,char** argv);
 void recepcionar_patota(char** argv); //agregar tripulantes a lista NEW
 void busqueda_de_tareas_por_patota();
 void iterator_lines_free(char* string);
+int get_diccionario_accion(char* accion);
+void iterator_buscar_tarea();
+void iterator_volver_join();
+bool es_tripu_de_id(int id,t_tcb* tripulante);
+void expulsar_tripu(t_list* lista, int id_tripu);
+t_tcb* remover_tripu(t_list* lista, int id_tripu);
 #endif
