@@ -14,13 +14,13 @@
 
 typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
 {
+    uint32_t accion_length;
 	char* accion;			// Accion de la tarea
 	uint32_t parametro;		// Numero relacionado a la tarea
 	uint32_t posicion_x;	// Pos x
 	uint32_t posicion_y;	// Pos y
 	uint32_t tiempo;		// Tiempo en realizar la tarea
-}__attribute__((packed))
-t_tarea;
+}t_tarea;//__attribute__((packed))
 
 // El senior tripulante (TCB - hilo)
 typedef struct    // Tamanio de 21 Bytes
@@ -78,4 +78,8 @@ void iterator_volver_join();
 bool es_tripu_de_id(int id,t_tcb* tripulante);
 void expulsar_tripu(t_list* lista, int id_tripu);
 t_tcb* remover_tripu(t_list* lista, int id_tripu);
+void* recibir_mensaje_de_RAM(int socket_cliente, t_log* logger,int* direccion_size);
+t_tarea* deserealizar_tarea(t_buffer* buffer);
+t_tarea* recibir_tarea_de_RAM(int socket);
+void realizar_tarea_metodo_FIFO(t_tcb* tripulante);
 #endif

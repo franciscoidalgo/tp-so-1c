@@ -2,40 +2,32 @@
 
 
 int main(int argc, char** argv){
-//harcodeo para probar valgrind
-argv[1]="4";
-argv[2]="4";
-argv[3]="1|3";
-argv[4]="4|3";
-argv[5]="10|3";
-argv[6]=NULL;
 
 inicializar_variables();
-//levantar como sevidor de imongostore para escuchar cuando se dan los sabotajes
+/*
+enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
+luego poder recibir la señal de sabotaje por ese "tunel" establecido
+ */
 
-// initSem(semaforo,0,1);
-// doWait(semaforo,0);
-
-//int conexion = crear_conexion(IP,PUERTO);
-	int conexion;
 while(1){
 	char* linea_consola = readline(">>");
 
+//////////////////generar función atender_accion(linea_consola) para ejecutar con hilo.
 	char** array_parametros = string_split(linea_consola," ");
 	free(linea_consola);
 switch(get_diccionario_accion(array_parametros[0])){
-case INICIAR_PATOTA:
-	conexion = crear_conexion(IP,PUERTO);
+case INICIAR_PATOTA:;
+	int conexion = crear_conexion(IP,PUERTO);
 	enviar_tareas_a_RAM(conexion,(char*) array_parametros);
 	recepcionar_patota(array_parametros);
 	string_iterate_lines(array_parametros, iterator_lines_free);
 	free(array_parametros);
 	liberar_conexion(conexion);
+	list_iterate(NEW,buscar_tarea_a_RAM);//buscar_tarea_a_RAM --> debe estar en un hilo
+		//list_iterate(READY,iterator_volver_join);
 	break;
 case INICIAR_PLANIFICACION:
-	//busqueda_de_tareas_por_patota();
-	list_iterate(NEW,iterator_buscar_tarea);
-	list_iterate(READY,iterator_volver_join);
+	list_iterate(READY,realizar_tarea_metodo_FIFO);
 	break;
 case LISTAR_TRIPULANTE:
 	list_iterate(NEW, (void*) iterator);
@@ -49,13 +41,13 @@ case EXPULSAR_TRIPULANTE:
 case OBTENER_BITACORA:
 	break;
 default:
-	log_info(logger,"accion no disponible, pifiaste en el tipeo hermano");
+	log_info(logger,"accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
 	break;
 }
+//////////////////generar función atender_accion(linea_consola) para ejecutar con hilo.
 }
 
 log_destroy(logger);
-	
 //terminar_variables_globales(conexion);
 }
 
@@ -71,18 +63,19 @@ void iterator(t_tcb* t)
 void iterator_buscar_tarea(t_tcb* tripu)
 {
 	 	pthread_t hilo[tripu->tid];
-	if (0 != pthread_create(&hilo[tripu->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripu)))
-	{
-		log_info(logger,"Tripulante %d no pudo ejecutar",tripu->tid);
-	}
+	// if (0 != pthread_create(&hilo[tripu->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripu)))
+	// {
+	// 	log_info(logger,"Tripulante %d no pudo ejecutar",tripu->tid);
+	// }
+	pthread_create(&hilo[tripu->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripu));
+	//pthread_detach(&hilo[tripu->tid]);
+	//pthread_join(&hilo[tripu->tid],NULL);
 }
 
 void iterator_volver_join(t_tcb* tripu)
 {	//EL SEND SERA BLOQUEANTE??
-	pthread_mutex_lock(&mutexSalirDeNEW);
 	pthread_t hilo[tripu->tid];
-	pthread_join(hilo[tripu->tid], NULL);
-	pthread_mutex_unlock(&mutexSalirDeNEW);
+	pthread_detach(hilo[tripu->tid]);
 }
 	 
 void terminar_variables_globales(int socket){
@@ -142,9 +135,36 @@ dictionary_put(dic_datos_consola,"OBTENER_BITACORA",OBTENER_BITACORA);
 }
 
 int get_diccionario_accion(char* accion){
-	if(dictionary_has_key(dic_datos_consola,accion)){ return dictionary_get(dic_datos_consola,accion);
-	}else{return (-1);}
+		if(dictionary_has_key(dic_datos_consola,accion)){
+	return dictionary_get(dic_datos_consola,accion);}
+	else{
+		return -1;
+	}
+	// int argumentos=0;
+	// while(linea_consola[argumentos]!=NULL){
+	// 	argumentos=argumentos+1;
+	// }
+	// log_info(logger,"argumentos ingresados: %d",argumentos);
+	// int accion;
+	// if(dictionary_has_key(dic_datos_consola,linea_consola[0])){ 
+	// 	accion = dictionary_get(dic_datos_consola,linea_consola);
+	// }
+	// log_info(logger,"argumentos ingresados y accion: %d %d ",argumentos,accion);
+	// bool cantidad_de_argumentos_OK = false;
+	// if(accion==INICIAR_PATOTA && argumentos>2){
+	// 	cantidad_de_argumentos_OK = true;}
+
+	// if(accion==EXPULSAR_TRIPULANTE && argumentos==2){
+	// 	cantidad_de_argumentos_OK = true;}
+
+	// if((accion==INICIAR_PLANIFICACION || accion==PAUSAR_PLANIFICACION || accion==LISTAR_TRIPULANTE) && (argumentos==1)){
+	// 	cantidad_de_argumentos_OK = true;}
+
+	// if(cantidad_de_argumentos_OK){
+	// 	return accion;}else{return -1;}
+	// argumentos=0;
 }
+
 void enviar_msj(char* mensaje, int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -193,7 +213,7 @@ t_tcb* crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t 
 void buscar_tarea_a_RAM(void* tripu){
 
 	//no creo que la region critica contenga tantas variables
-	pthread_mutex_lock(&mutexSalirDeNEW);
+
 	t_tcb* t = (t_tcb*) tripu;
 	log_info(logger,"Buscando tarea a MI-RAM soy tripulante %d de patota %d",t->tid,t->puntero_pcb);
 	//utilizar strcat
@@ -202,12 +222,17 @@ void buscar_tarea_a_RAM(void* tripu){
 	string_append(&patota_tripulante,"-");
 	string_append(&patota_tripulante,(string_itoa(t->tid)));
 	int	socket_cliente = crear_conexion(IP,PUERTO);
+	pthread_mutex_lock(&mutexSalirDeNEW);
+		log_info(logger, "Socket para buscar tareas: %d",socket_cliente);
 		enviar_msj(patota_tripulante,socket_cliente);
+		free(patota_tripulante);
 		t_tcb* tripu_removido_de_NEW = remover_tripu(NEW,t->tid);
 		tripu_removido_de_NEW->estado='R';
-		list_add(READY,tripu_removido_de_NEW);	
+		tripu_removido_de_NEW->tarea = malloc(sizeof(t_tarea));
+		tripu_removido_de_NEW->tarea = recibir_tarea_de_RAM(socket_cliente);
+	log_info(logger,"Tarea recibida %s",(char*) tripu_removido_de_NEW->tarea->accion);
+	list_add(READY,tripu_removido_de_NEW);	
 	liberar_conexion(socket_cliente);
-	free(patota_tripulante);
     pthread_mutex_unlock(&mutexSalirDeNEW);  
 }
 
@@ -248,7 +273,7 @@ for (int i = 3; linea_consola[i]!=NULL; i++){
 agregar_a_paquete(paquete,posiciones_linea,strlen(posiciones_linea)+1);
 free(palabra);
 free(posiciones_linea);
-log_info(logger,"Enviando tareas a MI-RAM");
+log_info(logger,"Enviando tareas a MI-RAM con socket: %d",conexion);
 enviar_paquete(paquete, conexion);
 fclose(archivo);
 }
@@ -322,4 +347,70 @@ void initSem(int semid, int numSem, int valor) { //iniciar un semaforo
     perror(NULL);
         error("Error iniciando semaforo");
     }
+}
+
+void* recibir_mensaje_de_RAM(int socket_cliente, t_log* logger,int* direccion_size)
+{
+	// int size;
+	char* buffer = recibir_buffer(direccion_size, socket_cliente);
+	return buffer;
+}
+
+
+t_tarea* deserealizar_tarea(t_buffer* buffer) {
+    t_tarea* tarea = malloc(sizeof(t_tarea));
+    
+    void* stream = buffer->stream;
+    // Deserializamos los campos que tenemos en el buffer
+    memcpy(&(tarea->parametro), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tarea->posicion_x), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    memcpy(&(tarea->posicion_y), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+	memcpy(&(tarea->tiempo), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    
+    // Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
+    memcpy(&(tarea->accion_length), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    tarea->accion = malloc(tarea->accion_length);
+    memcpy(tarea->accion, stream, tarea->accion_length);
+
+    return tarea;
+}
+
+t_tarea* recibir_tarea_de_RAM(int socket){
+t_paquete* paquete = malloc(sizeof(t_paquete));
+paquete->buffer = malloc(sizeof(t_buffer));
+// Primero recibimos el codigo de operacion
+recv(socket, &(paquete->codigo_operacion), sizeof(uint32_t), 0);
+// Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+recv(socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
+paquete->buffer->stream = malloc(paquete->buffer->size);
+recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
+return deserealizar_tarea(paquete->buffer);
+}
+
+
+void realizar_tarea_metodo_FIFO(t_tcb* tripulante){
+
+	//enviar inicio de la tarea a IMONGOSTORE junto con la tarea
+
+	log_info(logger,"Tarea a realizar: %s",tripulante->tarea->accion);
+	log_info(logger,"Me muevo de %d|%d a %d|%d ",
+	tripulante->posicion_x,tripulante->posicion_x,tripulante->tarea->posicion_x,tripulante->tarea->posicion_y);
+
+	sleep(tripulante->tarea->tiempo);
+
+	char* patota_tripulante = string_new();
+	string_append(&patota_tripulante,"Termine mi tarea soy tripulante: ");
+	string_append(&patota_tripulante,(string_itoa(tripulante->puntero_pcb)));
+	string_append(&patota_tripulante,"-");
+	string_append(&patota_tripulante,(string_itoa(tripulante->tid)));
+	int	socket_cliente = crear_conexion(IP,PUERTO);
+		enviar_msj(patota_tripulante,socket_cliente);
+	liberar_conexion(socket_cliente);
+	free(patota_tripulante);
+
 }

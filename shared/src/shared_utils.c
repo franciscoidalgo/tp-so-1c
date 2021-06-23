@@ -49,7 +49,7 @@ int esperar_cliente(int socket_servidor,t_log* logger)
 	accept --> funcion bloqueante, queda a la espera hasta aceptar cliente
 	*/
 
-	log_info(logger, "Se conecto un cliente!");
+	log_info(logger, "Se conecto un cliente con socket: %d",socket_cliente);
 
 	return socket_cliente;
 }
@@ -79,7 +79,6 @@ void* recibir_buffer(int* direccion_size, int socket_cliente)
 
 void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
 {
-	// int size;
 	char* buffer = recibir_buffer(direccion_size, socket_cliente);
 	log_info(logger, "Me llego el mensaje %s", buffer);
 	free(buffer);
@@ -120,7 +119,7 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->buffer->size), sizeof(int));
 	desplazamiento+= sizeof(int);
 	memcpy(ptr_inicio_paquete + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	// desplazamiento+= paquete->buffer->size;
+	desplazamiento+= paquete->buffer->size;
 
 	return ptr_inicio_paquete;
 }

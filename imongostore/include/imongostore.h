@@ -6,13 +6,30 @@
 #include "shared_utils.h"
 #include "tests.h"
 #include <commons/string.h>
+#include<pthread.h>
 
-typedef struct tareas{
-    int pid; //numero de patota
-    t_list* tareas_tripu;
+
+typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
+{
+    uint32_t accion_length;
+	char* accion;			// Accion de la tarea
+	uint32_t parametro;		// Numero relacionado a la tarea
+	uint32_t posicion_x;	// Pos x
+	uint32_t posicion_y;	// Pos y
+	uint32_t tiempo;		// Tiempo en realizar la tarea
+}__attribute__((packed))
+t_tarea;
+
+typedef struct{
+    uint32_t pid;
+    t_list* tareas;
 }t_tareas;
+
 
 t_tareas* TAREAS_GLOBAL;
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void enviar_tarea(t_tarea* tarea,int unSocket);
 
 #endif
