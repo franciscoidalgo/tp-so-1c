@@ -23,11 +23,11 @@ case INICIAR_PATOTA:;
 	string_iterate_lines(array_parametros, iterator_lines_free);
 	free(array_parametros);
 	liberar_conexion(conexion);
-	list_iterate(NEW,buscar_tarea_a_RAM);//buscar_tarea_a_RAM --> debe estar en un hilo
+	list_iterate(NEW, buscar_tarea_a_RAM);//buscar_tarea_a_RAM --> debe estar en un hilo
 		//list_iterate(READY,iterator_volver_join);
 	break;
 case INICIAR_PLANIFICACION:
-	list_iterate(READY,realizar_tarea_metodo_FIFO);
+	list_iterate(READY, realizar_tarea_metodo_FIFO);
 	break;
 case LISTAR_TRIPULANTE:
 	list_iterate(NEW, (void*) iterator);
@@ -91,7 +91,7 @@ bool es_tripu_de_id(int id,t_tcb* tripulante){
 void expulsar_tripu(t_list* lista, int id_tripu){
 //inner_function
 	bool _el_tripulante_que_limpio(void *elemento){
-		return es_tripu_de_id(id_tripu,elemento);
+		return es_tripu_de_id(id_tripu, elemento);
 	}
 
 	t_tcb* tripulante = list_remove_by_condition(lista,_el_tripulante_que_limpio);
@@ -99,8 +99,8 @@ void expulsar_tripu(t_list* lista, int id_tripu){
 }
 
 t_tcb* remover_tripu(t_list* lista, int id_tripu){
-//inner_function
-	bool _el_tripulante_que_limpio(void *elemento){
+    //inner_function
+	bool _el_tripulante_que_limpio(void *elemento) {
 		return es_tripu_de_id(id_tripu,elemento);
 	}
 
@@ -118,7 +118,7 @@ NEW  =list_create();
     if((semaforo=semget(IPC_PRIVATE,1,IPC_CREAT | 0700))<0) {
         perror(NULL);
         error("Semaforo: semget");
-        }
+    }
 
 
 IP = config_get_string_value((t_config*) config,"IP");
@@ -230,7 +230,8 @@ void buscar_tarea_a_RAM(void* tripu){
 		tripu_removido_de_NEW->estado='R';
 		tripu_removido_de_NEW->tarea = malloc(sizeof(t_tarea));
 		tripu_removido_de_NEW->tarea = recibir_tarea_de_RAM(socket_cliente);
-	log_info(logger,"Tarea recibida %s",(char*) tripu_removido_de_NEW->tarea->accion);
+	log_info(logger,"Tarea recibida %s",(char*) tripu_removido_de_NEW->tarea->accion); 
+	/* segmentation fault - ver */
 	list_add(READY,tripu_removido_de_NEW);	
 	liberar_conexion(socket_cliente);
     pthread_mutex_unlock(&mutexSalirDeNEW);  
@@ -392,25 +393,83 @@ recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
 return deserealizar_tarea(paquete->buffer);
 }
 
+void enviar_desplazamiento_tripulante(t_tcb* tripulante, char* info_tripulante, int posX, int posY, int socket_cliente) {
+	string_append(&info_tripulante, "Posicion X: ");
+	string_append(&info_tripulante,(string_itoa(posX)));
+	string_append(&info_tripulante, "Posicion Y: ");
+	string_append(&info_tripulante,(string_itoa(posY)));
+	enviar_msj(info_tripulante, socket_cliente);
+	sleep(1); // en teoria es 1 quantum por desplazamiento 
+	printf("Posicion en X %i\n", posX);
+	printf("Posicion en Y %i\n", posY);
+}
 
-void realizar_tarea_metodo_FIFO(t_tcb* tripulante){
+void movimiento_tripulante(t_tcb* tripulante) {
+	log_info(logger, "Me muevo de %d|%d a %d|%d ",
+	tripulante->posicion_x, 
+	tripulante->posicion_y, 
+	tripulante->tarea->posicion_x,
+	tripulante->tarea->posicion_y);
 
-	//enviar inicio de la tarea a IMONGOSTORE junto con la tarea
+	int posX;
+	int posY;
+	int posTareaTripulanteX = tripulante->tarea->posicion_x;
+	int posTareaTripulanteY = tripulante->tarea->posicion_y;
 
-	log_info(logger,"Tarea a realizar: %s",tripulante->tarea->accion);
-	log_info(logger,"Me muevo de %d|%d a %d|%d ",
-	tripulante->posicion_x,tripulante->posicion_x,tripulante->tarea->posicion_x,tripulante->tarea->posicion_y);
+	char* info_tripulante = string_new();
+	string_append(&info_tripulante, "Tripulante numero: ");
+	string_append(&info_tripulante, (string_itoa(tripulante->puntero_pcb)));
+	string_append(&info_tripulante,"-");
+	string_append(&info_tripulante, (string_itoa(tripulante->tid)));
 
+	if (posX <= posTareaTripulanteX && posY <= posTareaTripulanteY) {
+		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
+			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
+				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+	 }
+	}  
+	if(posX >= posTareaTripulanteX && posY <= posTareaTripulanteY) {
+		for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
+			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
+				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+
+		}
+	}
+	if (posX <= posTareaTripulanteX && posY >= posTareaTripulanteY) {
+		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
+			for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
+				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+		}
+	}
+	if (posX >= posTareaTripulanteX && posY >= posTareaTripulanteY) {
+	  for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
+		for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
+				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+		}
+	  }
+	}
+	
+	liberar_conexion(socket_cliente);
+	free(info_tripulante);
+}
+
+void realizar_tarea_metodo_FIFO(t_tcb* tripulante) {
+	int	socket_cliente = crear_conexion(IP, PUERTO);
+
+	// tripulante se desplaza a la tarea
+	movimiento_tripulante(tripulante);
+
+	log_info(logger,"Tarea a realizar: %s", tripulante->tarea->accion);
+	
 	sleep(tripulante->tarea->tiempo);
 
 	char* patota_tripulante = string_new();
-	string_append(&patota_tripulante,"Termine mi tarea soy tripulante: ");
+	string_append(&patota_tripulante,"Termine mi tarea! soy el tripulante: ");
 	string_append(&patota_tripulante,(string_itoa(tripulante->puntero_pcb)));
 	string_append(&patota_tripulante,"-");
 	string_append(&patota_tripulante,(string_itoa(tripulante->tid)));
 	int	socket_cliente = crear_conexion(IP,PUERTO);
-		enviar_msj(patota_tripulante,socket_cliente);
+	enviar_msj(patota_tripulante,socket_cliente);
 	liberar_conexion(socket_cliente);
 	free(patota_tripulante);
-
 }
