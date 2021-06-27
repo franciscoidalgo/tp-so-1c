@@ -1,56 +1,93 @@
 #include "discordiador.h"
+pthread_mutex_t locked;
+int a = 0;
+bool se_ejecuto_exit;
 
 
-int main(int argc, char** argv){
+void procesos() {
+
+	char* linea_consola;
+	while(1) {
+	
+	linea_consola = readline(">>");
+
+	if(!strncmp(linea_consola, "exit", 4)) {
+		free(linea_consola);
+		pthread_mutex_lock(&locked);
+		se_ejecuto_exit = true;
+		pthread_mutex_unlock(&locked);
+		break;
+	} 
+	 ejecutar_accion(linea_consola); // parsear accion recibida por el readline. 
+}
+log_info(logger, "Terminado de ejecutar proceso...");
+free(linea_consola);
+
+}
+void ejecutar_accion(char* linea_consola) {
+	char** array_parametros = string_split(linea_consola," ");
+	// quitar switch
+	switch(get_diccionario_accion(array_parametros[0])) {
+      	case INICIAR_PATOTA:
+			int conexion = crear_conexion(IP,PUERTO);
+			enviar_tareas_a_RAM(conexion,(char*) array_parametros);
+			recepcionar_patota(array_parametros);
+			string_iterate_lines(array_parametros, iterator_lines_free);
+			free(array_parametros);
+			liberar_conexion(conexion);
+			list_iterate(NEW, buscar_tarea_a_RAM);
+			//buscar_tarea_a_RAM --> debe estar en un hilo
+			//list_iterate(READY,iterator_volver_join);
+		break;
+		case INICIAR_PLANIFICACION:
+			list_iterate(READY, realizar_tarea_metodo_FIFO);
+		break;
+		case LISTAR_TRIPULANTE:
+			list_iterate(NEW, (void*) iterator);
+			list_iterate(READY, (void*) iterator);
+		break;
+		case EXPULSAR_TRIPULANTE:
+			expulsar_tripu(NEW, atoi(array_parametros[1]));
+			expulsar_tripu(READY, atoi(array_parametros[1]));
+			//enviar_aviso_a_MI-RAM
+		break;
+		case OBTENER_BITACORA:
+		break;
+	default:
+	log_info(logger,"accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
+	break;
+	}
+
+}
+int main(int argc, char** argv) {
 
 inicializar_variables();
 /*
 enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
 luego poder recibir la señal de sabotaje por ese "tunel" establecido
  */
+int resultado_hilo;
+t_tcb* tripu;
+int i;
+pthread_t id_hilo[i];
 
-while(1){
-	char* linea_consola = readline(">>");
+resultado_hilo = pthread_create(&hilo_consola, NULL, (void*)procesos, NULL);
 
-//////////////////generar función atender_accion(linea_consola) para ejecutar con hilo.
-	char** array_parametros = string_split(linea_consola," ");
-	free(linea_consola);
-switch(get_diccionario_accion(array_parametros[0])){
-case INICIAR_PATOTA:;
-	int conexion = crear_conexion(IP,PUERTO);
-	enviar_tareas_a_RAM(conexion,(char*) array_parametros);
-	recepcionar_patota(array_parametros);
-	string_iterate_lines(array_parametros, iterator_lines_free);
-	free(array_parametros);
-	liberar_conexion(conexion);
-	list_iterate(NEW, buscar_tarea_a_RAM);//buscar_tarea_a_RAM --> debe estar en un hilo
-		//list_iterate(READY,iterator_volver_join);
-	break;
-case INICIAR_PLANIFICACION:
-	list_iterate(READY, realizar_tarea_metodo_FIFO);
-	break;
-case LISTAR_TRIPULANTE:
-	list_iterate(NEW, (void*) iterator);
-	list_iterate(READY, (void*) iterator);
-	break;
-case EXPULSAR_TRIPULANTE:
-	expulsar_tripu(NEW, atoi(array_parametros[1]));
-	expulsar_tripu(READY, atoi(array_parametros[1]));
-	//enviar_aviso_a_MI-RAM
-	break;
-case OBTENER_BITACORA:
-	break;
-default:
-	log_info(logger,"accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
-	break;
+if(resultado_hilo) {
+	log_info(logger, "\n ERROR: pthread_create es %d \n", resultado_hilo);
+	exit(1);
 }
-//////////////////generar función atender_accion(linea_consola) para ejecutar con hilo.
-}
+log_info(logger, "\n Se creo el hilo correctamente. Hilo (%u) en la iteracion %d ... \n ",
+	(int)pthread_self(), (int)hilo_consola);
+
+	if (i % 5 == 0) sleep(1);
+
+pthread_exit(NULL);
 
 log_destroy(logger);
 //terminar_variables_globales(conexion);
+	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
@@ -236,7 +273,7 @@ void buscar_tarea_a_RAM(void* tripu){
 		tripu_removido_de_NEW->tarea = recibir_tarea_de_RAM(socket_cliente);
 	log_info(logger,"Tarea recibida %s",(char*) tripu_removido_de_NEW->tarea->accion); 
 	/* segmentation fault - ver */
-	list_add(READY,tripu_removido_de_NEW);	
+	list_add(READY, tripu_removido_de_NEW);	
 	liberar_conexion(socket_cliente);
     pthread_mutex_unlock(&mutexSalirDeNEW);  
 }
@@ -383,28 +420,18 @@ t_tarea* deserealizar_tarea(t_buffer* buffer) {
     return tarea;
 }
 
-t_tarea* recibir_tarea_de_RAM(int socket){
-t_paquete* paquete = malloc(sizeof(t_paquete));
-paquete->buffer = malloc(sizeof(t_buffer));
-// Primero recibimos el codigo de operacion
-recv(socket, &(paquete->codigo_operacion), sizeof(uint32_t), 0);
-// Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
-recv(socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
-paquete->buffer->stream = malloc(paquete->buffer->size);
-recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
-return deserealizar_tarea(paquete->buffer);
+t_tarea* recibir_tarea_de_RAM(int socket) {
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+	// Primero recibimos el codigo de operacion
+	recv(socket, &(paquete->codigo_operacion), sizeof(uint32_t), 0);
+	// Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+	recv(socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+	recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
+	return deserealizar_tarea(paquete->buffer);
 }
 
-void enviar_desplazamiento_tripulante(char* info_tripulante, int posX, int posY, int socket_cliente) {
-	string_append(&info_tripulante, "Posicion X: ");
-	string_append(&info_tripulante,(string_itoa(posX)));
-	string_append(&info_tripulante, "Posicion Y: ");
-	string_append(&info_tripulante,(string_itoa(posY)));
-	enviar_msj(info_tripulante, socket_cliente);
-	sleep(1); // en teoria es 1 quantum por desplazamiento 
-	printf("Posicion en X %i\n", posX);
-	printf("Posicion en Y %i\n", posY);
-}
 
 void enviar_desplazamiento_tripulante(t_tcb* tripulante, int socket_cliente) {
 	int posX;
@@ -428,32 +455,42 @@ void enviar_desplazamiento_tripulante(t_tcb* tripulante, int socket_cliente) {
 	if (posX <= posTareaTripulanteX && posY <= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
-				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
+				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 	 }
 	}  
 	if(posX >= posTareaTripulanteX && posY <= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
-				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
+				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 
 		}
 	}
 	if (posX <= posTareaTripulanteX && posY >= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
 			for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
-				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
+				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 		}
 	}
 	if (posX >= posTareaTripulanteX && posY >= posTareaTripulanteY) {
 	  for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
 		for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
-				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
+				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 		}
 	  }
 	}
 	
 	liberar_conexion(socket_cliente);
 	free(info_tripulante);
+}
+void enviar_desplazamiento(char* info_tripulante, int posX, int posY, int socket_cliente) {
+	string_append(&info_tripulante, "Posicion X: ");
+	string_append(&info_tripulante,(string_itoa(posX)));
+	string_append(&info_tripulante, "Posicion Y: ");
+	string_append(&info_tripulante,(string_itoa(posY)));
+	enviar_msj(info_tripulante, socket_cliente);
+	sleep(1); // en teoria es 1 quantum por desplazamiento 
+	log_info(logger, "Posicion en X %i\n", posX);
+	log_info(logger, "Posicion en Y %i\n", posY);
 }
 
 void realizar_tarea_metodo_FIFO(t_tcb* tripulante) {

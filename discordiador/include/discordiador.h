@@ -8,6 +8,7 @@
 #include "shared_utils.h"
 #include "tests.h"
 #include<pthread.h>
+#include<unistd.h>
 #include<commons/string.h>
 #include<commons/collections/dictionary.h>
 #include<sys/sem.h>
@@ -59,6 +60,12 @@ pthread_mutex_t mutex_Lista_accciones = PTHREAD_MUTEX_INITIALIZER;
 int semaforo;
 pthread_t hilo_consola;
 
+typedef struct {
+  char** accion;
+  char* cantidad_tripulantes;
+  char* ruta;
+  char* posicion;
+} t_consola;
 
 void enviar_msj(char* mensaje, int socket_cliente);
 void perder_tiempo(int* i);
