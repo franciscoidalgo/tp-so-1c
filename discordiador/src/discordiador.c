@@ -34,8 +34,8 @@ case LISTAR_TRIPULANTE:
 	list_iterate(READY, (void*) iterator);
 	break;
 case EXPULSAR_TRIPULANTE:
-	expulsar_tripu(NEW,atoi(array_parametros[1]));
-	expulsar_tripu(READY,atoi(array_parametros[1]));
+	expulsar_tripu(NEW, atoi(array_parametros[1]));
+	expulsar_tripu(READY, atoi(array_parametros[1]));
 	//enviar_aviso_a_MI-RAM
 	break;
 case OBTENER_BITACORA:
@@ -84,17 +84,21 @@ void terminar_variables_globales(int socket){
 	//config_destroy(config);
 }
 
-bool es_tripu_de_id(int id,t_tcb* tripulante){
+bool es_tripu_de_id(int id, t_tcb* tripulante){
     return tripulante->tid == id;
 }
 
-void expulsar_tripu(t_list* lista, int id_tripu){
+bool es_tripulante_de_patota_id(int id_patota, t_tcb* tripulante) {
+	return tripulante->puntero_pcb == id_patota;
+}
+
+void expulsar_tripu(t_list* lista, int id_tripu, int id_patota) {
 //inner_function
 	bool _el_tripulante_que_limpio(void *elemento){
-		return es_tripu_de_id(id_tripu, elemento);
+		return es_tripu_de_id(id_tripu, elemento) && es_tripulante_de_patota_id(id_patota, elemento);
 	}
 
-	t_tcb* tripulante = list_remove_by_condition(lista,_el_tripulante_que_limpio);
+	t_tcb* tripulante = list_remove_by_condition(lista, _el_tripulante_que_limpio);
 		free(tripulante);
 }
 
@@ -297,16 +301,14 @@ void recepcionar_patota(char** linea_consola){
  }
 }
 
-void busqueda_de_tareas_por_patota(){//tendria que agregar como argumento el numero de patota y buscar en lista
+void busqueda_de_tareas_por_patota(int id_patota) {//tendria que agregar como argumento el numero de patota y buscar en lista
 int cantidad_de_tripulantes = list_size(NEW);
 t_tcb* tripulante;
 
-for (size_t i = 0; i <= cantidad_de_tripulantes; i++)
-{	
+for (size_t i = 0; i <= cantidad_de_tripulantes; i++) {	
 	pthread_t hilo[tripulante->tid];
-	if (0 != pthread_create(&hilo[tripulante->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripulante)))
-	{
-		log_info(logger,"Tripulante %d no pudo ejecutar",tripulante->tid);
+	if (0 != pthread_create(&hilo[tripulante->tid], NULL, (void *) &buscar_tarea_a_RAM,(void*) (tripulante))) {
+		log_info(logger,"Tripulante %d no pudo ejecutar", tripulante->tid);
 	}
 }
 }
