@@ -393,7 +393,7 @@ recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
 return deserealizar_tarea(paquete->buffer);
 }
 
-void enviar_desplazamiento_tripulante(t_tcb* tripulante, char* info_tripulante, int posX, int posY, int socket_cliente) {
+void enviar_desplazamiento_tripulante(char* info_tripulante, int posX, int posY, int socket_cliente) {
 	string_append(&info_tripulante, "Posicion X: ");
 	string_append(&info_tripulante,(string_itoa(posX)));
 	string_append(&info_tripulante, "Posicion Y: ");
@@ -404,17 +404,18 @@ void enviar_desplazamiento_tripulante(t_tcb* tripulante, char* info_tripulante, 
 	printf("Posicion en Y %i\n", posY);
 }
 
-void movimiento_tripulante(t_tcb* tripulante) {
-	log_info(logger, "Me muevo de %d|%d a %d|%d ",
-	tripulante->posicion_x, 
-	tripulante->posicion_y, 
-	tripulante->tarea->posicion_x,
-	tripulante->tarea->posicion_y);
-
+void enviar_desplazamiento_tripulante(t_tcb* tripulante, int socket_cliente) {
 	int posX;
 	int posY;
 	int posTareaTripulanteX = tripulante->tarea->posicion_x;
 	int posTareaTripulanteY = tripulante->tarea->posicion_y;
+
+	log_info(logger, "Me muevo de %d|%d a %d|%d ",
+	tripulante->posicion_x, 
+	tripulante->posicion_y, 
+	posTareaTripulanteX,
+	posTareaTripulanteY);
+
 
 	char* info_tripulante = string_new();
 	string_append(&info_tripulante, "Tripulante numero: ");
@@ -425,26 +426,26 @@ void movimiento_tripulante(t_tcb* tripulante) {
 	if (posX <= posTareaTripulanteX && posY <= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
-				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
 	 }
 	}  
 	if(posX >= posTareaTripulanteX && posY <= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
-				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
 
 		}
 	}
 	if (posX <= posTareaTripulanteX && posY >= posTareaTripulanteY) {
 		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
 			for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
-				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
 		}
 	}
 	if (posX >= posTareaTripulanteX && posY >= posTareaTripulanteY) {
 	  for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
 		for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
-				enviar_desplazamiento_tripulante(tripulante, info_tripulante);
+				enviar_desplazamiento_tripulante(info_tripulante, posX, posY, socket_cliente);
 		}
 	  }
 	}
@@ -456,8 +457,8 @@ void movimiento_tripulante(t_tcb* tripulante) {
 void realizar_tarea_metodo_FIFO(t_tcb* tripulante) {
 	int	socket_cliente = crear_conexion(IP, PUERTO);
 
-	// tripulante se desplaza a la tarea
-	movimiento_tripulante(tripulante);
+	// cada tripulante se desplaza hacia la tarea
+	enviar_desplazamiento_tripulante(tripulante, socket_cliente);
 
 	log_info(logger,"Tarea a realizar: %s", tripulante->tarea->accion);
 	
