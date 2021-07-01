@@ -1,7 +1,7 @@
 #include "imongostore.h"
 
 int main(void){
-t_log* logger = log_create("./cfg/imongostore.logger", "Imongostore", true, LOG_LEVEL_INFO);
+logger = log_create("./cfg/imongostore.logger", "Imongostore", true, LOG_LEVEL_INFO);
 log_info(logger, "Soy I Mongo Store! %s", mi_funcion_compartida());
 
 
@@ -11,60 +11,19 @@ int contador = 0;
 TAREAS_GLOBAL = malloc(sizeof(t_tareas));
 TAREAS_GLOBAL->tareas = malloc(sizeof(t_list));
 
-t_list* list_aux = list_create();
-void iterator(char* value)
-{
-	if(contador==0){
-		TAREAS_GLOBAL->pid = atoi(value);
-		contador = contador + 1;
-	}else{
-		list_add(TAREAS_GLOBAL->tareas,value); 
-	}
-	 log_info(logger, value);
-}
-
-	t_list* lista;
 	while(1)
 	{	
 		int cliente_fd = esperar_cliente(server_fd,logger);
-		int cod_op = recibir_operacion(cliente_fd);
 		
-		switch(cod_op)
-		{
-		case MENSAJE: ;
-			int size;
-			recibir_mensaje(cliente_fd,logger,&size);
-			//harcodeo una tarea
-			t_tarea* tarea_a_enviar = malloc(sizeof(t_tarea));
-			char* accion = "SALTAR";
-			tarea_a_enviar->accion =  malloc(strlen(accion));
-			strcpy(tarea_a_enviar->accion,accion);
-			tarea_a_enviar->accion_length = strlen(tarea_a_enviar->accion)+1;
-			tarea_a_enviar->parametro = 5;
-			tarea_a_enviar->posicion_x = 12;
-			tarea_a_enviar->posicion_y = 22;
-			tarea_a_enviar->tiempo = 10;
-			enviar_tarea(tarea_a_enviar,cliente_fd);
-			break;
-		case PAQUETE:
-			lista = recibir_paquete(cliente_fd);
-			log_info(logger,"Me llegaron los siguientes valores del socket: %d",cliente_fd);
-			list_iterate(lista, (void*) iterator);
-			break;
-		case -1:
-			log_error(logger, "el cliente se desconecto. Terminando servidor");
-			return EXIT_FAILURE;
-		default:
-			log_warning(logger, "Operacion desconocida. No quieras meter la pata");
-			break;
-		}
-		
-	}
-	return EXIT_SUCCESS;
+		pthread_t hilo_accept;
 
+		pthread_create(&hilo_accept, NULL, (void *) &atender_cliente,(void*) (cliente_fd));
+
+	}
 
 
 log_destroy(logger);
+return EXIT_SUCCESS;
 }
 
 //////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
@@ -158,3 +117,49 @@ free(paquete->buffer);
 }
 
 
+void atender_cliente(int socket_cliente){
+
+bool primer_linea = true;
+void iterator(char* value)
+{
+	if(primer_linea){
+		TAREAS_GLOBAL->pid = atoi(value);
+		primer_linea = false;
+	}else{
+		list_add(TAREAS_GLOBAL->tareas,value); 
+	}
+	 log_info(logger, value);
+}
+
+		int cod_op = recibir_operacion(socket_cliente);
+		switch(cod_op)
+		{
+		case MENSAJE: ;
+			int size;
+			recibir_mensaje(socket_cliente,logger,&size);
+			//harcodeo una tarea
+			t_tarea* tarea_a_enviar = malloc(sizeof(t_tarea));
+
+			char* accion = "DORMIR_EN_MESA";
+			tarea_a_enviar->accion =  malloc(strlen(accion));
+			strcpy(tarea_a_enviar->accion,accion);
+			tarea_a_enviar->accion_length = strlen(tarea_a_enviar->accion)+1;
+			tarea_a_enviar->parametro = 5;
+			tarea_a_enviar->posicion_x = 12;
+			tarea_a_enviar->posicion_y = 22;
+			tarea_a_enviar->tiempo = 3;
+			enviar_tarea(tarea_a_enviar,socket_cliente);
+			break;
+		case PAQUETE:
+			lista = recibir_paquete(socket_cliente);
+			log_info(logger,"Me llegaron los siguientes valores del socket: %d",socket_cliente);
+			list_iterate(lista, (void*) iterator);
+			break;
+		case -1:
+			log_error(logger, "el cliente se desconecto. Terminando servidor");
+			return EXIT_FAILURE;
+		default:
+			log_warning(logger, "Operacion desconocida. No quieras meter la pata");
+			break;
+		}
+	}

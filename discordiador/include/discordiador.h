@@ -4,16 +4,18 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include <commons/collections/queue.h>
+#include <commons/collections/list.h>
 #include <stdbool.h>
 #include "shared_utils.h"
 #include "tests.h"
 #include<pthread.h>
 #include<commons/string.h>
 #include<commons/collections/dictionary.h>
-#include<sys/sem.h>
+#include<semaphore.h>
+
 
 typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
-{
+{   
     uint32_t accion_length;
 	char* accion;			// Accion de la tarea
 	uint32_t parametro;		// Numero relacionado a la tarea
@@ -45,6 +47,8 @@ t_dictionary * dic_datos_consola;
 char* IP;
 char* PUERTO;
 
+int ID_PATOTA;
+
 enum input_consola{
 INICIAR_PATOTA,
 INICIAR_PLANIFICACION,
@@ -54,11 +58,20 @@ LISTAR_TRIPULANTE,
 OBTENER_BITACORA,
 };
 
-pthread_mutex_t mutexSalirDeNEW = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_Lista_accciones = PTHREAD_MUTEX_INITIALIZER;
-int semaforo;
-pthread_t hilo_consola;
+//INICIARLIZACION DE SEMAFOROS
+pthread_mutex_t mutex =PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_mostrar_por_consola = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_lista_new = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_lista_ready = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_pasaje_entre_queue = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_input_consola;
+pthread_cond_t condicion_comunicacion_entre_tipos_de_ejecucion;
+pthread_condattr_t attr;
+pthread_barrier_t barrera;
+sem_t semaforo_1;
+sem_t sem_IO;
 
+bool planificar;
 
 void enviar_msj(char* mensaje, int socket_cliente);
 void perder_tiempo(int* i);
@@ -70,7 +83,7 @@ void inicializar_variables();
 void terminar_variables_globales(int socket);
 void enviar_tareas_a_RAM(int conexion,char** argv);
 void recepcionar_patota(char** argv); //agregar tripulantes a lista NEW
-void busqueda_de_tareas_por_patota();
+void busqueda_de_tareas_por_patota(t_tcb* tripulante);
 void iterator_lines_free(char* string);
 int get_diccionario_accion(char* accion);
 void iterator_buscar_tarea();
@@ -82,4 +95,12 @@ void* recibir_mensaje_de_RAM(int socket_cliente, t_log* logger,int* direccion_si
 t_tarea* deserealizar_tarea(t_buffer* buffer);
 t_tarea* recibir_tarea_de_RAM(int socket);
 void realizar_tarea_metodo_FIFO(t_tcb* tripulante);
+void buscar_tareas_desde_NEW();
+void exe();
+void planificar_FIFO();
+void entrada_salida(t_tcb* tripulante);
+bool es_tarea_de_ES(char* accion);
+void realizar_tarea_exe(t_tcb* tripulante);
+void atender_accion_de_consola(void*);
+
 #endif

@@ -31,5 +31,10 @@ t_tareas* TAREAS_GLOBAL;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void enviar_tarea(t_tarea* tarea,int unSocket);
+void atender_cliente(int socket_cliente);
+void iterator(char* value);
+
+t_log* logger;
+t_list* lista;
 
 #endif
