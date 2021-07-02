@@ -32,16 +32,22 @@ typedef struct{
 			void* data_empaquetada; 		
 		} dto_memoria;
 
-int obtener_tamanio_array_de_marcos_libres (int tamanio_paginas, int tamanio_memoria){
-	if (tamanio_memoria >= tamanio_paginas) {
-		printf("La cantidad de marcos disponibles es de %d marcos\n", tamanio_memoria/tamanio_paginas);
-		printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", tamanio_memoria%tamanio_paginas);
-		
-		return tamanio_memoria/tamanio_paginas;
+void* MEMORIA;
+uint32_t* MARCOS_DISPONIBLES;
+t_list* tlb;
+int TAMANIO_PAGINAS = 2;
+int TAMANIO_MEMORIA = 50;
+int CANTIDAD_MARCOS;
+	
 
+
+int obtener_tamanio_array_de_marcos (){
+	if (TAMANIO_MEMORIA >= TAMANIO_PAGINAS) {
+		printf("La cantidad de marcos disponibles es de %d marcos\n", TAMANIO_MEMORIA / TAMANIO_PAGINAS);
+		printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", TAMANIO_MEMORIA % TAMANIO_PAGINAS);
+		return TAMANIO_MEMORIA/TAMANIO_PAGINAS;
 	} else {
-		printf("Hubo un error en la asignacion de marcos_libres");
-
+		printf("Hubo un error en la asignacion de MARCOS_DISPONIBLES");
 		return 10;
 	}
 }
@@ -71,8 +77,6 @@ dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* da
 	return dto_aux;
 }
 
-
-
 void modificar_tlb (t_list* tlb, uint32_t id_proceso, t_list* marcos_utilizados) {
 	
 	bool find(void* element){
@@ -87,26 +91,70 @@ void modificar_tlb (t_list* tlb, uint32_t id_proceso, t_list* marcos_utilizados)
 		list_add(tlb, dto);
 }
 
+int obtener_marcos_vacios() {
+	int marcos_vacios = 0;
+	
+	for(int i=0; i<CANTIDAD_MARCOS; i++) {
+		if(MARCOS_DISPONIBLES[i]==0) {
+			marcos_vacios++;
+		}
+	} 
+	return marcos_vacios;
+}
+
+int paginas_que_ocupa(int cantidad_bytes){
+	int aux = cantidad_bytes / TAMANIO_PAGINAS;
+	if (cantidad_bytes % TAMANIO_PAGINAS != 0) {
+		aux ++;
+	}
+	return aux;
+}
+
+/*void paginar (dto_memoria* dato_a_paginar){
+	if(paginas_que_ocupa(dato_a_paginar->tamanio_data) <= obtener_marcos_vacios()) {
+		t_list* marcos_a_reservar = obtener_marcos_a_reservar(paginas_que_ocupa(dato_a_paginar->tamanio_data));
+	}
+}*/
+
+t_list* obtener_marcos_a_reservar(int cantidad_solicitada){
+	t_list* aux_list = list_create();
+	int contador_array = 0;
+	for(int i=0; i<cantidad_solicitada; i++) {
+		if(MARCOS_DISPONIBLES[contador_array]==0) {
+			list_add(aux_list, contador_array);
+		} else {
+			i--;
+		}
+		contador_array++;
+	} 
+	return aux_list;
+}
+
+void setear_marcos_usados(t_list* lista_a_reservar){
+	void setear_marco_como_usado(int numero_marco){
+		MARCOS_DISPONIBLES[numero_marco] = 1;
+	}
+	list_iterate(lista_a_reservar, setear_marco_como_usado);
+}
+
 
 int main () {
 	
-	int TAMANIO_PAGINAS = 2;
-	int TAMANIO_MEMORIA = 12;
-
-	void* MEMORIA;
-	uint32_t* marcos_libres;
-	int cantidad_de_marcos = obtener_tamanio_array_de_marcos_libres(TAMANIO_PAGINAS, TAMANIO_MEMORIA);
-	marcos_libres = (uint32_t *) malloc( sizeof (uint32_t) * cantidad_de_marcos); 
+	
+	CANTIDAD_MARCOS = obtener_tamanio_array_de_marcos();
+	MARCOS_DISPONIBLES = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS); 
 	
 	
 	//inicializo en 0 todo el bitmap
 
-	for (int i = 0; i < cantidad_de_marcos; i++) {
-		marcos_libres[i] = 0;
+	for (int i = 0; i < CANTIDAD_MARCOS; i++) {
+		MARCOS_DISPONIBLES[i] = 0;
 	}
 
+	
+
 	MEMORIA = (void*) malloc (TAMANIO_MEMORIA);
-	t_list* tlb = list_create();
+	tlb = list_create();
 
 	void* BOLSADEGATOS;
 	BOLSADEGATOS = (void*) malloc (4);
@@ -168,6 +216,23 @@ int main () {
 	testo = empaquetar_data_paginacion(&mockwrapeado);
 	memcpy(&b, testo.data_empaquetada+29, 4);
 	printf("El valor es %d\n",b);
+
+	MARCOS_DISPONIBLES[4] = 1;
+	MARCOS_DISPONIBLES[5] = 1;
+	MARCOS_DISPONIBLES[6] = 1;
+	t_list* reservar = list_create();
+	reservar = obtener_marcos_a_reservar(6);
+	printf("El valor es %d\n",list_get(reservar, 0));
+	printf("El valor es %d\n",list_get(reservar, 1));
+	printf("El valor es %d\n",list_get(reservar, 2));
+	printf("El valor es %d\n",list_get(reservar, 3));
+	printf("El valor es %d\n",list_get(reservar, 4));
+	setear_marcos_usados(reservar);
+	printf("El valor es %d\n",MARCOS_DISPONIBLES[0]);
+	printf("El valor es %d\n",MARCOS_DISPONIBLES[1]);
+	printf("El valor es %d\n",MARCOS_DISPONIBLES[2]);
+	printf("El valor es %d\n",MARCOS_DISPONIBLES[3]);
+	printf("El valor es %d\n",MARCOS_DISPONIBLES[20]);
 /*
 	t_list* test = list_create();
 	list_add(test, 1);
