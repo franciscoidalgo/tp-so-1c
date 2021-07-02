@@ -36,15 +36,15 @@ void* MEMORIA;
 uint32_t* MARCOS_DISPONIBLES;
 t_list* tlb;
 int TAMANIO_PAGINAS = 2;
-int TAMANIO_MEMORIA = 50;
+int TAMANIO_MEMORIA = 100;
 int CANTIDAD_MARCOS;
 	
 
 
 int obtener_tamanio_array_de_marcos (){
 	if (TAMANIO_MEMORIA >= TAMANIO_PAGINAS) {
-		printf("La cantidad de marcos disponibles es de %d marcos\n", TAMANIO_MEMORIA / TAMANIO_PAGINAS);
-		printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", TAMANIO_MEMORIA % TAMANIO_PAGINAS);
+		//printf("La cantidad de marcos disponibles es de %d marcos\n", TAMANIO_MEMORIA / TAMANIO_PAGINAS);
+		//printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", TAMANIO_MEMORIA % TAMANIO_PAGINAS);
 		return TAMANIO_MEMORIA/TAMANIO_PAGINAS;
 	} else {
 		printf("Hubo un error en la asignacion de MARCOS_DISPONIBLES");
@@ -60,6 +60,7 @@ dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* da
 	int largo_lista_de_tareas = strlen(data_a_empaquetar->lista_de_tareas) + 1;
 	aux_tamanio += 8;
 	aux_tamanio += cantidad_de_tripulantes * 21;
+	data_a_empaquetar->pcb.tareas = aux_tamanio;
 	aux_tamanio += largo_lista_de_tareas;
 	
 	dto_aux.tamanio_data = aux_tamanio;
@@ -77,7 +78,7 @@ dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* da
 	return dto_aux;
 }
 
-void modificar_tlb (t_list* tlb, uint32_t id_proceso, t_list* marcos_utilizados) {
+void modificar_tlb (uint32_t id_proceso, t_list* marcos_utilizados) {
 	
 	bool find(void* element){
 		t_proceso_paginado* aux = element;
@@ -110,11 +111,15 @@ int paginas_que_ocupa(int cantidad_bytes){
 	return aux;
 }
 
-/*void paginar (dto_memoria* dato_a_paginar){
-	if(paginas_que_ocupa(dato_a_paginar->tamanio_data) <= obtener_marcos_vacios()) {
-		t_list* marcos_a_reservar = obtener_marcos_a_reservar(paginas_que_ocupa(dato_a_paginar->tamanio_data));
+void setear_memoria(t_list* lista_a_reservar, void* data_empaquetada){
+	int aux = 0;
+	void setear_una_pagina(int numero_marco){
+		memcpy(MEMORIA + (numero_marco * TAMANIO_PAGINAS), data_empaquetada + aux, TAMANIO_PAGINAS);
+		aux += TAMANIO_PAGINAS;
 	}
-}*/
+	list_iterate(lista_a_reservar, setear_una_pagina);
+}
+
 
 t_list* obtener_marcos_a_reservar(int cantidad_solicitada){
 	t_list* aux_list = list_create();
@@ -137,6 +142,52 @@ void setear_marcos_usados(t_list* lista_a_reservar){
 	list_iterate(lista_a_reservar, setear_marco_como_usado);
 }
 
+void paginar (estructura_administrativa_paginacion* dato_a_paginar){
+	dto_memoria dato_empaquetado = empaquetar_data_paginacion(dato_a_paginar);
+	if(paginas_que_ocupa(dato_empaquetado.tamanio_data) <= obtener_marcos_vacios()){
+		t_list* marcos_a_reservar = obtener_marcos_a_reservar(paginas_que_ocupa(dato_empaquetado.tamanio_data));
+		modificar_tlb(dato_a_paginar->pcb.pid, marcos_a_reservar);
+		setear_marcos_usados(marcos_a_reservar);
+		setear_memoria(marcos_a_reservar, &dato_empaquetado);
+	}
+}
+
+void mostrar_array_marcos(){
+	printf("\n*****ARRAY DE MARCOS*****\n");
+	int aux =  obtener_tamanio_array_de_marcos();
+	for(int i = 0; i<aux; i++){
+		if(i<10)
+			printf("--%d ", i);
+		if(i>=10 && i<100)
+			printf("-%d ", i);	
+		if(i>=100 && i<1000)
+			printf("%d ", i);
+	}
+	printf("\n");
+
+	for(int a = 0; a<aux; a++){
+		printf("--%d ", MARCOS_DISPONIBLES[a]);
+	}
+	printf("\n*************************\n\n");
+}
+
+void mostrar_tlb(){
+	printf("\n*****TLB*****\n");
+	void imprimir_un_valor(t_proceso_paginado* item_tlb){
+		
+		printf("PID: %d - ", item_tlb->pid);
+		
+		void imprimir_marco(int numero_marco){
+		printf("%d ", numero_marco);
+		}
+
+		list_iterate(item_tlb->lista_de_marcos, imprimir_marco);
+		printf("\n");
+	}
+
+	list_iterate(tlb, imprimir_un_valor);
+	printf("*************************\n\n");
+}
 
 int main () {
 	
@@ -152,34 +203,10 @@ int main () {
 	}
 
 	
-
 	MEMORIA = (void*) malloc (TAMANIO_MEMORIA);
 	tlb = list_create();
 
-	void* BOLSADEGATOS;
-	BOLSADEGATOS = (void*) malloc (4);
-	uint32_t ejemplo = 31;
-	memcpy(BOLSADEGATOS, &ejemplo, sizeof(uint32_t));
-	memcpy(MEMORIA, BOLSADEGATOS, 2);
-	memcpy(MEMORIA + 2, BOLSADEGATOS + 2, 2);
 
-	uint32_t lectura;
-
-	memcpy(&lectura, MEMORIA, sizeof(uint32_t));
-
-	/*char* pepe;
-	pepe = (char*) malloc(sizeof(char)*5);
-	pepe = "Hola";
-	printf("El valor es %s\n",pepe);
-	*/
-
-	/*t_list* falopa = list_create();
-	list_add(falopa, 1);
-	list_add(falopa, 2);
-	list_add(falopa, 4);
-	
-
-	printf("El valor es %d\n",list_size(falopa));*/
 
 	t_pcb mockpcb;
 	mockpcb.pid= 2;
@@ -196,9 +223,67 @@ int main () {
 	t_list* tcblist = list_create();
 	list_add(tcblist, mocktcb);
 	list_add(tcblist, mocktcb);
+	
+	char* pepe;
+	pepe = (char*) malloc(sizeof(char)*5);
+	pepe = "Hola";
 
+	estructura_administrativa_paginacion mockwrapeado;
+	mockwrapeado.pcb = mockpcb;
+	mockwrapeado.lista_de_tcb = tcblist;
+	mockwrapeado.lista_de_tareas = pepe;
+
+	mostrar_array_marcos();
+	mostrar_tlb();
+
+	paginar(&mockwrapeado);
+
+	mostrar_array_marcos();
+	mostrar_tlb();
+
+
+
+	/*void* BOLSADEGATOS;
+	BOLSADEGATOS = (void*) malloc (4);
+	uint32_t ejemplo = 31;
+	memcpy(BOLSADEGATOS, &ejemplo, sizeof(uint32_t));
+	memcpy(MEMORIA, BOLSADEGATOS, 2);
+	memcpy(MEMORIA + 2, BOLSADEGATOS + 2, 2);
+
+	uint32_t lectura;
+
+	memcpy(&lectura, MEMORIA, sizeof(uint32_t));*/
+
+	/*char* pepe;
+	pepe = (char*) malloc(sizeof(char)*5);
+	pepe = "Hola";
+	printf("El valor es %s\n",pepe);
+	*/
+
+	/*t_list* falopa = list_create();
+	list_add(falopa, 1);
+	list_add(falopa, 2);
+	list_add(falopa, 4);
 	
 
+	printf("El valor es %d\n",list_size(falopa));*/
+
+	/*t_pcb mockpcb;
+	mockpcb.pid= 2;
+	mockpcb.tareas= 10;
+
+	t_tcb* mocktcb = malloc(sizeof(t_tcb));
+	mocktcb->estado= 1;
+	mocktcb->posicion_x=2;
+	mocktcb->posicion_y=3;
+	mocktcb->proxima_instruccion=152;
+	mocktcb->puntero_pcb= 0;
+	mocktcb->tid= 19;
+
+	t_list* tcblist = list_create();
+	list_add(tcblist, mocktcb);
+	list_add(tcblist, mocktcb);
+	
 	char* pepe;
 	pepe = (char*) malloc(sizeof(char)*5);
 	pepe = "Hola";
@@ -222,24 +307,21 @@ int main () {
 	MARCOS_DISPONIBLES[6] = 1;
 	t_list* reservar = list_create();
 	reservar = obtener_marcos_a_reservar(6);
-	printf("El valor es %d\n",list_get(reservar, 0));
-	printf("El valor es %d\n",list_get(reservar, 1));
-	printf("El valor es %d\n",list_get(reservar, 2));
-	printf("El valor es %d\n",list_get(reservar, 3));
-	printf("El valor es %d\n",list_get(reservar, 4));
 	setear_marcos_usados(reservar);
-	printf("El valor es %d\n",MARCOS_DISPONIBLES[0]);
-	printf("El valor es %d\n",MARCOS_DISPONIBLES[1]);
-	printf("El valor es %d\n",MARCOS_DISPONIBLES[2]);
-	printf("El valor es %d\n",MARCOS_DISPONIBLES[3]);
-	printf("El valor es %d\n",MARCOS_DISPONIBLES[20]);
-/*
+	
+	mostrar_array_marcos();
+
+	setear_memoria(reservar, testo.data_empaquetada);
+	memcpy(&b, MEMORIA + 4, 4);
+	printf("El valor es %d\n",b);
+
 	t_list* test = list_create();
 	list_add(test, 1);
 	t_list* test2 = list_create();
-	list_add(test2, 2);
-	modificar_tlb(tlb, 17, test);
-	modificar_tlb(tlb, 17, test2);
+	modificar_tlb(17, test);
+	modificar_tlb(8, reservar);
+
+	mostrar_tlb();
 
 
 	t_proceso_paginado* pantalla = list_get(tlb, 0);
@@ -247,8 +329,8 @@ int main () {
 	
 
 	
-	printf("El valor es %d\n",*pantalla->lista_de_marcos->head);
+	printf("El valor es %d\n",*pantalla->lista_de_marcos->head);*/
 
-	*/
+	
 	return 0;
 }
