@@ -148,7 +148,7 @@ void paginar (estructura_administrativa_paginacion* dato_a_paginar){
 		t_list* marcos_a_reservar = obtener_marcos_a_reservar(paginas_que_ocupa(dato_empaquetado.tamanio_data));
 		modificar_tlb(dato_a_paginar->pcb.pid, marcos_a_reservar);
 		setear_marcos_usados(marcos_a_reservar);
-		setear_memoria(marcos_a_reservar, &dato_empaquetado);
+		setear_memoria(marcos_a_reservar, dato_empaquetado.data_empaquetada);
 	}
 }
 
@@ -233,14 +233,17 @@ int main () {
 	mockwrapeado.lista_de_tcb = tcblist;
 	mockwrapeado.lista_de_tareas = pepe;
 
-	mostrar_array_marcos();
-	mostrar_tlb();
+	//mostrar_array_marcos();
+	//mostrar_tlb();
 
 	paginar(&mockwrapeado);
 
 	mostrar_array_marcos();
 	mostrar_tlb();
 
+	uint32_t b;
+	memcpy(&b, MEMORIA + 46, 4);
+	printf("El valor es %d\n",b);
 
 
 	/*void* BOLSADEGATOS;
