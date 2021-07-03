@@ -432,10 +432,10 @@ t_tarea* recibir_tarea_de_RAM(int socket) {
 	return deserealizar_tarea(paquete->buffer);
 }
 
-
 void enviar_desplazamiento_tripulante(t_tcb* tripulante, int socket_cliente) {
-	int posX;
-	int posY;
+
+	int posX = tripulante->posicion_x;
+	int posY = 	tripulante->posicion_y;
 	int posTareaTripulanteX = tripulante->tarea->posicion_x;
 	int posTareaTripulanteY = tripulante->tarea->posicion_y;
 
@@ -452,36 +452,58 @@ void enviar_desplazamiento_tripulante(t_tcb* tripulante, int socket_cliente) {
 	string_append(&info_tripulante,"-");
 	string_append(&info_tripulante, (string_itoa(tripulante->tid)));
 
+
+	if(posX == posTareaTripulanteX && posY == posTareaTripulanteY) {
+		log_info(logger, "Tripulante ya está en la posición %d|%d igual que la tarea %d|%d ",
+		tripulante->posicion_x, 
+		tripulante->posicion_y, 
+		posTareaTripulanteX,
+		posTareaTripulanteY);
+		string_append(&info_tripulante, "Tripulante ya está en la misma posicion de la tarea ");
+		string_append(&info_tripulante,(string_itoa(posX)));
+		string_append(&info_tripulante,(string_itoa(posY)));
+		enviar_msj(info_tripulante, socket_cliente);
+	}
+	
+
 	if (posX <= posTareaTripulanteX && posY <= posTareaTripulanteY) {
-		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
+		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++) {
+			enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
 				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
-	 }
+	 		}
+		}
 	}  
 	if(posX >= posTareaTripulanteX && posY <= posTareaTripulanteY) {
-		for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
+		for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--) {
+		  enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 			for(posY = posTareaTripulanteY; posY <= posTareaTripulanteY; posY++) {
 				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
-
+			}
 		}
 	}
 	if (posX <= posTareaTripulanteX && posY >= posTareaTripulanteY) {
-		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++)
+		for( posX = posTareaTripulanteX; posX <= posTareaTripulanteX; posX++) {
+			enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 			for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
 				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
+			}
 		}
 	}
 	if (posX >= posTareaTripulanteX && posY >= posTareaTripulanteY) {
-	  for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--)
+	  for( posX = posTareaTripulanteX; posX >= posTareaTripulanteX; posX--) {
+		enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 		for(posY = posTareaTripulanteY; posY >= posTareaTripulanteY; posY--) {
 				enviar_desplazamiento(info_tripulante, posX, posY, socket_cliente);
 		}
 	  }
 	}
-	
+
 	liberar_conexion(socket_cliente);
 	free(info_tripulante);
 }
+
+
 void enviar_desplazamiento(char* info_tripulante, int posX, int posY, int socket_cliente) {
 	string_append(&info_tripulante, "Posicion X: ");
 	string_append(&info_tripulante,(string_itoa(posX)));
@@ -489,8 +511,8 @@ void enviar_desplazamiento(char* info_tripulante, int posX, int posY, int socket
 	string_append(&info_tripulante,(string_itoa(posY)));
 	enviar_msj(info_tripulante, socket_cliente);
 	sleep(1); // en teoria es 1 quantum por desplazamiento 
-	log_info(logger, "Posicion en X %i\n", posX);
-	log_info(logger, "Posicion en Y %i\n", posY);
+	log_info(logger, "Posicion del tripulante en X %i\n", posX);
+	log_info(logger, "Posicion del tripulante en Y %i\n", posY);
 }
 
 void realizar_tarea_metodo_FIFO(t_tcb* tripulante) {
