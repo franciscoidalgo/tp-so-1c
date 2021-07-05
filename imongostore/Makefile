@@ -29,7 +29,7 @@ release: $(TARGET)
 
 
 $(TARGET): $(OBJS) $(SHARED_OBJ)
-	$(CC) $(OBJS) $(CFLAGS) -I$(SHARED_IDIR) $(LIBS) -o $@
+	$(CC) $^ $(CFLAGS) -I$(SHARED_IDIR) $(LIBS) -o $@
 
 $(OBJ)/%.o: $(SRC)/%.c $(HEADERS) $(SHARED_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@

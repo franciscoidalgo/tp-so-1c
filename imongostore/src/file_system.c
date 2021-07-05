@@ -8,6 +8,7 @@
 #include "file_system.h"
 #include "superbloque.h"
 #include "fs_paths.h"
+#include "../../shared/include/shared_utils.h"
 
 #include <commons/config.h>
 #include <commons/string.h>
@@ -59,6 +60,7 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
+	iniciar_servidor(logger);
 	while(1){
 		sleep(1000);
 	};
