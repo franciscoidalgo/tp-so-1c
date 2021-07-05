@@ -10,7 +10,7 @@
 			"path": "shared"
 		},
 		{
-			"path": "i-mongo-store"
+			"path": "imongostore"
 		}
 	],
 	"settings": {
