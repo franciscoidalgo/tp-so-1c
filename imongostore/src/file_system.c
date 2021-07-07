@@ -28,7 +28,9 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define FILE_FORMAT "SIZE=\nBLOCK_COUNT=\nBLOCKS=\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
+#define FORMATO_RECURSO "SIZE=\nBLOCK_COUNT=\nBLOCKS=\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
+#define FORMATO_BITACORA "SIZE=\nBLOCKS\n"
+#define TRUNCATE_ERROR -1
 
 //variables globales
 char* path;
@@ -60,7 +62,6 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
-	iniciar_servidor(logger);
 	while(1){
 		sleep(1000);
 	};
@@ -85,7 +86,6 @@ void crear_directorio(char* path){
 
 	chequear_error = mkdir(path, 0777);
 
-	//TODO : Manejar con logger
 	if(!chequear_error){
 		log_info(logger, "Se creo el directorio: %s.", path);
 	}else if(errno != EEXIST){
@@ -128,7 +128,7 @@ void generar_superbloque(){
 	size_t tamanio_sb = len(blocks);
 
 	//Setea su tamaño para poder mapearlo
-	if(ftruncate(sb_file, tamanio_sb) == -1){
+	if(ftruncate(sb_file, tamanio_sb) == TRUNCATE_ERROR){
 		perror("Error al generar archivo SuperBloque.ims .");
 	}
 	fsync(sb_file);
@@ -179,7 +179,7 @@ void generar_blocks(){
 		log_info(logger, "Se recupero un Blocks existente.");
 	}else{
 		log_info(logger, "Se genero el archivo Blocks.");
-		if(ftruncate(b_file, blocks * block_size)==-1){
+		if(ftruncate(b_file, blocks * block_size)==TRUNCATE_ERROR){
 			perror("Error al generar la metadata de un archivo.");
 		}
 		fsync(b_file);
@@ -193,32 +193,95 @@ void generar_blocks(){
 
 }
 
-char* generar_template_meta_file (char* filename){
+void formatear_meta_file (int fd, char* formato){
 	char* file_content;
-	int meta_file;
 
-	char* path_file = string_duplicate(path_files);
-	string_append(&path_file, "/");
-	string_append(&path_file, filename);
-
-	meta_file = open(path_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	if(ftruncate(meta_file, strlen(FILE_FORMAT))==-1){
+	if(ftruncate(fd, strlen(formato))==TRUNCATE_ERROR){
 		perror("Error al generar la metadata de un archivo.");
 	}
-	fsync(meta_file);
-	file_content = mmap(NULL, strlen(FILE_FORMAT), PROT_WRITE | PROT_READ, MAP_SHARED, meta_file, 0);
-	strcpy(file_content, FILE_FORMAT);
-	munmap(file_content, strlen(FILE_FORMAT));
-	close(meta_file);
-	return path_file;
+	fsync(fd);
+	file_content = mmap(NULL, strlen(formato), PROT_WRITE | PROT_READ, MAP_SHARED, fd, 0);
+	strcpy(file_content, formato);
+	munmap(file_content, strlen(formato));
+}
+
+int encontrar_block_libre(){
+	int numero_bloque;
+	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
+	int blocks = config_get_int_value(config, "BLOCKS");
+	for(numero_bloque = 0; blocks_p[numero_bloque*block_size] != 0 && numero_bloque < blocks; numero_bloque++);
+	return numero_bloque;
 }
 
 void generar_recurso(){
 	//TODO
 }
 
-void generar_bitacora(){
-	//TODO
+int size_of_blocks (char** blocks){
+	int size;
+	for(size = 1; blocks[size - 1] != NULL; size++);
+	return size;
+}
+
+void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada){
+	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
+	char* file_path = string_duplicate(path_bitacoras);
+	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
+	int current_block;
+	int bytes_escritos = 0;
+	int bytes_a_escribir;
+
+	t_config* recurso;
+	char** blocks;
+	
+	int array_size = size_entrada%block_size == 0? size_entrada/block_size : size_entrada/block_size + 1;
+	int i = 0;
+
+	string_append(&file_path, "/");
+	string_append(&file_path, file_name);
+	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	if(lseek(fd, 0, SEEK_END) <= 1){
+		formatear_meta_file(fd, FORMATO_BITACORA);
+	}
+	close(fd);
+
+	recurso = config_create(file_path);
+	blocks = config_get_array_value(recurso, "BLOCKS");
+
+	int size_blocks_escritos = array_size + size_of_blocks(blocks);
+	int blocks_escritos [size_blocks_escritos];
+
+	if(size_of_blocks(blocks) > 0){
+		blocks_escritos[0] = atoi(blocks[0]);
+		int offset = 0;
+		int index_ultimo_bloque;
+		for (index_ultimo_bloque = 0; blocks[index_ultimo_bloque + 1] != NULL; index_ultimo_bloque++){
+			blocks_escritos[index_ultimo_bloque + 1] = atoi(blocks[index_ultimo_bloque + 1]);
+		}
+		blocks_escritos[index_ultimo_bloque] = atoi(blocks[index_ultimo_bloque]);
+		int ultimo_bloque = atoi(blocks[index_ultimo_bloque]);
+		for(offset = 0; blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
+		memcpy((void*) blocks_p + offset, entrada, block_size - offset);
+		bytes_escritos = block_size - offset;
+		
+	}
+
+	while(bytes_escritos < size_entrada){
+		if(size_entrada - bytes_escritos > block_size){
+			bytes_a_escribir = block_size;
+		}else{
+			bytes_a_escribir = size_entrada - bytes_escritos;
+		}
+		memcpy((void*) blocks_p + current_block * block_size, (void*) entrada + bytes_escritos, bytes_a_escribir);
+		current_block = encontrar_block_libre();
+		bytes_escritos += block_size;
+		blocks_escritos[i] = current_block;
+		i++;
+	}
+
+
+	free(file_name);
+	free(file_path);
 }
 
 void buscar_recursos_en_path(char* path_elegido, t_list* lista_bloques){

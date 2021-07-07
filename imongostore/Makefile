@@ -23,9 +23,15 @@ SHARED_OBJ = $(patsubst $(SHARED_SRCDIR)/%.c,$(SHARED_ODIR)/%.o,$(SHARED_SRC))
 .PHONY: default all clean
 
 all: $(TARGET)
+
 release: CFLAGS = -Wall -O2 -DNDEBUG
 release: clean
 release: $(TARGET)
+
+wclang: CC = clang
+wclang: TARGET = $(BIN)/i-mongo-wclang
+wclang: clean
+wclang: $(TARGET)
 
 
 $(TARGET): $(OBJS) $(SHARED_OBJ)
