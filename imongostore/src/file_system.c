@@ -11,9 +11,11 @@
 #include "../../shared/include/shared_utils.h"
 
 #include <commons/config.h>
+#include <commons/log.h>
 #include <commons/string.h>
 #include <commons/bitarray.h>
 #include <commons/collections/list.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -28,9 +30,21 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define FORMATO_RECURSO "SIZE=\nBLOCK_COUNT=\nBLOCKS=\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
-#define FORMATO_BITACORA "SIZE=\nBLOCKS\n"
+#define FORMATO_RECURSO "SIZE=\nBLOCK_COUNT=\nBLOCKS=[]\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
+#define FORMATO_BITACORA "SIZE=\nBLOCKS=[]\n"
 #define TRUNCATE_ERROR -1
+
+//Hash Table para recursos y sus caracteres de llenado
+typedef struct{
+	char tipo_recurso[255];
+	char caracter_de_llenado;
+}t_recurso;
+
+t_recurso tabla_recursos []={
+	{"OXIGENO", 'O'},
+	{"COMIDA", 'C'},
+	{"BASURA", 'B'}
+};
 
 //variables globales
 char* path;
@@ -53,6 +67,8 @@ void generar_directorios(char*);
 void generar_superbloque();
 void generar_blocks();
 char* generar_md5(char*, size_t);
+void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
+void generar_recurso(char* nombre_recurso, char caracter_de_llenado, int cantidad);
 
 //Funciones
 void incializar_fs(){
@@ -62,6 +78,7 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
+	generar_bitacora(32, "Hice algo re loco", 17);
 	while(1){
 		sleep(1000);
 	};
@@ -160,7 +177,8 @@ void actualizar_blocks(){
 		pthread_mutex_lock(&mutex_blocks);
 		msync(blocks_p, blocks * block_size, MS_SYNC);
 		pthread_mutex_unlock(&mutex_blocks);
-		sleep(sync_time);
+		log_info(logger, "Se actualizaron los bloques en el fs.");
+		sleep(10);
 	}
 }
 
@@ -213,30 +231,137 @@ int encontrar_block_libre(){
 	return numero_bloque;
 }
 
-void generar_recurso(){
-	//TODO
+
+void refrescar_bloques (t_list* bloques, t_config* recurso){
+	char new_blocks_data [255]; 
+	int cant_bloques = list_size(bloques);
+	int current_index = sprintf(new_blocks_data, "[%s", (char*) list_get(bloques, 0));
+	for(int current = 1; current < cant_bloques; current++)
+		current_index += sprintf(new_blocks_data + current_index, ",%s", (char*) list_get(bloques, current));
+	sprintf(new_blocks_data + current_index, "]");
+	config_set_value(recurso, "BLOCKS", new_blocks_data);
+	config_save(recurso);
 }
 
-int size_of_blocks (char** blocks){
-	int size;
-	for(size = 1; blocks[size - 1] != NULL; size++);
-	return size;
+
+void actualizar_bitmap (t_list* bloques_en_uso){
+	int superbloque_fd = open(path_sb, O_RDWR, S_IRUSR | S_IWUSR);
+	int superbloque_file_size = lseek(superbloque_fd, 0, SEEK_END) + 1;
+	void* superbloque_mapped = mmap(NULL, superbloque_file_size, PROT_WRITE | PROT_READ, MAP_SHARED, superbloque_fd, 0);
+	int block_list_size = list_size(bloques_en_uso);
+	uint32_t blocks;
+	int sizeofbitmap;
+	char* bitmap;
+	int offset_bitmap = 2 * sizeof(uint32_t);
+	t_bitarray* bitarray;
+	
+
+	memcpy(&blocks, superbloque_mapped, sizeof(uint32_t));
+	sizeofbitmap = blocks_to_bytes(blocks);
+	bitmap = malloc(sizeofbitmap);
+	memcpy(bitmap, superbloque_mapped + offset_bitmap, sizeofbitmap);
+	bitarray = bitarray_create_with_mode(bitmap, sizeofbitmap, LSB_FIRST);
+
+	for(int i=0; i< block_list_size; i++){
+		bitarray_set_bit(bitarray, atoi(list_get(bloques_en_uso, i)));
+	}
+
+	memcpy(superbloque_mapped + offset_bitmap, bitarray->bitarray, sizeofbitmap);
+
+	munmap(superbloque_mapped, superbloque_file_size);
+	free(bitmap);
+	bitarray_destroy(bitarray);
+
+	
 }
 
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada){
-	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
-	char* file_path = string_duplicate(path_bitacoras);
+
+void limpiar_lista_bloques(t_list* lista_bloques){
+	t_link_element* elemento_actual;
+	elemento_actual = lista_bloques->head;
+	for (int i=0; i < list_size(lista_bloques);i++){
+		free(elemento_actual->data);
+		elemento_actual = elemento_actual->next;
+	}
+}
+
+
+void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
 	int current_block;
 	int bytes_escritos = 0;
 	int bytes_a_escribir;
 
-	t_config* recurso;
 	char** blocks;
 	
-	int array_size = size_entrada%block_size == 0? size_entrada/block_size : size_entrada/block_size + 1;
-	int i = 0;
+	blocks = config_get_array_value(recurso, "BLOCKS");
 
+	t_list* lista_bloques = list_create();
+
+
+	if(blocks[0] != NULL){
+		list_add(lista_bloques, blocks[0]);
+		int offset = 0;
+		int index_ultimo_bloque;
+		for (index_ultimo_bloque = 1; blocks[index_ultimo_bloque] != NULL; index_ultimo_bloque++){
+			list_add(lista_bloques, blocks[index_ultimo_bloque]);
+		}
+		index_ultimo_bloque--;
+		int ultimo_bloque = atoi(blocks[index_ultimo_bloque]);
+		for(offset = 0; blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
+		if(size_entrada < block_size - offset){
+			memcpy((void*) blocks_p + offset, entrada, size_entrada);
+		}else{
+			memcpy((void*) blocks_p + offset, entrada, block_size - offset);
+		}
+		bytes_escritos = block_size - offset;
+		
+	}
+
+	while(bytes_escritos < size_entrada){
+		current_block = encontrar_block_libre();
+		if(size_entrada - bytes_escritos > block_size){
+			bytes_a_escribir = block_size;
+		}else{
+			bytes_a_escribir = size_entrada - bytes_escritos;
+		}
+		memcpy((void*) blocks_p + current_block * block_size, (void*) entrada + bytes_escritos, bytes_a_escribir);
+		bytes_escritos += block_size;
+		list_add(lista_bloques, string_from_format("%d", current_block));
+	}
+	refrescar_bloques(lista_bloques, recurso);
+	actualizar_bitmap(lista_bloques);
+	
+	limpiar_lista_bloques(lista_bloques);
+	list_destroy(lista_bloques);
+	free(blocks);
+}
+
+void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantidad){
+	t_config* recurso;
+	char* entrada;
+	char* file_name = string_from_format("%s.ims", nombre_recurso);
+	char* file_path = string_duplicate(path_bitacoras);
+	string_append(&file_path, "/");
+	string_append(&file_path, file_name);
+	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	if(lseek(fd, 0, SEEK_END) <= 1){
+		formatear_meta_file(fd, FORMATO_RECURSO);
+	}
+	close(fd);
+	recurso = config_create(file_path);
+	entrada = string_repeat(caracter_de_llenado, cantidad);
+	generar_file(recurso, entrada, cantidad);
+	free(file_name);
+	free(file_path);
+	config_destroy(recurso);
+
+}
+
+void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
+	t_config* recurso;
+	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
+	char* file_path = string_duplicate(path_bitacoras);
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
 	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
@@ -244,44 +369,12 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada){
 		formatear_meta_file(fd, FORMATO_BITACORA);
 	}
 	close(fd);
-
 	recurso = config_create(file_path);
-	blocks = config_get_array_value(recurso, "BLOCKS");
-
-	int size_blocks_escritos = array_size + size_of_blocks(blocks);
-	int blocks_escritos [size_blocks_escritos];
-
-	if(size_of_blocks(blocks) > 0){
-		blocks_escritos[0] = atoi(blocks[0]);
-		int offset = 0;
-		int index_ultimo_bloque;
-		for (index_ultimo_bloque = 0; blocks[index_ultimo_bloque + 1] != NULL; index_ultimo_bloque++){
-			blocks_escritos[index_ultimo_bloque + 1] = atoi(blocks[index_ultimo_bloque + 1]);
-		}
-		blocks_escritos[index_ultimo_bloque] = atoi(blocks[index_ultimo_bloque]);
-		int ultimo_bloque = atoi(blocks[index_ultimo_bloque]);
-		for(offset = 0; blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
-		memcpy((void*) blocks_p + offset, entrada, block_size - offset);
-		bytes_escritos = block_size - offset;
-		
-	}
-
-	while(bytes_escritos < size_entrada){
-		if(size_entrada - bytes_escritos > block_size){
-			bytes_a_escribir = block_size;
-		}else{
-			bytes_a_escribir = size_entrada - bytes_escritos;
-		}
-		memcpy((void*) blocks_p + current_block * block_size, (void*) entrada + bytes_escritos, bytes_a_escribir);
-		current_block = encontrar_block_libre();
-		bytes_escritos += block_size;
-		blocks_escritos[i] = current_block;
-		i++;
-	}
-
-
+	generar_file(recurso, entrada, sizeofentrada);
 	free(file_name);
 	free(file_path);
+	config_destroy(recurso);
+
 }
 
 void buscar_recursos_en_path(char* path_elegido, t_list* lista_bloques){
@@ -323,14 +416,6 @@ void chequear_bitmap(t_bitarray* bitmap, t_list* bloques_en_uso){
 	log_info(logger, "Se chequeo el bitmap.");
 }
 
-void limpiar_lista_bloques(t_list* lista_bloques){
-	t_link_element* elemento_actual;
-	elemento_actual = lista_bloques->head;
-	for (int i=0; i < list_size(lista_bloques);i++){
-		free(elemento_actual->data);
-		elemento_actual = elemento_actual->next;
-	}
-}
 
 void chequear_recursos (void* superbloque, int superbloque_file_size){
 	t_list* lista_bloques = list_create();
