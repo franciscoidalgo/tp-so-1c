@@ -64,8 +64,11 @@ void generar_blocks();
 char* generar_md5(char*, size_t);
 void chequear_block_count(t_config* recurso, char log_option);
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
-void generar_recurso(char* nombre_recurso, char caracter_de_llenado, int cantidad);
+void generar_recurso(char* nombre_recurso, int cantidad);
+void consumir_recurso(char* nombre_recurso, int cantidad);
 void interpretar_mensaje_discordiador (char* mensaje);
+void formatear_meta_file (int, char*);
+void generar_meta_recursos();
 
 //Hash Table para recursos y sus caracteres de llenado
 t_instruccion tabla_comandos []={
@@ -103,8 +106,43 @@ void iniciar_en_limpio(){
 	generar_directorios(path);
 	generar_superbloque();
 	generar_blocks();
+	generar_meta_recursos();
 	log_info(logger, "El sistema se ha inicializado correctamente!");	
 
+}
+
+
+void generar_meta (char* nombre_recurso, char caracter_de_llenado){
+	char* file_name = string_from_format("%s.ims", nombre_recurso);
+	char* file_path = string_duplicate(path_files);
+	int file_size;
+
+	string_append(&file_path, "/");
+	string_append(&file_path, file_name);
+	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	file_size = lseek(fd, 0, SEEK_END);
+	if(file_size <= 1){
+		formatear_meta_file(fd, FORMATO_RECURSO);
+		close(fd);
+		t_config* recurso = config_create(file_path);
+		char caracter_de_llenado_array[2];
+		caracter_de_llenado_array[0] = caracter_de_llenado;
+		caracter_de_llenado_array[1] = '\0';
+		config_set_value(recurso, "CARACTER_LLENADO", caracter_de_llenado_array);
+		config_save(recurso);
+		config_destroy(recurso);
+	}
+	close(fd);
+	
+	free(file_name);
+	free(file_path);
+}
+
+
+void generar_meta_recursos (){
+	for(int i = 0; tabla_comandos[i].funcion != NULL; i++){
+		generar_meta(tabla_comandos[i].nombre_recurso, tabla_comandos[i].caracter_de_llenado);
+	}
 }
 
 
@@ -293,6 +331,12 @@ void interpretar_mensaje_discordiador (char* mensaje){
 	ejecutar_instruccion(instruccion, cantidad);
 }
 
+void liberar_blocks_array(char** blocks_array){
+	for(int i = 0; blocks_array[i] != NULL; i++){
+		free(blocks_array[i]);
+	}
+}
+
 void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	int current_block;
 	int bytes_escritos = 0;
@@ -349,7 +393,9 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	actualizar_bitmap(lista_bloques);	
 	limpiar_lista_bloques(lista_bloques);
 	list_destroy(lista_bloques);
+	free(size_string);
 	free(blocks_array);
+
 }
 
 
@@ -375,8 +421,8 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 }
 
 
-
-void consumir_recurso (t_config* recurso, int cantidad){
+/*
+void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	int current_block;
 	int cantidad_restante = cantidad;
 	int current_index;
@@ -389,7 +435,12 @@ void consumir_recurso (t_config* recurso, int cantidad){
 	
 	blocks_array = config_get_array_value(recurso, "BLOCKS");
 	size = config_get_int_value(recurso, "SIZE");
-
+	
+	if(blocks_array[0] == NULL){
+		log_info(logger, "Se quiso consumir un recurso que todavia no se creo.");
+		return;
+	}
+	
 	t_list* lista_bloques = list_create();
 	for(int i = 0; blocks_array[i] != NULL; i++){
 		list_add(lista_bloques, blocks_array[i]);
@@ -411,43 +462,64 @@ void consumir_recurso (t_config* recurso, int cantidad){
 	current_index--;
 	current_block = atoi(list_get(lista_bloques, current_index));
 
-	while(cantidad_restante > 0){
-		if(cantidad_restante > block_size){
-			memset(blocks_p + , size_t __n)
+	while(cantidad_restante > 0 && current_index >= 0){
+		if(cantidad_restante >= block_size){
+			memset(blocks_p + current_block * block_size, 0, block_size);
+			cantidad_restante -= block_size;
+		}else{
+			memset(blocks_p + current_block * block_size + block_size - cantidad_restante, 0, cantidad_restante);
+			cantidad_restante = 0;
 		}
+		current_index--;
+		current_block = atoi(list_get(lista_bloques, current_index));
 	}
-
+	if(current_index<0){
+		log_info(logger, "Se quiso consumir mas recursos de los disponibles.");
+	}
+	size -= cantidad + cantidad_restante;
+	size_string = string_from_format("%d", size);
+	config_set_value(recurso, "SIZE", size_string);
+	refrescar_bloques(lista_bloques, recurso);
+	config_save(recurso);
+	chequear_block_count(recurso, NO_LOGGEAR);
+	actualizar_bitmap(lista_bloques);	
+	limpiar_lista_bloques(lista_bloques);
+	list_destroy(lista_bloques);
+	liberar_blocks_array(blocks_array);
+	free(blocks_array);
 }
 
+void consumir_recurso (char* nombre_recurso, int cantidad){
+	t_config* recurso;
+	char* file_name = string_from_format("%s.ims", nombre_recurso);
+	char* file_path = string_duplicate(path_files);
+	int file_size;
 
-void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantidad){
+}
+*/
+
+void generar_recurso (char* nombre_recurso, int cantidad){
 	t_config* recurso;
 	char* entrada;
 	char* file_name = string_from_format("%s.ims", nombre_recurso);
 	char* file_path = string_duplicate(path_files);
-	int file_size;
-	char caracter_string [2];	
+	char* caracter_de_llenado_array;
 
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
-	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	file_size = lseek(fd, 0, SEEK_END);
-	if(file_size <= 1){
-		formatear_meta_file(fd, FORMATO_RECURSO);
-	}
-	close(fd);
+	
 	recurso = config_create(file_path);
-	if(file_size <=1){
-		caracter_string[0] = caracter_de_llenado;
-		caracter_string[1] = '\0';
-		config_set_value(recurso, "CARACTER_LLENADO", caracter_string);
-	}
-	entrada = string_repeat(caracter_de_llenado, cantidad);
+
+	caracter_de_llenado_array = config_get_string_value(recurso, "CARACTER_LLENADO");
+
+	entrada = string_repeat(caracter_de_llenado_array[0], cantidad);
 	generar_file(recurso, entrada, cantidad);
 	chequear_block_count(recurso, NO_LOGGEAR);
+	log_info(logger, "Se genero %d de %s", cantidad, nombre_recurso);
+	config_destroy(recurso);
+	free(entrada);
 	free(file_name);
 	free(file_path);
-	config_destroy(recurso);
 
 }
 
@@ -589,9 +661,7 @@ void chequear_block_count(t_config* recurso, char log_option){
 		if(log_option == LOGGEAR_CAMBIOS)
 			log_info(logger, "Se corrigio un sabotaje en la cantidad de bloques del archivo: %s", recurso->path);
 	}
-	for(len_blocks=0; blocks_array[len_blocks] != NULL; len_blocks++){
-		free(blocks_array[len_blocks]);
-	}
+	liberar_blocks_array(blocks_array);
 	free(blocks_array);
 }
 

@@ -9,5 +9,5 @@ t_instruccion* get_instruccion (char* instruccion, t_instruccion tabla_comandos[
 }
 
 void ejecutar_instruccion (t_instruccion* instruccion, int cantidad){
-	(*(instruccion->funcion)) (instruccion->nombre_recurso, instruccion->caracter_de_llenado, cantidad);
+	(*(instruccion->funcion)) (instruccion->nombre_recurso, cantidad);
 }

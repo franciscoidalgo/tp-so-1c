@@ -8,7 +8,7 @@ typedef struct{
 	char instruccion[20];
 	char nombre_recurso[20];
 	char caracter_de_llenado;
-	void (*funcion) (char*, char, int);
+	void (*funcion) (char*, int);
 }t_instruccion;
 
 
