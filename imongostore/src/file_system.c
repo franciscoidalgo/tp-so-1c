@@ -84,9 +84,9 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
-	interpretar_mensaje_discordiador("GENERAR_COMIDA 3");
-	interpretar_mensaje_discordiador("GENERAR_OXIGENO 3");
-	interpretar_mensaje_discordiador("GENERAR_BASURA 2");
+	interpretar_mensaje_discordiador("GENERAR_COMIDA 6");
+	interpretar_mensaje_discordiador("GENERAR_OXIGENO 28");
+	interpretar_mensaje_discordiador("GENERAR_BASURA 5");
 	while(1){
 		sleep(1000);
 	};
@@ -375,13 +375,15 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 }
 
 
-/*
+
 void consumir_recurso (t_config* recurso, int cantidad){
 	int current_block;
-	int bytes_escritos = 0;
-	int bytes_a_escribir;
+	int cantidad_restante = cantidad;
+	int current_index;
+	int offset_ultimo_bloque;
 
 	char** blocks_array;
+	
 	int size;
 	char* size_string;
 	
@@ -389,9 +391,34 @@ void consumir_recurso (t_config* recurso, int cantidad){
 	size = config_get_int_value(recurso, "SIZE");
 
 	t_list* lista_bloques = list_create();
+	for(int i = 0; blocks_array[i] != NULL; i++){
+		list_add(lista_bloques, blocks_array[i]);
+	}
+	current_index = list_size(lista_bloques) - 1;
+	current_block = atoi(list_get(lista_bloques, current_index));
+
+	for(offset_ultimo_bloque = 0; 
+	offset_ultimo_bloque < block_size && blocks_p[current_block * block_size + offset_ultimo_bloque] != 0; 
+	offset_ultimo_bloque++);
+	if(cantidad_restante < offset_ultimo_bloque + 1){
+		memset(blocks_p + current_block * block_size + offset_ultimo_bloque + 1 - cantidad_restante, 0, block_size - offset_ultimo_bloque - 1 + cantidad_restante);
+		cantidad_restante = 0;
+	}else{
+		memset(blocks_p + current_block * block_size, 0, block_size);
+		cantidad_restante -= block_size;
+		list_remove(lista_bloques, current_index);
+	}
+	current_index--;
+	current_block = atoi(list_get(lista_bloques, current_index));
+
+	while(cantidad_restante > 0){
+		if(cantidad_restante > block_size){
+			memset(blocks_p + , size_t __n)
+		}
+	}
 
 }
-*/
+
 
 void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantidad){
 	t_config* recurso;
