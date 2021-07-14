@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <pthread.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <inttypes.h>
 #include <errno.h>
@@ -30,8 +31,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#define FORMATO_RECURSO "SIZE=\nBLOCK_COUNT=\nBLOCKS=[]\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
-#define FORMATO_BITACORA "SIZE=\nBLOCKS=[]\n"
+#define FORMATO_RECURSO "SIZE=0\nBLOCK_COUNT=0\nBLOCKS=[]\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
+#define FORMATO_BITACORA "SIZE=0\nBLOCKS=[]\n"
 #define TRUNCATE_ERROR -1
 
 //Hash Table para recursos y sus caracteres de llenado
@@ -79,6 +80,7 @@ void incializar_fs(){
 	
 	signal(SIGUSR1, recuperar_fs);
 	generar_bitacora(32, "Hice algo re loco", 17);
+	generar_recurso("OXIGENO", 'O', 5);
 	while(1){
 		sleep(1000);
 	};
@@ -178,7 +180,7 @@ void actualizar_blocks(){
 		msync(blocks_p, blocks * block_size, MS_SYNC);
 		pthread_mutex_unlock(&mutex_blocks);
 		log_info(logger, "Se actualizaron los bloques en el fs.");
-		sleep(10);
+		sleep(2);
 	}
 }
 
@@ -240,7 +242,6 @@ void refrescar_bloques (t_list* bloques, t_config* recurso){
 		current_index += sprintf(new_blocks_data + current_index, ",%s", (char*) list_get(bloques, current));
 	sprintf(new_blocks_data + current_index, "]");
 	config_set_value(recurso, "BLOCKS", new_blocks_data);
-	config_save(recurso);
 }
 
 
@@ -293,8 +294,11 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	int bytes_a_escribir;
 
 	char** blocks;
+	int size;
+	char* size_string;
 	
 	blocks = config_get_array_value(recurso, "BLOCKS");
+	size = config_get_int_value(recurso, "SIZE");
 
 	t_list* lista_bloques = list_create();
 
@@ -310,9 +314,9 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 		int ultimo_bloque = atoi(blocks[index_ultimo_bloque]);
 		for(offset = 0; blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
 		if(size_entrada < block_size - offset){
-			memcpy((void*) blocks_p + offset, entrada, size_entrada);
+			memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, size_entrada);
 		}else{
-			memcpy((void*) blocks_p + offset, entrada, block_size - offset);
+			memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, block_size - offset);
 		}
 		bytes_escritos = block_size - offset;
 		
@@ -329,9 +333,13 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 		bytes_escritos += block_size;
 		list_add(lista_bloques, string_from_format("%d", current_block));
 	}
+	size += size_entrada;
+	size_string = string_from_format("%d", size);
+
+	config_set_value(recurso, "SIZE", size_string);
 	refrescar_bloques(lista_bloques, recurso);
-	actualizar_bitmap(lista_bloques);
-	
+	config_save(recurso);
+	actualizar_bitmap(lista_bloques);	
 	limpiar_lista_bloques(lista_bloques);
 	list_destroy(lista_bloques);
 	free(blocks);
@@ -341,15 +349,24 @@ void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantid
 	t_config* recurso;
 	char* entrada;
 	char* file_name = string_from_format("%s.ims", nombre_recurso);
-	char* file_path = string_duplicate(path_bitacoras);
+	char* file_path = string_duplicate(path_files);
+	int file_size;
+	char caracter_string [2];	
+
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
 	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	if(lseek(fd, 0, SEEK_END) <= 1){
+	file_size = lseek(fd, 0, SEEK_END);
+	if(file_size <= 1){
 		formatear_meta_file(fd, FORMATO_RECURSO);
 	}
 	close(fd);
 	recurso = config_create(file_path);
+	if(file_size <=1){
+		caracter_string[0] = caracter_de_llenado;
+		caracter_string[1] = '\0';
+		config_set_value(recurso, "CARACTER_LLENADO", caracter_string);
+	}
 	entrada = string_repeat(caracter_de_llenado, cantidad);
 	generar_file(recurso, entrada, cantidad);
 	free(file_name);
