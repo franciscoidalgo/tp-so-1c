@@ -226,7 +226,7 @@ void actualizar_blocks(){
 		msync(blocks_p, blocks * block_size, MS_SYNC);
 		pthread_mutex_unlock(&mutex_blocks);
 		log_info(logger, "Se actualizaron los bloques en el fs.");
-		sleep(2);
+		sleep(sync_time);
 	}
 }
 
@@ -496,6 +496,7 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	list_destroy(lista_bloques);
 	liberar_blocks_array(blocks_array);
 	free(blocks_array);
+	free(size_string);
 }
 
 void consumir_recurso (char* nombre_recurso, int cantidad){
