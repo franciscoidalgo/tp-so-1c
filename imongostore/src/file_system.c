@@ -68,9 +68,9 @@ void interpretar_mensaje_discordiador (char* mensaje);
 //Hash Table para recursos y sus caracteres de llenado
 
 t_instruccion tabla_comandos []={
-	{"GENERAR_OXIGENO", "OXIGENO", 'O', generar_recurso},
-	{"GENERAR_COMIDA", "COMIDA", 'C', generar_recurso},
-	{"GENERAR_BASURA", "BASURA", 'B', generar_recurso},
+	{"GENERAR_OXIGENO", "Oxigeno", 'O', generar_recurso},
+	{"GENERAR_COMIDA", "Comida", 'C', generar_recurso},
+	{"GENERAR_BASURA", "Basura", 'B', generar_recurso},
 	{"\0", "\0", 0, NULL}
 };
 
