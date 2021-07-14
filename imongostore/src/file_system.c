@@ -51,6 +51,8 @@ t_log* logger;
 char* blocks_p;
 pthread_t hilo_blocks;
 pthread_mutex_t mutex_blocks;
+uint32_t blocks;
+uint32_t block_size;
 
 //declaracion de funciones locales usadas en inicializacion
 void recuperar_fs(int);
@@ -66,7 +68,6 @@ void generar_recurso(char* nombre_recurso, char caracter_de_llenado, int cantida
 void interpretar_mensaje_discordiador (char* mensaje);
 
 //Hash Table para recursos y sus caracteres de llenado
-
 t_instruccion tabla_comandos []={
 	{"GENERAR_OXIGENO", "Oxigeno", 'O', generar_recurso},
 	{"GENERAR_COMIDA", "Comida", 'C', generar_recurso},
@@ -83,8 +84,9 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
-	interpretar_mensaje_discordiador("GENERAR_OXIGENO 40");
-	interpretar_mensaje_discordiador("GENERAR_COMIDA 100");
+	interpretar_mensaje_discordiador("GENERAR_COMIDA 3");
+	interpretar_mensaje_discordiador("GENERAR_OXIGENO 3");
+	interpretar_mensaje_discordiador("GENERAR_BASURA 2");
 	while(1){
 		sleep(1000);
 	};
@@ -95,6 +97,8 @@ void incializar_fs(){
 //Funcion que genera las estructuras necesarias
 void iniciar_en_limpio(){
 	path = config_get_string_value(config, "PUNTO_MONTAJE");
+	blocks = config_get_int_value(config, "BLOCKS");
+	block_size = config_get_int_value(config, "BLOCKS_SIZE");
 
 	generar_directorios(path);
 	generar_superbloque();
@@ -142,8 +146,6 @@ void generar_superbloque(){
 
 	void* superbloque;
 
-	uint32_t blocks = config_get_int_value(config, "BLOCKS");
-	uint32_t block_size = config_get_int_value(config, "BLOCKS_SIZE");
 	uint32_t blocks_en_bytes = blocks_to_bytes(blocks);
 
 	char* puntero_a_bits = calloc(blocks_en_bytes, sizeof(char));
@@ -176,9 +178,6 @@ void generar_superbloque(){
 
 void actualizar_blocks(){
 	int sync_time = config_get_int_value(config, "TIEMPO_SINCRONIZACION");
-	int blocks = config_get_int_value(config, "BLOCKS");
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
-
 	while(1){
 		pthread_mutex_lock(&mutex_blocks);
 		msync(blocks_p, blocks * block_size, MS_SYNC);
@@ -195,9 +194,6 @@ void generar_blocks(){
 	string_append(&path_blocks, "/Blocks.ims");
 
 	b_file = open(path_blocks, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-
-	int blocks = config_get_int_value(config, "BLOCKS");
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
 
 	if(lseek(b_file, 0, SEEK_END) > 1){
 		log_info(logger, "Se recupero un Blocks existente.");
@@ -231,8 +227,6 @@ void formatear_meta_file (int fd, char* formato){
 
 int encontrar_block_libre(){
 	int numero_bloque;
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
-	int blocks = config_get_int_value(config, "BLOCKS");
 	for(numero_bloque = 0; blocks_p[numero_bloque*block_size] != 0 && numero_bloque < blocks; numero_bloque++);
 	return numero_bloque;
 }
@@ -300,37 +294,38 @@ void interpretar_mensaje_discordiador (char* mensaje){
 }
 
 void generar_file(t_config* recurso, char* entrada, int size_entrada){
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
 	int current_block;
 	int bytes_escritos = 0;
 	int bytes_a_escribir;
 
-	char** blocks;
+	char**  blocks_array = config_get_array_value(recurso, "BLOCKS");
 	int size;
 	char* size_string;
 	
-	blocks = config_get_array_value(recurso, "BLOCKS");
 	size = config_get_int_value(recurso, "SIZE");
 
 	t_list* lista_bloques = list_create();
 
 
-	if(blocks[0] != NULL){
-		list_add(lista_bloques, blocks[0]);
+	if(blocks_array[0] != NULL){
+		list_add(lista_bloques, blocks_array[0]);
 		int offset = 0;
 		int index_ultimo_bloque;
-		for (index_ultimo_bloque = 1; blocks[index_ultimo_bloque] != NULL; index_ultimo_bloque++){
-			list_add(lista_bloques, blocks[index_ultimo_bloque]);
+		for (index_ultimo_bloque = 1; blocks_array[index_ultimo_bloque] != NULL; index_ultimo_bloque++){
+			list_add(lista_bloques, blocks_array[index_ultimo_bloque]);
 		}
 		index_ultimo_bloque--;
-		int ultimo_bloque = atoi(blocks[index_ultimo_bloque]);
-		for(offset = 0; blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
-		if(size_entrada < block_size - offset){
-			memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, size_entrada);
-		}else{
-			memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, block_size - offset);
+		int ultimo_bloque = atoi(blocks_array[index_ultimo_bloque]);
+		for(offset = 0; offset < block_size && blocks_p[ultimo_bloque * block_size + offset] != 0; offset++);
+		if(offset != block_size){
+			if(size_entrada < block_size - offset){
+				memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, size_entrada);
+				bytes_escritos = size_entrada;
+			}else{
+				memcpy((void*) blocks_p + ultimo_bloque * block_size + offset, entrada, block_size - offset);
+				bytes_escritos = block_size - offset;
+			}
 		}
-		bytes_escritos = block_size - offset;
 		
 	}
 
@@ -342,7 +337,7 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 			bytes_a_escribir = size_entrada - bytes_escritos;
 		}
 		memcpy((void*) blocks_p + current_block * block_size, (void*) entrada + bytes_escritos, bytes_a_escribir);
-		bytes_escritos += block_size;
+		bytes_escritos += bytes_a_escribir;
 		list_add(lista_bloques, string_from_format("%d", current_block));
 	}
 	size += size_entrada;
@@ -354,31 +349,50 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	actualizar_bitmap(lista_bloques);	
 	limpiar_lista_bloques(lista_bloques);
 	list_destroy(lista_bloques);
-	free(blocks);
+	free(blocks_array);
 }
-/*
-void consumir_recurso (char* nombre_recurso, int cantidad){
-	t_config* recurso;
-	char* entrada;
-	char* file_name = string_from_format("%s.ims", nombre_recurso);
-	char* file_path = string_duplicate(path_files);
-	int file_size;
-	char caracter_llenado;	
 
+
+
+
+void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
+	t_config* recurso;
+	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
+	char* file_path = string_duplicate(path_bitacoras);
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
 	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	file_size = lseek(fd, 0, SEEK_END);
-	if(file_size <= 1){
-		formatear_meta_file(fd, FORMATO_RECURSO);
+	if(lseek(fd, 0, SEEK_END) <= 1){
+		formatear_meta_file(fd, FORMATO_BITACORA);
 	}
 	close(fd);
 	recurso = config_create(file_path);
+	generar_file(recurso, entrada, sizeofentrada);
+	free(file_name);
+	free(file_path);
+	config_destroy(recurso);
+
+}
 
 
+/*
+void consumir_recurso (t_config* recurso, int cantidad){
+	int current_block;
+	int bytes_escritos = 0;
+	int bytes_a_escribir;
+
+	char** blocks_array;
+	int size;
+	char* size_string;
+	
+	blocks_array = config_get_array_value(recurso, "BLOCKS");
+	size = config_get_int_value(recurso, "SIZE");
+
+	t_list* lista_bloques = list_create();
 
 }
 */
+
 void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantidad){
 	t_config* recurso;
 	char* entrada;
@@ -410,24 +424,6 @@ void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantid
 
 }
 
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
-	t_config* recurso;
-	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
-	char* file_path = string_duplicate(path_bitacoras);
-	string_append(&file_path, "/");
-	string_append(&file_path, file_name);
-	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	if(lseek(fd, 0, SEEK_END) <= 1){
-		formatear_meta_file(fd, FORMATO_BITACORA);
-	}
-	close(fd);
-	recurso = config_create(file_path);
-	generar_file(recurso, entrada, sizeofentrada);
-	free(file_name);
-	free(file_path);
-	config_destroy(recurso);
-
-}
 
 void buscar_recursos_en_path(char* path_elegido, t_list* lista_bloques){
 	int i = 0;
@@ -503,15 +499,15 @@ void chequear_cant_blocks(void* superbloque, int superbloque_file_size,int block
 	
 	int cant_real_bloques;
 	uint32_t cant_supuesta_bloques;
-	uint32_t block_size;
+	uint32_t block_size_calculado;
 	
 	int offset = 0;
 	memcpy(&cant_supuesta_bloques, superbloque, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
-	memcpy(&block_size, superbloque + offset, sizeof(uint32_t));
+	memcpy(&block_size_calculado, superbloque + offset, sizeof(uint32_t));
 	offset += sizeof(uint32_t);
 	
-	cant_real_bloques = blocks_file_size / block_size;
+	cant_real_bloques = blocks_file_size / block_size_calculado;
 
 	if(cant_real_bloques != (cant_supuesta_bloques)){
 		memcpy(superbloque, &cant_real_bloques, sizeof(uint32_t));
@@ -555,9 +551,9 @@ void chequear_superbloque(){
 
 void chequear_block_count(t_config* recurso, char log_option){
 	int len_blocks;
-	char** blocks = config_get_array_value(recurso, "BLOCKS");
+	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
 	char* int_as_array;
-	for(len_blocks=0; blocks[len_blocks] != NULL; len_blocks++);
+	for(len_blocks=0; blocks_array[len_blocks] != NULL; len_blocks++);
 	if(config_get_int_value(recurso, "BLOCK_COUNT") != len_blocks){
 		int_as_array = string_from_format("%d", len_blocks);
 		config_set_value(recurso, "BLOCK_COUNT", int_as_array);
@@ -566,27 +562,26 @@ void chequear_block_count(t_config* recurso, char log_option){
 		if(log_option == LOGGEAR_CAMBIOS)
 			log_info(logger, "Se corrigio un sabotaje en la cantidad de bloques del archivo: %s", recurso->path);
 	}
-	for(len_blocks=0; blocks[len_blocks] != NULL; len_blocks++){
-		free(blocks[len_blocks]);
+	for(len_blocks=0; blocks_array[len_blocks] != NULL; len_blocks++){
+		free(blocks_array[len_blocks]);
 	}
-	free(blocks);
+	free(blocks_array);
 }
 
 void chequear_file_size(t_config* recurso){
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
-	char** blocks = config_get_array_value(recurso, "BLOCKS");
+	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
 	int size_supuesto = config_get_int_value(recurso, "SIZE");
 	int offset;
 	int current_block;
 	int size = 0;
 	char* size_as_array;
 	pthread_mutex_lock(&mutex_blocks);
-	for(int i = 0; blocks[i] != NULL; i++){
-		current_block = atoi(blocks[i]);
+	for(int i = 0; blocks_array[i] != NULL; i++){
+		current_block = atoi(blocks_array[i]);
 		for(offset = 0; offset<block_size && blocks_p[current_block * block_size + offset] != 0; offset++){
 			size++;
 		}
-		free(blocks[i]);
+		free(blocks_array[i]);
 	}
 	pthread_mutex_unlock(&mutex_blocks);
 	if(size_supuesto != size){
@@ -596,34 +591,32 @@ void chequear_file_size(t_config* recurso){
 		free(size_as_array);
 		log_info(logger, "Se corrigio un sabotaje en el tamanio del archivo: %s", recurso->path);
 	}
-	free(blocks);
+	free(blocks_array);
 }
 
 char* get_blocks_data (t_config* recurso){
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
 	int file_size = config_get_int_value(recurso, "SIZE");
-	char** blocks = config_get_array_value(recurso, "BLOCKS");
+	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
 	char* blocks_data = calloc(file_size, sizeof(char));
 	int current_block;
 	int offset;
 	int bytes_chequeados = 0;
 	pthread_mutex_lock(&mutex_blocks);
-	for (int i= 0; blocks[i] != NULL; i++){
-		current_block = atoi(blocks[i]);
+	for (int i= 0; blocks_array[i] != NULL; i++){
+		current_block = atoi(blocks_array[i]);
 		for (offset=0; offset < block_size && bytes_chequeados < file_size; offset++){
 			memcpy((void*) blocks_data + bytes_chequeados, (void*) blocks_p + current_block * block_size + offset, sizeof(char));
 			bytes_chequeados++;
 		}
-		free(blocks[i]);
+		free(blocks_array[i]);
 	}
 	pthread_mutex_unlock(&mutex_blocks);
-	free(blocks);
+	free(blocks_array);
 	return blocks_data;
 }
 
 void restaurar_archivo(t_config* recurso){
-	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
-	char** blocks = config_get_array_value(recurso, "BLOCKS");
+	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
 	int file_size = config_get_int_value(recurso, "SIZE");
 	char* aux = config_get_string_value(recurso, "CARACTER_LLENADO");
 	char caracter_de_llenado = aux[0];
@@ -633,21 +626,21 @@ void restaurar_archivo(t_config* recurso){
 	int current_block;
 	pthread_mutex_lock(&mutex_blocks);
 	//Primero limpio los bloques
-	for (i = 0; blocks[i] != NULL; i++){
-		offset = block_size * atoi(blocks[i]);
+	for (i = 0; blocks_array[i] != NULL; i++){
+		offset = block_size * atoi(blocks_array[i]);
 		memset(blocks_p + offset, 0, block_size);
 	}
 	//Luego los escribo hasta completar el size
-	for(i = 0; blocks[i] != NULL; i++){
-		current_block = atoi(blocks[i]);
+	for(i = 0; blocks_array[i] != NULL; i++){
+		current_block = atoi(blocks_array[i]);
 		for(offset = 0; offset < block_size && bytes_escritos < file_size; offset++){
 			blocks_p [current_block * block_size + offset] = caracter_de_llenado;
 			bytes_escritos++;
 		}
-		free(blocks[i]);
+		free(blocks_array[i]);
 	}
 	pthread_mutex_unlock(&mutex_blocks);
-	free(blocks);
+	free(blocks_array);
 }
 
 void chequear_blocks_data(t_config* recurso){
@@ -677,10 +670,10 @@ void chequear_files(char* path_elegido){
 			string_append(&path_recurso, "/");
 			string_append(&path_recurso, d->d_name);
 			recurso = config_create(path_recurso);
-			chequear_file_size(recurso);
-			chequear_block_count(recurso, LOGGEAR_CAMBIOS);
 			if(config_get_int_value(recurso, "SIZE") > 0)
 				chequear_blocks_data(recurso);
+			chequear_file_size(recurso);
+			chequear_block_count(recurso, LOGGEAR_CAMBIOS);
 			free(path_recurso);
 			config_destroy(recurso);
 		}
