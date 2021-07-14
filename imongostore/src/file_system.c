@@ -62,6 +62,8 @@ void generar_directorios(char*);
 void generar_superbloque();
 void generar_blocks();
 char* generar_md5(char*, size_t);
+char* get_blocks_data (t_config* recurso);
+void chequear_blocks_data(t_config* recurso, char log_option);
 void chequear_block_count(t_config* recurso, char log_option);
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
 void generar_recurso(char* nombre_recurso, int cantidad);
@@ -70,11 +72,15 @@ void interpretar_mensaje_discordiador (char* mensaje);
 void formatear_meta_file (int, char*);
 void generar_meta_recursos();
 
+
 //Hash Table para recursos y sus caracteres de llenado
 t_instruccion tabla_comandos []={
 	{"GENERAR_OXIGENO", "Oxigeno", 'O', generar_recurso},
 	{"GENERAR_COMIDA", "Comida", 'C', generar_recurso},
 	{"GENERAR_BASURA", "Basura", 'B', generar_recurso},
+	{"CONSUMIR_OXIGENO", "Oxigeno", 'O', consumir_recurso},
+	{"CONSUMIR_COMIDA", "Comida", 'C', consumir_recurso},
+	{"DESCARTAR_BASURA", "Basura", 'B', consumir_recurso},
 	{"\0", "\0", 0, NULL}
 };
 
@@ -85,11 +91,10 @@ void incializar_fs(){
 	config = config_create(PATH_CONFIG);
 	pthread_mutex_init(&mutex_blocks, NULL);
 	iniciar_en_limpio();
-	
+	interpretar_mensaje_discordiador("CONSUMIR_OXIGENO 8");
+	interpretar_mensaje_discordiador("DESCARTAR_BASURA 3");
 	signal(SIGUSR1, recuperar_fs);
-	interpretar_mensaje_discordiador("GENERAR_COMIDA 6");
-	interpretar_mensaje_discordiador("GENERAR_OXIGENO 28");
-	interpretar_mensaje_discordiador("GENERAR_BASURA 5");
+	
 	while(1){
 		sleep(1000);
 	};
@@ -421,7 +426,7 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 }
 
 
-/*
+
 void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	int current_block;
 	int cantidad_restante = cantidad;
@@ -459,10 +464,10 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 		cantidad_restante -= block_size;
 		list_remove(lista_bloques, current_index);
 	}
-	current_index--;
-	current_block = atoi(list_get(lista_bloques, current_index));
 
-	while(cantidad_restante > 0 && current_index >= 0){
+	while(cantidad_restante > 0 && current_index > 0){
+		current_index--;
+		current_block = atoi(list_get(lista_bloques, current_index));
 		if(cantidad_restante >= block_size){
 			memset(blocks_p + current_block * block_size, 0, block_size);
 			cantidad_restante -= block_size;
@@ -470,8 +475,6 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 			memset(blocks_p + current_block * block_size + block_size - cantidad_restante, 0, cantidad_restante);
 			cantidad_restante = 0;
 		}
-		current_index--;
-		current_block = atoi(list_get(lista_bloques, current_index));
 	}
 	if(current_index<0){
 		log_info(logger, "Se quiso consumir mas recursos de los disponibles.");
@@ -485,7 +488,6 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	actualizar_bitmap(lista_bloques);	
 	limpiar_lista_bloques(lista_bloques);
 	list_destroy(lista_bloques);
-	liberar_blocks_array(blocks_array);
 	free(blocks_array);
 }
 
@@ -493,10 +495,22 @@ void consumir_recurso (char* nombre_recurso, int cantidad){
 	t_config* recurso;
 	char* file_name = string_from_format("%s.ims", nombre_recurso);
 	char* file_path = string_duplicate(path_files);
-	int file_size;
+	
+	string_append(&file_path, "/");
+	string_append(&file_path, file_name);
+	
+	recurso = config_create(file_path);
+
+	log_info(logger, "Se consumiran %d de %s", cantidad, nombre_recurso);
+	consumir_recurso_en_blocks(recurso, cantidad);
+	chequear_block_count(recurso, NO_LOGGEAR);
+	chequear_blocks_data(recurso, NO_LOGGEAR);
+	config_destroy(recurso);
+	free(file_name);
+	free(file_path);
 
 }
-*/
+
 
 void generar_recurso (char* nombre_recurso, int cantidad){
 	t_config* recurso;
@@ -515,6 +529,7 @@ void generar_recurso (char* nombre_recurso, int cantidad){
 	entrada = string_repeat(caracter_de_llenado_array[0], cantidad);
 	generar_file(recurso, entrada, cantidad);
 	chequear_block_count(recurso, NO_LOGGEAR);
+	chequear_blocks_data(recurso, NO_LOGGEAR);
 	log_info(logger, "Se genero %d de %s", cantidad, nombre_recurso);
 	config_destroy(recurso);
 	free(entrada);
@@ -740,7 +755,7 @@ void restaurar_archivo(t_config* recurso){
 	free(blocks_array);
 }
 
-void chequear_blocks_data(t_config* recurso){
+void chequear_blocks_data(t_config* recurso, char log_option){
 	char* blocks_data = get_blocks_data(recurso);
 	char* md5_data = generar_md5 (blocks_data, config_get_int_value(recurso, "SIZE"));
 	char* md5_archivo = config_get_string_value(recurso, "MD5_ARCHIVO");
@@ -750,7 +765,8 @@ void chequear_blocks_data(t_config* recurso){
 		char* new_md5 = generar_md5(new_blocks_data, config_get_int_value(recurso, "SIZE"));
 		config_set_value(recurso, "MD5_ARCHIVO", new_md5);
 		config_save(recurso);
-		log_info(logger, "La data del archivo %s no coincidia con el contenido del archivo Blocks: se restauro el archivo.", recurso->path);
+		if(log_option == LOGGEAR_CAMBIOS)
+			log_info(logger, "La data del archivo %s no coincidia con el contenido del archivo Blocks: se restauro el archivo.", recurso->path);
 	}
 	free(md5_data);
 	free(blocks_data);
@@ -768,7 +784,7 @@ void chequear_files(char* path_elegido){
 			string_append(&path_recurso, d->d_name);
 			recurso = config_create(path_recurso);
 			if(config_get_int_value(recurso, "SIZE") > 0)
-				chequear_blocks_data(recurso);
+				chequear_blocks_data(recurso, LOGGEAR_CAMBIOS);
 			chequear_file_size(recurso);
 			chequear_block_count(recurso, LOGGEAR_CAMBIOS);
 			free(path_recurso);
