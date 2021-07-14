@@ -34,6 +34,8 @@
 #define FORMATO_RECURSO "SIZE=0\nBLOCK_COUNT=0\nBLOCKS=[]\nCARACTER_LLENADO=\nMD5_ARCHIVO=\n"
 #define FORMATO_BITACORA "SIZE=0\nBLOCKS=[]\n"
 #define TRUNCATE_ERROR -1
+#define LOGGEAR_CAMBIOS 'y'
+#define NO_LOGGEAR 'n'
 
 //Hash Table para recursos y sus caracteres de llenado
 typedef struct{
@@ -68,6 +70,7 @@ void generar_directorios(char*);
 void generar_superbloque();
 void generar_blocks();
 char* generar_md5(char*, size_t);
+void chequear_block_count(t_config* recurso, char log_option);
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
 void generar_recurso(char* nombre_recurso, char caracter_de_llenado, int cantidad);
 
@@ -369,6 +372,7 @@ void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantid
 	}
 	entrada = string_repeat(caracter_de_llenado, cantidad);
 	generar_file(recurso, entrada, cantidad);
+	chequear_block_count(recurso, NO_LOGGEAR);
 	free(file_name);
 	free(file_path);
 	config_destroy(recurso);
@@ -518,7 +522,7 @@ void chequear_superbloque(){
 
 }
 
-void chequear_block_count(t_config* recurso){
+void chequear_block_count(t_config* recurso, char log_option){
 	int len_blocks;
 	char** blocks = config_get_array_value(recurso, "BLOCKS");
 	char* int_as_array;
@@ -528,7 +532,8 @@ void chequear_block_count(t_config* recurso){
 		config_set_value(recurso, "BLOCK_COUNT", int_as_array);
 		config_save(recurso);
 		free(int_as_array);
-		log_info(logger, "Se corrigio un sabotaje en la cantidad de bloques del archivo: %s", recurso->path);
+		if(log_option == LOGGEAR_CAMBIOS)
+			log_info(logger, "Se corrigio un sabotaje en la cantidad de bloques del archivo: %s", recurso->path);
 	}
 	for(len_blocks=0; blocks[len_blocks] != NULL; len_blocks++){
 		free(blocks[len_blocks]);
@@ -642,7 +647,7 @@ void chequear_files(char* path_elegido){
 			string_append(&path_recurso, d->d_name);
 			recurso = config_create(path_recurso);
 			chequear_file_size(recurso);
-			chequear_block_count(recurso);
+			chequear_block_count(recurso, LOGGEAR_CAMBIOS);
 			if(config_get_int_value(recurso, "SIZE") > 0)
 				chequear_blocks_data(recurso);
 			free(path_recurso);
