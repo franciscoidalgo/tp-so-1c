@@ -91,8 +91,8 @@ void incializar_fs(){
 	config = config_create(PATH_CONFIG);
 	pthread_mutex_init(&mutex_blocks, NULL);
 	iniciar_en_limpio();
-	interpretar_mensaje_discordiador("CONSUMIR_OXIGENO 8");
-	interpretar_mensaje_discordiador("DESCARTAR_BASURA 3");
+	//interpretar_mensaje_discordiador("GENERAR_OXIGENO 58");
+	//interpretar_mensaje_discordiador("CONSUMIR_OXIGENO 43");
 	signal(SIGUSR1, recuperar_fs);
 	
 	while(1){
@@ -278,6 +278,10 @@ int encontrar_block_libre(){
 void refrescar_bloques (t_list* bloques, t_config* recurso){
 	char new_blocks_data [255]; 
 	int cant_bloques = list_size(bloques);
+	if(list_is_empty(bloques)){
+		config_set_value(recurso, "BLOCKS", "[]");
+		return;
+	}
 	int current_index = sprintf(new_blocks_data, "[%s", (char*) list_get(bloques, 0));
 	for(int current = 1; current < cant_bloques; current++)
 		current_index += sprintf(new_blocks_data + current_index, ",%s", (char*) list_get(bloques, current));
@@ -396,6 +400,7 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	refrescar_bloques(lista_bloques, recurso);
 	config_save(recurso);
 	actualizar_bitmap(lista_bloques);	
+	
 	limpiar_lista_bloques(lista_bloques);
 	list_destroy(lista_bloques);
 	free(size_string);
@@ -431,7 +436,7 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	int current_block;
 	int cantidad_restante = cantidad;
 	int current_index;
-	int offset_ultimo_bloque;
+	int offset_primer_bloque_libre;
 
 	char** blocks_array;
 	
@@ -453,15 +458,15 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	current_index = list_size(lista_bloques) - 1;
 	current_block = atoi(list_get(lista_bloques, current_index));
 
-	for(offset_ultimo_bloque = 0; 
-	offset_ultimo_bloque < block_size && blocks_p[current_block * block_size + offset_ultimo_bloque] != 0; 
-	offset_ultimo_bloque++);
-	if(cantidad_restante < offset_ultimo_bloque + 1){
-		memset(blocks_p + current_block * block_size + offset_ultimo_bloque + 1 - cantidad_restante, 0, block_size - offset_ultimo_bloque - 1 + cantidad_restante);
+	for(offset_primer_bloque_libre = 0; 
+	offset_primer_bloque_libre < block_size && blocks_p[current_block * block_size + offset_primer_bloque_libre] != 0; 
+	offset_primer_bloque_libre++);
+	if(cantidad_restante < offset_primer_bloque_libre){
+		memset(blocks_p + current_block * block_size + offset_primer_bloque_libre - cantidad_restante, 0, block_size - offset_primer_bloque_libre + cantidad_restante);
 		cantidad_restante = 0;
 	}else{
 		memset(blocks_p + current_block * block_size, 0, block_size);
-		cantidad_restante -= block_size;
+		cantidad_restante -= offset_primer_bloque_libre;
 		list_remove(lista_bloques, current_index);
 	}
 
@@ -486,8 +491,10 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	config_save(recurso);
 	chequear_block_count(recurso, NO_LOGGEAR);
 	actualizar_bitmap(lista_bloques);	
-	limpiar_lista_bloques(lista_bloques);
+	
+
 	list_destroy(lista_bloques);
+	liberar_blocks_array(blocks_array);
 	free(blocks_array);
 }
 
@@ -504,7 +511,13 @@ void consumir_recurso (char* nombre_recurso, int cantidad){
 	log_info(logger, "Se consumiran %d de %s", cantidad, nombre_recurso);
 	consumir_recurso_en_blocks(recurso, cantidad);
 	chequear_block_count(recurso, NO_LOGGEAR);
-	chequear_blocks_data(recurso, NO_LOGGEAR);
+	if(config_get_int_value(recurso, "SIZE") > 0)
+		chequear_blocks_data(recurso, NO_LOGGEAR);
+	else{
+		config_set_value(recurso, "MD5_ARCHIVO", "");
+		config_save(recurso);
+	}
+	
 	config_destroy(recurso);
 	free(file_name);
 	free(file_path);
@@ -757,7 +770,8 @@ void restaurar_archivo(t_config* recurso){
 
 void chequear_blocks_data(t_config* recurso, char log_option){
 	char* blocks_data = get_blocks_data(recurso);
-	char* md5_data = generar_md5 (blocks_data, config_get_int_value(recurso, "SIZE"));
+	int size_recurso = config_get_int_value(recurso, "SIZE");
+	char* md5_data = generar_md5 (blocks_data, size_recurso);
 	char* md5_archivo = config_get_string_value(recurso, "MD5_ARCHIVO");
 	if(strcmp(md5_data, md5_archivo) != 0){
 		restaurar_archivo(recurso);
@@ -767,6 +781,8 @@ void chequear_blocks_data(t_config* recurso, char log_option){
 		config_save(recurso);
 		if(log_option == LOGGEAR_CAMBIOS)
 			log_info(logger, "La data del archivo %s no coincidia con el contenido del archivo Blocks: se restauro el archivo.", recurso->path);
+		free(new_blocks_data);
+		free(new_md5);
 	}
 	free(md5_data);
 	free(blocks_data);
