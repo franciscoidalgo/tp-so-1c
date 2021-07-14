@@ -9,6 +9,7 @@
 #include "superbloque.h"
 #include "fs_paths.h"
 #include "../../shared/include/shared_utils.h"
+#include "instruccion.h"
 
 #include <commons/config.h>
 #include <commons/log.h>
@@ -37,17 +38,6 @@
 #define LOGGEAR_CAMBIOS 'y'
 #define NO_LOGGEAR 'n'
 
-//Hash Table para recursos y sus caracteres de llenado
-typedef struct{
-	char tipo_recurso[255];
-	char caracter_de_llenado;
-}t_recurso;
-
-t_recurso tabla_recursos []={
-	{"OXIGENO", 'O'},
-	{"COMIDA", 'C'},
-	{"BASURA", 'B'}
-};
 
 //variables globales
 char* path;
@@ -73,6 +63,17 @@ char* generar_md5(char*, size_t);
 void chequear_block_count(t_config* recurso, char log_option);
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
 void generar_recurso(char* nombre_recurso, char caracter_de_llenado, int cantidad);
+void interpretar_mensaje_discordiador (char* mensaje);
+
+//Hash Table para recursos y sus caracteres de llenado
+
+t_instruccion tabla_comandos []={
+	{"GENERAR_OXIGENO", "OXIGENO", 'O', generar_recurso},
+	{"GENERAR_COMIDA", "COMIDA", 'C', generar_recurso},
+	{"GENERAR_BASURA", "BASURA", 'B', generar_recurso},
+	{"\0", "\0", 0, NULL}
+};
+
 
 //Funciones
 void incializar_fs(){
@@ -82,8 +83,8 @@ void incializar_fs(){
 	iniciar_en_limpio();
 	
 	signal(SIGUSR1, recuperar_fs);
-	generar_bitacora(32, "Hice algo re loco", 17);
-	generar_recurso("OXIGENO", 'O', 5);
+	interpretar_mensaje_discordiador("GENERAR_OXIGENO 40");
+	interpretar_mensaje_discordiador("GENERAR_COMIDA 100");
 	while(1){
 		sleep(1000);
 	};
@@ -289,6 +290,14 @@ void limpiar_lista_bloques(t_list* lista_bloques){
 	}
 }
 
+void interpretar_mensaje_discordiador (char* mensaje){
+	t_instruccion* instruccion;
+	char comando [255];
+	int cantidad;
+	sscanf(mensaje, "%s %d", comando, &cantidad);
+	instruccion = get_instruccion(comando, tabla_comandos);
+	ejecutar_instruccion(instruccion, cantidad);
+}
 
 void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	int block_size = config_get_int_value(config, "BLOCKS_SIZE");
@@ -347,7 +356,29 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	list_destroy(lista_bloques);
 	free(blocks);
 }
+/*
+void consumir_recurso (char* nombre_recurso, int cantidad){
+	t_config* recurso;
+	char* entrada;
+	char* file_name = string_from_format("%s.ims", nombre_recurso);
+	char* file_path = string_duplicate(path_files);
+	int file_size;
+	char caracter_llenado;	
 
+	string_append(&file_path, "/");
+	string_append(&file_path, file_name);
+	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	file_size = lseek(fd, 0, SEEK_END);
+	if(file_size <= 1){
+		formatear_meta_file(fd, FORMATO_RECURSO);
+	}
+	close(fd);
+	recurso = config_create(file_path);
+
+
+
+}
+*/
 void generar_recurso (char* nombre_recurso, char caracter_de_llenado, int cantidad){
 	t_config* recurso;
 	char* entrada;
