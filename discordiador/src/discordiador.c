@@ -9,17 +9,16 @@ int main(int argc, char **argv)
 enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
 luego poder recibir la señal de sabotaje por ese "tunel" establecido
  */
-//int conexion = crear_conexion(IP, PUERTO);
+	pthread_t hiloEscuchaSabotaje;
+	pthread_create(&hiloEscuchaSabotaje, NULL, &atender_sabotaje, NULL);
 
-pthread_mutex_init(&mutex_input_consola, NULL); 
-pthread_t hilo_recepcionista;
+	pthread_t hilo_recepcionista;
 	while (1)
 	{
-		char *linea_consola = readline("Ingresar_Comando>>");
-		pthread_create(&hilo_recepcionista,NULL,atender_accion_de_consola,(void*) linea_consola);
+		char *retorno_consola = readline(">");
+		pthread_create(&hilo_recepcionista, NULL, &atender_accion_de_consola, retorno_consola);
 	}
-
-pthread_destroy(mutex_input_consola);
+	pthread_join(hilo_recepcionista, NULL);
 
 	log_destroy(logger);
 	//terminar_variables_globales(conexion);
@@ -91,13 +90,16 @@ void inicializar_variables()
 	log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
 	config = leer_config("discordiador");
 	READY = list_create();
-	NEW = list_create();
+	BLOCKED_EMERGENCY = list_create();
 	BLOCKED = list_create();
+	EXIT = list_create();
+	EXEC = list_create();
+	primerIntento = true;
 	pthread_mutex_init(&mutex, NULL);
 	IP = config_get_string_value((t_config *)config, "IP");
 	PUERTO = config_get_string_value((t_config *)config, "PUERTO");
 	//sem_init(&semaforo_1,0,2);
-	pthread_cond_init(&condicion_comunicacion_entre_tipos_de_ejecucion,NULL);
+	pthread_cond_init(&iniciarPlanificacion, NULL);
 	//diccionario de acciones de consola
 	dic_datos_consola = dictionary_create();
 	dictionary_put(dic_datos_consola, "INICIAR_PATOTA", (void *)INICIAR_PATOTA);
@@ -174,47 +176,32 @@ void enviar_msj(char *mensaje, int socket_cliente)
 	free(paquete);
 }
 
-t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t id)
+t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t tid)
 {
 	t_tcb *t = malloc(sizeof(t_tcb));
 
 	t->posicion_x = posx;
 	t->posicion_y = posy;
 	//t->proxima_instruccion = 0; //tarea,luego la busca en RAM
-	t->tid = id;
+	t->tid = tid;
 	t->puntero_pcb = patota;
 	t->estado = 'N';
 
 	return t;
 }
 
-void buscar_tarea_a_RAM(void *tripu)
+void buscar_tarea_a_RAM(t_tcb *t)
 {
-
-	t_tcb *t = (t_tcb *)tripu;
-
 	char *patota_tripulante = string_new();
 	string_append(&patota_tripulante, (string_itoa(t->puntero_pcb)));
 	string_append(&patota_tripulante, "-");
 	string_append(&patota_tripulante, (string_itoa(t->tid)));
-	//pthread_mutex_lock(&mutex);
 	int socket_cliente = crear_conexion(IP, PUERTO);
 	enviar_msj(patota_tripulante, socket_cliente);
 	t->tarea = malloc(sizeof(t_tarea));
 	t->tarea = recibir_tarea_de_RAM(socket_cliente);
 	liberar_conexion(socket_cliente);
 	free(patota_tripulante);
-	//pthread_mutex_unlock(&mutex);
-	t->estado = 'R';
-	sleep(t->posicion_x + t->posicion_y);
-	pthread_mutex_lock(&mutex_lista_ready);
-	list_add(READY, remover_tripu(NEW, t->tid));
-	pthread_mutex_unlock(&mutex_lista_ready);
-
-	//pthread_mutex_lock(&mutex_mostrar_por_consola);
-	//log_info(logger,"Tarea buscada %s tripulante %d de patota %d",(char*) t->tarea->accion,t->tid,t->puntero_pcb);
-	//pthread_mutex_unlock(&mutex_mostrar_por_consola);
-	//pthread_detach(pthread_self()); --> pareceria que no hace nada, libera recursos del la struct de hilo
 }
 
 void enviar_tareas_a_RAM(int conexion, char **linea_consola)
@@ -243,7 +230,9 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	while (fgets(cadena, 50, archivo) != NULL)
 	{
 		strcpy(palabra, cadena);
-		agregar_a_paquete(paquete, palabra, strlen(palabra) + 1);
+		string_trim(&palabra);
+		char *palagra_mas_guion = strcat(palabra, "-");
+		agregar_a_paquete(paquete, palagra_mas_guion, strlen(palabra) + 1);
 	}
 
 	char *posiciones_linea = string_new();
@@ -260,7 +249,7 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	free(palabra);
 	free(posiciones_linea);
 	pthread_mutex_lock(&mutex_mostrar_por_consola);
-	log_info(logger, "Enviando tareas a MI-RAM con socket: %d", conexion);
+	log_info(logger, "Enviando tareas a MI-RAM");
 	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 	enviar_paquete(paquete, conexion);
 	fclose(archivo);
@@ -269,16 +258,21 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 void recepcionar_patota(char **linea_consola)
 {
 	int posx, posy;
+	char **posiciones;
+	int tripulantes = atoi(linea_consola[1]);
+	int id_patota = ID_PATOTA;
+	pthread_t hilo[tripulantes];
+	pthread_t planificador_ES;
+	//pthread_barrier_init(&barrera,NULL,tripulantes+1);
+	sem_init(&sem_exe, 0, 1);
+	sem_init(&sem_IO, 0, 1);
+	sem_init(&sem_IO_queue, 0, 0);
 
-	for (uint32_t i = 1; i <= atoi(linea_consola[1]); i++)
+	for (uint32_t i = 1; i <= tripulantes; i++)
 	{
-		pthread_mutex_lock(&mutex_mostrar_por_consola);
-		log_info(logger, "INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %d", i, atoi(linea_consola[1]));
-		pthread_mutex_unlock(&mutex_mostrar_por_consola);
+		log_info(logger, "POSICIONANDOME EN NEW TRIPU %d DE PATOTA %d", i, id_patota);
 		posx = 0;
 		posy = 0;
-		char **posiciones;
-
 		if (linea_consola[i + 2] != NULL)
 		{ //las posiciones comienzan desde el argumento 3 en adelante.
 			posiciones = string_split(linea_consola[i + 2], "|");
@@ -286,12 +280,27 @@ void recepcionar_patota(char **linea_consola)
 			posy = atoi(posiciones[1]);
 		}
 
-		list_add(NEW, crear_tripulante(atoi(linea_consola[1]), posx, posy, i));
+		//INICIARLIZAR TRIPULANTE
+		t_tcb *tripulante = crear_tripulante(id_patota, posx, posy, i); // i --> concatenar con ID de patota
+
+		//PLANIFICAR
+		//planificar_FIFO(tripulante);
+		pthread_create(&hilo[i], NULL, planificar_FIFO, tripulante);
 	}
+
+	pthread_create(&planificador_ES, NULL, entrada_salida, NULL);
+	//pthread_join(planificador_ES, NULL);
+
+	for (uint32_t j = 1; j <= atoi(linea_consola[1]); j++)
+	{
+		//pthread_detach(hilo[j]);
+		pthread_join(hilo[j], NULL);
+	}
+
 }
 
 void busqueda_de_tareas_por_patota(t_tcb *tripulante)
-{	//tendria que agregar como argumento el numero de patota y buscar en lista
+{ //tendria que agregar como argumento el numero de patota y buscar en lista
 	// int cantidad_de_tripulantes = list_size(NEW);
 
 	// for (size_t i = 0; i <= cantidad_de_tripulantes; i++)
@@ -378,78 +387,103 @@ void realizar_tarea_metodo_FIFO(t_tcb *tripulante)
 
 void buscar_tareas_desde_NEW()
 {
-
-	int size_new = list_size(NEW);
-
-	for (size_t i = 1; i <= size_new; i++)
-	{
-		pthread_mutex_lock(&mutex_lista_new);
-		t_tcb *tripu = remover_tripu(NEW, i);
-		pthread_mutex_unlock(&mutex_lista_new);
-
-		// pthread_condattr_init(&attr);
-		// pthread_condattr_setclock(&attr,CLOCK_MONOTONIC);
-		// pthread_cond_init(&cond, &attr);
-
-		pthread_t hilo[tripu->tid];
-		int err = pthread_create(&hilo[tripu->tid], NULL, (void *)&buscar_tarea_a_RAM, (void *)(tripu));
-		if (err)
-		{
-			log_info(logger, "Tripulante %d no pudo ejecutar", tripu->tid);
-		}
-
-		// err = pthread_detach(hilo[tripu->tid]);
-		// if(err){ log_info(logger,"Tripulante %d no pudo desprenderse",tripu->tid);}
-	}
-
-	size_new = 0;
 }
 
+void add_queue(int lista, t_tcb *tripulante)
+{
+
+	switch (lista)
+	{
+	case _READY_:;
+		tripulante->estado = 'R';
+		list_add(READY, tripulante);
+		break;
+	case _BLOCKED_:;
+		tripulante->estado = 'B';
+		list_add(BLOCKED, tripulante);
+		break;
+	case _BLOCKED_EMERGENCY_:;
+		tripulante->estado = 'S';
+		list_add(BLOCKED_EMERGENCY, tripulante);
+		break;
+	case _EXIT_:;
+		tripulante->estado = 'F';
+		list_add(EXIT, tripulante);
+		break;
+	case _EXEC_:;
+		tripulante->estado = 'E';
+		list_add(EXEC, tripulante);
+		break;
+	default:
+		break;
+	}
+}
 
 ////////////////////////////////////////////////////atender_accion para hilo
 
-void atender_accion_de_consola(void* consola){
+void atender_accion_de_consola(char *linea_consola)
+{
 
-		char* linea_consola = (char*) consola;
+	char **array_parametros = string_split(linea_consola, " ");
+	free(linea_consola);
+	switch (get_diccionario_accion(array_parametros[0]))
+	{
+	case INICIAR_PATOTA:;
+		ID_PATOTA = ID_PATOTA + 1;
+		//SEND TAREAS A RAM
+		int conexion = crear_conexion(IP, PUERTO);
+		enviar_tareas_a_RAM(conexion, array_parametros);
+		liberar_conexion(conexion);
+		//SEND TAREAS A RAM
+		recepcionar_patota(array_parametros);
+		string_iterate_lines(array_parametros, iterator_lines_free);
+		free(array_parametros);
+		break;
+	case INICIAR_PLANIFICACION:
+		pthread_cond_signal(&iniciarPlanificacion);
+		primerIntento = false;
+		//aca hago signal de semaforos
+		break;
+	case LISTAR_TRIPULANTE:
+		list_iterate(READY, (void *)iterator);
+		list_iterate(BLOCKED, (void *)iterator);
+		list_iterate(EXEC, (void *)iterator);
+		list_iterate(EXIT, (void *)iterator);
+		break;
+	case EXPULSAR_TRIPULANTE:
+		expulsar_tripu(BLOCKED, atoi(array_parametros[1]));
+		expulsar_tripu(READY, atoi(array_parametros[1]));
+		//enviar_aviso_a_MI-RAM
+		break;
+	case OBTENER_BITACORA:
+		//solicitar a IMONGOSTORE la bitacora del tripulante
+		break;
+	case PAUSAR_PLANIFICACION:
+		primerIntento = true;
+		break;
+	default:
+		log_info(logger, "accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
+		break;
+	}
+}
 
-		char **array_parametros = string_split(linea_consola, " ");
-		free(linea_consola);
-		switch (get_diccionario_accion(array_parametros[0]))
+void atender_sabotaje()
+{
+	while (1)
+	{
+		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
+		int socket_conexion = crear_conexion(IP, PUERTO);
+		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
+
+		int *f = SABOTAJE;
+
+		send(socket_conexion, &f, sizeof(int), 0);
+		int cod_op = 0;
+		recv(socket_conexion, &cod_op, sizeof(int), MSG_WAITALL);
+
+		if (cod_op == SABOTAJE)
 		{
-		case INICIAR_PATOTA:;
-			ID_PATOTA = ID_PATOTA + 1;
-			int conexion = crear_conexion(IP, PUERTO);
-			enviar_tareas_a_RAM(conexion, array_parametros);
-			liberar_conexion(conexion);
-			recepcionar_patota(array_parametros);
-			string_iterate_lines(array_parametros, iterator_lines_free);
-			free(array_parametros);
-			list_iterate(NEW, iterator_buscar_tarea);
-			//buscar_tareas_desde_NEW();
-			break;
-		case INICIAR_PLANIFICACION:
-			planificar = true;
-			planificar_FIFO();
-			//list_iterate(READY,(void*) realizar_tarea_metodo_FIFO);
-			break;
-		case LISTAR_TRIPULANTE:
-			list_iterate(NEW, (void *)iterator);
-			list_iterate(READY, (void *)iterator);
-			list_iterate(BLOCKED, (void *)iterator);
-			break;
-		case EXPULSAR_TRIPULANTE:
-			expulsar_tripu(NEW, atoi(array_parametros[1]));
-			expulsar_tripu(READY, atoi(array_parametros[1]));
-			//enviar_aviso_a_MI-RAM
-			break;
-		case OBTENER_BITACORA:
-			//solicitar a IMONGOSTORE la bitacora del tripulante
-			break;
-		case PAUSAR_PLANIFICACION:
-			planificar = false;
-			break;
-		default:
-			log_info(logger, "accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
-			break;
+			log_info(logger, "Señal del SABOTAJE recibida");
 		}
+	}
 }

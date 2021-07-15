@@ -22,7 +22,8 @@ char* mi_funcion_compartida();
 typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensajes que se peuden enviar
 {
 	MENSAJE,
-	PAQUETE
+	PAQUETE,
+	SABOTAJE
 }op_code;
 
 //t_log* logger;

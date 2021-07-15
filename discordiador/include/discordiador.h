@@ -25,7 +25,7 @@ typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser 
 }t_tarea;//__attribute__((packed))
 
 // El senior tripulante (TCB - hilo)
-typedef struct    // Tamanio de 21 Bytes
+typedef struct t_tcb   // Tamanio de 21 Bytes
 {
     uint32_t tid;        // Id del tripulante
     uint32_t posicion_x;    // Pos x
@@ -39,7 +39,8 @@ typedef struct    // Tamanio de 21 Bytes
 t_list* BLOCKED;
 t_list* EXIT;
 t_list* READY;
-t_list* NEW;
+t_list* BLOCKED_EMERGENCY;
+t_list* EXEC;
 
 t_log* logger;
 t_log* config;
@@ -58,6 +59,15 @@ LISTAR_TRIPULANTE,
 OBTENER_BITACORA,
 };
 
+enum queue_enum{
+_READY_,
+_BLOCKED_,
+_BLOCKED_EMERGENCY_,
+_EXIT_,
+_EXEC_,
+};
+
+
 //INICIARLIZACION DE SEMAFOROS
 pthread_mutex_t mutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_mostrar_por_consola = PTHREAD_MUTEX_INITIALIZER;
@@ -65,20 +75,21 @@ pthread_mutex_t mutex_lista_new = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_ready = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_pasaje_entre_queue = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_input_consola;
-pthread_cond_t condicion_comunicacion_entre_tipos_de_ejecucion;
+pthread_cond_t iniciarPlanificacion;
 pthread_condattr_t attr;
 pthread_barrier_t barrera;
-sem_t semaforo_1;
 sem_t sem_IO;
+sem_t sem_IO_queue;
+sem_t sem_exe;
 
-bool planificar;
+bool primerIntento;
 
 void enviar_msj(char* mensaje, int socket_cliente);
 void perder_tiempo(int* i);
 void iterator(t_tcb* t);
 t_paquete* armar_paquete(char* palabra);
 t_tcb* crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t id);
-void buscar_tarea_a_RAM(void* tripu);
+void buscar_tarea_a_RAM(t_tcb* tripu);
 void inicializar_variables();
 void terminar_variables_globales(int socket);
 void enviar_tareas_a_RAM(int conexion,char** argv);
@@ -97,10 +108,12 @@ t_tarea* recibir_tarea_de_RAM(int socket);
 void realizar_tarea_metodo_FIFO(t_tcb* tripulante);
 void buscar_tareas_desde_NEW();
 void exe();
-void planificar_FIFO();
-void entrada_salida(t_tcb* tripulante);
+void planificar_FIFO(t_tcb *tripulante);
+void entrada_salida();
 bool es_tarea_de_ES(char* accion);
 void realizar_tarea_exe(t_tcb* tripulante);
-void atender_accion_de_consola(void*);
+void atender_accion_de_consola(char* retorno_consola);
+void add_queue(int lista, t_tcb* tripulante);
+void atender_sabotaje();
 
 #endif

@@ -1699,3 +1699,2116 @@
 [INFO] 00:34:59:994 DISCORDIADOR/(24848:24862): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 1
 [INFO] 00:35:00:995 DISCORDIADOR/(24848:24862): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 1
 [INFO] 00:35:01:996 DISCORDIADOR/(24848:24862): Realizando tarea en E/S soy hilo 1 de patota 1
+[INFO] 00:46:54:334 DISCORDIADOR/(25338:25338): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:47:22:336 DISCORDIADOR/(25338:25345): Enviando tareas a MI-RAM con socket: 4
+[INFO] 00:47:22:337 DISCORDIADOR/(25338:25345): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 2
+[INFO] 00:47:22:337 DISCORDIADOR/(25338:25345): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 2
+[INFO] 00:47:27:517 DISCORDIADOR/(25338:25352): TID:2 POSX:0 POSY:0 PCB:2 ESTADO:R
+[INFO] 00:47:27:518 DISCORDIADOR/(25338:25352): TID:1 POSX:3 POSY:2 PCB:2 ESTADO:R
+[INFO] 00:47:43:924 DISCORDIADOR/(25338:25355): TID:2 POSX:0 POSY:0 PCB:2 ESTADO:R
+[INFO] 00:47:43:924 DISCORDIADOR/(25338:25355): TID:1 POSX:3 POSY:2 PCB:2 ESTADO:R
+[INFO] 00:47:57:553 DISCORDIADOR/(25338:25358): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 00:48:00:558 DISCORDIADOR/(25338:25358): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 00:48:00:558 DISCORDIADOR/(25338:25358): FIN de mi planificacion tripu 2 patota 2
+[INFO] 00:48:00:559 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:48:01:560 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:48:02:560 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:48:03:561 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:48:04:561 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:48:05:562 DISCORDIADOR/(25338:25357): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 00:48:08:562 DISCORDIADOR/(25338:25357): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 00:48:08:563 DISCORDIADOR/(25338:25357): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 00:48:09:563 DISCORDIADOR/(25338:25357): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 00:48:10:563 DISCORDIADOR/(25338:25357): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 00:48:11:564 DISCORDIADOR/(25338:25357): Realizando tarea en E/S soy hilo 1 de patota 2
+[INFO] 00:48:14:565 DISCORDIADOR/(25338:25357): Termine tarea de E/S soy hilo 1 de patota 2
+[INFO] 00:48:14:567 DISCORDIADOR/(25338:25367): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:48:15:570 DISCORDIADOR/(25338:25367): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:48:16:571 DISCORDIADOR/(25338:25367): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 00:48:19:571 DISCORDIADOR/(25338:25367): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 00:48:19:571 DISCORDIADOR/(25338:25367): FIN de mi planificacion tripu 1 patota 2
+[INFO] 00:52:30:997 DISCORDIADOR/(25338:25430): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 00:52:34:649 DISCORDIADOR/(25338:25431): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 00:52:35:594 DISCORDIADOR/(25338:25433): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 00:52:36:569 DISCORDIADOR/(25338:25434): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 19:22:45:310 DISCORDIADOR/(25632:25632): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:23:06:483 DISCORDIADOR/(25632:25642): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:23:06:484 DISCORDIADOR/(25632:25642): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:23:14:303 DISCORDIADOR/(25632:25649): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:23:15:304 DISCORDIADOR/(25632:25649): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:23:16:304 DISCORDIADOR/(25632:25649): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:23:17:305 DISCORDIADOR/(25632:25649): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:23:18:305 DISCORDIADOR/(25632:25649): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:23:21:306 DISCORDIADOR/(25632:25649): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:23:21:306 DISCORDIADOR/(25632:25649): FIN de mi planificacion tripu 1 patota 1
+[INFO] 19:25:12:359 DISCORDIADOR/(25632:25665): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:25:12:359 DISCORDIADOR/(25632:25665): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:25:18:446 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:25:19:447 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:25:20:447 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:25:21:448 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:25:22:448 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:25:23:449 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:25:24:450 DISCORDIADOR/(25632:25671): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:25:27:450 DISCORDIADOR/(25632:25671): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:25:27:450 DISCORDIADOR/(25632:25671): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:25:28:451 DISCORDIADOR/(25632:25671): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:25:29:452 DISCORDIADOR/(25632:25671): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:25:30:452 DISCORDIADOR/(25632:25671): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:25:31:453 DISCORDIADOR/(25632:25671): Realizando tarea en E/S soy hilo 1 de patota 1
+[INFO] 19:25:35:454 DISCORDIADOR/(25632:25671): Termine tarea de E/S soy hilo 1 de patota 1
+[INFO] 19:25:35:459 DISCORDIADOR/(25632:25679): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:25:36:459 DISCORDIADOR/(25632:25679): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:25:37:460 DISCORDIADOR/(25632:25679): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:25:40:460 DISCORDIADOR/(25632:25679): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:25:40:461 DISCORDIADOR/(25632:25679): FIN de mi planificacion tripu 1 patota 1
+[INFO] 19:52:57:539 DISCORDIADOR/(26128:26128): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:54:49:486 DISCORDIADOR/(26128:26156): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:54:49:486 DISCORDIADOR/(26128:26156): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 2
+[INFO] 19:54:49:486 DISCORDIADOR/(26128:26156): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 2
+[INFO] 19:55:56:837 DISCORDIADOR/(26128:26164): TID:2 POSX:0 POSY:6 PCB:2 ESTADO:R
+[INFO] 19:55:56:837 DISCORDIADOR/(26128:26164): TID:1 POSX:3 POSY:4 PCB:2 ESTADO:R
+[INFO] 19:56:06:44 DISCORDIADOR/(26128:26165): TID:2 POSX:0 POSY:6 PCB:2 ESTADO:R
+[INFO] 19:56:06:44 DISCORDIADOR/(26128:26165): TID:1 POSX:3 POSY:4 PCB:2 ESTADO:R
+[INFO] 19:56:26:317 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:56:27:317 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:56:28:318 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:56:29:318 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:56:30:321 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:56:31:322 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:56:32:323 DISCORDIADOR/(26128:26170): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:56:35:324 DISCORDIADOR/(26128:26170): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 19:56:35:324 DISCORDIADOR/(26128:26170): FIN de mi planificacion tripu 2 patota 2
+[INFO] 19:56:35:325 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 7 pasos para llegar a mi tarea
+[INFO] 19:56:36:325 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:56:37:327 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:56:38:327 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:56:39:329 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:56:40:329 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:56:41:329 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:56:42:330 DISCORDIADOR/(26128:26169): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:56:45:331 DISCORDIADOR/(26128:26169): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 19:56:45:331 DISCORDIADOR/(26128:26169): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:56:46:332 DISCORDIADOR/(26128:26169): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:56:47:333 DISCORDIADOR/(26128:26169): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:56:48:333 DISCORDIADOR/(26128:26169): Realizando tarea en E/S soy hilo 1 de patota 2
+[INFO] 19:56:51:333 DISCORDIADOR/(26128:26169): Termine tarea de E/S soy hilo 1 de patota 2
+[INFO] 19:56:51:336 DISCORDIADOR/(26128:26173): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:56:52:337 DISCORDIADOR/(26128:26173): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:56:53:337 DISCORDIADOR/(26128:26173): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:56:54:338 DISCORDIADOR/(26128:26173): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:56:55:338 DISCORDIADOR/(26128:26173): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:56:58:338 DISCORDIADOR/(26128:26173): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 19:56:58:339 DISCORDIADOR/(26128:26173): FIN de mi planificacion tripu 1 patota 2
+[INFO] 19:59:20:76 DISCORDIADOR/(26246:26246): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:59:46:490 DISCORDIADOR/(26267:26267): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:59:54:119 DISCORDIADOR/(26267:26268): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:59:54:119 DISCORDIADOR/(26267:26268): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 2
+[INFO] 19:59:54:120 DISCORDIADOR/(26267:26268): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 2
+[INFO] 20:00:01:928 DISCORDIADOR/(26267:26274): TID:2 POSX:1 POSY:2 PCB:2 ESTADO:R
+[INFO] 20:00:01:928 DISCORDIADOR/(26267:26274): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:R
+[INFO] 20:00:08:800 DISCORDIADOR/(26267:26278): Tripu 2 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:00:08:801 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:00:09:801 DISCORDIADOR/(26267:26278): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:00:09:801 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:00:10:802 DISCORDIADOR/(26267:26278): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:00:10:802 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:00:11:802 DISCORDIADOR/(26267:26278): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:00:11:802 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:00:12:804 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:00:13:804 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:00:14:805 DISCORDIADOR/(26267:26278): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 20:00:14:806 DISCORDIADOR/(26267:26277): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:00:14:807 DISCORDIADOR/(26267:26278): Me quedan 1 pasos para llegar a mi tarea soy hilo 2 de patota 2
+[INFO] 20:00:15:808 DISCORDIADOR/(26267:26278): Realizando tarea en E/S soy hilo 2 de patota 2
+[INFO] 20:00:16:809 DISCORDIADOR/(26267:26278): Termine tarea de E/S soy hilo 2 de patota 2
+[INFO] 20:00:17:808 DISCORDIADOR/(26267:26277): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 20:00:17:809 DISCORDIADOR/(26267:26277): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 20:00:18:810 DISCORDIADOR/(26267:26277): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 20:00:19:811 DISCORDIADOR/(26267:26277): Realizando tarea en E/S soy hilo 1 de patota 2
+[INFO] 20:00:21:813 DISCORDIADOR/(26267:26277): Termine tarea de E/S soy hilo 1 de patota 2
+[INFO] 20:00:21:816 DISCORDIADOR/(26267:26281): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:00:21:817 DISCORDIADOR/(26267:26280): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:00:22:817 DISCORDIADOR/(26267:26281): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:00:22:817 DISCORDIADOR/(26267:26280): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:00:23:818 DISCORDIADOR/(26267:26281): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:00:23:818 DISCORDIADOR/(26267:26280): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:00:24:818 DISCORDIADOR/(26267:26280): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:00:25:819 DISCORDIADOR/(26267:26280): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:00:26:818 DISCORDIADOR/(26267:26281): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 20:00:26:818 DISCORDIADOR/(26267:26281): FIN de mi planificacion tripu 2 patota 2
+[INFO] 20:00:28:823 DISCORDIADOR/(26267:26280): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 20:00:28:823 DISCORDIADOR/(26267:26280): FIN de mi planificacion tripu 1 patota 2
+[INFO] 20:01:35:365 DISCORDIADOR/(26302:26302): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:01:45:672 DISCORDIADOR/(26306:26306): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:01:55:120 DISCORDIADOR/(26306:26307): Enviando tareas a MI-RAM con socket: 4
+[INFO] 20:01:55:120 DISCORDIADOR/(26306:26307): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 2
+[INFO] 20:01:55:120 DISCORDIADOR/(26306:26307): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 2
+[INFO] 20:02:01:128 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:02:02:131 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:02:03:132 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:02:04:133 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:02:05:133 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:02:06:135 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:02:07:139 DISCORDIADOR/(26306:26314): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:02:10:140 DISCORDIADOR/(26306:26314): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 20:02:10:140 DISCORDIADOR/(26306:26314): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 20:02:11:140 DISCORDIADOR/(26306:26314): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 20:02:12:142 DISCORDIADOR/(26306:26314): Realizando tarea en E/S soy hilo 1 de patota 2
+[INFO] 20:02:14:143 DISCORDIADOR/(26306:26314): Termine tarea de E/S soy hilo 1 de patota 2
+[INFO] 20:02:14:152 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 11 pasos para llegar a mi tarea
+[INFO] 20:02:14:152 DISCORDIADOR/(26306:26317): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:02:15:153 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 10 pasos para llegar a mi tarea
+[INFO] 20:02:15:153 DISCORDIADOR/(26306:26317): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:02:16:153 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 9 pasos para llegar a mi tarea
+[INFO] 20:02:16:154 DISCORDIADOR/(26306:26317): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:02:17:154 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 8 pasos para llegar a mi tarea
+[INFO] 20:02:17:154 DISCORDIADOR/(26306:26317): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:02:18:155 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 7 pasos para llegar a mi tarea
+[INFO] 20:02:18:155 DISCORDIADOR/(26306:26317): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:02:19:155 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:02:20:157 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:02:21:155 DISCORDIADOR/(26306:26317): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 20:02:21:156 DISCORDIADOR/(26306:26317): FIN de mi planificacion tripu 1 patota 2
+[INFO] 20:02:21:157 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:02:22:158 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:02:23:158 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:02:24:159 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:02:25:160 DISCORDIADOR/(26306:26318): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:02:28:160 DISCORDIADOR/(26306:26318): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 20:02:28:161 DISCORDIADOR/(26306:26318): Me quedan 1 pasos para llegar a mi tarea soy hilo 2 de patota 2
+[INFO] 20:02:29:162 DISCORDIADOR/(26306:26318): Realizando tarea en E/S soy hilo 2 de patota 2
+[INFO] 20:02:30:163 DISCORDIADOR/(26306:26318): Termine tarea de E/S soy hilo 2 de patota 2
+[INFO] 20:02:41:56 DISCORDIADOR/(26306:26322): TID:2 POSX:0 POSY:10 PCB:2 ESTADO:R
+[INFO] 20:13:53:395 DISCORDIADOR/(26663:26663): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:14:17:588 DISCORDIADOR/(26663:26665): Enviando tareas a MI-RAM con socket: 4
+[INFO] 20:14:17:588 DISCORDIADOR/(26663:26665): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 3
+[INFO] 20:14:17:589 DISCORDIADOR/(26663:26665): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 3
+[INFO] 20:14:17:589 DISCORDIADOR/(26663:26665): INGRESANDO A LISTA NEW TRIPU 3 DE PATOTA 3
+[INFO] 20:14:55:767 DISCORDIADOR/(26663:26695): TID:2 POSX:0 POSY:3 PCB:3 ESTADO:R
+[INFO] 20:14:55:768 DISCORDIADOR/(26663:26695): TID:3 POSX:2 POSY:2 PCB:3 ESTADO:R
+[INFO] 20:14:55:768 DISCORDIADOR/(26663:26695): TID:1 POSX:5 POSY:2 PCB:3 ESTADO:R
+[INFO] 20:16:08:942 DISCORDIADOR/(26663:26702): Tripu 2 de Patota 3, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:16:08:943 DISCORDIADOR/(26663:26701): Tripu 3 de Patota 3, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:16:09:943 DISCORDIADOR/(26663:26702): Tripu 2 de Patota 3, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:16:09:944 DISCORDIADOR/(26663:26701): Tripu 3 de Patota 3, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:16:10:944 DISCORDIADOR/(26663:26702): Tripu 2 de Patota 3, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:16:10:944 DISCORDIADOR/(26663:26701): Tripu 3 de Patota 3, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:16:11:944 DISCORDIADOR/(26663:26702): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:16:11:944 DISCORDIADOR/(26663:26701): Tripu 3 de Patota 3, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:16:12:945 DISCORDIADOR/(26663:26701): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:16:14:945 DISCORDIADOR/(26663:26702): Tripu 2 de Patota 3. Tarea realizada!
+[INFO] 20:16:14:945 DISCORDIADOR/(26663:26702): FIN de mi planificacion tripu 2 patota 3
+[INFO] 20:16:14:945 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 7 pasos para llegar a mi tarea
+[INFO] 20:16:15:945 DISCORDIADOR/(26663:26701): Tripu 3 de Patota 3. Tarea realizada!
+[INFO] 20:16:15:945 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:16:15:946 DISCORDIADOR/(26663:26701): Me quedan 2 pasos para llegar a mi tarea soy hilo 3 de patota 3
+[INFO] 20:16:16:946 DISCORDIADOR/(26663:26701): Me quedan 1 pasos para llegar a mi tarea soy hilo 3 de patota 3
+[INFO] 20:16:16:946 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:16:17:947 DISCORDIADOR/(26663:26701): Realizando tarea en E/S soy hilo 3 de patota 3
+[INFO] 20:16:17:947 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:16:18:948 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:16:19:948 DISCORDIADOR/(26663:26701): Termine tarea de E/S soy hilo 3 de patota 3
+[INFO] 20:16:19:949 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:16:20:950 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:16:21:950 DISCORDIADOR/(26663:26700): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:16:24:951 DISCORDIADOR/(26663:26700): Tripu 1 de Patota 3. Tarea realizada!
+[INFO] 20:16:24:952 DISCORDIADOR/(26663:26700): Me quedan 5 pasos para llegar a mi tarea soy hilo 1 de patota 3
+[INFO] 20:16:25:952 DISCORDIADOR/(26663:26700): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 3
+[INFO] 20:16:26:953 DISCORDIADOR/(26663:26700): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 3
+[INFO] 20:16:27:954 DISCORDIADOR/(26663:26700): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 3
+[INFO] 20:16:28:955 DISCORDIADOR/(26663:26700): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 3
+[INFO] 20:16:29:956 DISCORDIADOR/(26663:26700): Realizando tarea en E/S soy hilo 1 de patota 3
+[INFO] 20:16:34:956 DISCORDIADOR/(26663:26700): Termine tarea de E/S soy hilo 1 de patota 3
+[INFO] 20:16:34:961 DISCORDIADOR/(26663:26707): Tripu 3 de Patota 3, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:16:34:962 DISCORDIADOR/(26663:26706): Tripu 1 de Patota 3, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:16:35:962 DISCORDIADOR/(26663:26707): Tripu 3 de Patota 3, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:16:35:962 DISCORDIADOR/(26663:26706): Tripu 1 de Patota 3, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:16:36:964 DISCORDIADOR/(26663:26707): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:16:36:964 DISCORDIADOR/(26663:26706): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:16:39:964 DISCORDIADOR/(26663:26707): Tripu 3 de Patota 3. Tarea realizada!
+[INFO] 20:16:39:964 DISCORDIADOR/(26663:26706): Tripu 1 de Patota 3. Tarea realizada!
+[INFO] 20:16:39:965 DISCORDIADOR/(26663:26707): FIN de mi planificacion tripu 3 patota 3
+[INFO] 20:16:39:965 DISCORDIADOR/(26663:26706): FIN de mi planificacion tripu 1 patota 3
+[INFO] 21:34:01:685 DISCORDIADOR/(27704:27704): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:34:28:964 DISCORDIADOR/(27704:27706): Enviando tareas a MI-RAM con socket: 4
+[INFO] 21:34:28:964 DISCORDIADOR/(27704:27706): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 3
+[INFO] 21:34:28:964 DISCORDIADOR/(27704:27706): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 3
+[INFO] 21:34:28:965 DISCORDIADOR/(27704:27706): INGRESANDO A LISTA NEW TRIPU 3 DE PATOTA 3
+[INFO] 21:38:42:392 DISCORDIADOR/(27999:27999): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:39:00:252 DISCORDIADOR/(27999:28000): Enviando tareas a MI-RAM con socket: 4
+[INFO] 21:39:00:252 DISCORDIADOR/(27999:28000): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 3
+[INFO] 21:39:00:252 DISCORDIADOR/(27999:28000): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 3
+[INFO] 21:39:00:252 DISCORDIADOR/(27999:28000): INGRESANDO A LISTA NEW TRIPU 3 DE PATOTA 3
+[INFO] 21:41:03:633 DISCORDIADOR/(28092:28092): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:41:27:32 DISCORDIADOR/(28092:28097): Enviando tareas a MI-RAM con socket: 4
+[INFO] 21:52:24:97 DISCORDIADOR/(28249:28249): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:52:27:832 DISCORDIADOR/(28249:28255): Enviando tareas a MI-RAM con socket: 4
+[INFO] 21:52:49:440 DISCORDIADOR/(28249:28255): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 3
+[INFO] 19:02:20:29 DISCORDIADOR/(3603:3603): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:02:21:755 DISCORDIADOR/(3603:3604): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 19:04:29:200 DISCORDIADOR/(3603:3625): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:04:29:200 DISCORDIADOR/(3603:3625): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:04:38:697 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 9 pasos para llegar a mi tarea
+[INFO] 19:04:39:699 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 8 pasos para llegar a mi tarea
+[INFO] 19:04:40:700 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 19:04:41:701 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:04:42:703 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:04:43:704 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:04:44:709 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:04:45:710 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:04:46:712 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:04:47:714 DISCORDIADOR/(3603:3630): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:04:50:716 DISCORDIADOR/(3603:3630): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:04:50:717 DISCORDIADOR/(3603:3630): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:04:51:719 DISCORDIADOR/(3603:3630): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:04:52:720 DISCORDIADOR/(3603:3630): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:04:53:724 DISCORDIADOR/(3603:3630): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:04:54:725 DISCORDIADOR/(3603:3630): Realizando tarea en E/S soy hilo 1 de patota 1
+[INFO] 19:04:58:728 DISCORDIADOR/(3603:3630): Termine tarea de E/S soy hilo 1 de patota 1
+[INFO] 19:04:58:729 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:04:59:730 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:05:00:731 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:05:01:731 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:05:02:732 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:05:03:733 DISCORDIADOR/(3603:3633): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:05:06:733 DISCORDIADOR/(3603:3633): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:05:06:734 DISCORDIADOR/(3603:3633): FIN de mi planificacion tripu 1 patota 1
+[INFO] 19:16:24:762 DISCORDIADOR/(4538:4538): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:17:27:618 DISCORDIADOR/(4538:4556): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:17:27:619 DISCORDIADOR/(4538:4556): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:17:32:372 DISCORDIADOR/(4538:4562): TID:1 POSX:4 POSY:2 PCB:1 ESTADO:R
+[INFO] 19:17:42:700 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:17:43:701 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:17:44:702 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:17:45:703 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:17:46:705 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:17:47:709 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:17:48:714 DISCORDIADOR/(4538:4571): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:17:51:715 DISCORDIADOR/(4538:4571): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:17:51:715 DISCORDIADOR/(4538:4571): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:17:52:715 DISCORDIADOR/(4538:4571): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:17:53:716 DISCORDIADOR/(4538:4571): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:17:54:754 DISCORDIADOR/(4538:4571): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 19:17:55:755 DISCORDIADOR/(4538:4571): Realizando tarea en E/S soy hilo 1 de patota 1
+[INFO] 19:17:59:759 DISCORDIADOR/(4538:4571): Termine tarea de E/S soy hilo 1 de patota 1
+[INFO] 19:17:59:761 DISCORDIADOR/(4538:4587): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:18:00:762 DISCORDIADOR/(4538:4587): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:18:01:764 DISCORDIADOR/(4538:4587): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:18:04:766 DISCORDIADOR/(4538:4587): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:18:04:766 DISCORDIADOR/(4538:4587): FIN de mi planificacion tripu 1 patota 1
+[INFO] 19:18:49:302 DISCORDIADOR/(4538:4616): Enviando tareas a MI-RAM con socket: 4
+[INFO] 19:18:49:302 DISCORDIADOR/(4538:4616): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 2
+[INFO] 19:18:49:302 DISCORDIADOR/(4538:4616): INGRESANDO A LISTA NEW TRIPU 2 DE PATOTA 2
+[INFO] 19:18:56:707 DISCORDIADOR/(4538:4631): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:18:56:707 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 7 pasos para llegar a mi tarea
+[INFO] 19:18:57:707 DISCORDIADOR/(4538:4631): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:18:57:707 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:18:58:708 DISCORDIADOR/(4538:4631): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:18:58:708 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:18:59:709 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:19:00:710 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:19:01:709 DISCORDIADOR/(4538:4631): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 19:19:01:710 DISCORDIADOR/(4538:4631): FIN de mi planificacion tripu 2 patota 2
+[INFO] 19:19:01:710 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:19:02:711 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:19:03:712 DISCORDIADOR/(4538:4630): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:19:06:712 DISCORDIADOR/(4538:4630): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 19:19:06:715 DISCORDIADOR/(4538:4630): Me quedan 5 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:19:07:715 DISCORDIADOR/(4538:4630): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:19:08:715 DISCORDIADOR/(4538:4630): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:19:09:719 DISCORDIADOR/(4538:4630): Me quedan 2 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:19:10:727 DISCORDIADOR/(4538:4630): Me quedan 1 pasos para llegar a mi tarea soy hilo 1 de patota 2
+[INFO] 19:19:11:728 DISCORDIADOR/(4538:4630): Realizando tarea en E/S soy hilo 1 de patota 2
+[INFO] 19:19:16:735 DISCORDIADOR/(4538:4630): Termine tarea de E/S soy hilo 1 de patota 2
+[INFO] 20:41:17:521 DISCORDIADOR/(6166:6166): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:41:31:725 DISCORDIADOR/(6174:6174): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:41:38:771 DISCORDIADOR/(6174:6178): Enviando tareas a MI-RAM con socket: 4
+[INFO] 20:41:38:772 DISCORDIADOR/(6174:6178): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:41:43:34 DISCORDIADOR/(6174:6185): TID:1 POSX:4 POSY:2 PCB:1 ESTADO:R
+[INFO] 20:41:48:790 DISCORDIADOR/(6174:6188): @ëß´
+[INFO] 20:41:48:791 DISCORDIADOR/(6174:6188): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:41:49:792 DISCORDIADOR/(6174:6188): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:41:50:794 DISCORDIADOR/(6174:6188): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:41:51:795 DISCORDIADOR/(6174:6188): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:41:52:796 DISCORDIADOR/(6174:6188): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:43:05:888 DISCORDIADOR/(6258:6258): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:43:14:553 DISCORDIADOR/(6258:6260): Enviando tareas a MI-RAM con socket: 4
+[INFO] 20:43:14:553 DISCORDIADOR/(6258:6260): INGRESANDO A LISTA NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:43:20:557 DISCORDIADOR/(6258:6268): @û_µÈ`µ@û_µ
+[INFO] 20:43:20:557 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 20:43:21:558 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 20:43:22:558 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 20:43:23:559 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 20:43:24:560 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 20:43:25:561 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 20:43:26:562 DISCORDIADOR/(6258:6268): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 20:43:29:562 DISCORDIADOR/(6258:6268): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 20:43:29:562 DISCORDIADOR/(6258:6268): Me quedan 4 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 20:43:30:563 DISCORDIADOR/(6258:6268): Me quedan 3 pasos para llegar a mi tarea soy hilo 1 de patota 1
+[INFO] 13:13:41:483 DISCORDIADOR/(14845:14845): Soy el discordiador! Hice uso de la shared!
+[INFO] 13:13:58:583 DISCORDIADOR/(14845:14848): Enviando tareas a MI-RAM con socket: 4
+[INFO] 13:13:58:583 DISCORDIADOR/(14845:14848): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:16:59:362 DISCORDIADOR/(15105:15105): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:17:11:844 DISCORDIADOR/(15105:15109): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:17:11:844 DISCORDIADOR/(15105:15109): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:19:05:25 DISCORDIADOR/(15203:15203): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:19:19:316 DISCORDIADOR/(15203:15204): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:19:19:316 DISCORDIADOR/(15203:15204): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:19:19:318 DISCORDIADOR/(15203:15206): Tripulante -1232075232 de patota 1
+[INFO] 14:20:40:73 DISCORDIADOR/(15304:15304): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:21:49:450 DISCORDIADOR/(15348:15348): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:21:52:674 DISCORDIADOR/(15348:15349): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:21:52:675 DISCORDIADOR/(15348:15349): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:21:52:677 DISCORDIADOR/(15348:15351): Tripulante -1233123808 de patota 1
+[INFO] 14:26:05:626 DISCORDIADOR/(15456:15456): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:26:22:36 DISCORDIADOR/(15456:15471): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:26:22:36 DISCORDIADOR/(15456:15471): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:26:22:38 DISCORDIADOR/(15456:15473): Tripulante -1233123808 de patota 1
+[INFO] 14:26:38:799 DISCORDIADOR/(15456:15475): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 14:26:48:904 DISCORDIADOR/(15456:15479): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:26:48:905 DISCORDIADOR/(15456:15479): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 14:26:48:908 DISCORDIADOR/(15456:15481): Tripulante -1243609360 de patota 1
+[INFO] 14:27:51:225 DISCORDIADOR/(15573:15573): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:28:01:826 DISCORDIADOR/(15573:15582): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:28:06:202 DISCORDIADOR/(15573:15582): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:29:00:429 DISCORDIADOR/(15573:15615): Tripulante -1223686624 de patota -1208327955
+[INFO] 14:30:09:535 DISCORDIADOR/(15670:15670): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:30:31:224 DISCORDIADOR/(15670:15688): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:30:31:224 DISCORDIADOR/(15670:15688): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:30:31:224 DISCORDIADOR/(15670:15688): Tripulante 1 de patota 1
+[INFO] 14:31:11:357 DISCORDIADOR/(15670:15694): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 14:33:48:914 DISCORDIADOR/(15749:15749): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:34:03:870 DISCORDIADOR/(15749:15758): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:34:03:870 DISCORDIADOR/(15749:15758): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:34:03:870 DISCORDIADOR/(15749:15758): Tripulante 1 de patota 1
+[INFO] 14:35:32:484 DISCORDIADOR/(15829:15829): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:35:35:293 DISCORDIADOR/(15829:15830): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:35:35:293 DISCORDIADOR/(15829:15830): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:35:35:295 DISCORDIADOR/(15829:15832): Tripulante -1233123808 de patota 1
+[INFO] 14:36:12:446 DISCORDIADOR/(15862:15862): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:36:14:615 DISCORDIADOR/(15862:15863): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:36:14:615 DISCORDIADOR/(15862:15863): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:38:34:577 DISCORDIADOR/(15994:15994): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:38:45:251 DISCORDIADOR/(15994:15997): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:38:58:991 DISCORDIADOR/(16003:16003): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:39:01:591 DISCORDIADOR/(16003:16004): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:39:01:591 DISCORDIADOR/(16003:16004): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:39:01:593 DISCORDIADOR/(16003:16006): Tripulante -1233123808 de patota 1
+[INFO] 14:41:17:961 DISCORDIADOR/(16059:16059): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:41:20:833 DISCORDIADOR/(16059:16060): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:41:20:833 DISCORDIADOR/(16059:16060): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:41:20:834 DISCORDIADOR/(16059:16062): Tripulante -1233123808 de patota 1
+[INFO] 14:41:39:768 DISCORDIADOR/(16082:16082): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:41:42:246 DISCORDIADOR/(16082:16083): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:41:42:247 DISCORDIADOR/(16082:16083): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:41:42:248 DISCORDIADOR/(16082:16085): Tripulante 1 de patota 1
+[INFO] 14:42:15:87 DISCORDIADOR/(16115:16115): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:42:17:279 DISCORDIADOR/(16115:16116): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:42:17:280 DISCORDIADOR/(16115:16116): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:42:17:281 DISCORDIADOR/(16115:16118): Tripulante 1 de patota 1
+[INFO] 14:42:36:204 DISCORDIADOR/(16122:16122): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:42:42:244 DISCORDIADOR/(16122:16123): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:42:42:245 DISCORDIADOR/(16122:16123): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:42:42:245 DISCORDIADOR/(16122:16123): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 14:42:42:246 DISCORDIADOR/(16122:16126): Tripulante 2 de patota 1
+[INFO] 14:42:42:246 DISCORDIADOR/(16122:16125): Tripulante 1 de patota 1
+[INFO] 14:43:17:87 DISCORDIADOR/(16122:16131): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 14:43:17:88 DISCORDIADOR/(16122:16131): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 14:44:59:476 DISCORDIADOR/(16186:16186): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:45:02:586 DISCORDIADOR/(16186:16187): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:45:02:586 DISCORDIADOR/(16186:16187): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:45:02:586 DISCORDIADOR/(16186:16187): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 14:45:02:586 DISCORDIADOR/(16186:16187): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 14:45:02:587 DISCORDIADOR/(16186:16191): Tripulante 3 de patota 1
+[INFO] 14:45:02:588 DISCORDIADOR/(16186:16190): Tripulante 2 de patota 1
+[INFO] 14:45:02:588 DISCORDIADOR/(16186:16189): Tripulante 1 de patota 1
+[INFO] 14:57:29:4 DISCORDIADOR/(16656:16656): Soy el discordiador! Hice uso de la shared!
+[INFO] 14:57:36:437 DISCORDIADOR/(16656:16657): Enviando tareas a MI-RAM con socket: 4
+[INFO] 14:57:36:437 DISCORDIADOR/(16656:16657): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 14:57:36:438 DISCORDIADOR/(16656:16657): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 14:57:36:438 DISCORDIADOR/(16656:16657): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 14:57:36:438 DISCORDIADOR/(16656:16657): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 14:57:36:438 DISCORDIADOR/(16656:16657): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 14:57:36:438 DISCORDIADOR/(16656:16663): Tripulante 5 de patota 1
+[INFO] 14:57:36:439 DISCORDIADOR/(16656:16662): Tripulante 4 de patota 1
+[INFO] 14:57:36:439 DISCORDIADOR/(16656:16661): Tripulante 3 de patota 1
+[INFO] 14:57:36:439 DISCORDIADOR/(16656:16660): Tripulante 2 de patota 1
+[INFO] 14:57:36:443 DISCORDIADOR/(16656:16659): Tripulante 1 de patota 1
+[INFO] 14:57:52:651 DISCORDIADOR/(16656:16672): TID:5 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 14:57:52:651 DISCORDIADOR/(16656:16672): TID:4 POSX:1 POSY:1 PCB:1 ESTADO:R
+[INFO] 14:57:52:651 DISCORDIADOR/(16656:16672): TID:3 POSX:4 POSY:2 PCB:1 ESTADO:R
+[INFO] 14:57:52:651 DISCORDIADOR/(16656:16672): TID:2 POSX:6 POSY:2 PCB:1 ESTADO:R
+[INFO] 14:57:52:651 DISCORDIADOR/(16656:16672): TID:1 POSX:4 POSY:2 PCB:1 ESTADO:R
+[INFO] 15:00:01:274 DISCORDIADOR/(16749:16749): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:00:10:484 DISCORDIADOR/(16749:16750): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:00:10:484 DISCORDIADOR/(16749:16750): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:00:10:484 DISCORDIADOR/(16749:16750): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:00:10:484 DISCORDIADOR/(16749:16750): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:00:10:485 DISCORDIADOR/(16749:16750): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:00:10:485 DISCORDIADOR/(16749:16750): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:00:10:485 DISCORDIADOR/(16749:16756): Tripulante 5 de patota 1
+[INFO] 15:00:10:485 DISCORDIADOR/(16749:16755): Tripulante 4 de patota 1
+[INFO] 15:00:10:489 DISCORDIADOR/(16749:16754): Tripulante 3 de patota 1
+[INFO] 15:00:10:490 DISCORDIADOR/(16749:16753): Tripulante 2 de patota 1
+[INFO] 15:00:10:495 DISCORDIADOR/(16749:16752): Tripulante 1 de patota 1
+[INFO] 15:00:34:744 DISCORDIADOR/(16781:16781): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:00:37:102 DISCORDIADOR/(16781:16782): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:00:37:102 DISCORDIADOR/(16781:16782): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:00:37:102 DISCORDIADOR/(16781:16782): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:00:37:102 DISCORDIADOR/(16781:16782): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:00:37:103 DISCORDIADOR/(16781:16782): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:00:37:103 DISCORDIADOR/(16781:16782): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:00:37:103 DISCORDIADOR/(16781:16788): Tripulante 5 de patota 1
+[INFO] 15:00:37:104 DISCORDIADOR/(16781:16787): Tripulante 4 de patota 1
+[INFO] 15:00:37:105 DISCORDIADOR/(16781:16786): Tripulante 3 de patota 1
+[INFO] 15:00:37:106 DISCORDIADOR/(16781:16785): Tripulante 2 de patota 1
+[INFO] 15:00:37:111 DISCORDIADOR/(16781:16784): Tripulante 1 de patota 1
+[INFO] 15:03:23:608 DISCORDIADOR/(16925:16925): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:03:30:634 DISCORDIADOR/(16925:16926): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:03:30:634 DISCORDIADOR/(16925:16926): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:03:30:634 DISCORDIADOR/(16925:16926): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:03:30:634 DISCORDIADOR/(16925:16926): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:03:30:634 DISCORDIADOR/(16925:16926): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:03:30:635 DISCORDIADOR/(16925:16926): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:03:30:635 DISCORDIADOR/(16925:16932): Tripulante 5 de patota 1
+[INFO] 15:03:30:635 DISCORDIADOR/(16925:16931): Tripulante 4 de patota 1
+[INFO] 15:03:30:635 DISCORDIADOR/(16925:16930): Tripulante 3 de patota 1
+[INFO] 15:03:30:635 DISCORDIADOR/(16925:16929): Tripulante 2 de patota 1
+[INFO] 15:03:30:637 DISCORDIADOR/(16925:16928): Tripulante 1 de patota 1
+[INFO] 15:05:34:253 DISCORDIADOR/(17031:17031): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:05:39:452 DISCORDIADOR/(17031:17032): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:05:39:452 DISCORDIADOR/(17031:17032): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:05:39:453 DISCORDIADOR/(17031:17032): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:05:39:453 DISCORDIADOR/(17031:17032): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:05:39:453 DISCORDIADOR/(17031:17032): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:05:39:454 DISCORDIADOR/(17031:17032): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:05:39:454 DISCORDIADOR/(17031:17038): Tripulante 5 de patota 1
+[INFO] 15:07:41:876 DISCORDIADOR/(17089:17089): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:07:44:51 DISCORDIADOR/(17089:17090): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:07:44:51 DISCORDIADOR/(17089:17090): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:07:44:52 DISCORDIADOR/(17089:17090): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:07:44:52 DISCORDIADOR/(17089:17090): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:07:44:52 DISCORDIADOR/(17089:17090): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:07:44:52 DISCORDIADOR/(17089:17090): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:07:44:52 DISCORDIADOR/(17089:17096): Tripulante 5 de patota 1
+[INFO] 15:07:44:53 DISCORDIADOR/(17089:17095): Tripulante 4 de patota 1
+[INFO] 15:07:44:53 DISCORDIADOR/(17089:17094): Tripulante 3 de patota 1
+[INFO] 15:07:44:53 DISCORDIADOR/(17089:17093): Tripulante 2 de patota 1
+[INFO] 15:07:44:54 DISCORDIADOR/(17089:17092): Tripulante 1 de patota 1
+[INFO] 15:08:40:20 DISCORDIADOR/(17133:17133): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:08:49:324 DISCORDIADOR/(17133:17136): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:08:49:324 DISCORDIADOR/(17133:17136): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17136): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17136): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17136): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17136): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17142): Tripulante 5 de patota 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17141): Tripulante 4 de patota 1
+[INFO] 15:08:49:325 DISCORDIADOR/(17133:17140): Tripulante 3 de patota 1
+[INFO] 15:08:49:326 DISCORDIADOR/(17133:17139): Tripulante 2 de patota 1
+[INFO] 15:08:49:326 DISCORDIADOR/(17133:17138): Tripulante 1 de patota 1
+[INFO] 15:17:12:962 DISCORDIADOR/(17285:17285): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:17:15:231 DISCORDIADOR/(17288:17288): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:17:21:211 DISCORDIADOR/(17292:17292): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:17:27:873 DISCORDIADOR/(17292:17293): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:17:27:873 DISCORDIADOR/(17292:17293): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:17:27:873 DISCORDIADOR/(17292:17293): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:17:27:874 DISCORDIADOR/(17292:17293): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:17:27:874 DISCORDIADOR/(17292:17293): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:17:27:874 DISCORDIADOR/(17292:17298): Tripulante 4 de patota 1
+[INFO] 15:17:27:874 DISCORDIADOR/(17292:17297): Tripulante 3 de patota 1
+[INFO] 15:17:27:875 DISCORDIADOR/(17292:17296): Tripulante 2 de patota 1
+[INFO] 15:17:27:876 DISCORDIADOR/(17292:17295): Tripulante 1 de patota 1
+[INFO] 15:19:58:459 DISCORDIADOR/(17361:17361): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:20:49:73 DISCORDIADOR/(17396:17396): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:20:51:810 DISCORDIADOR/(17396:17397): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:20:51:810 DISCORDIADOR/(17396:17397): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:20:51:811 DISCORDIADOR/(17396:17397): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:20:51:811 DISCORDIADOR/(17396:17397): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:20:51:811 DISCORDIADOR/(17396:17397): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:20:51:812 DISCORDIADOR/(17396:17402): Tripulante 4 de patota 1
+[INFO] 15:20:51:813 DISCORDIADOR/(17396:17401): Tripulante 3 de patota 1
+[INFO] 15:20:51:813 DISCORDIADOR/(17396:17400): Tripulante 2 de patota 1
+[INFO] 15:20:51:813 DISCORDIADOR/(17396:17399): Tripulante 1 de patota 1
+[INFO] 15:25:57:984 DISCORDIADOR/(17516:17516): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:26:04:130 DISCORDIADOR/(17516:17517): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:26:04:131 DISCORDIADOR/(17516:17517): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:26:04:131 DISCORDIADOR/(17516:17517): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:26:04:132 DISCORDIADOR/(17516:17517): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:26:04:132 DISCORDIADOR/(17516:17517): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:26:04:132 DISCORDIADOR/(17516:17517): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:26:04:133 DISCORDIADOR/(17516:17523): Tripulante 5 de patota 1
+[INFO] 15:26:04:134 DISCORDIADOR/(17516:17522): Tripulante 4 de patota 1
+[INFO] 15:26:04:134 DISCORDIADOR/(17516:17521): Tripulante 3 de patota 1
+[INFO] 15:26:04:134 DISCORDIADOR/(17516:17520): Tripulante 2 de patota 1
+[INFO] 15:26:04:134 DISCORDIADOR/(17516:17519): Tripulante 1 de patota 1
+[INFO] 15:31:32:370 DISCORDIADOR/(17725:17725): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:31:34:752 DISCORDIADOR/(17725:17726): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:31:34:753 DISCORDIADOR/(17725:17726): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:31:34:753 DISCORDIADOR/(17725:17726): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:31:34:753 DISCORDIADOR/(17725:17726): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:31:34:753 DISCORDIADOR/(17725:17726): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:31:34:753 DISCORDIADOR/(17725:17726): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:31:34:754 DISCORDIADOR/(17725:17732): Tripulante 5 de patota 1
+[INFO] 15:31:34:754 DISCORDIADOR/(17725:17731): Tripulante 4 de patota 1
+[INFO] 15:31:34:754 DISCORDIADOR/(17725:17730): Tripulante 3 de patota 1
+[INFO] 15:31:34:754 DISCORDIADOR/(17725:17729): Tripulante 2 de patota 1
+[INFO] 15:31:34:755 DISCORDIADOR/(17725:17728): Tripulante 1 de patota 1
+[INFO] 15:38:29:119 DISCORDIADOR/(17879:17879): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:38:36:10 DISCORDIADOR/(17879:17880): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:38:36:10 DISCORDIADOR/(17879:17880): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:38:36:10 DISCORDIADOR/(17879:17880): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:38:36:11 DISCORDIADOR/(17879:17880): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:38:36:11 DISCORDIADOR/(17879:17880): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:38:36:11 DISCORDIADOR/(17879:17880): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:38:36:12 DISCORDIADOR/(17879:17886): Tripulante 5 de patota 1
+[INFO] 15:38:36:13 DISCORDIADOR/(17879:17885): Tripulante 4 de patota 1
+[INFO] 15:38:36:13 DISCORDIADOR/(17879:17884): Tripulante 3 de patota 1
+[INFO] 15:38:36:14 DISCORDIADOR/(17879:17883): Tripulante 2 de patota 1
+[INFO] 15:38:36:19 DISCORDIADOR/(17879:17882): Tripulante 1 de patota 1
+[INFO] 15:38:59:992 DISCORDIADOR/(17879:17896): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:38:59:992 DISCORDIADOR/(17879:17896): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 15:38:59:992 DISCORDIADOR/(17879:17896): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 2
+[INFO] 15:38:59:992 DISCORDIADOR/(17879:17896): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 2
+[INFO] 15:38:59:992 DISCORDIADOR/(17879:17896): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 2
+[INFO] 15:38:59:995 DISCORDIADOR/(17879:17896): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 2
+[INFO] 15:39:00:4 DISCORDIADOR/(17879:17898): Tripulante 1 de patota 2
+[INFO] 15:39:00:4 DISCORDIADOR/(17879:17899): Tripulante 2 de patota 2
+[INFO] 15:39:00:4 DISCORDIADOR/(17879:17900): Tripulante 3 de patota 2
+[INFO] 15:39:00:4 DISCORDIADOR/(17879:17901): Tripulante 4 de patota 2
+[INFO] 15:39:00:5 DISCORDIADOR/(17879:17902): Tripulante 5 de patota 2
+[INFO] 15:39:15:771 DISCORDIADOR/(17879:17909): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:39:15:777 DISCORDIADOR/(17879:17909): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 3
+[INFO] 15:39:15:779 DISCORDIADOR/(17879:17909): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 3
+[INFO] 15:39:15:779 DISCORDIADOR/(17879:17909): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 3
+[INFO] 15:39:15:783 DISCORDIADOR/(17879:17909): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 3
+[INFO] 15:39:15:783 DISCORDIADOR/(17879:17909): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 3
+[INFO] 15:39:15:800 DISCORDIADOR/(17879:17911): Tripulante 1 de patota 3
+[INFO] 15:39:15:800 DISCORDIADOR/(17879:17912): Tripulante 2 de patota 3
+[INFO] 15:39:15:802 DISCORDIADOR/(17879:17913): Tripulante 3 de patota 3
+[INFO] 15:39:15:802 DISCORDIADOR/(17879:17914): Tripulante 4 de patota 3
+[INFO] 15:39:15:802 DISCORDIADOR/(17879:17915): Tripulante 5 de patota 3
+[INFO] 15:58:12:617 DISCORDIADOR/(18131:18131): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:58:23:592 DISCORDIADOR/(18131:18132): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:58:23:592 DISCORDIADOR/(18131:18132): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:58:23:592 DISCORDIADOR/(18131:18132): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:58:23:593 DISCORDIADOR/(18131:18132): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:58:23:593 DISCORDIADOR/(18131:18136): Tripulante 3 de patota 1
+[INFO] 15:59:01:604 DISCORDIADOR/(18183:18183): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:59:06:70 DISCORDIADOR/(18183:18184): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:59:06:70 DISCORDIADOR/(18183:18184): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:59:06:71 DISCORDIADOR/(18183:18184): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:59:06:71 DISCORDIADOR/(18183:18184): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:59:06:71 DISCORDIADOR/(18183:18188): Tripulante 3 de patota 1
+[INFO] 15:59:06:72 DISCORDIADOR/(18183:18187): Tripulante 2 de patota 1
+[INFO] 15:59:06:72 DISCORDIADOR/(18183:18186): Tripulante 1 de patota 1
+[INFO] 15:59:51:280 DISCORDIADOR/(18232:18232): Soy el discordiador! Hice uso de la shared!
+[INFO] 15:59:58:922 DISCORDIADOR/(18232:18233): Enviando tareas a MI-RAM con socket: 4
+[INFO] 15:59:58:923 DISCORDIADOR/(18232:18233): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 15:59:58:923 DISCORDIADOR/(18232:18233): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 15:59:58:923 DISCORDIADOR/(18232:18233): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 15:59:58:923 DISCORDIADOR/(18232:18233): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 15:59:58:924 DISCORDIADOR/(18232:18233): POSICIONANDOME EN NEW TRIPU 5 DE PATOTA 1
+[INFO] 15:59:58:924 DISCORDIADOR/(18232:18239): Tripulante 5 de patota 1
+[INFO] 15:59:58:924 DISCORDIADOR/(18232:18238): Tripulante 4 de patota 1
+[INFO] 15:59:58:924 DISCORDIADOR/(18232:18237): Tripulante 3 de patota 1
+[INFO] 15:59:58:925 DISCORDIADOR/(18232:18236): Tripulante 2 de patota 1
+[INFO] 15:59:58:925 DISCORDIADOR/(18232:18235): Tripulante 1 de patota 1
+[INFO] 16:01:36:295 DISCORDIADOR/(18299:18299): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:01:44:76 DISCORDIADOR/(18299:18300): Enviando tareas a MI-RAM con socket: 4
+[INFO] 16:01:44:79 DISCORDIADOR/(18299:18300): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:01:44:79 DISCORDIADOR/(18299:18300): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:01:44:83 DISCORDIADOR/(18299:18300): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:01:44:83 DISCORDIADOR/(18299:18300): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 16:01:44:83 DISCORDIADOR/(18299:18304): Tripulante 3 de patota 1
+[INFO] 16:01:44:84 DISCORDIADOR/(18299:18305): Tripulante 4 de patota 1
+[INFO] 16:01:44:84 DISCORDIADOR/(18299:18303): Tripulante 2 de patota 1
+[INFO] 16:01:44:85 DISCORDIADOR/(18299:18302): Tripulante 1 de patota 1
+[INFO] 16:02:00:916 DISCORDIADOR/(18311:18311): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:02:03:746 DISCORDIADOR/(18311:18312): Enviando tareas a MI-RAM con socket: 4
+[INFO] 16:02:03:746 DISCORDIADOR/(18311:18312): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:02:03:748 DISCORDIADOR/(18311:18312): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:02:03:748 DISCORDIADOR/(18311:18312): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:02:03:748 DISCORDIADOR/(18311:18312): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 16:02:03:749 DISCORDIADOR/(18311:18317): Tripulante 4 de patota 1
+[INFO] 16:02:03:749 DISCORDIADOR/(18311:18316): Tripulante 3 de patota 1
+[INFO] 16:02:03:749 DISCORDIADOR/(18311:18315): Tripulante 2 de patota 1
+[INFO] 16:02:03:749 DISCORDIADOR/(18311:18314): Tripulante 1 de patota 1
+[INFO] 16:04:25:67 DISCORDIADOR/(18412:18412): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:04:36:471 DISCORDIADOR/(18412:18418): Enviando tareas a MI-RAM con socket: 4
+[INFO] 16:04:36:471 DISCORDIADOR/(18412:18418): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:04:36:472 DISCORDIADOR/(18412:18418): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:04:36:472 DISCORDIADOR/(18412:18418): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:04:36:473 DISCORDIADOR/(18412:18422): Tripulante 3 de patota 1
+[INFO] 16:04:36:473 DISCORDIADOR/(18412:18421): Tripulante 2 de patota 1
+[INFO] 16:04:36:473 DISCORDIADOR/(18412:18420): Tripulante 1 de patota 1
+[INFO] 16:31:51:269 DISCORDIADOR/(18782:18782): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:31:57:767 DISCORDIADOR/(18782:18786): UáÿÿƒÄ‰Â‹Eì‰P‹Eì‹XƒìÿuèyáÿÿƒÄƒÀ‰‹Eì‹X‹Eì‹@‹
+[INFO] 16:31:57:767 DISCORDIADOR/(18782:18786): Enviando tareas a MI-RAM
+[INFO] 16:34:57:510 DISCORDIADOR/(18861:18861): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:35:04:108 DISCORDIADOR/(18861:18863): CáÿÿƒÄ‰Â‹Eì‰P‹Eì‹XƒìÿuègáÿÿƒÄƒÀ‰‹Eì‹X‹Eì‹@‹
+[INFO] 16:35:04:108 DISCORDIADOR/(18861:18863): Enviando tareas a MI-RAM
+[INFO] 16:35:04:108 DISCORDIADOR/(18861:18863): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:35:04:108 DISCORDIADOR/(18861:18863): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:35:04:108 DISCORDIADOR/(18861:18863): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:35:04:109 DISCORDIADOR/(18861:18863): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 16:35:04:109 DISCORDIADOR/(18861:18868): Tripulante 4 de patota 1
+[INFO] 16:35:04:109 DISCORDIADOR/(18861:18867): Tripulante 3 de patota 1
+[INFO] 16:35:04:110 DISCORDIADOR/(18861:18866): Tripulante 2 de patota 1
+[INFO] 16:35:04:110 DISCORDIADOR/(18861:18865): Tripulante 1 de patota 1
+[INFO] 16:36:29:327 DISCORDIADOR/(18904:18904): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:37:18:517 DISCORDIADOR/(18950:18950): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:37:59:577 DISCORDIADOR/(18996:18996): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:40:21:161 DISCORDIADOR/(19107:19107): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:40:42:425 DISCORDIADOR/(19136:19136): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:40:45:848 DISCORDIADOR/(19136:19137): ‹EÐ‹Môe3
+[INFO] 16:40:45:848 DISCORDIADOR/(19136:19137): Enviando tareas a MI-RAM
+[INFO] 16:40:45:848 DISCORDIADOR/(19136:19137): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:40:45:848 DISCORDIADOR/(19136:19137): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:40:45:849 DISCORDIADOR/(19136:19137): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:40:45:849 DISCORDIADOR/(19136:19141): Tripulante 3 de patota 1
+[INFO] 16:40:45:849 DISCORDIADOR/(19136:19140): Tripulante 2 de patota 1
+[INFO] 16:40:45:850 DISCORDIADOR/(19136:19139): Tripulante 1 de patota 1
+[INFO] 16:41:21:289 DISCORDIADOR/(19179:19179): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:41:23:746 DISCORDIADOR/(19179:19180): ‹EÐ‹Môe3
+[INFO] 16:41:23:747 DISCORDIADOR/(19179:19180): Enviando tareas a MI-RAM
+[INFO] 16:41:23:747 DISCORDIADOR/(19179:19180): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:41:23:748 DISCORDIADOR/(19179:19180): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:41:23:748 DISCORDIADOR/(19179:19180): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:41:23:749 DISCORDIADOR/(19179:19184): Tripulante 3 de patota 1
+[INFO] 16:41:23:749 DISCORDIADOR/(19179:19183): Tripulante 2 de patota 1
+[INFO] 16:41:23:749 DISCORDIADOR/(19179:19182): Tripulante 1 de patota 1
+[INFO] 16:42:02:140 DISCORDIADOR/(19234:19234): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:43:06:572 DISCORDIADOR/(19274:19274): Soy el discordiador! Hice uso de la shared!
+[INFO] 16:43:12:308 DISCORDIADOR/(19274:19275): Enviando tareas a MI-RAM
+[INFO] 16:43:12:308 DISCORDIADOR/(19274:19275): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 16:43:12:309 DISCORDIADOR/(19274:19275): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 16:43:12:309 DISCORDIADOR/(19274:19275): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 16:43:12:310 DISCORDIADOR/(19274:19275): POSICIONANDOME EN NEW TRIPU 4 DE PATOTA 1
+[INFO] 16:43:12:311 DISCORDIADOR/(19274:19280): Tripulante 4 de patota 1
+[INFO] 16:43:12:311 DISCORDIADOR/(19274:19279): Tripulante 3 de patota 1
+[INFO] 16:43:12:312 DISCORDIADOR/(19274:19278): Tripulante 2 de patota 1
+[INFO] 16:43:12:312 DISCORDIADOR/(19274:19277): Tripulante 1 de patota 1
+[INFO] 16:43:37:748 DISCORDIADOR/(19274:19286): TID:4 POSX:1 POSY:1 PCB:1 ESTADO:R
+[INFO] 16:43:37:752 DISCORDIADOR/(19274:19286): TID:3 POSX:2 POSY:2 PCB:1 ESTADO:R
+[INFO] 16:43:37:755 DISCORDIADOR/(19274:19286): TID:2 POSX:1 POSY:0 PCB:1 ESTADO:R
+[INFO] 16:43:37:755 DISCORDIADOR/(19274:19286): TID:1 POSX:2 POSY:1 PCB:1 ESTADO:R
+[INFO] 17:13:42:559 DISCORDIADOR/(20495:20495): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:13:50:336 DISCORDIADOR/(20495:20496): Enviando tareas a MI-RAM
+[INFO] 17:13:50:337 DISCORDIADOR/(20495:20496): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:13:50:337 DISCORDIADOR/(20495:20496): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:13:50:339 DISCORDIADOR/(20495:20499): Tripulante 2 de patota 1
+[INFO] 17:13:50:339 DISCORDIADOR/(20495:20498): Tripulante 1 de patota 1
+[INFO] 17:14:22:621 DISCORDIADOR/(20495:20511): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:15:43:482 DISCORDIADOR/(20581:20581): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:15:49:618 DISCORDIADOR/(20581:20582): Enviando tareas a MI-RAM
+[INFO] 17:15:49:618 DISCORDIADOR/(20581:20582): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:15:49:618 DISCORDIADOR/(20581:20582): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:15:49:619 DISCORDIADOR/(20581:20585): Tripulante 2 de patota 1
+[INFO] 17:15:49:621 DISCORDIADOR/(20581:20584): Tripulante 1 de patota 1
+[INFO] 17:15:55:586 DISCORDIADOR/(20581:20590): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 17:15:55:586 DISCORDIADOR/(20581:20590): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:16:01:780 DISCORDIADOR/(20581:20585): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:16:02:780 DISCORDIADOR/(20581:20585): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:16:03:781 DISCORDIADOR/(20581:20585): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:16:04:782 DISCORDIADOR/(20581:20585): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:16:07:782 DISCORDIADOR/(20581:20585): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 17:16:22:104 DISCORDIADOR/(20581:20602): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:22:00:305 DISCORDIADOR/(20734:20734): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:22:08:955 DISCORDIADOR/(20734:20735): Enviando tareas a MI-RAM
+[INFO] 17:22:08:956 DISCORDIADOR/(20734:20735): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:22:08:956 DISCORDIADOR/(20734:20735): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:22:08:957 DISCORDIADOR/(20734:20738): Tripulante 2 de patota 1
+[INFO] 17:22:08:958 DISCORDIADOR/(20734:20737): Tripulante 1 de patota 1
+[INFO] 17:22:17:149 DISCORDIADOR/(20734:20738): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:22:18:150 DISCORDIADOR/(20734:20738): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:22:19:151 DISCORDIADOR/(20734:20738): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:22:22:151 DISCORDIADOR/(20734:20738): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 17:22:22:152 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:22:23:152 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:22:24:153 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:22:25:154 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:22:26:154 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:22:27:155 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:22:28:156 DISCORDIADOR/(20734:20737): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:22:31:157 DISCORDIADOR/(20734:20737): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 17:25:19:145 DISCORDIADOR/(20866:20866): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:25:28:162 DISCORDIADOR/(20866:20869): Enviando tareas a MI-RAM
+[INFO] 17:25:28:162 DISCORDIADOR/(20866:20869): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:25:28:163 DISCORDIADOR/(20866:20869): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:25:28:163 DISCORDIADOR/(20866:20869): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 17:25:28:163 DISCORDIADOR/(20866:20873): Tripulante 3 de patota 1
+[INFO] 17:25:28:166 DISCORDIADOR/(20866:20872): Tripulante 2 de patota 1
+[INFO] 17:25:28:167 DISCORDIADOR/(20866:20871): Tripulante 1 de patota 1
+[INFO] 17:25:32:220 DISCORDIADOR/(20866:20877): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:25:32:221 DISCORDIADOR/(20866:20877): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 17:25:32:221 DISCORDIADOR/(20866:20877): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:25:40:493 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 17:25:41:494 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:25:42:494 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:25:43:495 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:25:44:495 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:25:45:496 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:25:46:498 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:25:47:498 DISCORDIADOR/(20866:20873): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:25:50:498 DISCORDIADOR/(20866:20873): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 17:25:50:500 DISCORDIADOR/(20866:20872): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:25:51:500 DISCORDIADOR/(20866:20872): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:25:54:502 DISCORDIADOR/(20866:20872): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 17:25:54:505 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:25:55:506 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:25:56:508 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:25:57:509 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:25:58:510 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:25:59:511 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:26:00:512 DISCORDIADOR/(20866:20871): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:26:03:513 DISCORDIADOR/(20866:20871): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 17:26:18:22 DISCORDIADOR/(20866:20882): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:E
+[INFO] 17:26:18:22 DISCORDIADOR/(20866:20882): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:E
+[INFO] 17:26:18:22 DISCORDIADOR/(20866:20882): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:F
+[INFO] 17:28:16:997 DISCORDIADOR/(20934:20934): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:28:25:182 DISCORDIADOR/(20934:20936): Enviando tareas a MI-RAM
+[INFO] 17:28:25:182 DISCORDIADOR/(20934:20936): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:28:25:183 DISCORDIADOR/(20934:20936): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:28:25:183 DISCORDIADOR/(20934:20936): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 17:28:25:183 DISCORDIADOR/(20934:20940): Tripulante 3 de patota 1
+[INFO] 17:28:25:185 DISCORDIADOR/(20934:20939): Tripulante 2 de patota 1
+[INFO] 17:28:25:185 DISCORDIADOR/(20934:20938): Tripulante 1 de patota 1
+[INFO] 17:28:31:856 DISCORDIADOR/(20934:20944): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:28:31:856 DISCORDIADOR/(20934:20944): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 17:28:31:856 DISCORDIADOR/(20934:20944): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 17:28:37:385 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 17:28:38:386 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:28:39:386 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:28:40:387 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:28:41:388 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:28:42:389 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:28:43:390 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:28:44:391 DISCORDIADOR/(20934:20940): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:28:47:391 DISCORDIADOR/(20934:20940): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 17:28:47:393 DISCORDIADOR/(20934:20939): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:28:48:394 DISCORDIADOR/(20934:20939): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:28:51:395 DISCORDIADOR/(20934:20939): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 17:28:51:396 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:28:52:396 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:28:53:397 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:28:54:398 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:28:55:399 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:28:56:399 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:28:57:400 DISCORDIADOR/(20934:20938): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:29:00:402 DISCORDIADOR/(20934:20938): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 17:29:08:873 DISCORDIADOR/(20934:20955): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:E
+[INFO] 17:29:08:873 DISCORDIADOR/(20934:20955): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:E
+[INFO] 17:29:08:873 DISCORDIADOR/(20934:20955): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:F
+[INFO] 17:31:54:434 DISCORDIADOR/(21015:21015): Soy el discordiador! Hice uso de la shared!
+[INFO] 17:32:05:502 DISCORDIADOR/(21015:21023): Enviando tareas a MI-RAM
+[INFO] 17:32:05:503 DISCORDIADOR/(21015:21023): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 17:32:05:503 DISCORDIADOR/(21015:21023): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 17:32:05:503 DISCORDIADOR/(21015:21023): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 17:32:05:504 DISCORDIADOR/(21015:21027): Tripulante 3 de patota 1
+[INFO] 17:32:05:506 DISCORDIADOR/(21015:21026): Tripulante 2 de patota 1
+[INFO] 17:32:05:506 DISCORDIADOR/(21015:21025): Tripulante 1 de patota 1
+[INFO] 17:32:11:190 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 17:32:12:190 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:32:13:190 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:32:14:191 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:32:15:191 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:32:16:191 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:32:17:192 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:32:18:192 DISCORDIADOR/(21015:21027): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:32:21:193 DISCORDIADOR/(21015:21027): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 17:32:21:193 DISCORDIADOR/(21015:21027): Realizando I/O tripu 3 de patota 1
+[INFO] 17:32:21:193 DISCORDIADOR/(21015:21026): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:32:22:194 DISCORDIADOR/(21015:21026): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:32:25:195 DISCORDIADOR/(21015:21026): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 17:32:25:195 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 17:32:26:196 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 17:32:27:197 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 17:32:28:199 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 17:32:29:200 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 17:32:30:201 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 17:32:31:203 DISCORDIADOR/(21015:21025): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 17:32:34:205 DISCORDIADOR/(21015:21025): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 17:32:34:206 DISCORDIADOR/(21015:21025): Realizando I/O tripu 1 de patota 1
+[INFO] 17:32:50:159 DISCORDIADOR/(21015:21038): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:F
+[INFO] 17:32:50:160 DISCORDIADOR/(21015:21038): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:F
+[INFO] 17:32:50:160 DISCORDIADOR/(21015:21038): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 19:14:00:171 DISCORDIADOR/(21259:21259): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:14:06:428 DISCORDIADOR/(21259:21260): Enviando tareas a MI-RAM
+[INFO] 19:14:06:429 DISCORDIADOR/(21259:21260): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:14:06:429 DISCORDIADOR/(21259:21260): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:14:06:430 DISCORDIADOR/(21259:21260): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:14:06:431 DISCORDIADOR/(21259:21264): Tripulante 3 de patota 1
+[INFO] 19:14:06:432 DISCORDIADOR/(21259:21263): Tripulante 2 de patota 1
+[INFO] 19:14:06:432 DISCORDIADOR/(21259:21262): Tripulante 1 de patota 1
+[INFO] 20:01:21:671 DISCORDIADOR/(22397:22397): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:04:37:424 DISCORDIADOR/(22456:22456): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:06:54:42 DISCORDIADOR/(22524:22524): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:10:17:957 DISCORDIADOR/(22631:22631): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:10:17:958 DISCORDIADOR/(22631:22632): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:12:09:871 DISCORDIADOR/(22678:22678): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:12:09:873 DISCORDIADOR/(22678:22679): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:12:18:493 DISCORDIADOR/(22678:22681): Enviando tareas a MI-RAM
+[INFO] 20:12:18:493 DISCORDIADOR/(22678:22681): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:12:18:503 DISCORDIADOR/(22678:22681): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 20:12:18:504 DISCORDIADOR/(22678:22681): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 20:12:18:504 DISCORDIADOR/(22678:22685): Tripulante 3 de patota 1
+[INFO] 20:12:18:508 DISCORDIADOR/(22678:22684): Tripulante 2 de patota 1
+[INFO] 20:12:18:508 DISCORDIADOR/(22678:22683): Tripulante 1 de patota 1
+[INFO] 20:20:51:169 DISCORDIADOR/(22835:22835): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:20:51:170 DISCORDIADOR/(22835:22836): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:23:15:947 DISCORDIADOR/(23095:23095): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:23:15:948 DISCORDIADOR/(23095:23096): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:23:38:452 DISCORDIADOR/(23132:23132): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:23:38:453 DISCORDIADOR/(23132:23133): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:24:51:16 DISCORDIADOR/(23179:23179): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:24:51:17 DISCORDIADOR/(23179:23180): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:24:51:18 DISCORDIADOR/(23179:23180): Socket 4 id_sabotaje 2
+[INFO] 21:42:56:596 DISCORDIADOR/(23430:23430): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:42:56:596 DISCORDIADOR/(23430:23431): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 21:42:56:597 DISCORDIADOR/(23430:23431): Socket 4 id_sabotaje 2
+[INFO] 21:43:13:113 DISCORDIADOR/(23430:23437): Enviando tareas a MI-RAM
+[INFO] 21:43:13:113 DISCORDIADOR/(23430:23437): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 21:43:13:114 DISCORDIADOR/(23430:23437): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 21:43:13:114 DISCORDIADOR/(23430:23440): Tripulante 2 de patota 1
+[INFO] 21:43:13:115 DISCORDIADOR/(23430:23439): Tripulante 1 de patota 1
+[INFO] 21:43:17:658 DISCORDIADOR/(23430:23443): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 21:43:17:658 DISCORDIADOR/(23430:23443): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 21:43:26:885 DISCORDIADOR/(23430:23440): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 21:43:27:886 DISCORDIADOR/(23430:23440): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 21:43:28:887 DISCORDIADOR/(23430:23440): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:43:29:889 DISCORDIADOR/(23430:23440): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:43:32:890 DISCORDIADOR/(23430:23440): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 21:43:32:890 DISCORDIADOR/(23430:23440): Realizando I/O tripu 2 de patota 1
+[INFO] 21:43:32:890 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 21:43:33:891 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 21:43:34:892 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 21:43:35:892 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 21:43:36:892 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 21:43:37:893 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:43:38:896 DISCORDIADOR/(23430:23439): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:43:41:897 DISCORDIADOR/(23430:23439): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 21:43:41:897 DISCORDIADOR/(23430:23439): Realizando I/O tripu 1 de patota 1
+[INFO] 21:43:58:565 DISCORDIADOR/(23430:23469): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 21:43:58:566 DISCORDIADOR/(23430:23469): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 21:44:10:225 DISCORDIADOR/(23430:23470): Enviando tareas a MI-RAM
+[INFO] 21:44:10:225 DISCORDIADOR/(23430:23470): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 21:44:10:225 DISCORDIADOR/(23430:23472): Tripulante 1 de patota 2
+[INFO] 21:45:32:459 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 21:45:33:460 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 21:45:34:462 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 21:45:35:463 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 21:45:36:464 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 21:45:37:465 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:45:38:468 DISCORDIADOR/(23430:23472): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:45:41:469 DISCORDIADOR/(23430:23472): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 21:45:41:470 DISCORDIADOR/(23430:23472): Realizando I/O tripu 1 de patota 2
+[INFO] 21:45:50:479 DISCORDIADOR/(23430:23516): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 21:45:50:480 DISCORDIADOR/(23430:23516): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 21:45:50:480 DISCORDIADOR/(23430:23516): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:F
+[INFO] 23:01:18:150 DISCORDIADOR/(25067:25067): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:02:08:779 DISCORDIADOR/(25102:25102): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:02:15:194 DISCORDIADOR/(25102:25103): Enviando tareas a MI-RAM
+[INFO] 23:02:15:194 DISCORDIADOR/(25102:25103): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:02:15:195 DISCORDIADOR/(25102:25103): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:02:15:195 DISCORDIADOR/(25102:25106): Tripulante 2 de patota 1
+[INFO] 23:02:15:196 DISCORDIADOR/(25102:25105): Tripulante 1 de patota 1
+[INFO] 23:02:26:919 DISCORDIADOR/(25102:25109): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 23:02:26:919 DISCORDIADOR/(25102:25109): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:02:36:537 DISCORDIADOR/(25102:25106): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:02:37:537 DISCORDIADOR/(25102:25106): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:02:38:539 DISCORDIADOR/(25102:25106): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:02:39:540 DISCORDIADOR/(25102:25106): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:02:42:540 DISCORDIADOR/(25102:25106): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 23:02:42:540 DISCORDIADOR/(25102:25106): Realizando I/O tripu 2 de patota 1
+[INFO] 23:02:45:542 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:02:46:543 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:02:47:545 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:02:48:545 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:02:49:546 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:02:50:546 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:02:51:548 DISCORDIADOR/(25102:25105): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:02:54:549 DISCORDIADOR/(25102:25105): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 23:02:54:550 DISCORDIADOR/(25102:25105): Realizando I/O tripu 1 de patota 1
+[INFO] 23:03:04:287 DISCORDIADOR/(25102:25120): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 23:03:04:287 DISCORDIADOR/(25102:25120): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:45:33:269 DISCORDIADOR/(25849:25849): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:45:47:33 DISCORDIADOR/(25849:25852): Enviando tareas a MI-RAM
+[INFO] 23:45:47:34 DISCORDIADOR/(25849:25852): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:45:47:34 DISCORDIADOR/(25849:25852): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:45:47:36 DISCORDIADOR/(25849:25855): Tripulante 2 de patota 1
+[INFO] 23:45:47:36 DISCORDIADOR/(25849:25854): Tripulante 1 de patota 1
+[INFO] 23:46:36:105 DISCORDIADOR/(25849:25876): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 23:46:36:105 DISCORDIADOR/(25849:25876): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:46:52:646 DISCORDIADOR/(25849:25855): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:46:53:646 DISCORDIADOR/(25849:25855): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:46:54:646 DISCORDIADOR/(25849:25855): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:46:55:646 DISCORDIADOR/(25849:25855): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:46:58:646 DISCORDIADOR/(25849:25855): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 23:46:58:646 DISCORDIADOR/(25849:25855): Realizando I/O tripu 2 de patota 1
+[INFO] 23:47:01:647 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:47:02:647 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:47:03:647 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:47:04:648 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:47:05:648 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:47:06:648 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:47:07:648 DISCORDIADOR/(25849:25854): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:47:10:650 DISCORDIADOR/(25849:25854): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 23:47:10:650 DISCORDIADOR/(25849:25854): Realizando I/O tripu 1 de patota 1
+[INFO] 23:48:53:169 DISCORDIADOR/(25849:25892): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 23:48:53:169 DISCORDIADOR/(25849:25892): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:50:45:652 DISCORDIADOR/(25849:25898): Enviando tareas a MI-RAM
+[INFO] 23:50:45:653 DISCORDIADOR/(25849:25898): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 23:50:45:653 DISCORDIADOR/(25849:25898): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 2
+[INFO] 23:50:45:653 DISCORDIADOR/(25849:25898): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 2
+[INFO] 23:50:45:653 DISCORDIADOR/(25849:25902): Tripulante 3 de patota 2
+[INFO] 23:50:45:653 DISCORDIADOR/(25849:25901): Tripulante 2 de patota 2
+[INFO] 23:50:45:654 DISCORDIADOR/(25849:25900): Tripulante 1 de patota 2
+[INFO] 23:50:51:766 DISCORDIADOR/(25849:25906): TID:3 POSX:3 POSY:4 PCB:2 ESTADO:R
+[INFO] 23:50:51:767 DISCORDIADOR/(25849:25906): TID:2 POSX:0 POSY:1 PCB:2 ESTADO:R
+[INFO] 23:50:51:767 DISCORDIADOR/(25849:25906): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:R
+[INFO] 23:50:51:767 DISCORDIADOR/(25849:25906): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 23:50:51:767 DISCORDIADOR/(25849:25906): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:51:19:376 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:51:20:376 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:51:21:377 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:51:22:378 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:51:23:379 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:51:24:380 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:51:25:382 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:51:26:384 DISCORDIADOR/(25849:25902): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:51:29:384 DISCORDIADOR/(25849:25902): Tripu 3 de Patota 2. Tarea realizada!
+[INFO] 23:51:29:384 DISCORDIADOR/(25849:25902): Realizando I/O tripu 3 de patota 2
+[INFO] 23:51:32:385 DISCORDIADOR/(25849:25901): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:51:33:385 DISCORDIADOR/(25849:25901): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:51:36:385 DISCORDIADOR/(25849:25901): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 23:51:36:385 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:51:37:386 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:51:38:386 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:51:39:386 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:51:40:387 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:51:41:387 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:51:42:387 DISCORDIADOR/(25849:25900): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:51:45:387 DISCORDIADOR/(25849:25900): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 23:51:45:387 DISCORDIADOR/(25849:25900): Realizando I/O tripu 1 de patota 2
+[INFO] 23:52:03:34 DISCORDIADOR/(25849:25920): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 23:52:03:34 DISCORDIADOR/(25849:25920): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:52:03:34 DISCORDIADOR/(25849:25920): TID:3 POSX:3 POSY:4 PCB:2 ESTADO:F
+[INFO] 23:52:03:34 DISCORDIADOR/(25849:25920): TID:2 POSX:0 POSY:1 PCB:2 ESTADO:F
+[INFO] 23:52:03:34 DISCORDIADOR/(25849:25920): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:F
+[INFO] 21:41:55:788 DISCORDIADOR/(26753:26753): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:42:02:494 DISCORDIADOR/(26753:26774): Enviando tareas a MI-RAM
+[INFO] 21:42:02:494 DISCORDIADOR/(26753:26774): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 21:42:02:495 DISCORDIADOR/(26753:26774): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 21:42:02:495 DISCORDIADOR/(26753:26774): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 21:42:02:495 DISCORDIADOR/(26753:26778): Tripulante 3 de patota 1
+[INFO] 21:42:02:496 DISCORDIADOR/(26753:26777): Tripulante 2 de patota 1
+[INFO] 21:42:02:497 DISCORDIADOR/(26753:26776): Tripulante 1 de patota 1
+[INFO] 21:42:07:800 DISCORDIADOR/(26753:26784): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 21:42:07:800 DISCORDIADOR/(26753:26784): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 21:42:07:800 DISCORDIADOR/(26753:26784): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 21:42:13:420 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 21:42:14:420 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 21:42:15:421 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 21:42:16:422 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 21:42:17:423 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 21:42:18:424 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 21:42:19:426 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:42:20:427 DISCORDIADOR/(26753:26778): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:42:23:427 DISCORDIADOR/(26753:26778): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 21:42:23:428 DISCORDIADOR/(26753:26778): Realizando I/O tripu 3 de patota 1
+[INFO] 21:42:26:429 DISCORDIADOR/(26753:26777): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:42:27:430 DISCORDIADOR/(26753:26777): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:42:30:431 DISCORDIADOR/(26753:26777): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 21:42:30:432 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 21:42:31:433 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 21:42:32:434 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 21:42:33:435 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 21:42:34:436 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 21:42:35:437 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 21:42:36:440 DISCORDIADOR/(26753:26776): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 21:42:39:441 DISCORDIADOR/(26753:26776): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 21:42:39:442 DISCORDIADOR/(26753:26776): Realizando I/O tripu 1 de patota 1
+[INFO] 21:42:55:29 DISCORDIADOR/(26753:26809): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:F
+[INFO] 21:42:55:29 DISCORDIADOR/(26753:26809): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:F
+[INFO] 21:42:55:29 DISCORDIADOR/(26753:26809): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:22:10:887 DISCORDIADOR/(28648:28648): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:22:10:888 DISCORDIADOR/(28648:28649): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:22:10:888 DISCORDIADOR/(28648:28649): Socket 4 id_sabotaje 2
+[INFO] 23:22:19:929 DISCORDIADOR/(28648:28652): Enviando tareas a MI-RAM
+[INFO] 23:22:19:929 DISCORDIADOR/(28648:28652): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:22:19:929 DISCORDIADOR/(28648:28652): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:22:19:929 DISCORDIADOR/(28648:28652): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:22:19:933 DISCORDIADOR/(28648:28655): Tripulante 2 de patota 1
+[INFO] 23:22:19:940 DISCORDIADOR/(28648:28654): Tripulante 1 de patota 1
+[INFO] 23:22:19:942 DISCORDIADOR/(28648:28656): Tripulante 3 de patota 1
+[INFO] 23:22:42:580 DISCORDIADOR/(28648:28668): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 23:22:42:580 DISCORDIADOR/(28648:28668): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:22:42:580 DISCORDIADOR/(28648:28668): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:22:51:729 DISCORDIADOR/(28648:28655): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:22:52:729 DISCORDIADOR/(28648:28655): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:22:55:729 DISCORDIADOR/(28648:28655): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 23:22:55:730 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:22:56:730 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:22:57:732 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:22:58:733 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:22:59:733 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:23:00:734 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:23:01:736 DISCORDIADOR/(28648:28654): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:23:04:737 DISCORDIADOR/(28648:28654): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 23:23:04:738 DISCORDIADOR/(28648:28654): Realizando I/O tripu 1 de patota 1
+[INFO] 23:23:05:740 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:23:06:745 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:23:07:745 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:23:08:746 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:23:09:747 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:23:10:747 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:23:11:748 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:23:12:749 DISCORDIADOR/(28648:28656): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:23:15:749 DISCORDIADOR/(28648:28656): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 23:23:15:751 DISCORDIADOR/(28648:28656): Realizando I/O tripu 3 de patota 1
+[INFO] 23:23:25:376 DISCORDIADOR/(28648:28671): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 23:23:31:480 DISCORDIADOR/(28648:28672): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:F
+[INFO] 23:23:31:481 DISCORDIADOR/(28648:28672): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:23:31:481 DISCORDIADOR/(28648:28672): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:F
+[INFO] 23:25:00:132 DISCORDIADOR/(28719:28719): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:25:00:132 DISCORDIADOR/(28719:28720): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:25:00:133 DISCORDIADOR/(28719:28720): Socket 4 id_sabotaje 2
+[INFO] 23:25:23:474 DISCORDIADOR/(28719:28723): Enviando tareas a MI-RAM
+[INFO] 23:25:23:476 DISCORDIADOR/(28719:28723): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:25:23:476 DISCORDIADOR/(28719:28723): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:25:23:476 DISCORDIADOR/(28719:28723): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:25:23:478 DISCORDIADOR/(28719:28727): Tripulante 3 de patota 1
+[INFO] 23:25:23:479 DISCORDIADOR/(28719:28726): Tripulante 2 de patota 1
+[INFO] 23:25:23:480 DISCORDIADOR/(28719:28725): Tripulante 1 de patota 1
+[INFO] 23:25:28:995 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:25:29:996 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:25:30:997 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:25:31:1 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:25:33:11 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:25:34:14 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:25:35:15 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:25:36:16 DISCORDIADOR/(28719:28727): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:25:39:17 DISCORDIADOR/(28719:28727): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 23:25:39:17 DISCORDIADOR/(28719:28727): Realizando I/O tripu 3 de patota 1
+[INFO] 23:25:40:20 DISCORDIADOR/(28719:28726): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:25:41:24 DISCORDIADOR/(28719:28726): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 23:25:44:25 DISCORDIADOR/(28719:28726): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 23:25:44:25 DISCORDIADOR/(28719:28725): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:25:45:26 DISCORDIADOR/(28719:28725): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:25:46:27 DISCORDIADOR/(28719:28725): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:25:47:28 DISCORDIADOR/(28719:28725): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:27:33:879 DISCORDIADOR/(28776:28776): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:27:33:879 DISCORDIADOR/(28776:28777): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:27:33:880 DISCORDIADOR/(28776:28777): Socket 4 id_sabotaje 2
+[INFO] 23:27:47:156 DISCORDIADOR/(28776:28782): Enviando tareas a MI-RAM
+[INFO] 23:27:47:156 DISCORDIADOR/(28776:28782): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:27:47:156 DISCORDIADOR/(28776:28782): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:27:47:156 DISCORDIADOR/(28776:28782): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:27:47:156 DISCORDIADOR/(28776:28786): Tripulante 3 de patota 1
+[INFO] 23:27:47:157 DISCORDIADOR/(28776:28785): Tripulante 2 de patota 1
+[INFO] 23:27:47:158 DISCORDIADOR/(28776:28784): Tripulante 1 de patota 1
+[INFO] 00:06:15:355 DISCORDIADOR/(29754:29754): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:06:15:356 DISCORDIADOR/(29754:29755): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:06:15:356 DISCORDIADOR/(29754:29755): Socket 4 id_sabotaje 2
+[INFO] 00:12:57:498 DISCORDIADOR/(30079:30079): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:12:57:499 DISCORDIADOR/(30079:30080): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:12:57:499 DISCORDIADOR/(30079:30080): Socket 4 id_sabotaje 2
+[INFO] 00:20:26:318 DISCORDIADOR/(30262:30262): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:20:26:319 DISCORDIADOR/(30262:30263): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:20:26:320 DISCORDIADOR/(30262:30263): Socket 4 id_sabotaje 2
+[INFO] 08:55:52:575 DISCORDIADOR/(31209:31209): Soy el discordiador! Hice uso de la shared!
+[INFO] 08:55:52:576 DISCORDIADOR/(31209:31210): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 08:55:52:576 DISCORDIADOR/(31209:31210): Socket 4 id_sabotaje 2
+[INFO] 08:57:00:833 DISCORDIADOR/(31219:31219): Soy el discordiador! Hice uso de la shared!
+[INFO] 08:57:00:834 DISCORDIADOR/(31219:31220): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 08:57:00:834 DISCORDIADOR/(31219:31220): Socket 4 id_sabotaje 2
+[INFO] 08:57:04:855 DISCORDIADOR/(31219:31222): Enviando tareas a MI-RAM
+[INFO] 08:57:04:855 DISCORDIADOR/(31219:31222): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 08:57:04:856 DISCORDIADOR/(31219:31222): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 08:57:04:856 DISCORDIADOR/(31219:31225): Tripulante 2 de patota 1
+[INFO] 08:57:04:858 DISCORDIADOR/(31219:31224): Tripulante 1 de patota 1
+[INFO] 08:57:11:438 DISCORDIADOR/(31219:31225): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 08:57:12:438 DISCORDIADOR/(31219:31225): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 08:57:13:440 DISCORDIADOR/(31219:31225): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 08:57:14:441 DISCORDIADOR/(31219:31225): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 08:57:17:443 DISCORDIADOR/(31219:31225): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 08:57:17:444 DISCORDIADOR/(31219:31225): Realizando I/O tripu 2 de patota 1
+[INFO] 08:57:36:355 DISCORDIADOR/(31219:31233): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 08:57:36:355 DISCORDIADOR/(31219:31233): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 08:57:48:541 DISCORDIADOR/(31219:31234): Enviando tareas a MI-RAM
+[INFO] 08:57:48:542 DISCORDIADOR/(31219:31234): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 08:57:48:542 DISCORDIADOR/(31219:31234): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 2
+[INFO] 08:57:48:542 DISCORDIADOR/(31219:31234): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 2
+[INFO] 08:57:48:542 DISCORDIADOR/(31219:31238): Tripulante 3 de patota 2
+[INFO] 08:57:48:543 DISCORDIADOR/(31219:31237): Tripulante 2 de patota 2
+[INFO] 08:57:48:544 DISCORDIADOR/(31219:31236): Tripulante 1 de patota 2
+[INFO] 08:57:48:544 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 08:57:49:545 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 08:57:50:546 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 08:57:51:547 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 08:57:52:549 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 08:57:53:550 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 08:57:54:552 DISCORDIADOR/(31219:31238): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 08:57:57:553 DISCORDIADOR/(31219:31238): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 08:57:57:554 DISCORDIADOR/(31219:31238): Realizando I/O tripu 1 de patota 1
+[INFO] 08:57:57:554 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 7 pasos para llegar a mi tarea
+[INFO] 08:57:58:555 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 08:57:59:557 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 08:58:00:558 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 08:58:01:559 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 08:58:02:561 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 08:58:03:562 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 08:58:04:563 DISCORDIADOR/(31219:31237): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 08:58:07:564 DISCORDIADOR/(31219:31237): Tripu 3 de Patota 2. Tarea realizada!
+[INFO] 08:58:07:565 DISCORDIADOR/(31219:31237): Realizando I/O tripu 3 de patota 2
+[INFO] 08:58:07:566 DISCORDIADOR/(31219:31236): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 08:58:08:566 DISCORDIADOR/(31219:31236): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 08:58:11:569 DISCORDIADOR/(31219:31236): Tripu 2 de Patota 2. Tarea realizada!
+[INFO] 08:58:11:570 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 6 pasos para llegar a mi tarea
+[INFO] 08:58:12:571 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 5 pasos para llegar a mi tarea
+[INFO] 08:58:13:572 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 4 pasos para llegar a mi tarea
+[INFO] 08:58:14:575 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 08:58:15:575 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 08:58:16:576 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 08:58:17:578 DISCORDIADOR/(31219:31224): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 08:58:20:579 DISCORDIADOR/(31219:31224): Tripu 1 de Patota 2. Tarea realizada!
+[INFO] 08:58:20:580 DISCORDIADOR/(31219:31224): Realizando I/O tripu 1 de patota 2
+[INFO] 08:58:30:676 DISCORDIADOR/(31219:31245): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:F
+[INFO] 08:58:30:676 DISCORDIADOR/(31219:31245): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:F
+[INFO] 08:58:30:676 DISCORDIADOR/(31219:31245): TID:3 POSX:3 POSY:4 PCB:2 ESTADO:F
+[INFO] 08:58:30:676 DISCORDIADOR/(31219:31245): TID:2 POSX:0 POSY:1 PCB:2 ESTADO:F
+[INFO] 08:58:30:676 DISCORDIADOR/(31219:31245): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:F
+[INFO] 18:56:13:866 DISCORDIADOR/(31404:31404): Soy el discordiador! Hice uso de la shared!
+[INFO] 18:56:13:870 DISCORDIADOR/(31404:31409): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 18:56:13:870 DISCORDIADOR/(31404:31409): Socket 4 id_sabotaje 2
+[INFO] 18:58:55:62 DISCORDIADOR/(31509:31509): Soy el discordiador! Hice uso de la shared!
+[INFO] 18:58:55:65 DISCORDIADOR/(31509:31514): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 18:58:55:66 DISCORDIADOR/(31509:31514): Socket 4 id_sabotaje 2
+[INFO] 19:00:09:190 DISCORDIADOR/(31585:31585): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:00:09:194 DISCORDIADOR/(31585:31590): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:00:09:195 DISCORDIADOR/(31585:31590): Socket 4 id_sabotaje 2
+[INFO] 19:03:50:494 DISCORDIADOR/(31585:31592): Enviando tareas a MI-RAM
+[INFO] 19:04:15:764 DISCORDIADOR/(31648:31648): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:04:15:764 DISCORDIADOR/(31648:31649): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:04:15:765 DISCORDIADOR/(31648:31649): Socket 4 id_sabotaje 2
+[INFO] 19:07:46:424 DISCORDIADOR/(31714:31714): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:07:46:425 DISCORDIADOR/(31714:31715): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:07:46:425 DISCORDIADOR/(31714:31715): Socket 4 id_sabotaje 2
+[INFO] 19:07:57:572 DISCORDIADOR/(31714:31717): Enviando tareas a MI-RAM
+[INFO] 19:07:57:573 DISCORDIADOR/(31714:31717): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:07:57:573 DISCORDIADOR/(31714:31717): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:07:57:573 DISCORDIADOR/(31714:31720): Tripulante 2 de patota 1
+[INFO] 19:07:57:574 DISCORDIADOR/(31714:31719): Tripulante 1 de patota 1
+[INFO] 19:08:06:971 DISCORDIADOR/(31725:31725): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:08:06:972 DISCORDIADOR/(31725:31726): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:08:06:973 DISCORDIADOR/(31725:31726): Socket 4 id_sabotaje 2
+[INFO] 19:56:19:77 DISCORDIADOR/(355:355): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:56:19:78 DISCORDIADOR/(355:356): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:56:19:79 DISCORDIADOR/(355:356): Socket 4 id_sabotaje 2
+[INFO] 19:56:30:594 DISCORDIADOR/(355:358): Enviando tareas a MI-RAM
+[INFO] 19:56:30:594 DISCORDIADOR/(355:358): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:56:30:595 DISCORDIADOR/(355:358): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:56:30:595 DISCORDIADOR/(355:361): Tripulante 2 de patota 1
+[INFO] 19:56:30:596 DISCORDIADOR/(355:360): Tripulante 1 de patota 1
+[INFO] 19:56:38:871 DISCORDIADOR/(355:366): TID:2 POSX:1 POSY:1 PCB:1 ESTADO:R
+[INFO] 19:56:38:871 DISCORDIADOR/(355:366): TID:1 POSX:4 POSY:2 PCB:1 ESTADO:R
+[INFO] 19:56:46:360 DISCORDIADOR/(355:361): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:56:47:360 DISCORDIADOR/(355:361): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:56:48:361 DISCORDIADOR/(355:361): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:56:51:361 DISCORDIADOR/(355:361): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 19:56:51:362 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:56:52:362 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:56:53:363 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:56:54:364 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:56:55:364 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:56:56:365 DISCORDIADOR/(355:360): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:56:57:366 DISCORDIADOR/(355:360): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:57:00:367 DISCORDIADOR/(355:360): Tripu 1 de Patota 1. Tarea realizada!
+[INFO] 19:57:16:425 DISCORDIADOR/(355:371): TID:2 POSX:1 POSY:1 PCB:1 ESTADO:F
+[INFO] 19:57:16:425 DISCORDIADOR/(355:371): TID:1 POSX:4 POSY:2 PCB:1 ESTADO:F
+[INFO] 19:57:58:603 DISCORDIADOR/(405:405): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:57:58:604 DISCORDIADOR/(405:407): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:57:58:605 DISCORDIADOR/(405:407): Socket 4 id_sabotaje 2
+[INFO] 19:58:13:482 DISCORDIADOR/(405:409): Enviando tareas a MI-RAM
+[INFO] 19:58:13:483 DISCORDIADOR/(405:409): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:58:13:483 DISCORDIADOR/(405:409): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:58:13:483 DISCORDIADOR/(405:414): Tripulante 2 de patota 1
+[INFO] 19:58:13:484 DISCORDIADOR/(405:411): Tripulante 1 de patota 1
+[INFO] 19:58:21:475 DISCORDIADOR/(405:414): Realizando I/O tripu 2 de patota 1
+[INFO] 20:45:38:138 DISCORDIADOR/(2289:2289): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:45:56:502 DISCORDIADOR/(2295:2295): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:47:03:459 DISCORDIADOR/(2354:2354): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:48:47:762 DISCORDIADOR/(2474:2474): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:48:47:766 DISCORDIADOR/(2474:2477): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:48:47:768 DISCORDIADOR/(2474:2477): Socket 5 id_sabotaje 2
+[INFO] 20:53:55:707 DISCORDIADOR/(2474:2478): Enviando tareas a MI-RAM
+[INFO] 20:53:55:707 DISCORDIADOR/(2474:2478): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:53:55:707 DISCORDIADOR/(2474:2478): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 20:53:55:708 DISCORDIADOR/(2474:2659): Tripulante 2 de patota 1
+[INFO] 20:53:55:709 DISCORDIADOR/(2474:2658): Tripulante 1 de patota 1
+[INFO] 19:56:50:764 DISCORDIADOR/(6888:6888): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:56:50:765 DISCORDIADOR/(6888:6889): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:56:50:765 DISCORDIADOR/(6888:6889): Socket 4 id_sabotaje 2
+[INFO] 19:57:06:178 DISCORDIADOR/(6888:6891): Enviando tareas a MI-RAM
+[INFO] 19:57:06:178 DISCORDIADOR/(6888:6891): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:57:06:179 DISCORDIADOR/(6888:6891): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:57:06:179 DISCORDIADOR/(6888:6894): Tripulante 2 de patota 1
+[INFO] 19:57:06:181 DISCORDIADOR/(6888:6893): Tripulante 1 de patota 1
+[INFO] 19:58:16:103 DISCORDIADOR/(6958:6958): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:58:16:103 DISCORDIADOR/(6958:6959): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:58:16:104 DISCORDIADOR/(6958:6959): Socket 4 id_sabotaje 2
+[INFO] 19:58:22:282 DISCORDIADOR/(6958:6961): Enviando tareas a MI-RAM
+[INFO] 19:58:22:283 DISCORDIADOR/(6958:6961): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:58:22:283 DISCORDIADOR/(6958:6961): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:58:22:285 DISCORDIADOR/(6958:6963): Tripulante 1 de patota 1
+[INFO] 19:58:22:286 DISCORDIADOR/(6958:6964): Tripulante 2 de patota 1
+[INFO] 19:58:30:323 DISCORDIADOR/(6958:6969): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:58:30:323 DISCORDIADOR/(6958:6969): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 19:59:20:992 DISCORDIADOR/(6958:6975): Enviando tareas a MI-RAM
+[INFO] 19:59:20:992 DISCORDIADOR/(6958:6975): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 19:59:20:992 DISCORDIADOR/(6958:6975): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 2
+[INFO] 19:59:20:992 DISCORDIADOR/(6958:6975): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 2
+[INFO] 19:59:20:992 DISCORDIADOR/(6958:6979): Tripulante 3 de patota 2
+[INFO] 19:59:20:993 DISCORDIADOR/(6958:6978): Tripulante 2 de patota 2
+[INFO] 19:59:20:994 DISCORDIADOR/(6958:6977): Tripulante 1 de patota 2
+[INFO] 19:59:30:922 DISCORDIADOR/(6958:6983): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:59:30:922 DISCORDIADOR/(6958:6983): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 19:59:30:922 DISCORDIADOR/(6958:6983): TID:3 POSX:3 POSY:4 PCB:2 ESTADO:R
+[INFO] 19:59:30:922 DISCORDIADOR/(6958:6983): TID:2 POSX:0 POSY:1 PCB:2 ESTADO:R
+[INFO] 19:59:30:922 DISCORDIADOR/(6958:6983): TID:1 POSX:2 POSY:4 PCB:2 ESTADO:R
+[INFO] 19:59:57:728 DISCORDIADOR/(6958:6991): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 20:00:08:662 DISCORDIADOR/(6958:6963): Realizando I/O tripu 1 de patota 1
+[INFO] 20:23:41:438 DISCORDIADOR/(7698:7698): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:23:41:439 DISCORDIADOR/(7698:7699): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:23:41:439 DISCORDIADOR/(7698:7699): Socket 4 id_sabotaje 2
+[INFO] 20:23:52:792 DISCORDIADOR/(7698:7704): Enviando tareas a MI-RAM
+[INFO] 20:23:52:793 DISCORDIADOR/(7698:7704): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:23:52:793 DISCORDIADOR/(7698:7704): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 20:23:52:793 DISCORDIADOR/(7698:7704): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 20:23:52:794 DISCORDIADOR/(7698:7708): Tripulante 3 de patota 1
+[INFO] 20:23:52:794 DISCORDIADOR/(7698:7707): Tripulante 2 de patota 1
+[INFO] 20:23:52:796 DISCORDIADOR/(7698:7706): Tripulante 1 de patota 1
+[INFO] 20:24:02:27 DISCORDIADOR/(7698:7713): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 20:24:02:27 DISCORDIADOR/(7698:7713): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 20:24:02:27 DISCORDIADOR/(7698:7713): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 20:24:12:309 DISCORDIADOR/(7698:7708): Realizando I/O tripu 3 de patota 1
+[INFO] 20:55:47:832 DISCORDIADOR/(8402:8402): Soy el discordiador! Hice uso de la shared!
+[INFO] 20:55:47:833 DISCORDIADOR/(8402:8403): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 20:55:47:834 DISCORDIADOR/(8402:8403): Socket 4 id_sabotaje 2
+[INFO] 20:55:54:851 DISCORDIADOR/(8402:8405): Enviando tareas a MI-RAM
+[INFO] 20:55:54:851 DISCORDIADOR/(8402:8405): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 20:55:54:851 DISCORDIADOR/(8402:8405): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 20:55:54:852 DISCORDIADOR/(8402:8405): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 20:55:54:852 DISCORDIADOR/(8402:8409): Tripulante 3 de patota 1
+[INFO] 20:55:54:852 DISCORDIADOR/(8402:8408): Tripulante 2 de patota 1
+[INFO] 20:55:54:854 DISCORDIADOR/(8402:8407): Tripulante 1 de patota 1
+[INFO] 20:56:00:671 DISCORDIADOR/(8402:8413): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 20:56:00:671 DISCORDIADOR/(8402:8413): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 20:56:00:671 DISCORDIADOR/(8402:8413): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 20:56:14:831 DISCORDIADOR/(8402:8409): Realizando I/O tripu 3 de patota 1
+[INFO] 20:56:18:833 DISCORDIADOR/(8402:8409): Realizando I/O tripu 2 de patota 1
+[INFO] 20:56:22:834 DISCORDIADOR/(8402:8409): Realizando I/O tripu 1 de patota 1
+[INFO] 20:56:26:836 DISCORDIADOR/(8402:8409): Realizando I/O tripu 3 de patota 1
+[INFO] 20:56:30:837 DISCORDIADOR/(8402:8409): Realizando I/O tripu 2 de patota 1
+[INFO] 20:56:34:838 DISCORDIADOR/(8402:8409): Realizando I/O tripu 1 de patota 1
+[INFO] 20:56:38:842 DISCORDIADOR/(8402:8409): Realizando I/O tripu 3 de patota 1
+[INFO] 20:56:42:845 DISCORDIADOR/(8402:8409): Realizando I/O tripu 2 de patota 1
+[INFO] 20:56:46:846 DISCORDIADOR/(8402:8409): Realizando I/O tripu 1 de patota 1
+[INFO] 20:56:50:847 DISCORDIADOR/(8402:8409): Realizando I/O tripu 3 de patota 1
+[INFO] 21:04:35:533 DISCORDIADOR/(8716:8716): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:04:35:534 DISCORDIADOR/(8716:8717): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 21:04:35:534 DISCORDIADOR/(8716:8717): Socket 4 id_sabotaje 2
+[INFO] 21:04:41:741 DISCORDIADOR/(8716:8720): Enviando tareas a MI-RAM
+[INFO] 21:04:41:741 DISCORDIADOR/(8716:8720): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 21:04:41:741 DISCORDIADOR/(8716:8720): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 21:04:41:742 DISCORDIADOR/(8716:8720): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 21:04:41:743 DISCORDIADOR/(8716:8724): Tripulante 3 de patota 1
+[INFO] 21:04:41:744 DISCORDIADOR/(8716:8723): Tripulante 2 de patota 1
+[INFO] 21:04:41:744 DISCORDIADOR/(8716:8722): Tripulante 1 de patota 1
+[INFO] 21:04:50:544 DISCORDIADOR/(8716:8724): Realizando I/O tripu 3 de patota 1
+[INFO] 21:04:54:547 DISCORDIADOR/(8716:8724): Realizando I/O tripu 2 de patota 1
+[INFO] 21:04:58:549 DISCORDIADOR/(8716:8724): Realizando I/O tripu 1 de patota 1
+[INFO] 21:05:02:551 DISCORDIADOR/(8716:8724): Realizando I/O tripu 3 de patota 1
+[INFO] 21:05:06:553 DISCORDIADOR/(8716:8724): Realizando I/O tripu 2 de patota 1
+[INFO] 21:05:10:554 DISCORDIADOR/(8716:8724): Realizando I/O tripu 1 de patota 1
+[INFO] 21:05:14:557 DISCORDIADOR/(8716:8724): Realizando I/O tripu 3 de patota 1
+[INFO] 21:05:18:560 DISCORDIADOR/(8716:8724): Realizando I/O tripu 2 de patota 1
+[INFO] 21:05:22:563 DISCORDIADOR/(8716:8724): Realizando I/O tripu 1 de patota 1
+[INFO] 21:05:26:564 DISCORDIADOR/(8716:8724): Realizando I/O tripu 3 de patota 1
+[INFO] 21:43:03:268 DISCORDIADOR/(9793:9793): Soy el discordiador! Hice uso de la shared!
+[INFO] 21:43:03:269 DISCORDIADOR/(9793:9794): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 21:43:03:269 DISCORDIADOR/(9793:9794): Socket 4 id_sabotaje 2
+[INFO] 21:43:21:722 DISCORDIADOR/(9793:9796): Enviando tareas a MI-RAM
+[INFO] 21:43:21:722 DISCORDIADOR/(9793:9796): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 21:43:21:722 DISCORDIADOR/(9793:9796): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 21:43:21:722 DISCORDIADOR/(9793:9796): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 21:43:21:723 DISCORDIADOR/(9793:9800): Tripulante 3 de patota 1
+[INFO] 21:43:21:723 DISCORDIADOR/(9793:9799): Tripulante 2 de patota 1
+[INFO] 21:43:21:725 DISCORDIADOR/(9793:9798): Tripulante 1 de patota 1
+[INFO] 21:43:28:690 DISCORDIADOR/(9793:9800): Realizando I/O tripu 3 de patota 1
+[INFO] 21:43:32:691 DISCORDIADOR/(9793:9800): Realizando I/O tripu 2 de patota 1
+[INFO] 21:43:36:695 DISCORDIADOR/(9793:9800): Realizando I/O tripu 1 de patota 1
+[INFO] 21:43:40:697 DISCORDIADOR/(9793:9800): Realizando I/O tripu 3 de patota 1
+[INFO] 21:43:44:699 DISCORDIADOR/(9793:9800): Realizando I/O tripu 2 de patota 1
+[INFO] 21:43:48:702 DISCORDIADOR/(9793:9800): Realizando I/O tripu 1 de patota 1
+[INFO] 21:43:52:704 DISCORDIADOR/(9793:9800): Realizando I/O tripu 3 de patota 1
+[INFO] 21:43:56:707 DISCORDIADOR/(9793:9800): Realizando I/O tripu 2 de patota 1
+[INFO] 21:44:00:712 DISCORDIADOR/(9793:9800): Realizando I/O tripu 1 de patota 1
+[INFO] 21:44:04:717 DISCORDIADOR/(9793:9800): Realizando I/O tripu 3 de patota 1
+[INFO] 23:52:00:788 DISCORDIADOR/(10510:10510): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:52:00:789 DISCORDIADOR/(10510:10511): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:52:00:789 DISCORDIADOR/(10510:10511): Socket 4 id_sabotaje 2
+[INFO] 23:52:12:724 DISCORDIADOR/(10510:10528): Enviando tareas a MI-RAM
+[INFO] 23:52:12:724 DISCORDIADOR/(10510:10528): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:52:12:725 DISCORDIADOR/(10510:10528): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:52:12:725 DISCORDIADOR/(10510:10528): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:52:12:725 DISCORDIADOR/(10510:10532): Tripulante 3 de patota 1
+[INFO] 23:52:12:726 DISCORDIADOR/(10510:10531): Tripulante 2 de patota 1
+[INFO] 23:52:12:727 DISCORDIADOR/(10510:10530): Tripulante 1 de patota 1
+[INFO] 23:57:44:903 DISCORDIADOR/(10678:10678): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:57:44:904 DISCORDIADOR/(10678:10679): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:57:44:904 DISCORDIADOR/(10678:10679): Socket 4 id_sabotaje 2
+[INFO] 23:57:52:757 DISCORDIADOR/(10678:10683): Enviando tareas a MI-RAM
+[INFO] 23:57:52:757 DISCORDIADOR/(10678:10683): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:57:52:757 DISCORDIADOR/(10678:10683): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:57:52:758 DISCORDIADOR/(10678:10683): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:57:52:758 DISCORDIADOR/(10678:10687): Tripulante 3 de patota 1
+[INFO] 23:57:52:758 DISCORDIADOR/(10678:10686): Tripulante 2 de patota 1
+[INFO] 23:57:52:759 DISCORDIADOR/(10678:10685): Tripulante 1 de patota 1
+[INFO] 00:00:51:537 DISCORDIADOR/(10820:10820): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:00:51:544 DISCORDIADOR/(10820:10821): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:00:51:544 DISCORDIADOR/(10820:10821): Socket 4 id_sabotaje 2
+[INFO] 00:01:02:243 DISCORDIADOR/(10826:10826): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:01:02:244 DISCORDIADOR/(10826:10827): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:01:02:244 DISCORDIADOR/(10826:10827): Socket 4 id_sabotaje 2
+[INFO] 00:01:22:868 DISCORDIADOR/(10826:10829): Enviando tareas a MI-RAM
+[INFO] 00:01:22:869 DISCORDIADOR/(10826:10829): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:01:22:870 DISCORDIADOR/(10826:10829): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:01:22:870 DISCORDIADOR/(10826:10829): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:01:22:872 DISCORDIADOR/(10826:10833): Tripulante 3 de patota 1
+[INFO] 00:01:22:872 DISCORDIADOR/(10826:10832): Tripulante 2 de patota 1
+[INFO] 00:01:22:873 DISCORDIADOR/(10826:10831): Tripulante 1 de patota 1
+[INFO] 00:05:01:808 DISCORDIADOR/(11026:11026): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:05:01:809 DISCORDIADOR/(11026:11027): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:05:01:809 DISCORDIADOR/(11026:11027): Socket 4 id_sabotaje 2
+[INFO] 00:05:15:170 DISCORDIADOR/(11026:11029): Enviando tareas a MI-RAM
+[INFO] 00:05:15:171 DISCORDIADOR/(11026:11029): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:05:15:171 DISCORDIADOR/(11026:11029): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:05:15:171 DISCORDIADOR/(11026:11029): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:05:15:171 DISCORDIADOR/(11026:11033): Tripulante 3 de patota 1
+[INFO] 00:05:15:171 DISCORDIADOR/(11026:11032): Tripulante 2 de patota 1
+[INFO] 00:05:15:172 DISCORDIADOR/(11026:11031): Tripulante 1 de patota 1
+[INFO] 00:05:26:296 DISCORDIADOR/(11026:11033): Realizando I/O tripu 3 de patota 1
+[INFO] 00:05:30:298 DISCORDIADOR/(11026:11033): Realizando I/O tripu 2 de patota 1
+[INFO] 00:05:34:302 DISCORDIADOR/(11026:11033): Realizando I/O tripu 1 de patota 1
+[INFO] 00:05:38:303 DISCORDIADOR/(11026:11033): Realizando I/O tripu 3 de patota 1
+[INFO] 00:05:42:305 DISCORDIADOR/(11026:11033): Realizando I/O tripu 2 de patota 1
+[INFO] 00:05:46:308 DISCORDIADOR/(11026:11033): Realizando I/O tripu 1 de patota 1
+[INFO] 00:05:50:312 DISCORDIADOR/(11026:11033): Realizando I/O tripu 3 de patota 1
+[INFO] 00:05:54:313 DISCORDIADOR/(11026:11033): Realizando I/O tripu 2 de patota 1
+[INFO] 00:05:58:317 DISCORDIADOR/(11026:11033): Realizando I/O tripu 1 de patota 1
+[INFO] 00:07:02:45 DISCORDIADOR/(11104:11104): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:07:02:46 DISCORDIADOR/(11104:11105): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:07:02:46 DISCORDIADOR/(11104:11105): Socket 4 id_sabotaje 2
+[INFO] 00:07:17:88 DISCORDIADOR/(11104:11107): Enviando tareas a MI-RAM
+[INFO] 00:07:17:88 DISCORDIADOR/(11104:11107): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:07:17:89 DISCORDIADOR/(11104:11107): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:07:17:89 DISCORDIADOR/(11104:11107): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:07:17:89 DISCORDIADOR/(11104:11111): Tripulante 3 de patota 1
+[INFO] 00:07:17:90 DISCORDIADOR/(11104:11110): Tripulante 2 de patota 1
+[INFO] 00:07:17:91 DISCORDIADOR/(11104:11109): Tripulante 1 de patota 1
+[INFO] 00:07:56:434 DISCORDIADOR/(11104:11111): Realizando I/O tripu 3 de patota 1
+[INFO] 00:08:00:437 DISCORDIADOR/(11104:11111): Realizando I/O tripu 2 de patota 1
+[INFO] 00:08:04:438 DISCORDIADOR/(11104:11111): Realizando I/O tripu 1 de patota 1
+[INFO] 00:08:08:442 DISCORDIADOR/(11104:11111): Realizando I/O tripu 3 de patota 1
+[INFO] 00:08:12:453 DISCORDIADOR/(11104:11111): Realizando I/O tripu 2 de patota 1
+[INFO] 00:08:16:454 DISCORDIADOR/(11104:11111): Realizando I/O tripu 1 de patota 1
+[INFO] 00:08:59:219 DISCORDIADOR/(11156:11156): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:08:59:220 DISCORDIADOR/(11156:11157): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:08:59:220 DISCORDIADOR/(11156:11157): Socket 4 id_sabotaje 2
+[INFO] 00:09:08:325 DISCORDIADOR/(11156:11160): Enviando tareas a MI-RAM
+[INFO] 00:09:08:326 DISCORDIADOR/(11156:11160): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:09:08:326 DISCORDIADOR/(11156:11160): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:09:08:326 DISCORDIADOR/(11156:11160): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:09:08:327 DISCORDIADOR/(11156:11164): Tripulante 3 de patota 1
+[INFO] 00:09:08:328 DISCORDIADOR/(11156:11163): Tripulante 2 de patota 1
+[INFO] 00:09:08:329 DISCORDIADOR/(11156:11162): Tripulante 1 de patota 1
+[INFO] 00:09:20:674 DISCORDIADOR/(11156:11164): Realizando I/O tripu 3 de patota 1
+[INFO] 00:09:24:675 DISCORDIADOR/(11156:11164): Realizando I/O tripu 2 de patota 1
+[INFO] 00:09:28:677 DISCORDIADOR/(11156:11164): Realizando I/O tripu 1 de patota 1
+[INFO] 00:09:32:680 DISCORDIADOR/(11156:11164): Realizando I/O tripu 3 de patota 1
+[INFO] 00:09:36:682 DISCORDIADOR/(11156:11164): Realizando I/O tripu 2 de patota 1
+[INFO] 00:09:40:684 DISCORDIADOR/(11156:11164): Realizando I/O tripu 1 de patota 1
+[INFO] 00:09:44:687 DISCORDIADOR/(11156:11164): Realizando I/O tripu 3 de patota 1
+[INFO] 00:09:48:689 DISCORDIADOR/(11156:11164): Realizando I/O tripu 2 de patota 1
+[INFO] 00:09:52:690 DISCORDIADOR/(11156:11164): Realizando I/O tripu 1 de patota 1
+[INFO] 00:09:56:693 DISCORDIADOR/(11156:11164): Realizando I/O tripu 3 de patota 1
+[INFO] 00:10:00:694 DISCORDIADOR/(11156:11164): Realizando I/O tripu 2 de patota 1
+[INFO] 00:10:04:697 DISCORDIADOR/(11156:11164): Realizando I/O tripu 1 de patota 1
+[INFO] 00:10:08:699 DISCORDIADOR/(11156:11164): Realizando I/O tripu 3 de patota 1
+[INFO] 00:10:12:701 DISCORDIADOR/(11156:11164): Realizando I/O tripu 2 de patota 1
+[INFO] 00:10:16:702 DISCORDIADOR/(11156:11164): Realizando I/O tripu 1 de patota 1
+[INFO] 00:11:36:835 DISCORDIADOR/(11256:11256): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:11:36:840 DISCORDIADOR/(11256:11257): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:11:36:841 DISCORDIADOR/(11256:11257): Socket 4 id_sabotaje 2
+[INFO] 00:11:43:971 DISCORDIADOR/(11256:11259): Enviando tareas a MI-RAM
+[INFO] 00:11:43:971 DISCORDIADOR/(11256:11259): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:11:43:971 DISCORDIADOR/(11256:11259): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:11:43:971 DISCORDIADOR/(11256:11259): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:11:43:971 DISCORDIADOR/(11256:11263): Tripulante 3 de patota 1
+[INFO] 00:11:43:972 DISCORDIADOR/(11256:11262): Tripulante 2 de patota 1
+[INFO] 00:11:43:973 DISCORDIADOR/(11256:11261): Tripulante 1 de patota 1
+[INFO] 00:11:51:884 DISCORDIADOR/(11256:11263): Realizando I/O tripu 3 de patota 1
+[INFO] 00:11:55:124 DISCORDIADOR/(11256:11257): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:11:55:124 DISCORDIADOR/(11256:11257): Socket 5 id_sabotaje 2
+[INFO] 00:11:55:124 DISCORDIADOR/(11256:11257): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:11:55:124 DISCORDIADOR/(11256:11257): Socket 6 id_sabotaje 2
+[INFO] 00:13:04:206 DISCORDIADOR/(11404:11404): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:13:04:207 DISCORDIADOR/(11404:11405): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:13:04:207 DISCORDIADOR/(11404:11405): Socket 4 id_sabotaje 2
+[INFO] 00:13:17:566 DISCORDIADOR/(11404:11407): Enviando tareas a MI-RAM
+[INFO] 00:13:17:567 DISCORDIADOR/(11404:11407): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:13:17:567 DISCORDIADOR/(11404:11407): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:13:17:567 DISCORDIADOR/(11404:11407): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:13:17:567 DISCORDIADOR/(11404:11411): Tripulante 3 de patota 1
+[INFO] 00:13:17:568 DISCORDIADOR/(11404:11410): Tripulante 2 de patota 1
+[INFO] 00:13:17:569 DISCORDIADOR/(11404:11409): Tripulante 1 de patota 1
+[INFO] 00:13:26:195 DISCORDIADOR/(11404:11411): Realizando I/O tripu 3 de patota 1
+[INFO] 00:13:29:450 DISCORDIADOR/(11404:11405): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:13:29:450 DISCORDIADOR/(11404:11405): Socket 5 id_sabotaje 2
+[INFO] 00:13:29:450 DISCORDIADOR/(11404:11405): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:13:29:450 DISCORDIADOR/(11404:11405): Socket 6 id_sabotaje 2
+[INFO] 19:19:11:715 DISCORDIADOR/(11851:11851): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:19:11:715 DISCORDIADOR/(11851:11852): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:19:11:716 DISCORDIADOR/(11851:11852): Socket 4 id_sabotaje 2
+[INFO] 19:19:18:980 DISCORDIADOR/(11851:11854): Enviando tareas a MI-RAM
+[INFO] 19:19:18:980 DISCORDIADOR/(11851:11854): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:19:18:981 DISCORDIADOR/(11851:11854): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:19:18:981 DISCORDIADOR/(11851:11854): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:19:18:982 DISCORDIADOR/(11851:11857): Tripulante 3 de patota 1
+[INFO] 19:19:18:982 DISCORDIADOR/(11851:11856): Tripulante 2 de patota 1
+[INFO] 19:19:18:982 DISCORDIADOR/(11851:11855): Tripulante 1 de patota 1
+[INFO] 19:19:25:950 DISCORDIADOR/(11851:11857): Realizando I/O tripu 3 de patota 1
+[INFO] 19:19:29:246 DISCORDIADOR/(11851:11852): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:19:29:246 DISCORDIADOR/(11851:11852): Socket 5 id_sabotaje 2
+[INFO] 19:19:29:246 DISCORDIADOR/(11851:11852): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:19:29:246 DISCORDIADOR/(11851:11852): Socket 6 id_sabotaje 2
+[INFO] 19:25:59:767 DISCORDIADOR/(12061:12061): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:25:59:768 DISCORDIADOR/(12061:12062): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:25:59:768 DISCORDIADOR/(12061:12062): Socket 4 id_sabotaje 2
+[INFO] 19:26:08:490 DISCORDIADOR/(12061:12064): Enviando tareas a MI-RAM
+[INFO] 19:26:08:490 DISCORDIADOR/(12061:12064): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:26:08:491 DISCORDIADOR/(12061:12064): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:26:08:494 DISCORDIADOR/(12061:12064): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:26:08:494 DISCORDIADOR/(12061:12068): Tripulante 3 de patota 1
+[INFO] 19:26:08:497 DISCORDIADOR/(12061:12067): Tripulante 2 de patota 1
+[INFO] 19:26:08:499 DISCORDIADOR/(12061:12066): Tripulante 1 de patota 1
+[INFO] 19:26:13:849 DISCORDIADOR/(12061:12073): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 19:26:13:850 DISCORDIADOR/(12061:12073): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:26:13:850 DISCORDIADOR/(12061:12073): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:26:19:960 DISCORDIADOR/(12061:12067): Realizando I/O tripu 2 de patota 1
+[INFO] 19:27:56:45 DISCORDIADOR/(12292:12292): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:27:56:45 DISCORDIADOR/(12292:12293): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:27:56:46 DISCORDIADOR/(12292:12293): Socket 4 id_sabotaje 2
+[INFO] 19:28:04:758 DISCORDIADOR/(12292:12296): Enviando tareas a MI-RAM
+[INFO] 19:28:04:758 DISCORDIADOR/(12292:12296): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:28:04:758 DISCORDIADOR/(12292:12296): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:28:04:758 DISCORDIADOR/(12292:12296): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:28:04:759 DISCORDIADOR/(12292:12300): Tripulante 3 de patota 1
+[INFO] 19:28:04:759 DISCORDIADOR/(12292:12299): Tripulante 2 de patota 1
+[INFO] 19:28:04:761 DISCORDIADOR/(12292:12298): Tripulante 1 de patota 1
+[INFO] 19:28:11:727 DISCORDIADOR/(12292:12300): Realizando I/O tripu 3 de patota 1
+[INFO] 19:28:14:983 DISCORDIADOR/(12292:12293): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:28:14:984 DISCORDIADOR/(12292:12293): Socket 5 id_sabotaje 2
+[INFO] 19:29:32:830 DISCORDIADOR/(12587:12587): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:29:32:831 DISCORDIADOR/(12587:12588): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:29:32:832 DISCORDIADOR/(12587:12588): Socket 4 id_sabotaje 2
+[INFO] 19:29:39:174 DISCORDIADOR/(12587:12594): Enviando tareas a MI-RAM
+[INFO] 19:29:39:174 DISCORDIADOR/(12587:12594): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:29:39:175 DISCORDIADOR/(12587:12594): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:29:39:175 DISCORDIADOR/(12587:12594): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:29:39:175 DISCORDIADOR/(12587:12598): Tripulante 3 de patota 1
+[INFO] 19:29:39:177 DISCORDIADOR/(12587:12597): Tripulante 2 de patota 1
+[INFO] 19:29:39:178 DISCORDIADOR/(12587:12596): Tripulante 1 de patota 1
+[INFO] 19:29:44:477 DISCORDIADOR/(12587:12598): Realizando I/O tripu 3 de patota 1
+[INFO] 19:29:48:480 DISCORDIADOR/(12587:12598): Realizando I/O tripu 2 de patota 1
+[INFO] 19:29:52:483 DISCORDIADOR/(12587:12598): Realizando I/O tripu 1 de patota 1
+[INFO] 19:29:56:485 DISCORDIADOR/(12587:12598): Realizando I/O tripu 3 de patota 1
+[INFO] 19:30:00:487 DISCORDIADOR/(12587:12598): Realizando I/O tripu 2 de patota 1
+[INFO] 19:30:04:489 DISCORDIADOR/(12587:12598): Realizando I/O tripu 1 de patota 1
+[INFO] 19:30:08:491 DISCORDIADOR/(12587:12598): Realizando I/O tripu 3 de patota 1
+[INFO] 19:30:12:492 DISCORDIADOR/(12587:12598): Realizando I/O tripu 2 de patota 1
+[INFO] 19:35:29:827 DISCORDIADOR/(12750:12750): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:35:29:827 DISCORDIADOR/(12750:12751): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:35:29:828 DISCORDIADOR/(12750:12751): Socket 4 id_sabotaje 2
+[INFO] 19:35:37:538 DISCORDIADOR/(12750:12753): Enviando tareas a MI-RAM
+[INFO] 19:35:37:538 DISCORDIADOR/(12750:12753): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:35:37:538 DISCORDIADOR/(12750:12753): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:35:37:538 DISCORDIADOR/(12750:12753): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:35:37:539 DISCORDIADOR/(12750:12757): Tripulante 3 de patota 1
+[INFO] 19:35:37:539 DISCORDIADOR/(12750:12756): Tripulante 2 de patota 1
+[INFO] 19:35:37:540 DISCORDIADOR/(12750:12755): Tripulante 1 de patota 1
+[INFO] 19:35:43:530 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 19:35:44:531 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 19:35:45:531 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 19:35:46:531 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 19:35:47:533 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 19:35:48:534 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 19:35:49:535 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:35:50:536 DISCORDIADOR/(12750:12757): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:35:53:536 DISCORDIADOR/(12750:12757): Tripu 3 de Patota 1. Tarea realizada!
+[INFO] 19:48:38:534 DISCORDIADOR/(12971:12971): Soy el discordiador! Hice uso de la shared!
+[INFO] 19:48:38:535 DISCORDIADOR/(12971:12972): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 19:48:38:535 DISCORDIADOR/(12971:12972): Socket 4 id_sabotaje 2
+[INFO] 19:48:47:974 DISCORDIADOR/(12971:12976): Enviando tareas a MI-RAM
+[INFO] 19:48:47:975 DISCORDIADOR/(12971:12976): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 19:48:47:975 DISCORDIADOR/(12971:12976): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 19:48:47:975 DISCORDIADOR/(12971:12976): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 19:48:47:975 DISCORDIADOR/(12971:12980): Tripulante 3 de patota 1
+[INFO] 19:48:47:977 DISCORDIADOR/(12971:12979): Tripulante 2 de patota 1
+[INFO] 19:48:47:979 DISCORDIADOR/(12971:12978): Tripulante 1 de patota 1
+[INFO] 19:49:03:657 DISCORDIADOR/(12971:12986): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 19:49:03:657 DISCORDIADOR/(12971:12986): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:49:03:657 DISCORDIADOR/(12971:12986): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 19:50:10:349 DISCORDIADOR/(12971:12979): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 19:50:11:351 DISCORDIADOR/(12971:12979): Realizando tarea DORMIR_EN_MESA de duracion 3
+[INFO] 19:50:14:351 DISCORDIADOR/(12971:12979): Tripu 2 de Patota 1. Tarea realizada!
+[INFO] 23:07:04:250 DISCORDIADOR/(29534:29534): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:07:04:251 DISCORDIADOR/(29534:29535): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:07:04:252 DISCORDIADOR/(29534:29535): Socket 4 id_sabotaje 2
+[INFO] 23:07:13:173 DISCORDIADOR/(29534:29537): Enviando tareas a MI-RAM
+[INFO] 23:07:13:174 DISCORDIADOR/(29534:29537): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:07:13:174 DISCORDIADOR/(29534:29537): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:07:13:175 DISCORDIADOR/(29534:29537): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:07:13:175 DISCORDIADOR/(29534:29541): Tripulante 3 de patota 1
+[INFO] 23:07:13:177 DISCORDIADOR/(29534:29540): Tripulante 2 de patota 1
+[INFO] 23:07:13:178 DISCORDIADOR/(29534:29539): Tripulante 1 de patota 1
+[INFO] 23:07:18:654 DISCORDIADOR/(29534:29545): TID:3 POSX:3 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:07:18:655 DISCORDIADOR/(29534:29545): TID:2 POSX:0 POSY:1 PCB:1 ESTADO:R
+[INFO] 23:07:18:655 DISCORDIADOR/(29534:29545): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 23:07:24:372 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:07:25:372 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:07:26:373 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:07:27:373 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:28:374 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:07:29:375 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:07:30:376 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:07:31:378 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:32:379 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:07:33:380 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:07:34:380 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:07:35:383 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:07:36:384 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:07:37:384 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:38:384 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:07:39:384 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:07:40:385 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:07:41:387 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:07:42:388 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:07:43:389 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:07:44:389 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:45:390 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:07:46:391 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:07:47:392 DISCORDIADOR/(29534:29541): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:07:48:394 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:49:394 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:07:50:395 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:07:51:396 DISCORDIADOR/(29534:29541): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:07:52:399 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:07:53:399 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:07:54:399 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:07:55:400 DISCORDIADOR/(29534:29541): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:09:32:757 DISCORDIADOR/(29662:29662): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:09:32:758 DISCORDIADOR/(29662:29663): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:09:32:759 DISCORDIADOR/(29662:29663): Socket 4 id_sabotaje 2
+[INFO] 23:09:38:658 DISCORDIADOR/(29662:29675): Enviando tareas a MI-RAM
+[INFO] 23:09:38:658 DISCORDIADOR/(29662:29675): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:09:38:658 DISCORDIADOR/(29662:29675): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:09:38:658 DISCORDIADOR/(29662:29675): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:09:38:658 DISCORDIADOR/(29662:29679): Tripulante 3 de patota 1
+[INFO] 23:09:38:659 DISCORDIADOR/(29662:29678): Tripulante 2 de patota 1
+[INFO] 23:09:38:660 DISCORDIADOR/(29662:29677): Tripulante 1 de patota 1
+[INFO] 23:09:45:275 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:09:46:275 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:09:47:276 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:09:48:276 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:09:49:277 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:09:50:277 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:09:51:279 DISCORDIADOR/(29662:29679): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:09:53:280 DISCORDIADOR/(29662:29679): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:09:54:281 DISCORDIADOR/(29662:29679): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:09:55:282 DISCORDIADOR/(29662:29679): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:09:56:283 DISCORDIADOR/(29662:29679): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:09:58:284 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:09:59:284 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:10:00:285 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:10:01:286 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:10:02:287 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:10:03:287 DISCORDIADOR/(29662:29679): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:19:02:833 DISCORDIADOR/(29886:29886): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:19:02:834 DISCORDIADOR/(29886:29887): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:19:02:834 DISCORDIADOR/(29886:29887): Socket 4 id_sabotaje 2
+[INFO] 23:19:10:315 DISCORDIADOR/(29886:29889): Enviando tareas a MI-RAM
+[INFO] 23:19:10:315 DISCORDIADOR/(29886:29889): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:19:10:316 DISCORDIADOR/(29886:29889): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:19:10:316 DISCORDIADOR/(29886:29889): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:19:10:319 DISCORDIADOR/(29886:29893): Tripulante 3 de patota 1
+[INFO] 23:19:10:321 DISCORDIADOR/(29886:29892): Tripulante 2 de patota 1
+[INFO] 23:19:10:322 DISCORDIADOR/(29886:29891): Tripulante 1 de patota 1
+[INFO] 23:19:14:558 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:19:15:558 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:19:16:560 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:19:17:560 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:19:18:560 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:19:19:561 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:19:20:562 DISCORDIADOR/(29886:29893): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:19:22:563 DISCORDIADOR/(29886:29893): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:19:23:564 DISCORDIADOR/(29886:29893): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:19:24:565 DISCORDIADOR/(29886:29893): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:19:25:566 DISCORDIADOR/(29886:29893): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:19:27:567 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:19:28:567 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:19:29:568 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:19:30:569 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:19:31:570 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:19:32:570 DISCORDIADOR/(29886:29893): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:30:54:103 DISCORDIADOR/(30303:30303): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:30:54:106 DISCORDIADOR/(30303:30304): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:30:54:107 DISCORDIADOR/(30303:30304): Socket 4 id_sabotaje 2
+[INFO] 23:30:57:86 DISCORDIADOR/(30303:30306): Enviando tareas a MI-RAM
+[INFO] 23:30:57:86 DISCORDIADOR/(30303:30306): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:30:57:87 DISCORDIADOR/(30303:30306): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:30:57:87 DISCORDIADOR/(30303:30306): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:30:57:87 DISCORDIADOR/(30303:30310): Tripulante 3 de patota 1
+[INFO] 23:30:57:88 DISCORDIADOR/(30303:30309): Tripulante 2 de patota 1
+[INFO] 23:30:57:90 DISCORDIADOR/(30303:30308): Tripulante 1 de patota 1
+[INFO] 23:31:06:603 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:31:07:603 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:31:08:603 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:31:09:604 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:31:10:604 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:31:11:605 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:31:12:606 DISCORDIADOR/(30303:30310): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:31:14:607 DISCORDIADOR/(30303:30310): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:31:15:607 DISCORDIADOR/(30303:30310): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:31:16:608 DISCORDIADOR/(30303:30310): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:31:17:609 DISCORDIADOR/(30303:30310): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:31:19:611 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:31:20:612 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:31:21:612 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:31:22:614 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:31:23:614 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:31:24:615 DISCORDIADOR/(30303:30310): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:39:58:610 DISCORDIADOR/(30462:30462): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:39:58:611 DISCORDIADOR/(30462:30463): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:39:58:611 DISCORDIADOR/(30462:30463): Socket 4 id_sabotaje 2
+[INFO] 23:40:05:385 DISCORDIADOR/(30462:30465): Enviando tareas a MI-RAM
+[INFO] 23:40:05:386 DISCORDIADOR/(30462:30465): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:40:05:387 DISCORDIADOR/(30462:30465): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:40:05:387 DISCORDIADOR/(30462:30465): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:40:05:389 DISCORDIADOR/(30462:30469): Tripulante 3 de patota 1
+[INFO] 23:40:05:390 DISCORDIADOR/(30462:30468): Tripulante 2 de patota 1
+[INFO] 23:40:05:391 DISCORDIADOR/(30462:30467): Tripulante 1 de patota 1
+[INFO] 23:40:10:409 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 23:40:11:410 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:40:12:410 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:40:13:411 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:40:14:411 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:40:15:411 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:40:16:412 DISCORDIADOR/(30462:30469): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:40:18:413 DISCORDIADOR/(30462:30469): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:40:19:413 DISCORDIADOR/(30462:30469): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:40:20:414 DISCORDIADOR/(30462:30469): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:40:21:415 DISCORDIADOR/(30462:30469): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:40:23:417 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 23:40:24:417 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 23:40:25:419 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 23:40:26:420 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 23:40:27:422 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 23:40:28:423 DISCORDIADOR/(30462:30469): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 23:45:35:132 DISCORDIADOR/(30866:30866): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:45:35:133 DISCORDIADOR/(30866:30867): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:45:35:133 DISCORDIADOR/(30866:30867): Socket 4 id_sabotaje 2
+[INFO] 23:45:46:100 DISCORDIADOR/(30866:30869): Enviando tareas a MI-RAM
+[INFO] 23:45:46:100 DISCORDIADOR/(30866:30869): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:45:46:101 DISCORDIADOR/(30866:30869): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:45:54:358 DISCORDIADOR/(30875:30875): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:45:54:360 DISCORDIADOR/(30875:30876): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:45:54:362 DISCORDIADOR/(30875:30876): Socket 4 id_sabotaje 2
+[INFO] 23:46:02:424 DISCORDIADOR/(30875:30878): Enviando tareas a MI-RAM
+[INFO] 23:46:02:424 DISCORDIADOR/(30875:30878): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:46:02:425 DISCORDIADOR/(30875:30878): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:46:02:425 DISCORDIADOR/(30875:30878): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:46:20:179 DISCORDIADOR/(30889:30889): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:46:20:180 DISCORDIADOR/(30889:30890): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:46:20:180 DISCORDIADOR/(30889:30890): Socket 4 id_sabotaje 2
+[INFO] 23:46:27:376 DISCORDIADOR/(30889:30893): Enviando tareas a MI-RAM
+[INFO] 23:46:27:376 DISCORDIADOR/(30889:30893): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:46:27:376 DISCORDIADOR/(30889:30893): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:46:27:377 DISCORDIADOR/(30889:30893): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:48:11:739 DISCORDIADOR/(30986:30986): Soy el discordiador! Hice uso de la shared!
+[INFO] 23:48:11:744 DISCORDIADOR/(30986:30991): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 23:48:11:744 DISCORDIADOR/(30986:30991): Socket 4 id_sabotaje 2
+[INFO] 23:48:21:272 DISCORDIADOR/(30986:30993): Enviando tareas a MI-RAM
+[INFO] 23:48:24:699 DISCORDIADOR/(30986:30993): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 23:48:46:228 DISCORDIADOR/(30986:31014): Tripulante 1 de patota 1
+[INFO] 23:48:46:870 DISCORDIADOR/(30986:30993): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 23:48:52:943 DISCORDIADOR/(30986:31023): Tripulante 2 de patota 1
+[INFO] 23:48:54:452 DISCORDIADOR/(30986:30993): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 23:49:03:380 DISCORDIADOR/(30986:31041): Tripulante 3 de patota 1
+[INFO] 00:00:33:499 DISCORDIADOR/(31169:31169): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:00:33:500 DISCORDIADOR/(31169:31170): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:00:33:500 DISCORDIADOR/(31169:31170): Socket 4 id_sabotaje 2
+[INFO] 00:00:40:110 DISCORDIADOR/(31169:31172): Enviando tareas a MI-RAM
+[INFO] 00:00:40:111 DISCORDIADOR/(31169:31172): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:00:40:111 DISCORDIADOR/(31169:31172): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:00:40:112 DISCORDIADOR/(31169:31172): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:00:40:114 DISCORDIADOR/(31169:31176): Tripulante 3 de patota 1
+[INFO] 00:00:40:115 DISCORDIADOR/(31169:31175): Tripulante 2 de patota 1
+[INFO] 00:00:40:115 DISCORDIADOR/(31169:31174): Tripulante 1 de patota 1
+[INFO] 00:00:45:105 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 00:00:46:106 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:00:47:107 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:00:48:107 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:00:49:109 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:00:50:110 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:00:51:111 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:00:53:112 DISCORDIADOR/(31169:31176): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:00:54:112 DISCORDIADOR/(31169:31176): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:00:55:113 DISCORDIADOR/(31169:31176): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:00:56:113 DISCORDIADOR/(31169:31176): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:00:58:115 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:00:59:115 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:01:00:116 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:01:01:116 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:01:02:118 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:01:03:119 DISCORDIADOR/(31169:31176): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:01:05:120 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 00:01:06:121 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:01:07:123 DISCORDIADOR/(31169:31176): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:06:47:962 DISCORDIADOR/(31470:31470): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:06:47:963 DISCORDIADOR/(31470:31471): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:06:47:963 DISCORDIADOR/(31470:31471): Socket 4 id_sabotaje 2
+[INFO] 00:07:16:290 DISCORDIADOR/(31470:31474): Enviando tareas a MI-RAM
+[INFO] 00:07:16:291 DISCORDIADOR/(31470:31474): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:07:16:291 DISCORDIADOR/(31470:31474): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:07:16:291 DISCORDIADOR/(31470:31474): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:07:16:292 DISCORDIADOR/(31470:31478): Tripulante 3 de patota 1
+[INFO] 00:07:16:293 DISCORDIADOR/(31470:31477): Tripulante 2 de patota 1
+[INFO] 00:07:16:294 DISCORDIADOR/(31470:31476): Tripulante 1 de patota 1
+[INFO] 00:07:22:325 DISCORDIADOR/(31470:31478): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:07:23:325 DISCORDIADOR/(31470:31478): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:07:40:487 DISCORDIADOR/(31470:31486): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 00:07:40:487 DISCORDIADOR/(31470:31486): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 00:07:40:488 DISCORDIADOR/(31470:31486): TID:3 POSX:1 POSY:1 PCB:1 ESTADO:E
+[INFO] 00:10:53:930 DISCORDIADOR/(31573:31573): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:10:53:930 DISCORDIADOR/(31573:31574): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:10:53:931 DISCORDIADOR/(31573:31574): Socket 4 id_sabotaje 2
+[INFO] 00:10:56:521 DISCORDIADOR/(31573:31576): Enviando tareas a MI-RAM
+[INFO] 00:10:56:521 DISCORDIADOR/(31573:31576): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:10:56:522 DISCORDIADOR/(31573:31576): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:10:56:522 DISCORDIADOR/(31573:31576): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:10:56:522 DISCORDIADOR/(31573:31580): Tripulante 3 de patota 1
+[INFO] 00:10:56:524 DISCORDIADOR/(31573:31579): Tripulante 2 de patota 1
+[INFO] 00:10:56:525 DISCORDIADOR/(31573:31578): Tripulante 1 de patota 1
+[INFO] 00:11:01:909 DISCORDIADOR/(31573:31580): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:11:02:909 DISCORDIADOR/(31573:31580): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:11:16:498 DISCORDIADOR/(31573:31587): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 00:11:16:498 DISCORDIADOR/(31573:31587): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 00:11:16:498 DISCORDIADOR/(31573:31587): TID:3 POSX:1 POSY:1 PCB:1 ESTADO:E
+[INFO] 00:11:27:727 DISCORDIADOR/(31573:31589): accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano
+[INFO] 00:11:33:70 DISCORDIADOR/(31573:31592): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 00:11:33:70 DISCORDIADOR/(31573:31592): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 00:11:33:70 DISCORDIADOR/(31573:31592): TID:3 POSX:1 POSY:1 PCB:1 ESTADO:E
+[INFO] 00:13:34:724 DISCORDIADOR/(31680:31680): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:13:34:725 DISCORDIADOR/(31680:31681): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:13:34:725 DISCORDIADOR/(31680:31681): Socket 4 id_sabotaje 2
+[INFO] 00:13:37:541 DISCORDIADOR/(31680:31683): Enviando tareas a MI-RAM
+[INFO] 00:13:37:541 DISCORDIADOR/(31680:31683): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:13:37:542 DISCORDIADOR/(31680:31683): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:13:37:542 DISCORDIADOR/(31680:31683): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:13:37:542 DISCORDIADOR/(31680:31687): Tripulante 3 de patota 1
+[INFO] 00:13:37:544 DISCORDIADOR/(31680:31686): Tripulante 2 de patota 1
+[INFO] 00:13:37:545 DISCORDIADOR/(31680:31685): Tripulante 1 de patota 1
+[INFO] 00:13:41:690 DISCORDIADOR/(31680:31693): TID:3 POSX:1 POSY:1 PCB:1 ESTADO:R
+[INFO] 00:13:41:691 DISCORDIADOR/(31680:31693): TID:2 POSX:1 POSY:2 PCB:1 ESTADO:R
+[INFO] 00:13:41:691 DISCORDIADOR/(31680:31693): TID:1 POSX:2 POSY:4 PCB:1 ESTADO:R
+[INFO] 00:13:46:704 DISCORDIADOR/(31680:31687): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:13:47:704 DISCORDIADOR/(31680:31687): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:21:41:249 DISCORDIADOR/(31967:31967): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:21:41:250 DISCORDIADOR/(31967:31968): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:21:41:252 DISCORDIADOR/(31967:31968): Socket 4 id_sabotaje 2
+[INFO] 00:21:48:461 DISCORDIADOR/(31967:31971): Enviando tareas a MI-RAM
+[INFO] 00:21:48:461 DISCORDIADOR/(31967:31971): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:21:48:461 DISCORDIADOR/(31967:31971): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:21:48:461 DISCORDIADOR/(31967:31971): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:21:48:462 DISCORDIADOR/(31967:31975): Tripulante 3 de patota 1
+[INFO] 00:21:48:462 DISCORDIADOR/(31967:31974): Tripulante 2 de patota 1
+[INFO] 00:21:48:464 DISCORDIADOR/(31967:31973): Tripulante 1 de patota 1
+[INFO] 00:21:53:641 DISCORDIADOR/(31967:31975): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:21:54:642 DISCORDIADOR/(31967:31975): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:21:58:644 DISCORDIADOR/(31967:31975): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:22:14:400 DISCORDIADOR/(31985:31985): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:22:14:401 DISCORDIADOR/(31985:31986): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:22:14:403 DISCORDIADOR/(31985:31986): Socket 4 id_sabotaje 2
+[INFO] 00:22:16:491 DISCORDIADOR/(31985:31989): Enviando tareas a MI-RAM
+[INFO] 00:22:16:491 DISCORDIADOR/(31985:31989): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:22:16:491 DISCORDIADOR/(31985:31989): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:22:16:492 DISCORDIADOR/(31985:31989): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:22:16:492 DISCORDIADOR/(31985:31993): Tripulante 3 de patota 1
+[INFO] 00:22:16:493 DISCORDIADOR/(31985:31992): Tripulante 2 de patota 1
+[INFO] 00:22:16:494 DISCORDIADOR/(31985:31991): Tripulante 1 de patota 1
+[INFO] 00:22:25:225 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 00:22:26:225 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:22:27:226 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:22:28:226 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:22:29:227 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:22:30:228 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:22:31:228 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:22:35:230 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:22:36:232 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:22:37:234 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:22:38:234 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:22:42:237 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:22:43:238 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:22:44:239 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:22:45:240 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:22:46:240 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:22:47:241 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:22:51:243 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 7 pasos para llegar a mi tarea
+[INFO] 00:22:52:243 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:22:53:244 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:22:54:245 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:22:55:245 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:22:56:246 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:22:57:246 DISCORDIADOR/(31985:31993): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:23:01:248 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:23:02:249 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:23:03:250 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:23:04:250 DISCORDIADOR/(31985:31993): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:23:08:252 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 6 pasos para llegar a mi tarea
+[INFO] 00:23:09:252 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 5 pasos para llegar a mi tarea
+[INFO] 00:23:10:253 DISCORDIADOR/(31985:31993): Tripu 1 de Patota 1, me faltan 4 pasos para llegar a mi tarea
+[INFO] 00:29:02:392 DISCORDIADOR/(32181:32181): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:29:02:393 DISCORDIADOR/(32181:32182): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:29:02:394 DISCORDIADOR/(32181:32182): Socket 4 id_sabotaje 2
+[INFO] 00:29:19:972 DISCORDIADOR/(32181:32184): Enviando tareas a MI-RAM
+[INFO] 00:29:19:972 DISCORDIADOR/(32181:32184): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:29:19:973 DISCORDIADOR/(32181:32184): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:29:19:973 DISCORDIADOR/(32181:32184): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:29:19:975 DISCORDIADOR/(32181:32188): Tripulante 3 de patota 1
+[INFO] 00:29:19:977 DISCORDIADOR/(32181:32187): Tripulante 2 de patota 1
+[INFO] 00:29:19:978 DISCORDIADOR/(32181:32186): Tripulante 1 de patota 1
+[INFO] 00:29:24:858 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:25:858 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:26:858 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:29:29:860 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:30:860 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:31:861 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:29:34:864 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:29:35:865 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:36:865 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:37:865 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:29:40:867 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:41:868 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:42:868 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:29:43:869 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:44:869 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:45:870 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:29:46:871 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:29:47:871 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:48:872 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:49:873 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:29:50:873 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:51:874 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:52:876 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:29:53:877 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:54:877 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:55:877 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:29:56:879 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:29:57:879 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:29:58:880 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:29:59:880 DISCORDIADOR/(32181:32188): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:30:00:881 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:30:01:882 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:30:02:883 DISCORDIADOR/(32181:32188): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:30:03:883 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:30:04:884 DISCORDIADOR/(32181:32188): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:16:900 DISCORDIADOR/(32675:32675): Soy el discordiador! Hice uso de la shared!
+[INFO] 00:37:16:902 DISCORDIADOR/(32675:32676): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 00:37:16:902 DISCORDIADOR/(32675:32676): Socket 4 id_sabotaje 2
+[INFO] 00:37:26:407 DISCORDIADOR/(32675:32693): Enviando tareas a MI-RAM
+[INFO] 00:37:26:407 DISCORDIADOR/(32675:32693): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 00:37:26:408 DISCORDIADOR/(32675:32693): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 00:37:26:408 DISCORDIADOR/(32675:32693): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 00:37:26:408 DISCORDIADOR/(32675:32697): Tripulante 3 de patota 1
+[INFO] 00:37:26:410 DISCORDIADOR/(32675:32696): Tripulante 2 de patota 1
+[INFO] 00:37:26:411 DISCORDIADOR/(32675:32695): Tripulante 1 de patota 1
+[INFO] 00:37:30:561 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:31:561 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:32:561 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:37:35:563 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:36:563 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:37:564 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:37:40:578 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:37:41:578 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:42:578 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:43:579 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 00:37:46:582 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:47:582 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:48:583 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:37:49:584 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:50:585 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:51:586 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:37:52:586 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:37:53:587 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:54:587 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:55:588 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:37:56:589 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:37:57:590 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:37:58:590 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:37:59:591 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:00:592 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:01:592 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:02:594 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:38:03:594 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:04:595 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:05:595 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:06:596 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:07:598 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:08:598 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:09:599 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:10:599 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:11:599 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:12:601 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:38:13:601 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:14:602 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:15:602 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:16:603 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:17:603 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:18:604 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:19:604 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:20:605 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:21:606 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:22:607 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 00:38:23:608 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:24:609 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:25:610 DISCORDIADOR/(32675:32697): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:26:610 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 00:38:27:611 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 00:38:28:612 DISCORDIADOR/(32675:32697): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 00:38:29:614 DISCORDIADOR/(32675:32697): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:43:22:634 DISCORDIADOR/(803:803): Soy el discordiador! Hice uso de la shared!
+[INFO] 07:43:22:637 DISCORDIADOR/(803:804): Conectandome con IMONGOSTORE por situaciones de sabotaje
+[INFO] 07:43:22:638 DISCORDIADOR/(803:804): Socket 4 id_sabotaje 2
+[INFO] 07:43:36:332 DISCORDIADOR/(803:813): Enviando tareas a MI-RAM
+[INFO] 07:43:36:333 DISCORDIADOR/(803:813): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 1
+[INFO] 07:43:36:333 DISCORDIADOR/(803:813): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 1
+[INFO] 07:43:36:333 DISCORDIADOR/(803:813): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 1
+[INFO] 07:43:36:334 DISCORDIADOR/(803:817): Tripulante 3 de patota 1
+[INFO] 07:43:36:335 DISCORDIADOR/(803:816): Tripulante 2 de patota 1
+[INFO] 07:43:36:337 DISCORDIADOR/(803:815): Tripulante 1 de patota 1
+[INFO] 07:43:42:396 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:43:43:396 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:43:44:397 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 07:43:44:398 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 3
+[INFO] 07:43:45:399 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 2
+[INFO] 07:43:46:400 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 1
+[INFO] 07:43:47:406 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:43:48:407 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:43:49:409 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 07:43:49:410 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 3
+[INFO] 07:43:50:411 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 2
+[INFO] 07:43:51:412 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 1
+[INFO] 07:43:52:418 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:43:53:419 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:43:54:421 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:43:55:422 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a DORMIR_EN_MESA 
+[INFO] 07:43:55:423 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 3
+[INFO] 07:43:56:424 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 2
+[INFO] 07:43:57:426 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, realizando mi tarea DORMIR_EN_MESA quedan 1
+[INFO] 07:43:58:432 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:43:59:433 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:00:434 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:01:436 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:02:437 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:03:439 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:04:440 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:05:441 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:06:442 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:07:444 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:08:445 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:09:446 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:10:448 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:11:450 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:12:450 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:13:453 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:14:455 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:15:455 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:16:456 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:17:458 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:18:460 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:19:461 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:20:462 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:21:464 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:22:465 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:23:468 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:24:469 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:25:470 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:26:471 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:27:473 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:28:474 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:29:475 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:30:476 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:31:479 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:32:480 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:33:482 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:34:483 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:35:484 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:36:485 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:37:486 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:38:489 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:39:490 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:40:492 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:41:494 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:42:494 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:43:497 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:44:498 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:44:528 DISCORDIADOR/(803:843): Enviando tareas a MI-RAM
+[INFO] 07:44:44:528 DISCORDIADOR/(803:843): POSICIONANDOME EN NEW TRIPU 1 DE PATOTA 2
+[INFO] 07:44:44:528 DISCORDIADOR/(803:843): POSICIONANDOME EN NEW TRIPU 2 DE PATOTA 2
+[INFO] 07:44:44:528 DISCORDIADOR/(803:843): POSICIONANDOME EN NEW TRIPU 3 DE PATOTA 2
+[INFO] 07:44:44:529 DISCORDIADOR/(803:847): Tripulante 3 de patota 2
+[INFO] 07:44:44:529 DISCORDIADOR/(803:846): Tripulante 2 de patota 2
+[INFO] 07:44:44:529 DISCORDIADOR/(803:845): Tripulante 1 de patota 2
+[INFO] 07:44:44:531 DISCORDIADOR/(803:847): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:45:498 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:45:534 DISCORDIADOR/(803:847): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:46:500 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:46:539 DISCORDIADOR/(803:847): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:47:503 DISCORDIADOR/(803:817): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:47:541 DISCORDIADOR/(803:847): Tripu 3 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:48:505 DISCORDIADOR/(803:817): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:48:542 DISCORDIADOR/(803:847): Tripu 3 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:49:506 DISCORDIADOR/(803:817): Tripu 2 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:49:543 DISCORDIADOR/(803:847): Tripu 3 de Patota 2, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:50:508 DISCORDIADOR/(803:817): Tripu 2 de Patota 2, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:50:544 DISCORDIADOR/(803:847): Tripu 1 de Patota 2, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:51:509 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:51:545 DISCORDIADOR/(803:847): Tripu 1 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:52:510 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:52:547 DISCORDIADOR/(803:847): Tripu 1 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:53:513 DISCORDIADOR/(803:817): Tripu 2 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:53:551 DISCORDIADOR/(803:847): Tripu 1 de Patota 2, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:54:514 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:54:552 DISCORDIADOR/(803:847): Tripu 1 de Patota 1, me faltan 3 pasos para llegar a mi tarea
+[INFO] 07:44:55:515 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:55:553 DISCORDIADOR/(803:847): Tripu 1 de Patota 1, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:56:516 DISCORDIADOR/(803:817): Tripu 3 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:56:553 DISCORDIADOR/(803:847): Tripu 1 de Patota 1, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:57:518 DISCORDIADOR/(803:817): Tripu 3 de Patota 2, me faltan 2 pasos para llegar a mi tarea
+[INFO] 07:44:57:559 DISCORDIADOR/(803:847): Tripu 1 de Patota 1, lleguÃ© a GENERAR_OXIGENO 
+[INFO] 07:44:58:518 DISCORDIADOR/(803:817): Tripu 3 de Patota 2, me faltan 1 pasos para llegar a mi tarea
+[INFO] 07:44:58:563 DISCORDIADOR/(803:847): Tripu 2 de Patota 2, me faltan 2 pasos para llegar a mi tarea
