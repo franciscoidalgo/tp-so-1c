@@ -10,5 +10,9 @@
 #include <nivel-gui/tad_nivel.h>
 #include <commons/collections/list.h>
 #include <curses.h>
-
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <time.h>
 #endif
