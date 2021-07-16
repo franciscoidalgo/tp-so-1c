@@ -91,8 +91,12 @@ void incializar_fs(){
 	config = config_create(PATH_CONFIG);
 	pthread_mutex_init(&mutex_blocks, NULL);
 	iniciar_en_limpio();
-	//interpretar_mensaje_discordiador("GENERAR_OXIGENO 58");
-	//interpretar_mensaje_discordiador("CONSUMIR_OXIGENO 43");
+	for(int i =0; i<6; i++){
+		generar_bitacora(i, "Se instancio un tripulante", 26);
+	}
+	interpretar_mensaje_discordiador("GENERAR_OXIGENO 60");
+	interpretar_mensaje_discordiador("GENERAR_COMIDA 60");
+	interpretar_mensaje_discordiador("GENERAR_BASURA 60");
 	signal(SIGUSR1, recuperar_fs);
 	
 	while(1){

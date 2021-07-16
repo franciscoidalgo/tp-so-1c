@@ -1,4 +1,4 @@
-#include "discordiador.h"
+#include "../include/discordiador.h"
 #include "planificadorFIFO.h"
 
 int main(int argc, char **argv)
