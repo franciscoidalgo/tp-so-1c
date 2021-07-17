@@ -170,7 +170,7 @@ void setear_memoria(t_list* lista_a_reservar, void* data_empaquetada){
 }
 
 void pasar_un_marco_de_memoria(uint32_t marco_virtual, uint32_t marco_principal, bool sentido){ //false de memoria principal a virtual
-	if(sentido==false){
+	if(sentido==false){	
 		memcpy(MEMORIA_VIRTUAL + (marco_virtual*TAMANIO_PAGINAS), MEMORIA +(marco_principal*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
 	} else {
 		memcpy(MEMORIA + (marco_principal*TAMANIO_PAGINAS), MEMORIA_VIRTUAL + (marco_virtual*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
@@ -213,6 +213,21 @@ uint32_t indice_del_minimo_de_un_array(uint32_t* array, uint32_t tamanio_array){
 		}
 	}
 	return indice_min;
+}
+
+
+
+u_int32_t obtener_proceso_de_marco(uint32_t marco){
+	t_tabla_proceso* aux;
+	bool find(void* element){
+		t_tabla_proceso* aux = element;
+		bool find2(void* num){
+			return num == marco;
+		}
+		return list_any_satisfy(aux->lista_de_marcos, find2);
+	}
+	aux = list_find(TABLA_DE_PAGINAS, find);
+	return aux->pid;
 }
 
 void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t nuevo_marco, int presencia) {
@@ -273,7 +288,6 @@ t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar) {
 	if(MODO_DESALOJO == 0){
 		for(int i=0; i<numero_de_paginas_a_desalojar; i++){
 			uint32_t marco_a_desalojar = indice_del_minimo_de_un_array(TIMESTAMP_MARCOS, CANTIDAD_MARCOS);
-			 //guarda con los marcos sin usar ver aumentarles el timestamp antes por las dudas
 			TIMESTAMP_MARCOS[marco_a_desalojar] = COUNTER_LRU;
 			COUNTER_LRU++;
 			list_add(victimas, marco_a_desalojar);
@@ -364,32 +378,6 @@ t_list* lista_marcos_en_virtual(t_list* lista_de_paginas, uint32_t id_proceso){
 	return list_map(list_filter(lista_de_paginas, estan_en_virtual), mapeo_a_marco);
 }
 
-void alojar(t_list* lista_marcos_en_virtual){
-	void* memoriaaux;
-	uint32_t aux = 0;
-	uint32_t aux2 = 0;
-	uint32_t tamanio_memoria_aux = list_size(lista_marcos_en_virtual);
-	tamanio_memoria_aux = tamanio_memoria_aux * TAMANIO_PAGINAS;
-	memoriaaux = (void*) malloc (tamanio_memoria_aux);
-	void backupear_liberar(uint32_t num){
-		memcpy(memoriaaux + (aux*TAMANIO_PAGINAS), MEMORIA_VIRTUAL + ((num - OFFSET)*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
-		ESTADO_MARCOS_VIRTUALES[num] = 0;
-		aux ++;	
-	}
-	list_iterate(lista_marcos_en_virtual, backupear_liberar);
-	desalojar(list_size(lista_marcos_en_virtual));
-	t_list* marcos_a_reservar = obtener_marcos_a_reservar(list_size(lista_marcos_en_virtual));
-	setear_marcos_usados(marcos_a_reservar);
-	setear_memoria(marcos_a_reservar, memoriaaux);
-
-	void corregir_tabla_paginas(uint32_t marco){
-		reemplazar_marco_de_tabla_de_paginas(marco, list_get(marcos_a_reservar, aux2), 1);
-		aux2++;
-	}
-	
-	list_iterate(lista_marcos_en_virtual, corregir_tabla_paginas);
-}
-
 void setear_nueva_posicion(t_list* marcos_a_cambiar, uint32_t posx, uint32_t posy, uint32_t desplazamiento){
 	void* memoria_aux;
 	memoria_aux = (void*) malloc (8 + desplazamiento);
@@ -432,8 +420,170 @@ void cambiar_ubicacion_tripulante(uint32_t id_proceso, uint32_t id_tripulante, u
 
 	setear_nueva_posicion(marcos_a_cambiar, nueva_posx, nueva_posy, direccion_logica - direccion_logica_inicio);
 
-	/*printf("El numerillo es %d\n", list_get(paginas_a_cambiar, 4)); */
 }
+
+uint32_t redondear_para_arriba (uint32_t numero, uint32_t divisor) {
+	if (numero%divisor!= 0){
+		return numero/2+1;
+	} else {
+		return numero/2;
+	}
+}
+
+t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inicio, uint32_t pagina_fin){
+	t_list* aux = list_create();
+	for (uint32_t i=pagina_inicio; i<pagina_fin; i++){
+		list_add(aux, list_get(lista_de_marcos, i));
+	}
+	return aux;
+}
+
+void liberar_marcos(t_list* lista_marcos_borrado){
+	void liberar_marco(uint32_t marco){
+		printf("%d\n", marco);
+		if(marco>OFFSET){
+			ESTADO_MARCOS_VIRTUALES[marco-OFFSET] = 0;
+		} else {
+			ESTADO_MARCOS[marco]=0;
+		}
+	}
+	
+	list_iterate(lista_marcos_borrado, liberar_marco);
+}
+
+void liberar_tabla(t_list* marcos, t_list* presencia, uint32_t pagina_inicio, uint32_t pagina_fin){
+	for (uint32_t i=pagina_inicio; i<pagina_fin; i++){
+		list_remove(marcos, pagina_inicio);
+		list_remove(presencia, pagina_inicio);
+	}
+}
+
+
+void modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t valor_logico_a_restar, uint32_t dezplazamiento) {
+	uint32_t cantidad_de_marcos = list_size(marcos_a_modificar);
+	void* memoria_auxi;
+	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
+	for(u_int32_t i=0; i<cantidad_de_marcos; i++){
+		u_int32_t aux = list_get(marcos_a_modificar, i);
+		memcpy(memoria_auxi+(i*TAMANIO_PAGINAS), MEMORIA + (aux*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+	}
+	u_int32_t direccion_logica_tareas;
+	memcpy(&direccion_logica_tareas, memoria_auxi + dezplazamiento, 4);
+	direccion_logica_tareas = direccion_logica_tareas - valor_logico_a_restar;
+	memcpy(memoria_auxi + dezplazamiento, &direccion_logica_tareas, 4);
+	setear_memoria(marcos_a_modificar, memoria_auxi);
+}
+
+void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logica_fin, uint32_t id_proceso){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	uint32_t pagina_inicio_check = direccion_logica_inicio/TAMANIO_PAGINAS;
+	uint32_t pagina_fin_check = redondear_para_arriba (direccion_logica_fin, TAMANIO_PAGINAS);
+	t_list* marcos_a_alojar = list_create();
+	for(int i=pagina_inicio_check; i< pagina_fin_check; i++){
+		uint32_t marco_aux = list_get(aux->lista_de_marcos, i);
+		if(marcos_a_alojar>=OFFSET){
+			list_add(marcos_a_alojar, marco_aux);
+		}
+	}
+	alojar(marcos_a_alojar);
+}
+
+void reemplazar_marco_de_tabla_por_indice(uint32_t id_proceso, uint32_t nuevo_marco, uint32_t numero_pagina, int presencia) {
+	t_tabla_proceso* aux2;
+	aux2 = buscar_proceso(id_proceso);
+	list_replace(aux2->lista_de_marcos, numero_pagina, nuevo_marco);
+	switch (presencia){
+	case 0:
+		list_replace(aux2->lista_de_presencia, numero_pagina, 0);
+		break;
+
+	case 1:
+		list_replace(aux2->lista_de_presencia, numero_pagina, 1);
+		break;
+	}
+}
+
+u_int32_t obtener_indice_de_marco(uint32_t marco, u_int32_t id_proceso){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	u_int32_t aux2 = 0;
+	u_int32_t indice;
+
+	void buscarIndicex(uint32_t elem){
+		if(elem == marco){
+			indice = aux2;
+		}
+		aux2++;
+	}
+
+	list_iterate(aux->lista_de_marcos, buscarIndicex);
+	return indice;
+}
+
+void alojar(t_list* lista_marcos_en_virtual){
+	void* memoriaaux;
+	uint32_t aux = 0;
+	uint32_t aux2 = 0;
+	uint32_t tamanio_memoria_aux = list_size(lista_marcos_en_virtual);
+	t_list* paginas_a_corregir=list_create();
+	t_list* procesos_a_corregir=list_create();
+	void cargar_listas(marco_virtual){
+		uint32_t proceso = obtener_proceso_de_marco(marco_virtual);
+		list_add(procesos_a_corregir, proceso);
+		list_add(paginas_a_corregir, obtener_indice_de_marco(marco_virtual, proceso));
+	}
+	list_iterate(lista_marcos_en_virtual, cargar_listas);
+	tamanio_memoria_aux = tamanio_memoria_aux * TAMANIO_PAGINAS;
+	memoriaaux = (void*) malloc (tamanio_memoria_aux);
+	void backupear_liberar(uint32_t num){
+		memcpy(memoriaaux + (aux*TAMANIO_PAGINAS), MEMORIA_VIRTUAL + ((num - OFFSET)*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+		ESTADO_MARCOS_VIRTUALES[num-OFFSET] = 0;
+		aux ++;	
+	}
+	list_iterate(lista_marcos_en_virtual, backupear_liberar);
+	desalojar(list_size(lista_marcos_en_virtual));
+	t_list* marcos_a_reservar = obtener_marcos_a_reservar(list_size(lista_marcos_en_virtual));
+	setear_marcos_usados(marcos_a_reservar);
+	setear_memoria(marcos_a_reservar, memoriaaux);
+	void corregir_tabla_paginas(uint32_t marco){
+		reemplazar_marco_de_tabla_por_indice(list_get(procesos_a_corregir, aux2), list_get(marcos_a_reservar, aux2), list_get(paginas_a_corregir, aux2), 1);
+		aux2++;
+	}
+	list_iterate(lista_marcos_en_virtual, corregir_tabla_paginas);
+}
+
+t_list* obtener_marcos_segun_direccion_logica(uint32_t direccion_logica_inicio, uint32_t direccion_logica_fin, t_list* lista_de_marcos_completa){
+	t_list* aux = list_create();
+	uint32_t aux2 = 0;
+	uint32_t pagina_inicio = direccion_logica_inicio / TAMANIO_PAGINAS;
+	uint32_t pagina_fin = redondear_para_arriba(direccion_logica_fin, TAMANIO_PAGINAS);
+	void filtrar_marcos(marco){
+		if(aux2>=pagina_inicio && aux2<pagina_fin){
+			list_add(aux, marco);
+		}
+		aux2++;
+	}
+	list_iterate(lista_de_marcos_completa, filtrar_marcos);
+	return aux;
+}
+
+void expulsar_tripulante(uint32_t id_proceso, uint32_t id_tripulante){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
+	uint32_t direccion_logica_inicio = 8 + (21*tripulante_logico);
+	uint32_t direccion_logica_fin = 8 + (21*tripulante_logico) + 21;
+	uint32_t pagina_inicio_borrado = redondear_para_arriba(direccion_logica_inicio, TAMANIO_PAGINAS);
+	uint32_t pagina_fin_borrado = direccion_logica_fin / TAMANIO_PAGINAS;
+	t_list* lista_marcos_borrado = obtener_marcos_de_paginas(aux->lista_de_marcos, pagina_inicio_borrado, pagina_fin_borrado);
+	uint32_t valor_a_restar = (pagina_fin_borrado - pagina_inicio_borrado)*TAMANIO_PAGINAS;
+	t_list* lista_de_marcos_de_tareas;
+	necesito_en_ppal(4, 8, id_proceso);
+	lista_de_marcos_de_tareas = obtener_marcos_segun_direccion_logica(4, 8, aux->lista_de_marcos);
+	modificar_direccion_tareas(lista_de_marcos_de_tareas, valor_a_restar, (4%TAMANIO_PAGINAS));
+	liberar_marcos(lista_marcos_borrado);
+	liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
+}
+
+
 
 void mostrar_array_marcos(){
 	printf("\n*****ARRAY DE MARCOS*****\n");
@@ -471,6 +621,14 @@ void mostrar_array_marcos_virtuales(){
 	printf("\n*************************\n\n");
 }
 
+void mostrar_lista(t_list* lista){
+	void printer(uint32_t num){
+		printf("%d ", num);
+	}
+	printf("La lista es: ");
+	list_iterate(lista, printer);
+	printf("\n");
+}
 
 void mostrar_tabla_de_paginas(){
 	
@@ -539,7 +697,7 @@ int main () {
 
 	t_pcb mockpcb;
 	mockpcb.pid= 2;
-	mockpcb.tareas= 10;
+	mockpcb.tareas= 50;
 
 	t_tcb* mocktcb = malloc(sizeof(t_tcb));
 	mocktcb->estado= '1';
@@ -596,20 +754,44 @@ int main () {
 
 
 	iniciar_patota(&mockwrapeado);
-	
+	iniciar_patota(&mockwrapeado2);
 
 	mostrar_array_marcos();
 	mostrar_tabla_de_paginas();
 	mostrar_array_marcos_virtuales();
+	
+	
+	/*cambiar_ubicacion_tripulante(2, 19, 8, 8);
+	
+	mostrar_array_marcos();
+	mostrar_tabla_de_paginas();
+	mostrar_array_marcos_virtuales();
 
-	char b;
-	//memcpy(&b, MEMORIA+17, 4);
+
+	memcpy(&b, MEMORIA+35, 4);
+	printf("El valor es %d\n",redondear_para_arriba(11,2));*/
+	
+	expulsar_tripulante(2, 19);
+	/*t_list* loro = list_create();
+	list_add(loro, 15002);
+	list_add(loro, 15003);
+
+	uint32_t b;
+	memcpy(&b, MEMORIA+30, 4);
+	printf("El valor es %d\n",b);
+
+	alojar(loro);*/
+
+	//memcpy(&b, MEMORIA+30, 4);
 	//printf("El valor es %d\n",b);
 
-	cambiar_ubicacion_tripulante(2, 2, 8, 8);
+	uint32_t v;
+	memcpy(&v, MEMORIA+30, 4);
+	printf("Virtual %d\n",v);
 
-	memcpy(&b, MEMORIA+12, 1);
-	printf("El valor es %c\n",b);
+	mostrar_array_marcos();
+	mostrar_tabla_de_paginas();
+	mostrar_array_marcos_virtuales();
 	
 	return 0;
 }
