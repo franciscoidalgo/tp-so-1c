@@ -71,6 +71,7 @@ void consumir_recurso(char* nombre_recurso, int cantidad);
 void interpretar_mensaje_discordiador (char* mensaje);
 void formatear_meta_file (int, char*);
 void generar_meta_recursos();
+char* obtener_bitacora (uint32_t);
 
 
 //Hash Table para recursos y sus caracteres de llenado
@@ -91,14 +92,15 @@ void incializar_fs(){
 	config = config_create(PATH_CONFIG);
 	pthread_mutex_init(&mutex_blocks, NULL);
 	iniciar_en_limpio();
-	/*
+	
 	for(int i =0; i<6; i++){
-		generar_bitacora(i, "Se instancio un tripulante", 26);
+		generar_bitacora(i, "Se instancio un tripulante\n", 27);
 	}
 	interpretar_mensaje_discordiador("GENERAR_OXIGENO 60");
 	interpretar_mensaje_discordiador("GENERAR_COMIDA 60");
 	interpretar_mensaje_discordiador("GENERAR_BASURA 60");
-	*/
+	log_info(logger, obtener_bitacora(1));
+	
 	signal(SIGUSR1, recuperar_fs);
 	
 	while(1){
@@ -423,12 +425,69 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 }
 
 
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
-	t_config* recurso;
+char* generar_path_bitacora(uint32_t tripulante_id){
 	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
 	char* file_path = string_duplicate(path_bitacoras);
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
+	free(file_name);
+	return file_path;
+}
+
+
+char* obtener_bitacora (uint32_t tripulante_id){
+	t_config* bitacora;
+	char* file_path = generar_path_bitacora(tripulante_id);
+	char* string_bitacora;
+	int size;
+	char** blocks_array;
+	int cant_bloques;
+	int bytes_leidos = 0;
+	int block_index = 0;
+
+	if(access(file_path, F_OK) != 0){
+		log_info(logger, "Se solicito una bitacora inexistente.");
+		return NULL;
+	}
+	
+	bitacora= config_create(file_path);
+	size= config_get_int_value(bitacora, "SIZE");
+	blocks_array = config_get_array_value(bitacora, "BLOCKS");
+	string_bitacora = malloc(size+1);
+	
+	for(cant_bloques = 0; blocks_array[cant_bloques] != NULL; cant_bloques++);
+
+	while(bytes_leidos < size && block_index < cant_bloques){
+		if(size - bytes_leidos >= block_size){
+			memcpy(
+				string_bitacora + bytes_leidos, 
+				blocks_p + block_size * atoi(blocks_array[block_index]), 
+				block_size
+				);
+			bytes_leidos += block_size;
+		}else{
+			memcpy(
+				string_bitacora + bytes_leidos,
+				blocks_p + block_size * atoi(blocks_array[block_index]), 
+				size - bytes_leidos
+				);
+			bytes_leidos+= size-bytes_leidos;
+		}
+		free(blocks_array[block_index]);
+		block_index++;
+	}
+	string_bitacora[size] = '\0';
+	
+	config_destroy(bitacora);
+	free(blocks_array);
+	free(file_path);
+	return string_bitacora;
+}
+
+
+void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
+	t_config* recurso;
+	char* file_path = generar_path_bitacora(tripulante_id);
 	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 	if(lseek(fd, 0, SEEK_END) <= 1){
 		formatear_meta_file(fd, FORMATO_BITACORA);
@@ -436,7 +495,6 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 	close(fd);
 	recurso = config_create(file_path);
 	generar_file(recurso, entrada, sizeofentrada);
-	free(file_name);
 	free(file_path);
 	config_destroy(recurso);
 
