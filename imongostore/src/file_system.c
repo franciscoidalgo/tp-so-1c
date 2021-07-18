@@ -91,12 +91,14 @@ void incializar_fs(){
 	config = config_create(PATH_CONFIG);
 	pthread_mutex_init(&mutex_blocks, NULL);
 	iniciar_en_limpio();
+	/*
 	for(int i =0; i<6; i++){
 		generar_bitacora(i, "Se instancio un tripulante", 26);
 	}
 	interpretar_mensaje_discordiador("GENERAR_OXIGENO 60");
 	interpretar_mensaje_discordiador("GENERAR_COMIDA 60");
 	interpretar_mensaje_discordiador("GENERAR_BASURA 60");
+	*/
 	signal(SIGUSR1, recuperar_fs);
 	
 	while(1){
@@ -178,6 +180,7 @@ void generar_directorios(char* path_base){
 	crear_directorio(path_bitacoras);
 }
 
+
 void generar_superbloque(){
 	int sb_file;
 	
@@ -223,6 +226,7 @@ void generar_superbloque(){
 
 }
 
+
 void actualizar_blocks(){
 	int sync_time = config_get_int_value(config, "TIEMPO_SINCRONIZACION");
 	while(1){
@@ -233,6 +237,7 @@ void actualizar_blocks(){
 		sleep(sync_time);
 	}
 }
+
 
 void generar_blocks(){
 	int b_file;
@@ -260,6 +265,7 @@ void generar_blocks(){
 
 }
 
+
 void formatear_meta_file (int fd, char* formato){
 	char* file_content;
 
@@ -271,6 +277,7 @@ void formatear_meta_file (int fd, char* formato){
 	strcpy(file_content, formato);
 	munmap(file_content, strlen(formato));
 }
+
 
 int encontrar_block_libre(){
 	int numero_bloque;
@@ -335,6 +342,7 @@ void limpiar_lista_bloques(t_list* lista_bloques){
 	}
 }
 
+
 void interpretar_mensaje_discordiador (char* mensaje){
 	t_instruccion* instruccion;
 	char comando [255];
@@ -344,11 +352,13 @@ void interpretar_mensaje_discordiador (char* mensaje){
 	ejecutar_instruccion(instruccion, cantidad);
 }
 
+
 void liberar_blocks_array(char** blocks_array){
 	for(int i = 0; blocks_array[i] != NULL; i++){
 		free(blocks_array[i]);
 	}
 }
+
 
 void generar_file(t_config* recurso, char* entrada, int size_entrada){
 	int current_block;
@@ -413,8 +423,6 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 }
 
 
-
-
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 	t_config* recurso;
 	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
@@ -433,7 +441,6 @@ void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
 	config_destroy(recurso);
 
 }
-
 
 
 void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
@@ -502,6 +509,7 @@ void consumir_recurso_en_blocks (t_config* recurso, int cantidad){
 	free(blocks_array);
 	free(size_string);
 }
+
 
 void consumir_recurso (char* nombre_recurso, int cantidad){
 	t_config* recurso;
@@ -627,6 +635,7 @@ void chequear_recursos (void* superbloque, int superbloque_file_size){
 	list_destroy(lista_bloques);
 }
 
+
 void chequear_cant_blocks(void* superbloque, int superbloque_file_size,int blocks_file_size){
 	
 	int cant_real_bloques;
@@ -648,6 +657,7 @@ void chequear_cant_blocks(void* superbloque, int superbloque_file_size,int block
 	}
 
 }
+
 
 void chequear_superbloque(){
 	int file_sb;
@@ -681,6 +691,7 @@ void chequear_superbloque(){
 
 }
 
+
 void chequear_block_count(t_config* recurso, char log_option){
 	int len_blocks;
 	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
@@ -697,6 +708,7 @@ void chequear_block_count(t_config* recurso, char log_option){
 	liberar_blocks_array(blocks_array);
 	free(blocks_array);
 }
+
 
 void chequear_file_size(t_config* recurso){
 	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
@@ -724,6 +736,7 @@ void chequear_file_size(t_config* recurso){
 	free(blocks_array);
 }
 
+
 char* get_blocks_data (t_config* recurso){
 	int file_size = config_get_int_value(recurso, "SIZE");
 	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
@@ -744,6 +757,7 @@ char* get_blocks_data (t_config* recurso){
 	free(blocks_array);
 	return blocks_data;
 }
+
 
 void restaurar_archivo(t_config* recurso){
 	char** blocks_array = config_get_array_value(recurso, "BLOCKS");
@@ -773,6 +787,7 @@ void restaurar_archivo(t_config* recurso){
 	free(blocks_array);
 }
 
+
 void chequear_blocks_data(t_config* recurso, char log_option){
 	char* blocks_data = get_blocks_data(recurso);
 	int size_recurso = config_get_int_value(recurso, "SIZE");
@@ -792,6 +807,7 @@ void chequear_blocks_data(t_config* recurso, char log_option){
 	free(md5_data);
 	free(blocks_data);
 }
+
 
 void chequear_files(char* path_elegido){
 	t_config* recurso;
@@ -815,12 +831,14 @@ void chequear_files(char* path_elegido){
 	closedir(dh);
 }
 
+
 void recuperar_fs(int received_signal){
 	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	chequear_files(path_files);
 	chequear_superbloque();
 	log_info(logger, "\033[0;32mFin del protocolo.\033[0m");
 }
+
 
 char* generar_md5(char* datos, size_t tamanio_datos){
 	char* md5 = malloc(32 + 1);
