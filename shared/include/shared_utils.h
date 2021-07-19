@@ -24,7 +24,11 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	MENSAJE,
 	PAQUETE,
 	INICIAR_PATOTA,
-	INICIAR_TRIPULANTE,
+	RECIBIR_LA_UBICACION_DEL_TRIPULANTE,
+	ENVIAR_PROXIMA_TAREA,
+	ACTUALIZAR_ESTADO,
+	EXPULSAR_TRIPULANTE,
+	COMPACTAR,
 	FINALIZACION
 }op_code;
 
@@ -75,7 +79,7 @@ typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser 
 	uint32_t posicion_x;	// Pos x
 	uint32_t posicion_y;	// Pos y
 	uint32_t tiempo;		// Tiempo en realizar la tarea
-}__attribute__((packed))
+}
 t_tarea;
 
 

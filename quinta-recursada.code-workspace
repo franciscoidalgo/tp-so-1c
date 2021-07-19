@@ -25,7 +25,11 @@
 			"type_traits": "c",
 			"pthread.h": "c",
 			"stdio.h": "c",
-			"tests.h": "c"
+			"tests.h": "c",
+			"memory.h": "c",
+			"typeinfo": "c",
+			"semaphore.h": "c",
+			"log.h": "c"
 		}
 	}
 }
