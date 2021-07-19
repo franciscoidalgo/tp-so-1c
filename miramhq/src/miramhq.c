@@ -102,9 +102,8 @@ dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* da
 		 memcpy(memaux + 21 + 21*i, &aux_tcb->proxima_instruccion, 4);
 		 memcpy(memaux + 25 + 21*i, &aux_tcb->puntero_pcb, 4);
 	}
-	memcpy(memaux + 8 + cantidad_de_tripulantes * 21, &data_a_empaquetar->lista_de_tareas, largo_lista_de_tareas);
+	memcpy(memaux + 8 + cantidad_de_tripulantes * 21, data_a_empaquetar->lista_de_tareas, largo_lista_de_tareas);
 	dto_aux.data_empaquetada = memaux;
-
 	return dto_aux;
 }
 
@@ -396,10 +395,10 @@ void cambiar_ubicacion_tripulante(uint32_t id_proceso, uint32_t id_tripulante, u
 	 
 	if(direccion_logica/TAMANIO_PAGINAS == (direccion_logica+8)/TAMANIO_PAGINAS){
 		list_add(paginas_a_cambiar, direccion_logica/TAMANIO_PAGINAS);
-	}
-
-	for (int i = direccion_logica/TAMANIO_PAGINAS; i<=(direccion_logica+8)/TAMANIO_PAGINAS; i++){
-		list_add(paginas_a_cambiar, i);
+	} else {
+		for (int i = direccion_logica/TAMANIO_PAGINAS; i<=(direccion_logica+8)/TAMANIO_PAGINAS; i++){
+			list_add(paginas_a_cambiar, i);
+		}
 	}
 	uint32_t direccion_logica_inicio = list_get(paginas_a_cambiar, 0);
 	direccion_logica_inicio = direccion_logica_inicio * TAMANIO_PAGINAS;
@@ -416,10 +415,7 @@ void cambiar_ubicacion_tripulante(uint32_t id_proceso, uint32_t id_tripulante, u
 	}
 	marcos_a_cambiar = list_map(paginas_a_cambiar, mapeo_de_marco);
 
-	printf("El numerillo es %d\n", direccion_logica - direccion_logica_inicio);
-
 	setear_nueva_posicion(marcos_a_cambiar, nueva_posx, nueva_posy, direccion_logica - direccion_logica_inicio);
-
 }
 
 uint32_t redondear_para_arriba (uint32_t numero, uint32_t divisor) {
@@ -481,7 +477,7 @@ void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logic
 	t_list* marcos_a_alojar = list_create();
 	for(int i=pagina_inicio_check; i< pagina_fin_check; i++){
 		uint32_t marco_aux = list_get(aux->lista_de_marcos, i);
-		if(marcos_a_alojar>=OFFSET){
+		if(marco_aux>=OFFSET){
 			list_add(marcos_a_alojar, marco_aux);
 		}
 	}
@@ -583,7 +579,169 @@ void expulsar_tripulante(uint32_t id_proceso, uint32_t id_tripulante){
 	liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
 }
 
+t_list* deconstruir_string(char* array){
+	t_list* aux = list_create();
+	u_int32_t contador = 0;
+	u_int32_t contador_palabras = 0;
 
+	while (array[contador]!=NULL){
+		if(array[contador]=='-'){
+			u_int32_t aux2=0;
+			char* palabra;
+			palabra = (char*) malloc(sizeof(char)*contador_palabras);
+			for(int i = contador-contador_palabras; i <= contador; i++ ){
+				palabra[aux2]=array[i];
+				aux2++;
+			}
+			palabra[contador_palabras] = NULL;
+			list_add(aux, palabra);
+			aux2 = 0;
+			contador_palabras= -1;
+		}
+		
+		contador++;
+		contador_palabras++;	
+	}
+
+	u_int32_t aux2=0;
+	char* palabra;
+	palabra = (char*) malloc(sizeof(char)*contador_palabras);
+	for(int i = contador-contador_palabras; i <= contador; i++ ){
+		palabra[aux2]=array[i];
+		aux2++;
+	}
+	palabra[contador_palabras] = NULL;
+	list_add(aux, palabra);
+	aux2 = 0;
+	contador_palabras= -1;
+	
+
+	return aux;
+}
+
+u_int32_t obtener_direccion_logica_tareas(uint32_t id_proceso){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	necesito_en_ppal(4, 8, id_proceso);
+	t_list* marcos_a_modificar;
+	marcos_a_modificar = obtener_marcos_segun_direccion_logica(4, 8, aux->lista_de_marcos);
+	uint32_t cantidad_de_marcos = list_size(marcos_a_modificar);
+	void* memoria_auxi;
+	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
+	for(u_int32_t i=0; i<cantidad_de_marcos; i++){
+		u_int32_t aux = list_get(marcos_a_modificar, i);
+		memcpy(memoria_auxi+(i*TAMANIO_PAGINAS), MEMORIA + (aux*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+	}
+	u_int32_t direccion_logica_tareas;
+	memcpy(&direccion_logica_tareas, memoria_auxi + 4%TAMANIO_PAGINAS, 4);
+
+	return direccion_logica_tareas;
+}
+
+char* obtener_lista_de_tareas(u_int32_t direccion_logica, u_int32_t id_proceso){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	u_int32_t cantidad_marcos_proceso = list_size(aux->lista_de_marcos);
+	u_int32_t cantidad_de_bytes = cantidad_marcos_proceso * TAMANIO_PAGINAS;
+	necesito_en_ppal(direccion_logica, cantidad_de_bytes, id_proceso);
+	t_list* marcos_a_copiar;
+	marcos_a_copiar = obtener_marcos_segun_direccion_logica(direccion_logica, cantidad_de_bytes, aux->lista_de_marcos);
+	uint32_t cantidad_de_marcos = list_size(marcos_a_copiar);
+	
+
+	void* memoria_auxi;
+	memoria_auxi = (void*) malloc (cantidad_de_marcos* TAMANIO_PAGINAS);
+
+	for(u_int32_t i=0; i<cantidad_de_marcos; i++){
+		u_int32_t aux = list_get(marcos_a_copiar, i);
+		memcpy(memoria_auxi+(i*TAMANIO_PAGINAS), MEMORIA + (aux*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+	}
+
+	uint32_t tamanio_tareas = 0;
+	uint32_t aux3 = 1;
+	
+	for(u_int32_t i= direccion_logica%TAMANIO_PAGINAS; i < cantidad_de_marcos* TAMANIO_PAGINAS; i++){
+		char p;
+		memcpy(&p, memoria_auxi+i, 1);
+		if(p==NULL && tamanio_tareas==0){
+			
+			tamanio_tareas = aux3;
+		}
+		aux3++;
+	}
+
+	char* tareas;
+	tareas = (char*) malloc(sizeof(char)*tamanio_tareas);
+
+	for(u_int32_t i= direccion_logica%TAMANIO_PAGINAS; i < tamanio_tareas; i++){
+		memcpy(tareas+ i - direccion_logica%TAMANIO_PAGINAS, memoria_auxi+i, 1);
+	}
+
+	return tareas;
+}
+
+uint32_t obtener_id_proxima_tarea(u_int32_t id_proceso, u_int32_t id_tripulante){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
+	uint32_t direccion_logica_inicio = 8 + 5 + 8 +(21*tripulante_logico);
+	uint32_t direccion_logica_fin = 8 + 5 + 8 +(21*tripulante_logico) + 4;
+
+	necesito_en_ppal(direccion_logica_inicio, direccion_logica_fin, id_proceso);
+	t_list* marcos_a_copiar;
+	marcos_a_copiar = obtener_marcos_segun_direccion_logica(direccion_logica_inicio, direccion_logica_fin, aux->lista_de_marcos);
+	uint32_t cantidad_de_marcos = list_size(marcos_a_copiar);
+	void* memoria_auxi;
+	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
+	for(u_int32_t i=0; i<cantidad_de_marcos; i++){
+		u_int32_t aux = list_get(marcos_a_copiar, i);
+		memcpy(memoria_auxi+(i*TAMANIO_PAGINAS), MEMORIA + (aux*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+	}
+	u_int32_t direccion_proxima_tarea;
+	memcpy(&direccion_proxima_tarea, memoria_auxi + direccion_logica_inicio%TAMANIO_PAGINAS, 4);
+
+	direccion_proxima_tarea++;
+	memcpy(memoria_auxi +  direccion_logica_inicio%TAMANIO_PAGINAS, &direccion_proxima_tarea, 4);
+	setear_memoria(marcos_a_copiar, memoria_auxi);
+
+	return (direccion_proxima_tarea - 1);
+};
+
+char* proxima_tarea(u_int32_t id_proceso, u_int32_t id_tripulante){
+	u_int32_t direccion_logica_tareas = obtener_direccion_logica_tareas(id_proceso);
+	char* todas_las_tareas = obtener_lista_de_tareas(direccion_logica_tareas, id_proceso);
+	t_list* lista_de_tareas = deconstruir_string(todas_las_tareas);
+	uint32_t proxima_tarea = obtener_id_proxima_tarea(id_proceso, id_tripulante);
+	uint32_t cantidad_tareas = list_size(lista_de_tareas);
+
+	if(proxima_tarea < cantidad_tareas) {
+		return list_get(lista_de_tareas, proxima_tarea);
+	} else {
+		return "NULL";
+	}
+}
+
+void actualizar_estado(u_int32_t id_proceso, u_int32_t id_tripulante, char nuevo_estado){
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
+	uint32_t direccion_logica_inicio = 8 + 4 +(21*tripulante_logico);
+	uint32_t direccion_logica_fin = direccion_logica_inicio + 1;
+
+	necesito_en_ppal(direccion_logica_inicio, direccion_logica_fin, id_proceso);
+	t_list* marcos_a_copiar;
+	marcos_a_copiar = obtener_marcos_segun_direccion_logica(direccion_logica_inicio, direccion_logica_fin, aux->lista_de_marcos);
+	uint32_t cantidad_de_marcos = list_size(marcos_a_copiar);
+	mostrar_lista(marcos_a_copiar);
+	void* memoria_auxi;
+	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
+	for(u_int32_t i=0; i<cantidad_de_marcos; i++){
+		u_int32_t aux = list_get(marcos_a_copiar, i);
+		memcpy(memoria_auxi+(i*TAMANIO_PAGINAS), MEMORIA + (aux*TAMANIO_PAGINAS), TAMANIO_PAGINAS);
+	}
+	char estado;
+	memcpy(&estado, memoria_auxi + direccion_logica_inicio%TAMANIO_PAGINAS, 1);
+	estado = nuevo_estado;
+
+	memcpy(memoria_auxi +  direccion_logica_inicio%TAMANIO_PAGINAS, &estado, 1);
+	setear_memoria(marcos_a_copiar, memoria_auxi);
+}
 
 void mostrar_array_marcos(){
 	printf("\n*****ARRAY DE MARCOS*****\n");
@@ -700,10 +858,10 @@ int main () {
 	mockpcb.tareas= 50;
 
 	t_tcb* mocktcb = malloc(sizeof(t_tcb));
-	mocktcb->estado= '1';
+	mocktcb->estado= 'A';
 	mocktcb->posicion_x=2;
 	mocktcb->posicion_y=3;
-	mocktcb->proxima_instruccion=152;
+	mocktcb->proxima_instruccion=0;
 	mocktcb->puntero_pcb= 0;
 	mocktcb->tid= 19;
 
@@ -711,7 +869,7 @@ int main () {
 	mocktcb3->estado= '1';
 	mocktcb3->posicion_x=2;
 	mocktcb3->posicion_y=3;
-	mocktcb3->proxima_instruccion=152;
+	mocktcb3->proxima_instruccion=0;
 	mocktcb3->puntero_pcb= 0;
 	mocktcb3->tid= 3;
 
@@ -721,7 +879,7 @@ int main () {
 	
 	char* pepe;
 	pepe = (char*) malloc(sizeof(char)*5);
-	pepe = "Hola";
+	pepe = "H-la";
 
 	estructura_administrativa_paginacion mockwrapeado;
 	mockwrapeado.pcb = mockpcb;
@@ -736,7 +894,7 @@ int main () {
 	mocktcb2->estado= 1;
 	mocktcb2->posicion_x=2;
 	mocktcb2->posicion_y=3;
-	mocktcb2->proxima_instruccion=152;
+	mocktcb2->proxima_instruccion=0;
 	mocktcb2->puntero_pcb= 0;
 	mocktcb2->tid= 2;
 
@@ -771,7 +929,7 @@ int main () {
 	memcpy(&b, MEMORIA+35, 4);
 	printf("El valor es %d\n",redondear_para_arriba(11,2));*/
 	
-	expulsar_tripulante(2, 19);
+	//expulsar_tripulante(2, 19);
 	/*t_list* loro = list_create();
 	list_add(loro, 15002);
 	list_add(loro, 15003);
@@ -785,13 +943,41 @@ int main () {
 	//memcpy(&b, MEMORIA+30, 4);
 	//printf("El valor es %d\n",b);
 
-	uint32_t v;
-	memcpy(&v, MEMORIA+30, 4);
-	printf("Virtual %d\n",v);
+	
+
+	/*mostrar_array_marcos();
+	mostrar_tabla_de_paginas();
+	mostrar_array_marcos_virtuales();*/
+
+	/*char* pedepepe;
+	pedepepe = (char*) malloc(sizeof(char)*18);
+	pedepepe = "Alla-en-la-fuente";
+
+	t_list* loco;
+	loco = deconstruir_string(pedepepe);
+	printf("%s", list_get(loco, 3));*/
+	/*proxima_tarea(2, 19);
+	proxima_tarea(2, 19);
+	char* pepepepe = proxima_tarea(2, 19);
+	printf("EL VALOR QUE SALIO ES %s", pepepepe);*/
+
+	actualizar_estado(2, 19, 'B');
 
 	mostrar_array_marcos();
 	mostrar_tabla_de_paginas();
 	mostrar_array_marcos_virtuales();
+	/*char b;
+	memcpy(&b, MEMORIA+30, 4);
+	printf("El valor es %c\n",b);*/
+
+
+	/*mostrar_array_marcos();
+	mostrar_tabla_de_paginas();
+	mostrar_array_marcos_virtuales();
+
+	uint32_t v;
+	memcpy(&v, MEMORIA+35, 4);
+	printf("Virtual %d\n",v);*/
 	
 	return 0;
 }
