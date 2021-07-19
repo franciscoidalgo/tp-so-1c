@@ -34,6 +34,13 @@ typedef struct{
 			void* data_empaquetada; 		
 		} dto_memoria;
 
+typedef struct{
+			u_int32_t marco;			
+			char* estado;
+			u_int32_t proceso;
+			u_int32_t pagina; 		
+		} dump_memoria;
+
 
 
 void* MEMORIA;
@@ -743,6 +750,95 @@ void actualizar_estado(u_int32_t id_proceso, u_int32_t id_tripulante, char nuevo
 	setear_memoria(marcos_a_copiar, memoria_auxi);
 }
 
+char* estado_marco(uint32_t marco){
+	if(ESTADO_MARCOS[marco]==0){
+		return "LIBRE";
+	} else {
+		return "OCUPADO";
+	}
+}
+
+void hacer_dump(){
+	char *timestamp = (char *)malloc(sizeof(char) * 16);
+	char *timestamp2 = (char *)malloc(sizeof(char) * 16);
+	time_t ltime;
+	ltime=time(NULL);
+	struct tm *tm;
+	tm=localtime(&ltime);
+
+	sprintf(timestamp,"Dump: %02d/%02d/%04d %02d:%02d:%02d", tm->tm_mday, tm->tm_mon, 
+    tm->tm_year+1900, tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	sprintf(timestamp2,"%02d%02d%04d_%02d%02d%02d", tm->tm_mday, tm->tm_mon, 
+    tm->tm_year+1900, tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	t_list* lista_dump;
+	lista_dump = list_create();
+
+	uint32_t aux_pid = 0;
+	uint32_t aux_pag = 0;
+	
+
+	void barrer_un_proceso(uint32_t marco){
+		if(marco<OFFSET){
+			dump_memoria dto;
+			dto.marco = marco;
+			dto.estado = estado_marco(marco);
+			dto.proceso =  aux_pid;
+			dto.pagina = aux_pag; 
+
+			void* aux;
+			aux = malloc(sizeof(dump_memoria));
+
+			memcpy(aux, &dto, sizeof(dump_memoria));
+
+			list_add(lista_dump, aux);
+			printf("Marco:%d Estado:%s Proceso:%d Pagina:%d \n",marco, estado_marco(marco), aux_pid, aux_pag);
+		}
+		aux_pag++;
+	}
+
+	void llenar_lista(t_tabla_proceso* item_tabla){
+		aux_pid = item_tabla->pid;
+		list_iterate(item_tabla->lista_de_marcos, barrer_un_proceso);
+		aux_pag = 0; 
+	}
+
+	bool ordenar(dump_memoria* a, dump_memoria*b){
+		return (a->marco < b->marco);
+	}
+
+	list_iterate(TABLA_DE_PAGINAS, llenar_lista);
+	
+	list_sort(lista_dump, ordenar);	
+
+	dump_memoria* abc = list_get(lista_dump, 0);
+	printf("El valor de marco es %d\n", abc->marco);
+
+
+	char filename[32];
+	strcpy(filename, "dumps/");
+	strcat(filename, "Dump_<");
+	strcat(filename, timestamp2);
+	strcat(filename, ">");
+
+    FILE *fp = fopen(filename, "w");
+    if (fp == NULL)
+    {
+        printf("Error opening the file %s", filename);
+        return -1;
+    }
+	fprintf(fp, "%s\n", timestamp);
+
+	void imprimir_en_archivo(dump_memoria* data){
+		fprintf(fp, "Marco:%d Estado:%s Proceso:%d Pagina:%d \n",data->marco, data->estado, data->proceso, data->pagina);
+	}
+
+	list_iterate(lista_dump, imprimir_en_archivo);
+
+    fclose(fp);
+}
+
 void mostrar_array_marcos(){
 	printf("\n*****ARRAY DE MARCOS*****\n");
 	for(int i = 0; i<CANTIDAD_MARCOS; i++){
@@ -961,11 +1057,11 @@ int main () {
 	char* pepepepe = proxima_tarea(2, 19);
 	printf("EL VALOR QUE SALIO ES %s", pepepepe);*/
 
-	actualizar_estado(2, 19, 'B');
+	/*actualizar_estado(2, 19, 'B');
 
 	mostrar_array_marcos();
 	mostrar_tabla_de_paginas();
-	mostrar_array_marcos_virtuales();
+	mostrar_array_marcos_virtuales();*
 	/*char b;
 	memcpy(&b, MEMORIA+30, 4);
 	printf("El valor es %c\n",b);*/
@@ -978,6 +1074,8 @@ int main () {
 	uint32_t v;
 	memcpy(&v, MEMORIA+35, 4);
 	printf("Virtual %d\n",v);*/
+
+	hacer_dump();
 	
 	return 0;
 }
