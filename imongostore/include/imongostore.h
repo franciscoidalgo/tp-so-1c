@@ -25,9 +25,12 @@ typedef struct{
     t_list* tareas;
 }t_tareas;
 
+
 int CONTADOR;
 
 t_tareas* TAREAS_GLOBAL;
+
+t_list* lista_tareas;
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 

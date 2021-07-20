@@ -16,7 +16,6 @@
 
 typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
 {   
-    uint32_t accion_length;
 	char* accion;			// Accion de la tarea
 	uint32_t parametro;		// Numero relacionado a la tarea
 	uint32_t posicion_x;	// Pos x
@@ -41,12 +40,16 @@ t_list* EXIT;
 t_list* READY;
 t_list* BLOCKED_EMERGENCY;
 t_list* EXEC;
+t_list* NEW;
 
 t_log* logger;
 t_log* config;
 t_dictionary * dic_datos_consola;
-char* IP;
-char* PUERTO;
+
+char* IP_RAM;
+char* PUERTO_RAM;
+char* IP_IMONGO;
+char* PUERTO_IMONGO;
 
 int ID_PATOTA;
 
@@ -60,6 +63,7 @@ OBTENER_BITACORA,
 };
 
 enum queue_enum{
+_NEW_,
 _READY_,
 _BLOCKED_,
 _BLOCKED_EMERGENCY_,
@@ -68,15 +72,16 @@ _EXEC_,
 };
 
 
-//INICIARLIZACION DE SEMAFOROS
+//INICIALIZACION DE SEMAFOROS
 pthread_mutex_t mutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_mostrar_por_consola = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_new = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_ready = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_pasaje_entre_queue = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_input_consola;
+pthread_mutex_t mutex_lista_blocked = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_lista_exit = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_lista_exec = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_planificacion = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t iniciarPlanificacion;
-pthread_condattr_t attr;
 pthread_barrier_t barrera;
 sem_t sem_IO;
 sem_t sem_IO_queue;
@@ -84,7 +89,7 @@ sem_t sem_exe;
 
 bool primerIntento;
 
-void enviar_msj(char* mensaje, int socket_cliente);
+void enviar_mensaje_and_codigo_op(char* mensaje,int codop ,int socket_cliente);
 void perder_tiempo(int* i);
 void iterator(t_tcb* t);
 t_paquete* armar_paquete(char* palabra);
@@ -94,26 +99,25 @@ void inicializar_variables();
 void terminar_variables_globales(int socket);
 void enviar_tareas_a_RAM(int conexion,char** argv);
 void recepcionar_patota(char** argv); //agregar tripulantes a lista NEW
-void busqueda_de_tareas_por_patota(t_tcb* tripulante);
 void iterator_lines_free(char* string);
 int get_diccionario_accion(char* accion);
-void iterator_buscar_tarea();
-void iterator_volver_join();
 bool es_tripu_de_id(int id,t_tcb* tripulante);
 void expulsar_tripu(t_list* lista, int id_tripu);
 t_tcb* remover_tripu(t_list* lista, int id_tripu);
 void* recibir_mensaje_de_RAM(int socket_cliente, t_log* logger,int* direccion_size);
 t_tarea* deserealizar_tarea(t_buffer* buffer);
 t_tarea* recibir_tarea_de_RAM(int socket);
-void realizar_tarea_metodo_FIFO(t_tcb* tripulante);
-void buscar_tareas_desde_NEW();
-void exe();
 void planificar_FIFO(t_tcb *tripulante);
 void entrada_salida();
-bool es_tarea_de_ES(char* accion);
 void realizar_tarea_exe(t_tcb* tripulante);
 void atender_accion_de_consola(char* retorno_consola);
 void add_queue(int lista, t_tcb* tripulante);
 void atender_sabotaje();
+void moverme_hacia_tarea(t_tcb* tripu);
+void iniciar_planificacion();
+void consultar_proxima_tarea(t_tcb * tripu);
+void realizar_tarea_comun(t_tcb * tripulante);
+bool es_tarea_comun(t_tcb* tripulante);
+void peticion_ES(t_tcb* tripulante);
 
 #endif

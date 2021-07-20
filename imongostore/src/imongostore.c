@@ -10,7 +10,8 @@ int main(void)
 	CONTADOR = 0;
 	int contador = 0;
 	TAREAS_GLOBAL = malloc(sizeof(t_tareas));
-	TAREAS_GLOBAL->tareas = malloc(sizeof(t_list));
+	TAREAS_GLOBAL->tareas = list_create();
+	lista_tareas = list_create();
 
 	while (1)
 	{
@@ -34,8 +35,6 @@ t_tarea *recibir_tarea(int socket_cliente)
 	void *buffer;
 	t_list *valores = list_create();
 	int tamanio;
-
-	t_tarea *tarea = malloc(sizeof(t_tarea));
 
 	buffer = recibir_buffer(&size, socket_cliente);
 	while (desplazamiento < size)
@@ -117,94 +116,68 @@ void enviar_tarea(t_tarea *tarea, int unSocket)
 
 void atender_cliente(int socket_cliente)
 {
-	bool primer_linea = true;
+	int primer_linea = 0;
 	void iterator(char *value)
 	{
-		if (primer_linea)
+		if (primer_linea == 0)
 		{
 			TAREAS_GLOBAL->pid = atoi(value);
-			primer_linea = false;
+			primer_linea = primer_linea + 1;
 		}
-		else
+
+		if (primer_linea > 1)
 		{
-			list_add(TAREAS_GLOBAL->tareas, value);
+			if (!string_contains(value, "|") && string_contains(value, ";") )
+			{
+				list_add(TAREAS_GLOBAL->tareas, string_duplicate(value));
+				//list_add(TAREAS_GLOBAL->tareas, string_substring_until(value,string_length(value)-1));
+			}
 		}
+
+		if (primer_linea == 1)
+		{
+			primer_linea = primer_linea + 1;
+		}
+		
 		log_info(logger, value);
 	}
 
-	while (1)
+	// while (1)
+	// {
+	int cod_op = recibir_operacion(socket_cliente);
+	switch (cod_op)
 	{
-		int cod_op = recibir_operacion(socket_cliente);
-		switch (cod_op)
+	case MENSAJE:;
+		pthread_mutex_lock(&mutex);
+		int size;
+		recibir_mensaje(socket_cliente, logger, &size);
+
+		if (list_size(TAREAS_GLOBAL->tareas) != 0)
 		{
-		case MENSAJE:;
-			pthread_mutex_lock(&mutex);
-			int size;
-			recibir_mensaje(socket_cliente, logger, &size);
-			if (CONTADOR < 3)
-			{
-				//harcodeo una tarea comun
-				t_tarea *tarea_a_enviar = malloc(sizeof(t_tarea));
-				char *accion = "DORMIR_EN_MESA";
-				tarea_a_enviar->accion = malloc(strlen(accion));
-				strcpy(tarea_a_enviar->accion, accion);
-				tarea_a_enviar->accion_length = strlen(tarea_a_enviar->accion) + 1;
-				tarea_a_enviar->parametro = -1;
-				tarea_a_enviar->posicion_x = 12;
-				tarea_a_enviar->posicion_y = 22;
-				tarea_a_enviar->tiempo = 3;
-				enviar_tarea(tarea_a_enviar, socket_cliente);
-				CONTADOR=CONTADOR+1;
-				// log_info(logger,"El contador esta en %d ", CONTADOR);
-			}
-			if ((CONTADOR >= 3) && (CONTADOR < 6)
-			{
-				//harcodeo una tarea de E/S
-				t_tarea *tarea_a_enviar = malloc(sizeof(t_tarea));
-				char *accion = "GENERAR_OXIGENO";
-				tarea_a_enviar->accion = malloc(strlen(accion));
-				strcpy(tarea_a_enviar->accion, accion);
-				tarea_a_enviar->accion_length = strlen(tarea_a_enviar->accion) + 1;
-				tarea_a_enviar->parametro = 3;
-				tarea_a_enviar->posicion_x = 12;
-				tarea_a_enviar->posicion_y = 22;
-				tarea_a_enviar->tiempo = 3;
-				enviar_tarea(tarea_a_enviar, socket_cliente);
-				CONTADOR=CONTADOR+1;
-			}
-			if (CONTADOR >= 6)
-			{
-				//harcodeo una tarea comun
-				t_tarea *tarea_a_enviar = malloc(sizeof(t_tarea));
-				char *accion = NULL;
-				tarea_a_enviar->accion = malloc(strlen(accion));
-				strcpy(tarea_a_enviar->accion, accion);
-				tarea_a_enviar->accion_length = strlen(tarea_a_enviar->accion) + 1;
-				tarea_a_enviar->parametro = -1;
-				tarea_a_enviar->posicion_x = 12;
-				tarea_a_enviar->posicion_y = 22;
-				tarea_a_enviar->tiempo = 3;
-				enviar_tarea(tarea_a_enviar, socket_cliente);
-				CONTADOR=CONTADOR+1;
-				// log_info(logger,"El contador esta en %d ", CONTADOR);
-			}
-			liberar_conexion(socket_cliente);
-			pthread_mutex_unlock(&mutex);
-			break;
-		case PAQUETE:
-			lista = recibir_paquete(socket_cliente);
-			log_info(logger, "Me llegaron los siguientes valores del socket: %d", socket_cliente);
-			list_iterate(lista, (void *)iterator);
-			break;
-		case SABOTAJE:
-			log_info(logger, "Conectado con DISCORDIARDOR para situaciones de sabotaje");
-			break;
-		case -1:
-			log_error(logger, "el cliente se desconecto. Terminando servidor");
-			return EXIT_FAILURE;
-		default:
-			log_warning(logger, "Operacion desconocida. No quieras meter la pata");
-			break;
+			enviar_mensaje(list_remove(TAREAS_GLOBAL->tareas, 0), socket_cliente);
 		}
+		else
+		{
+			enviar_mensaje("NULL", socket_cliente);
+		}
+
+		liberar_conexion(socket_cliente);
+		pthread_mutex_unlock(&mutex);
+		break;
+	case PAQUETE:
+		lista = recibir_paquete(socket_cliente);
+		log_info(logger, "Me llegaron los siguientes valores");
+		list_iterate(lista, (void *)iterator);
+		break;
+	case SABOTAJE:
+		log_info(logger, "Conectado con DISCORDIARDOR para situaciones de sabotaje");
+		break;
+	case -1:
+		log_error(logger, "el cliente se desconecto. Terminando servidor");
+		EXIT_FAILURE;
+	default:
+		log_warning(logger, "Operacion desconocida. No quieras meter la pata");
+		break;
 	}
+	// }
 }

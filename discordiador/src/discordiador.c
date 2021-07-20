@@ -32,22 +32,6 @@ void iterator(t_tcb *t)
 	log_info(logger, "TID:%d POSX:%d POSY:%d PCB:%d ESTADO:%c", t->tid, t->posicion_x, t->posicion_y, t->puntero_pcb, t->estado);
 }
 
-void iterator_buscar_tarea(t_tcb *tripu)
-{
-	pthread_t hilo[tripu->tid];
-	if (0 != pthread_create(&hilo[tripu->tid], NULL, (void *)&buscar_tarea_a_RAM, (void *)(tripu)))
-	{
-		log_info(logger, "Tripulante %d no pudo ejecutar", tripu->tid);
-	}
-	//pthread_join(hilo[tripu->tid],NULL); //--> cada hilo espera a que el contiguo termine
-}
-
-void iterator_volver_join(t_tcb *tripu)
-{ //EL SEND SERA BLOQUEANTE??
-	pthread_t hilo[tripu->tid];
-	pthread_detach(hilo[tripu->tid]);
-}
-
 void terminar_variables_globales(int socket)
 {
 	log_destroy(logger);
@@ -94,10 +78,11 @@ void inicializar_variables()
 	BLOCKED = list_create();
 	EXIT = list_create();
 	EXEC = list_create();
+	NEW = list_create();
 	primerIntento = true;
 	pthread_mutex_init(&mutex, NULL);
-	IP = config_get_string_value((t_config *)config, "IP");
-	PUERTO = config_get_string_value((t_config *)config, "PUERTO");
+	IP_RAM = config_get_string_value((t_config *)config, "IP");
+	PUERTO_RAM = config_get_string_value((t_config *)config, "PUERTO");
 	//sem_init(&semaforo_1,0,2);
 	pthread_cond_init(&iniciarPlanificacion, NULL);
 	//diccionario de acciones de consola
@@ -120,36 +105,13 @@ int get_diccionario_accion(char *accion)
 	{
 		return -1;
 	}
-	// int argumentos=0;
-	// while(linea_consola[argumentos]!=NULL){
-	// 	argumentos=argumentos+1;
-	// }
-	// log_info(logger,"argumentos ingresados: %d",argumentos);
-	// int accion;
-	// if(dictionary_has_key(dic_datos_consola,linea_consola[0])){
-	// 	accion = dictionary_get(dic_datos_consola,linea_consola);
-	// }
-	// log_info(logger,"argumentos ingresados y accion: %d %d ",argumentos,accion);
-	// bool cantidad_de_argumentos_OK = false;
-	// if(accion==INICIAR_PATOTA && argumentos>2){
-	// 	cantidad_de_argumentos_OK = true;}
-
-	// if(accion==EXPULSAR_TRIPULANTE && argumentos==2){
-	// 	cantidad_de_argumentos_OK = true;}
-
-	// if((accion==INICIAR_PLANIFICACION || accion==PAUSAR_PLANIFICACION || accion==LISTAR_TRIPULANTE) && (argumentos==1)){
-	// 	cantidad_de_argumentos_OK = true;}
-
-	// if(cantidad_de_argumentos_OK){
-	// 	return accion;}else{return -1;}
-	// argumentos=0;
 }
 
-void enviar_msj(char *mensaje, int socket_cliente)
+void enviar_mensaje_and_codigo_op(char *mensaje, int cod_op, int socket_cliente)
 {
 	t_paquete *paquete = malloc(sizeof(t_paquete));
 
-	paquete->codigo_operacion = MENSAJE;
+	paquete->codigo_operacion = cod_op;
 	paquete->buffer = malloc(sizeof(t_buffer));
 	paquete->buffer->size = strlen(mensaje) + 1;
 	paquete->buffer->stream = malloc(paquete->buffer->size);
@@ -192,16 +154,17 @@ t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t 
 
 void buscar_tarea_a_RAM(t_tcb *t)
 {
+	pthread_mutex_lock(&mutex_mostrar_por_consola);
 	char *patota_tripulante = string_new();
 	string_append(&patota_tripulante, (string_itoa(t->puntero_pcb)));
 	string_append(&patota_tripulante, "-");
 	string_append(&patota_tripulante, (string_itoa(t->tid)));
-	int socket_cliente = crear_conexion(IP, PUERTO);
-	enviar_msj(patota_tripulante, socket_cliente);
-	t->tarea = malloc(sizeof(t_tarea));
+	int socket_cliente = crear_conexion(IP_RAM, PUERTO_RAM);
+	enviar_mensaje_and_codigo_op(patota_tripulante, MENSAJE, socket_cliente);
 	t->tarea = recibir_tarea_de_RAM(socket_cliente);
 	liberar_conexion(socket_cliente);
 	free(patota_tripulante);
+	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 }
 
 void enviar_tareas_a_RAM(int conexion, char **linea_consola)
@@ -217,9 +180,11 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 		puts("ERROR");
 		perror("Error al abrir fichero.txt");
 	}
+	free(path);
 
-	char cadena[50];			/* Un array lo suficientemente grande como para guardar la línea más larga del fichero */
-	char *palabra = malloc(50); //= string_itoa(a);//numero de la patota
+	char cadena[50]; /* Un array lo suficientemente grande como para guardar la línea más larga del fichero */
+	//strcpy(cadena,"");
+	char *linea_file = malloc(50);
 	t_paquete *paquete = crear_paquete();
 
 	int id = ID_PATOTA;
@@ -227,18 +192,29 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	agregar_a_paquete(paquete, string_itoa(id), sizeof(id));
 	agregar_a_paquete(paquete, linea_consola[1], strlen(linea_consola[1]) + 1);
 
+	char *palabra_mas_guion;
+	char *aux;
+
 	while (fgets(cadena, 50, archivo) != NULL)
 	{
-		strcpy(palabra, cadena);
-		string_trim(&palabra);
-		char *palagra_mas_guion = strcat(palabra, "-");
-		agregar_a_paquete(paquete, palagra_mas_guion, strlen(palabra) + 1);
+		strcat(cadena, "\0");
+		strcpy(linea_file, cadena);
+		aux = string_duplicate(cadena);
+		string_trim(&aux);
+		strcat(aux, "-");
+		palabra_mas_guion = malloc(strlen(aux) + 1);
+		strcpy(palabra_mas_guion, aux);
+		agregar_a_paquete(paquete, palabra_mas_guion, strlen(aux) + 1);
+		strcpy(cadena, "");
+		free(aux);
+		free(palabra_mas_guion);
 	}
 
 	char *posiciones_linea = string_new();
 	for (int i = 3; linea_consola[i] != NULL; i++)
 	{
 		string_append(&posiciones_linea, linea_consola[i]);
+
 		if (linea_consola[i + 1] != NULL)
 		{
 			string_append(&posiciones_linea, ";");
@@ -246,12 +222,11 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	}
 
 	agregar_a_paquete(paquete, posiciones_linea, strlen(posiciones_linea) + 1);
-	free(palabra);
+	free(linea_file);
 	free(posiciones_linea);
-	pthread_mutex_lock(&mutex_mostrar_por_consola);
 	log_info(logger, "Enviando tareas a MI-RAM");
-	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 	enviar_paquete(paquete, conexion);
+	eliminar_paquete(paquete);
 	fclose(archivo);
 }
 
@@ -261,12 +236,6 @@ void recepcionar_patota(char **linea_consola)
 	char **posiciones;
 	int tripulantes = atoi(linea_consola[1]);
 	int id_patota = ID_PATOTA;
-	pthread_t hilo[tripulantes];
-	pthread_t planificador_ES;
-	//pthread_barrier_init(&barrera,NULL,tripulantes+1);
-	sem_init(&sem_exe, 0, 1);
-	sem_init(&sem_IO, 0, 1);
-	sem_init(&sem_IO_queue, 0, 0);
 
 	for (uint32_t i = 1; i <= tripulantes; i++)
 	{
@@ -283,35 +252,10 @@ void recepcionar_patota(char **linea_consola)
 		//INICIARLIZAR TRIPULANTE
 		t_tcb *tripulante = crear_tripulante(id_patota, posx, posy, i); // i --> concatenar con ID de patota
 
-		//PLANIFICAR
-		//planificar_FIFO(tripulante);
-		pthread_create(&hilo[i], NULL, planificar_FIFO, tripulante);
+		add_queue(_NEW_, tripulante);
 	}
-
-	pthread_create(&planificador_ES, NULL, entrada_salida, NULL);
-	//pthread_join(planificador_ES, NULL);
-
-	for (uint32_t j = 1; j <= atoi(linea_consola[1]); j++)
-	{
-		//pthread_detach(hilo[j]);
-		pthread_join(hilo[j], NULL);
-	}
-
-}
-
-void busqueda_de_tareas_por_patota(t_tcb *tripulante)
-{ //tendria que agregar como argumento el numero de patota y buscar en lista
-	// int cantidad_de_tripulantes = list_size(NEW);
-
-	// for (size_t i = 0; i <= cantidad_de_tripulantes; i++)
-	// {
-	pthread_t hilo[tripulante->tid];
-	if (0 != pthread_create(&hilo[tripulante->tid], NULL, (void *)&buscar_tarea_a_RAM, (void *)(tripulante)))
-	{
-		log_info(logger, "Tripulante %d no pudo ejecutar", tripulante->tid);
-	}
-
-	// }
+	free(posiciones);
+	pthread_mutex_unlock(&mutex_planificacion);
 }
 
 void iterator_lines_free(char *string)
@@ -326,29 +270,29 @@ void *recibir_mensaje_de_RAM(int socket_cliente, t_log *logger, int *direccion_s
 	return buffer;
 }
 
-t_tarea *deserealizar_tarea(t_buffer *buffer)
-{
-	t_tarea *tarea = malloc(sizeof(t_tarea));
+// t_tarea *deserealizar_tarea(t_buffer *buffer)
+// {
+// 	t_tarea *tarea = malloc(sizeof(t_tarea));
 
-	void *stream = buffer->stream;
-	// Deserializamos los campos que tenemos en el buffer
-	memcpy(&(tarea->parametro), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
-	memcpy(&(tarea->posicion_x), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
-	memcpy(&(tarea->posicion_y), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
-	memcpy(&(tarea->tiempo), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
+// 	void *stream = buffer->stream;
+// 	// Deserializamos los campos que tenemos en el buffer
+// 	memcpy(&(tarea->parametro), stream, sizeof(uint32_t));
+// 	stream += sizeof(uint32_t);
+// 	memcpy(&(tarea->posicion_x), stream, sizeof(uint32_t));
+// 	stream += sizeof(uint32_t);
+// 	memcpy(&(tarea->posicion_y), stream, sizeof(uint32_t));
+// 	stream += sizeof(uint32_t);
+// 	memcpy(&(tarea->tiempo), stream, sizeof(uint32_t));
+// 	stream += sizeof(uint32_t);
 
-	// Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
-	memcpy(&(tarea->accion_length), stream, sizeof(uint32_t));
-	stream += sizeof(uint32_t);
-	tarea->accion = malloc(tarea->accion_length);
-	memcpy(tarea->accion, stream, tarea->accion_length);
+// 	// Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
+// 	memcpy(&(tarea->accion_length), stream, sizeof(uint32_t));
+// 	stream += sizeof(uint32_t);
+// 	tarea->accion = malloc(tarea->accion_length);
+// 	memcpy(tarea->accion, stream, tarea->accion_length);
 
-	return tarea;
-}
+// 	return tarea;
+// }
 
 t_tarea *recibir_tarea_de_RAM(int socket)
 {
@@ -360,33 +304,40 @@ t_tarea *recibir_tarea_de_RAM(int socket)
 	recv(socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
 	paquete->buffer->stream = malloc(paquete->buffer->size);
 	recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
-	return deserealizar_tarea(paquete->buffer);
-}
 
-void realizar_tarea_metodo_FIFO(t_tcb *tripulante)
-{
+	char **tarea_completa_array = string_split(paquete->buffer->stream,";");
+	char **tarea;
 
-	//enviar inicio de la tarea a IMONGOSTORE junto con la tarea
+	t_tarea* tarea_recibida = malloc(sizeof(t_tarea));
+	if(strcmp(paquete->buffer->stream,"NULL")==0){
+		tarea_recibida->accion = "NULL";	
+		return tarea_recibida;
+		}
 
-	log_info(logger, "Tarea a realizar: %s", tripulante->tarea->accion);
-	log_info(logger, "Me muevo de %d|%d a %d|%d ",
-			 tripulante->posicion_x, tripulante->posicion_x, tripulante->tarea->posicion_x, tripulante->tarea->posicion_y);
+	if (string_contains(tarea_completa_array[0], " "))
+	{
+		tarea = string_split(tarea_completa_array[0], " ");
+		tarea_recibida->accion = malloc(strlen(tarea[0]));
+		strcpy(tarea_recibida->accion,tarea[0]);
+		tarea_recibida->parametro = atoi(tarea[1]);
+	}
+	else
+	{	tarea_recibida->accion = malloc(strlen(tarea_completa_array[0]));
+		strcpy(tarea_recibida->accion,tarea_completa_array[0]);
+		tarea_recibida->parametro = (-1);
+	}
 
-	sleep(tripulante->tarea->tiempo);
+	tarea_recibida->posicion_x = atoi(tarea_completa_array[1]);
+	tarea_recibida->posicion_y = atoi(tarea_completa_array[2]); 
+	tarea_recibida->tiempo = atoi(tarea_completa_array[3]);
 
-	char *patota_tripulante = string_new();
-	string_append(&patota_tripulante, "Termine mi tarea soy tripulante: ");
-	string_append(&patota_tripulante, (string_itoa(tripulante->puntero_pcb)));
-	string_append(&patota_tripulante, "-");
-	string_append(&patota_tripulante, (string_itoa(tripulante->tid)));
-	int socket_cliente = crear_conexion(IP, PUERTO);
-	enviar_msj(patota_tripulante, socket_cliente);
-	liberar_conexion(socket_cliente);
-	free(patota_tripulante);
-}
+	string_iterate_lines(tarea_completa_array, iterator_lines_free);
+	free(tarea_completa_array);
+	free(paquete->buffer->stream);
+	free(paquete->buffer);
+	free(paquete);
 
-void buscar_tareas_desde_NEW()
-{
+	return tarea_recibida;
 }
 
 void add_queue(int lista, t_tcb *tripulante)
@@ -394,13 +345,23 @@ void add_queue(int lista, t_tcb *tripulante)
 
 	switch (lista)
 	{
+	case _NEW_:;
+		tripulante->estado = 'N';
+		pthread_mutex_lock(&mutex_lista_new);
+		list_add(NEW, tripulante);
+		pthread_mutex_unlock(&mutex_lista_new);
+		break;
 	case _READY_:;
 		tripulante->estado = 'R';
+		pthread_mutex_lock(&mutex_lista_ready);
 		list_add(READY, tripulante);
+		pthread_mutex_unlock(&mutex_lista_ready);
 		break;
 	case _BLOCKED_:;
 		tripulante->estado = 'B';
+		pthread_mutex_lock(&mutex_lista_blocked);
 		list_add(BLOCKED, tripulante);
+		pthread_mutex_unlock(&mutex_lista_blocked);
 		break;
 	case _BLOCKED_EMERGENCY_:;
 		tripulante->estado = 'S';
@@ -408,11 +369,15 @@ void add_queue(int lista, t_tcb *tripulante)
 		break;
 	case _EXIT_:;
 		tripulante->estado = 'F';
+		pthread_mutex_lock(&mutex_lista_exit);
 		list_add(EXIT, tripulante);
+		pthread_mutex_unlock(&mutex_lista_exit);
 		break;
 	case _EXEC_:;
 		tripulante->estado = 'E';
+		pthread_mutex_lock(&mutex_lista_exec);
 		list_add(EXEC, tripulante);
+		pthread_mutex_unlock(&mutex_lista_exec);
 		break;
 	default:
 		break;
@@ -431,7 +396,7 @@ void atender_accion_de_consola(char *linea_consola)
 	case INICIAR_PATOTA:;
 		ID_PATOTA = ID_PATOTA + 1;
 		//SEND TAREAS A RAM
-		int conexion = crear_conexion(IP, PUERTO);
+		int conexion = crear_conexion(IP_RAM, PUERTO_RAM);
 		enviar_tareas_a_RAM(conexion, array_parametros);
 		liberar_conexion(conexion);
 		//SEND TAREAS A RAM
@@ -440,26 +405,27 @@ void atender_accion_de_consola(char *linea_consola)
 		free(array_parametros);
 		break;
 	case INICIAR_PLANIFICACION:
-		pthread_cond_signal(&iniciarPlanificacion);
-		primerIntento = false;
-		//aca hago signal de semaforos
+		iniciar_planificacion();
 		break;
 	case LISTAR_TRIPULANTE:
+		list_iterate(NEW, (void *)iterator);
 		list_iterate(READY, (void *)iterator);
 		list_iterate(BLOCKED, (void *)iterator);
 		list_iterate(EXEC, (void *)iterator);
 		list_iterate(EXIT, (void *)iterator);
 		break;
 	case EXPULSAR_TRIPULANTE:
-		expulsar_tripu(BLOCKED, atoi(array_parametros[1]));
-		expulsar_tripu(READY, atoi(array_parametros[1]));
+		add_queue(_EXIT_, remover_tripu(NEW, atoi(array_parametros[1])));
+		add_queue(_EXIT_, remover_tripu(READY, atoi(array_parametros[1])));
+		add_queue(_EXIT_, remover_tripu(BLOCKED, atoi(array_parametros[1])));
+		add_queue(_EXIT_, remover_tripu(EXEC, atoi(array_parametros[1])));
 		//enviar_aviso_a_MI-RAM
 		break;
 	case OBTENER_BITACORA:
 		//solicitar a IMONGOSTORE la bitacora del tripulante
 		break;
 	case PAUSAR_PLANIFICACION:
-		primerIntento = true;
+		pthread_mutex_lock(&mutex_planificacion);
 		break;
 	default:
 		log_info(logger, "accion no disponible o cantidad de argumentos erronea, pifiaste en el tipeo hermano");
@@ -469,21 +435,59 @@ void atender_accion_de_consola(char *linea_consola)
 
 void atender_sabotaje()
 {
+	// while (1)
+	// {
+	// 	log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
+	// 	int socket_conexion = crear_conexion(IP_RAM, PUERTO_RAM);
+	// 	log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
+
+	// 	int *f = SABOTAJE;
+
+	// 	send(socket_conexion, &f, sizeof(int), 0);
+	// 	int cod_op = 0;
+	// 	recv(socket_conexion, &cod_op, sizeof(int), MSG_WAITALL);
+
+	// 	list_remove(BLOCKED_EMERGENCY, 0);
+
+	// 	if (cod_op == SABOTAJE)
+	// 	{
+	// 		log_info(logger, "Señal del SABOTAJE recibida");
+	// 	}
+	// }
+}
+
+iniciar_planificacion()
+{
+
+	//pthread_barrier_init(&barrera,NULL,tripulantes+1);
+
+	sem_init(&sem_IO, 0, 1);
+	sem_init(&sem_IO_queue, 0, 0);
+
 	while (1)
 	{
-		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
-		int socket_conexion = crear_conexion(IP, PUERTO);
-		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
+		pthread_mutex_lock(&mutex_planificacion);
+		sem_init(&sem_exe, 0, 2);
+		int tripulantes_en_new = list_size(NEW);
+		pthread_t hilo[tripulantes_en_new];
+		pthread_t planificador_ES;
 
-		int *f = SABOTAJE;
-
-		send(socket_conexion, &f, sizeof(int), 0);
-		int cod_op = 0;
-		recv(socket_conexion, &cod_op, sizeof(int), MSG_WAITALL);
-
-		if (cod_op == SABOTAJE)
+		for (size_t i = 1; i <= tripulantes_en_new; i++)
 		{
-			log_info(logger, "Señal del SABOTAJE recibida");
+			t_tcb *tripulante = list_remove(NEW, 0);
+			pthread_create(&hilo[i], NULL, planificar_FIFO, tripulante);
+		}
+		///////PLANIFICA FIFO
+		///////PLANIFICA RR
+		///////PLANIFICA RR
+
+		///////ENTRADA SALIDA
+		pthread_create(&planificador_ES, NULL, &entrada_salida, NULL);
+		pthread_detach(planificador_ES);
+		///////ENTRADA SALIDA
+		for (uint32_t j = 1; j <= tripulantes_en_new; j++)
+		{
+			pthread_detach(hilo[j]);
 		}
 	}
 }
