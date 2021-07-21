@@ -1,5 +1,6 @@
 #include "discordiador.h"
 #include "planificadorFIFO.h"
+#include "planificadorRR.h"
 
 int main(int argc, char **argv)
 {
@@ -85,6 +86,7 @@ void inicializar_variables()
 	PUERTO_RAM = config_get_string_value((t_config *)config, "PUERTO");
 	//sem_init(&semaforo_1,0,2);
 	pthread_cond_init(&iniciarPlanificacion, NULL);
+	NIVEL_MULTIPROCESAMIENTO = 2;
 	//diccionario de acciones de consola
 	dic_datos_consola = dictionary_create();
 	dictionary_put(dic_datos_consola, "INICIAR_PATOTA", (void *)INICIAR_PATOTA);
@@ -467,7 +469,7 @@ iniciar_planificacion()
 	while (1)
 	{
 		pthread_mutex_lock(&mutex_planificacion);
-		sem_init(&sem_exe, 0, 2);
+		sem_init(&sem_exe, 0, NIVEL_MULTIPROCESAMIENTO);
 		int tripulantes_en_new = list_size(NEW);
 		pthread_t hilo[tripulantes_en_new];
 		pthread_t planificador_ES;
@@ -475,7 +477,7 @@ iniciar_planificacion()
 		for (size_t i = 1; i <= tripulantes_en_new; i++)
 		{
 			t_tcb *tripulante = list_remove(NEW, 0);
-			pthread_create(&hilo[i], NULL, planificar_FIFO, tripulante);
+			pthread_create(&hilo[i], NULL, &planificar_RR, tripulante);
 		}
 		///////PLANIFICA FIFO
 		///////PLANIFICA RR

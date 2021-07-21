@@ -32,8 +32,10 @@ typedef struct t_tcb   // Tamanio de 21 Bytes
     t_tarea* tarea;    // instruccion que el tripulante debera hacer
     uint32_t puntero_pcb;    // quien es mi patota?
     char estado;        // Estado del tripulante (New/Ready/Exec/Blocked)
+    int QUANTUM_ACTUAL;
 }__attribute__ ((packed)) t_tcb;
 
+int NIVEL_MULTIPROCESAMIENTO;
 
 t_list* BLOCKED;
 t_list* EXIT;
@@ -119,5 +121,8 @@ void consultar_proxima_tarea(t_tcb * tripu);
 void realizar_tarea_comun(t_tcb * tripulante);
 bool es_tarea_comun(t_tcb* tripulante);
 void peticion_ES(t_tcb* tripulante);
+void planificar_RR(t_tcb *tripulante);
+void realizar_tarea_comun_RR(t_tcb *tripulante);
+void moverme_hacia_tarea_RR(t_tcb *tripulante);
 
 #endif

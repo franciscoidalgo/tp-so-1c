@@ -68,9 +68,11 @@ void entrada_salida()
 			//si no tiene lo mando a EXIT
 			log_info(logger, "TERMINE soy tripu %d de patota %d", tripulante_io->tid, tripulante_io->puntero_pcb);
 			pthread_mutex_lock(&mutex_lista_ready);
-			add_queue(_EXIT_, tripulante_io);
+			add_queue(_EXIT_, tripulante_io); //si se utilizar un GET para sacar de BLOCK luego debo remover el tripulante y pasarlo a EXIT
 			pthread_mutex_unlock(&mutex_lista_ready);
-			sem_post(&sem_IO);
+			if(list_size(BLOCKED)>0){
+				sem_post(&sem_IO);	
+			}
 			if (list_size(BLOCKED) == 0 && list_size(EXEC) == 0 && list_size(READY) == 0)
 			{
 				pthread_exit(pthread_self);
@@ -79,11 +81,12 @@ void entrada_salida()
 		else
 		{
 			//si tiene lo envio a READY
-			pthread_mutex_lock(&mutex_lista_ready);
-			add_queue(_READY_, tripulante_io);
-			pthread_mutex_unlock(&mutex_lista_ready);
+			add_queue(_READY_, tripulante_io);//si se utilizar un GET para sacar de BLOCK luego debo remover el tripulante y pasarlo a READY
 			sem_post(&sem_exe);
-			sem_post(&sem_IO);
+			if(list_size(BLOCKED)>0){
+				sem_post(&sem_IO);	
+			}
+
 		}
 	}
 }
@@ -180,8 +183,10 @@ void consultar_proxima_tarea(t_tcb *tripu)
 		log_info(logger, "FINALICE %d-%d", tripu->tid, tripu->puntero_pcb);
 		add_queue(_EXIT_, remover_tripu(EXEC, tripu->tid));
 		pthread_mutex_unlock(&mutex_lista_ready);
+		if(list_size(READY)>=1){ 
 		sem_post(&sem_exe);
-		pthread_cancel(pthread_self());
+		}
+		pthread_exit(pthread_self());
 	}
 	else
 	{
