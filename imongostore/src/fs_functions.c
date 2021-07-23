@@ -749,7 +749,6 @@ void chequear_file_size(t_config* recurso){
 	int current_block;
 	int size = 0;
 	char* size_as_array;
-	pthread_mutex_lock(&mutex_blocks);
 	for(int i = 0; blocks_array[i] != NULL; i++){
 		current_block = atoi(blocks_array[i]);
 		for(offset = 0; offset<block_size && blocks_p[current_block * block_size + offset] != 0; offset++){
@@ -757,7 +756,6 @@ void chequear_file_size(t_config* recurso){
 		}
 		free(blocks_array[i]);
 	}
-	pthread_mutex_unlock(&mutex_blocks);
 	if(size_supuesto != size){
 		size_as_array = string_from_format("%d", size);
 		config_set_value(recurso, "SIZE", size_as_array);
@@ -776,7 +774,6 @@ char* get_blocks_data (t_config* recurso){
 	int current_block;
 	int offset;
 	int bytes_chequeados = 0;
-	pthread_mutex_lock(&mutex_blocks);
 	for (int i= 0; blocks_array[i] != NULL; i++){
 		current_block = atoi(blocks_array[i]);
 		for (offset=0; offset < block_size && bytes_chequeados < file_size; offset++){
@@ -785,7 +782,6 @@ char* get_blocks_data (t_config* recurso){
 		}
 		free(blocks_array[i]);
 	}
-	pthread_mutex_unlock(&mutex_blocks);
 	free(blocks_array);
 	return blocks_data;
 }
@@ -800,7 +796,6 @@ void restaurar_archivo(t_config* recurso){
 	int i;
 	int bytes_escritos = 0;
 	int current_block;
-	pthread_mutex_lock(&mutex_blocks);
 	//Primero limpio los bloques
 	for (i = 0; blocks_array[i] != NULL; i++){
 		offset = block_size * atoi(blocks_array[i]);
@@ -815,7 +810,6 @@ void restaurar_archivo(t_config* recurso){
 		}
 		free(blocks_array[i]);
 	}
-	pthread_mutex_unlock(&mutex_blocks);
 	free(blocks_array);
 }
 
@@ -865,12 +859,12 @@ void chequear_files(char* path_elegido){
 
 
 void recuperar_fs(int received_signal){
-	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	pthread_mutex_lock(&mutex_blocks);
+	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	chequear_files(path_files);
 	chequear_superbloque();
-	pthread_mutex_unlock(&mutex_blocks);
 	log_info(logger, "\033[0;32mFin del protocolo.\033[0m");
+	pthread_mutex_unlock(&mutex_blocks);
 }
 
 
