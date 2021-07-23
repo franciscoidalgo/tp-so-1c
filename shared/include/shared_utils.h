@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <stdbool.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <commons/collections/list.h>
-#include <commons/string.h>
-#include <commons/config.h>
-#include <string.h>
+#include<stdlib.h>
+#include<sys/socket.h>
+#include<unistd.h>
+#include<netdb.h>
+#include<commons/collections/list.h>
+#include<commons/string.h>
+#include<commons/config.h>
+#include<string.h>
 
 char* mi_funcion_compartida();
 
@@ -22,7 +22,8 @@ char* mi_funcion_compartida();
 typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensajes que se peuden enviar
 {
 	MENSAJE,
-	PAQUETE
+	PAQUETE,
+	SABOTAJE
 }op_code;
 
 //t_log* logger;
