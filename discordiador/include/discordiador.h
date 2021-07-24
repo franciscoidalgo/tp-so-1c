@@ -12,30 +12,36 @@
 #include<commons/string.h>
 #include<commons/collections/dictionary.h>
 #include<semaphore.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 
-typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
-{   
+typedef struct t_tarea{	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
 	char* accion;			// Accion de la tarea
 	uint32_t parametro;		// Numero relacionado a la tarea
 	uint32_t posicion_x;	// Pos x
 	uint32_t posicion_y;	// Pos y
 	uint32_t tiempo;		// Tiempo en realizar la tarea
-}t_tarea;//__attribute__((packed))
+}__attribute__ ((packed)) t_tarea;
+
+// typedef struct t_comunicacion{
+//     int socket_MIRAM;
+//     int socket_IMONGOSTORE; 
+// }__attribute__ ((packed)) t_comunicacion;
 
 // El senior tripulante (TCB - hilo)
 typedef struct t_tcb   // Tamanio de 21 Bytes
 {
-    uint32_t tid;        // Id del tripulante
+    int tid;        // Id del tripulante
     uint32_t posicion_x;    // Pos x
     uint32_t posicion_y;    // Pos y
     t_tarea* tarea;    // instruccion que el tripulante debera hacer
     uint32_t puntero_pcb;    // quien es mi patota?
     char estado;        // Estado del tripulante (New/Ready/Exec/Blocked)
     int QUANTUM_ACTUAL;
+    // int socket_MIRAM;
+    // int socket_IMONGOSTORE; 
 }__attribute__ ((packed)) t_tcb;
-
-int NIVEL_MULTIPROCESAMIENTO;
 
 t_list* BLOCKED;
 t_list* EXIT;
@@ -48,18 +54,16 @@ t_log* logger;
 t_log* config;
 t_dictionary * dic_datos_consola;
 
-char* IP_RAM;
-char* PUERTO_RAM;
-char* IP_IMONGO;
-char* PUERTO_IMONGO;
+int CONEXION_MIRAM;
+int CONEXION_IMONGOSTORE; 
 
 int ID_PATOTA;
 
 enum input_consola{
-INICIAR_PATOTA,
+INICIAR_PATOTA_,
 INICIAR_PLANIFICACION,
 PAUSAR_PLANIFICACION,
-EXPULSAR_TRIPULANTE,
+EXPULSAR_TRIPULANTE_,
 LISTAR_TRIPULANTE,
 OBTENER_BITACORA,
 };
@@ -73,9 +77,13 @@ _EXIT_,
 _EXEC_,
 };
 
+enum algoritmo{
+FIFO,
+RR,
+};
+
 
 //INICIALIZACION DE SEMAFOROS
-pthread_mutex_t mutex =PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_mostrar_por_consola = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_new = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_ready = PTHREAD_MUTEX_INITIALIZER;
@@ -83,13 +91,31 @@ pthread_mutex_t mutex_lista_blocked = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_exit = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_exec = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_planificacion = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t iniciarPlanificacion;
+pthread_mutex_t mutex_sabotaje = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_pausar =PTHREAD_MUTEX_INITIALIZER;
+
+pthread_cond_t condicion_pausear_planificacion;
+pthread_cond_t semaforo_sabotaje;
 pthread_barrier_t barrera;
 sem_t sem_IO;
 sem_t sem_IO_queue;
 sem_t sem_exe;
+//INICIALIZACION DE SEMAFOROS
 
-bool primerIntento;
+bool EXISTE_SABOTAJE;
+bool PAUSEAR_PLANIFICACION;
+
+//variables globales de archivo de configuracion
+char* IP_MI_RAM_HQ;
+char* PUERTO_MI_RAM_HQ;
+char* IP_I_MONGO_STORE;
+char* PUERTO_I_MONGO_STORE;
+int GRADO_MULTITAREA;
+int ALGORITMO;
+int QUANTUM;
+int DURACION_SABOTAJE;
+int RETARDO_CICLO_CPU;
+//variables globales de archivo de configuracion
 
 void enviar_mensaje_and_codigo_op(char* mensaje,int codop ,int socket_cliente);
 void perder_tiempo(int* i);
@@ -117,12 +143,29 @@ void add_queue(int lista, t_tcb* tripulante);
 void atender_sabotaje();
 void moverme_hacia_tarea(t_tcb* tripu);
 void iniciar_planificacion();
-void consultar_proxima_tarea(t_tcb * tripu);
+void expulsar_si_no_hay_tarea(t_tcb * tripu);
 void realizar_tarea_comun(t_tcb * tripulante);
 bool es_tarea_comun(t_tcb* tripulante);
 void peticion_ES(t_tcb* tripulante);
 void planificar_RR(t_tcb *tripulante);
 void realizar_tarea_comun_RR(t_tcb *tripulante);
 void moverme_hacia_tarea_RR(t_tcb *tripulante);
+void verificar_existencia_de_sabotaje();
+void planificar_FIFO_con_sabotaje();
+void activar_sabotaje();
+void desactivar_sabotaje();
+void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante,int x, int y);
+void sacar_tripulantes_de_BLOCKED_EMERGENCY();
+void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x,int y);
+void agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje();
+void verificar_existencia_de_pausado();
+void pausar_planificacion();
+void continuar_planificacion();
+int obtener_algoritmo(char* algoritmo_de_planificacion);
+void enviar_nuevo_estado_a_ram(t_tcb* tripulante);
+void enviar_posicion_a_ram(t_tcb* tripulante,int socket);
+void enviar_expulsar_tripulante_a_ram(t_tcb* tripulante);
+t_tcb* sacar_tripulante_de(t_list *lista, int id_tripu);
+void enviar_info_para_bitacora_a_imongostore(t_tcb *tripulante,int socket);
 
 #endif
