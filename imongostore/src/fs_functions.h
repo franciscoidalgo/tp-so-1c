@@ -4,6 +4,8 @@
 #include <commons/config.h>
 #include <commons/log.h>
 #include <inttypes.h>
+#include <pthread.h>
+
 
 void iniciar_en_limpio(t_config*, t_log*);
 
