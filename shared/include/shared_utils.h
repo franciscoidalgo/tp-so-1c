@@ -26,8 +26,7 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	INICIAR_PATOTA,
 	INICIAR_TRIPULANTE,
 	FINALIZACION,
-	BITACORA,
-	IO
+	BITACORA
 }op_code;
 
 //t_log* logger;
@@ -94,7 +93,7 @@ typedef struct
 t_bitacora;
 
 // funcion enviar bitacora
-void enviar_bitacora(t_bitacora, int);
+void enviar_bitacora(t_bitacora bitacora, int socket_cliente);
 
 
 // inciar servidor
