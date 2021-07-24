@@ -38,6 +38,11 @@ void incializar_fs(){
 	config_fs = config_create(PATH_CONFIG);
 	iniciar_en_limpio(config_fs, logger_fs);
 	signal(SIGUSR1, recuperar_fs);
+	testear_bitacora(0, "Me movi a 1|1\n");
+	testear_bitacora(1, "Se genero el tripulante\n");
+	testear_recursos("GENERAR_OXIGENO 50");
+	testear_recursos("GENERAR_COMIDA 20");
+	testear_recursos("CONSUMIR_COMIDA 10");
 	iniciar_server_fs();
 }
 

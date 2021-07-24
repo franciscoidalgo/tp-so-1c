@@ -11,4 +11,8 @@ void recuperar_fs(int);
 void interpretar_mensaje_discordiador (char* mensaje);
 void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada);
 
+// para testear
+void testear_bitacora(int, char*);
+void testear_recursos(char*);
+
 #endif

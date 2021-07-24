@@ -888,3 +888,12 @@ char* generar_md5(char* datos, size_t tamanio_datos){
 	return md5;
 
 }
+
+void testear_bitacora (int tripulante, char* mensaje){
+	int size_mensaje = strlen(mensaje) + 1;
+	generar_bitacora(tripulante, mensaje, size_mensaje);
+}
+
+void testear_recursos(char* mensaje){
+	interpretar_mensaje_discordiador(mensaje);
+}
