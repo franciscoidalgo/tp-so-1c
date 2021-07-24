@@ -24,8 +24,15 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	MENSAJE,
 	PAQUETE,
 	INICIAR_PATOTA,
+	RECIBIR_LA_UBICACION_DEL_TRIPULANTE,
+	ENVIAR_PROXIMA_TAREA,
+	ACTUALIZAR_ESTADO,
+	EXPULSAR_TRIPULANTE,
+	COMPACTAR,
+	DUMP
 	INICIAR_TRIPULANTE,
-	FINALIZACION
+	FINALIZACION,
+	BITACORA
 }op_code;
 
 //t_log* logger;
@@ -75,11 +82,25 @@ typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser 
 	uint32_t posicion_x;	// Pos x
 	uint32_t posicion_y;	// Pos y
 	uint32_t tiempo;		// Tiempo en realizar la tarea
-}__attribute__((packed))
+}
 t_tarea;
 
 
 // fin de Structs de Patota
+
+// Structs I-Mongo
+
+typedef struct
+{
+	uint32_t id_tripulante;
+	uint32_t length_mensaje;
+	char* mensaje;
+}__attribute__((packed))
+t_bitacora;
+
+// funcion enviar bitacora
+void enviar_bitacora(t_bitacora bitacora, int socket_cliente);
+
 
 // inciar servidor
 int iniciar_servidor(t_log* logger,t_config* config);

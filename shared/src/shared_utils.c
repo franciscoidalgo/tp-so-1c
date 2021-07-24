@@ -1,4 +1,4 @@
-#include "shared_utils.h"
+#include "../include/shared_utils.h"
 
 char* mi_funcion_compartida(){
     return "Hice uso de la shared!";
@@ -49,7 +49,11 @@ int esperar_cliente(int socket_servidor,t_log* logger)
 	accept --> funcion bloqueante, queda a la espera hasta aceptar cliente
 	*/
 
+<<<<<<< HEAD
+	// log_info(logger, "Se conecto un cliente!");
+=======
 	log_info(logger, "Se conecto un cliente!");
+>>>>>>> ea3e182c956f8fcb92036db4f2ae1a05962e2295
 	return socket_cliente;
 }
 
@@ -126,6 +130,22 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 
 	return ptr_inicio_paquete;
 }
+
+void enviar_bitacora(t_bitacora bitacora, int socket_cliente){
+	t_paquete paquete;
+	int tamanio_bitacora = sizeof(uint32_t) * 2 + bitacora.length_mensaje;
+	paquete.codigo_operacion = BITACORA;
+	paquete.buffer = malloc(tamanio_bitacora + sizeof(int));
+	paquete.buffer->size = tamanio_bitacora;
+	paquete.buffer->stream = &bitacora;	
+	void* a_enviar = serializar_paquete(&paquete, sizeof(op_code) + sizeof(int) + paquete.buffer->size);
+
+	send(socket_cliente, a_enviar, paquete.buffer->size + sizeof(op_code), 0);
+
+	free(a_enviar);
+
+}
+
 
 int crear_conexion(char *ip, char* puerto)
 {
@@ -233,9 +253,9 @@ t_log* iniciar_logger(char* name)
 	char* path = string_new();
 	char* name_mayus = string_new();
 	
-	string_append(&path, "./cfg/");
-	string_append(&path, name);
-	string_append(&path, ".log");
+	string_append(&path,"cfg/");
+	string_append(&path,name);
+	string_append(&path,".log");
 
 	string_append(&name_mayus, name);
 	string_to_upper(name_mayus);

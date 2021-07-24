@@ -4,13 +4,13 @@
 			"path": "discordiador"
 		},
 		{
-			"path": "imongostore"
-		},
-		{
 			"path": "miramhq"
 		},
 		{
 			"path": "shared"
+		},
+		{
+			"path": "imongostore"
 		}
 	],
 	"settings": {
@@ -23,7 +23,15 @@
 			"config.h": "c",
 			"string.h": "c",
 			"type_traits": "c",
-			"pthread.h": "c"
+			"pthread.h": "c",
+			"stdio.h": "c",
+			"tests.h": "c",
+			"memory.h": "c",
+			"typeinfo": "c",
+			"semaphore.h": "c",
+			"log.h": "c",
+			"stdbool.h": "c",
+			"curses.h": "c"
 		}
 	}
 }
