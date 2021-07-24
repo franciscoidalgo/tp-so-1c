@@ -109,6 +109,13 @@ typedef struct{
 			uint32_t pagina; 		
 		} dump_memoria;
 
+typedef struct{
+			uint32_t pid;			
+			uint32_t indice;			
+			uint32_t inicio;			
+			uint32_t tamanio;			
+		} dump_memoria_segmentacion;
+
 
 
 // Orden de listas
@@ -120,6 +127,7 @@ bool orden_lista_admin_segmentacion_best_free(t_segmento* segmento_libre_A, t_se
 /* -------------------------MEMORIA----------------------------- */
 // Mapa
 void iniciar_mapa();
+void eliminar_mapa();
 void crear_personaje(char id, uint32_t pos_x, uint32_t pos_y);
 void mover_personaje(char id, uint32_t pos_x, uint32_t pos_y);
 void eliminar_personaje(char id);

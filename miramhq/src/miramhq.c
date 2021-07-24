@@ -21,6 +21,7 @@ t_log* logger;
 t_config* config;
 administrador_de_segmentacion* admin_segmentacion;
 t_list* lista_de_patotas;
+t_list* list_dump_segmentacion;
 pthread_mutex_t sem_memoria, mutex_segmentos_libres, mutex_mapa;
 int SMOBJ_SIZE;
 int cod_cierre;
@@ -39,11 +40,6 @@ int main(int argc, char ** argv){
 
 
     /* -------------- Variables / Estructuras Adminisdtrativas ---------------- */
-    // variables - instanciacion
-    // int conexion;
-    // char* mensaje;
-    
-    // Estructuras Administrativas
     // creacion del logger y del config
     logger = iniciar_logger("miramhq");
     config = leer_config("miramhq");
@@ -64,9 +60,6 @@ int main(int argc, char ** argv){
     {
         
         iniciar_segmentacion();
-        // printf("\tCantidad de bytes libres: %d\n",admin_segmentacion->bytes_libres);
-        // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
-        // printf("\n");
     }else
     {
         iniciar_paginacion();
@@ -74,27 +67,17 @@ int main(int argc, char ** argv){
 
 
     // testear_asignar_y_liberar_segmentacion();
-
-
     // liberar_espacio_de_memoria();
     /* -----------------------Fin Primer Paso--------------------------------- */
-
-    // conexion = crear_conexion((char*)config_get_string_value(config,"IP"),(char*)config_get_string_value(config,"PUERTO"));
-    
-        // Testeos
-    // testear_biblioteca_compartida();
-    // validar_malloc();
-    // testear_enviar_mensaje(conexion);  //enviar un mje con una conexion al servidor
-
     /* -------------------------Segundo Paso----------------------------------- */
     // Crear el mapa
     // pthread_t hilo_mapa;
 	// pthread_create(&hilo_mapa,NULL, (void*) iniciar_mapa,NULL);
-    // iniciar_mapa();
 	// pthread_detach(hilo_mapa);
+    
+    iniciar_mapa();
 
     /* -----------------------Fin Segundo Paso-------------------------------- */
-
     /* -------------------------Tercer Paso----------------------------------- */
 
     // Iniciar Servidor
@@ -120,11 +103,10 @@ int main(int argc, char ** argv){
 
         pthread_detach(un_hilo);
     }
-    // list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
-    // list_iterate(lista, (void*) iterator_destroy);
     /* -----------------------Fin Tercer Paso-------------------------------- */
 
     // terminamos el proceso, eliminamos todo
+    eliminar_mapa();
     pthread_mutex_destroy(&sem_memoria);
     pthread_mutex_destroy(&mutex_segmentos_libres);
     free(MEMORIA); 
@@ -197,22 +179,15 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
     
     /* ------------------------Cantidad de tripulantes---------------------------- */
             int cant_tripulantes = recibir_catidad_de_tripulantes(lista);
-                // Descomentar para testear
-            // log_info(logger," Los tripulantes son %d\n",cant_tripulantes);
 
     /* ------------------------Creacion de tcbs---------------------------- */
             t_list* tcbs = crear_tcbs(lista,cant_tripulantes);
-            // list_iterate(tcbs, (void*) iterator_tcb);
            iniciar_patota_en_mapa(pid,tcbs);
 
     /* ------------------------Creacion de tareas---------------------------- */
-            // t_list* tareas;
-            // tareas = crear_tareas(lista);
 
             char* tareas_unidas = unir_tareas(lista);
 
-			// printf("\tMe llegaron los siguientes valores:\n");
-			// list_iterate(tareas, (void*) iterator_tarea);
             iniciar_patota_SEGMENTACION (lista, pcb, tcbs, tareas_unidas, cant_tripulantes);
 
     
@@ -222,29 +197,14 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             list_clean_and_destroy_elements(tcbs, (void*) iterator_destroy_tcb);
 			list_destroy(tcbs);
             free(tareas_unidas);
-            // liberar_segmento(segmento_tareas);
-            // liberar_segmento(segmento_pcb);
-            // liberar_segmento(segmento_tcb);
-            // list_clean_and_destroy_elements(tabla_segmentos_de_patota, (void*) iterator_destroy);
-			// list_destroy(tabla_segmentos_de_patota);
-            // list_clean_and_destroy_elements(tareas, (void*) iterator_destroy_tarea);
-			// list_destroy(tareas);
-            // liberar_espacio_de_memoria(); // BORRAR ESTOOO!
-            // list_iterate(lista_de_patotas,iterator_patota);
-            // imprimir_patotas_presentes_dump();
-            
             break;
 		case ENVIAR_PROXIMA_TAREA:
         // DISCORDIADOR me manda un pid y un tid
-                // Descomentar para testear
-            // log_info(logger,"Una tarea se esta pidiendo!");
             recibir_paquete(cliente_fd,lista);
 
             // loggear_linea();
             uint32_t pid_prox_tarea = recibir_pid(lista);
             uint32_t tid_prox_tarea = recibir_pid(lista);
-            // log_info(logger,"El pid_prox_tarea de la patota es: %d",pid_prox_tarea);
-            // log_info(logger,"El tid__prox_tarea de la patota es: %d\n",tid__prox_tarea);
             
             char* tarea_solicitada = enviar_proxima_tarea_SEGMENTACION(pid_prox_tarea,tid_prox_tarea);
             
@@ -253,29 +213,21 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 			break;
         case ACTUALIZAR_ESTADO:
         // DISCORDIADOR me manda un pid y un tid
-                // Descomentar para testear
-            // log_info(logger,"Se esta pidiendo una actualizacion de estado!");
             recibir_paquete(cliente_fd,lista);
 
             // loggear_linea();
             uint32_t pid_actualizar_estado = recibir_pid(lista);
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
-            // log_info(logger,"El pid_actualizar_estado de la patota es: %d",pid_actualizar_estado);
-            // log_info(logger,"El tid_actualizar_estado de la patota es: %d\n",tid_actualizar_estado);
             
             actualizar_estado_SEGMENTACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
             
             // liberar estructuras utilizadas
-
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             break;
         case EXPULSAR_TRIPULANTE:
-                // Descomentar para testear
-            // log_info(logger,"Un tripulante se esta por despedir!");
             recibir_paquete(cliente_fd,lista);
 
-            // loggear_linea();
             uint32_t pid_expulsar_tripulante = recibir_pid(lista);
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
 
@@ -287,18 +239,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             break;
         case COMPACTAR:
 
-            // log_info(logger,"Se compactara!");
             compactar();
-            // t_list* segmento_de_patotita = list_get(lista_de_patotas,1);
-            // t_segmento* tars = retornar_segmento_tareas(segmento_de_patotita);
-            // tars->fin += 21;
-            // char* tas = retornar_tareas(tars);
-            // log_info(logger,"Tars %s",tas);
-            // t_list* segmentos_ocupados = lista_de_segmentos_ocupados();
-            
-            // compactar(segmentos_ocupados);
-            
-            // list_destroy(segmentos_ocupados);
             break;
         case DUMP:
             
@@ -313,8 +254,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
             break;
         case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:
-                // Descomentar para testear
-            // log_info(logger,"Se movio un tripulante, parate un tantito que actualizo la info!");
+
             recibir_paquete(cliente_fd,lista);
             uint32_t pid_ubicacion = recibir_pid(lista);
             uint32_t tid_ubicacion = recibir_pid(lista);
@@ -338,12 +278,6 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 		}
 
         list_destroy(lista);
-        // loggear_linea();
-        // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
-        // loggear_linea();
-        // imprimir_patotas_presentes();
-        // loggear_linea();
-        // liberar_conexion(cliente_fd);
         pthread_exit(pthread_self);
 }
 
@@ -362,7 +296,6 @@ void atender_cliente_PAGINACION(int cliente_fd)
 
             log_info(logger,"Una patota se ha iniciado");
 			recibir_paquete(cliente_fd,lista);
-            // crear_patota();
 
     /* ----------------------Estrucutras administrativas-------------------------- */
     /* -----------------------------Recibir pid----------------------------------- */
@@ -467,18 +400,7 @@ void atender_cliente_PAGINACION(int cliente_fd)
 			break;
 		}
 
-        // int size;
-        // log_info(logger, (char*) argv[0]);
-        // recibir_mensaje(cliente_fd,logger,&size);
-        // log_info(logger, (char*) argv[1]);
-
         list_destroy(lista);
-        // loggear_linea();
-        // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
-        // loggear_linea();
-        // imprimir_patotas_presentes();
-        // loggear_linea();
-        // liberar_conexion(cliente_fd);
         pthread_exit(pthread_self);
 }
 
@@ -500,6 +422,11 @@ void iniciar_mapa()
 	AmongOS = nivel_crear("AmongOS");
 
     nivel_gui_dibujar(AmongOS);
+}
+
+void eliminar_mapa()
+{
+    nivel_gui_terminar();
 }
 
 void crear_personaje(char id, uint32_t pos_x, uint32_t pos_y)
@@ -573,9 +500,7 @@ void reservar_espacio_de_memoria()
 
 void liberar_espacio_de_memoria()
 {
-    // list_clean_and_destroy_elements(admin_segmentacion->segmentos_libres, (void*) iterator_destroy);
     list_iterate(admin_segmentacion->segmentos_libres,iterator_segmentos_free);
-    // free(list_remove(admin_segmentacion->segmentos_libres,2));
     list_destroy(admin_segmentacion->segmentos_libres);
     free(admin_segmentacion);
 
@@ -593,7 +518,6 @@ t_segmento* ultimo_segmento_libre_compactable()
     t_segmento* ultimo_segmento;
     if (list_size(admin_segmentacion->segmentos_libres)>1 && ultimo_segmento_libre()->fin == SMOBJ_SIZE)
     {
-        // ultimo_segmento = (t_segmento*) list_get(admin_segmentacion->segmentos_libres,list_size(admin_segmentacion->segmentos_libres)-1);
         ultimo_segmento = (t_segmento*) list_get(admin_segmentacion->segmentos_libres,list_size(admin_segmentacion->segmentos_libres)-2);
     }else
     {
@@ -611,8 +535,6 @@ void consolidar_segmentos_libres_se_es_posbile()
         anteultimo = list_get(admin_segmentacion->segmentos_libres,list_size(admin_segmentacion->segmentos_libres)-2);
         int diferencia_anteultimo = anteultimo->fin - anteultimo->inicio +1;
         ultimo = ultimo_segmento_libre();
-        // log_info(logger,"\tanteultimo byte: %d",anteultimo->fin);
-        // log_info(logger,"\tultimo byte: %d",ultimo->inicio);
 
         if (anteultimo->fin+1 == ultimo->inicio)
         {
@@ -624,17 +546,6 @@ void consolidar_segmentos_libres_se_es_posbile()
         
     }
 
-    // if (list_size(admin_segmentacion->segmentos_libres) == 1)
-    // {
-    //     anteultimo = list_get(admin_segmentacion->segmentos_libres,list_size(admin_segmentacion->segmentos_libres)-1);
-    //     ultimo = ultimo_segmento_libre();
-    //     if (anteultimo->fin == ultimo->inicio)
-    //     {   
-    //         anteultimo = list_remove(admin_segmentacion->segmentos_libres,list_size(admin_segmentacion->segmentos_libres)-2);
-    //         free(anteultimo);
-    //     }
-    // }
-    
 }
 
 t_list* segmentos_ocupados_afectados(t_list* lista_ocupados)
@@ -642,8 +553,6 @@ t_list* segmentos_ocupados_afectados(t_list* lista_ocupados)
     t_list* lista_ocupados_filtrados;
 
     lista_ocupados_filtrados = list_filter(lista_ocupados, condicion_segmento_afectado);
-    // list_clean(lista_ocupados);
-    // list_destroy(lista_ocupados);
     list_sort(lista_ocupados_filtrados,orden_lista_segmentos);
     return lista_ocupados_filtrados;
 }
@@ -669,15 +578,6 @@ int tareas_bytes_ocupados(t_list* tareas)
     return bytes_ocupados;
 }
 
-// int cantidad_de_tareas(char* tareas)
-// {
-    // char** lista_tareas = string_split(tareas,"-");
-//     int cant_tareas = list_size(lista_tareas);
-//     loggear_entero(cant_tareas);
-//     string_iterate_lines(lista_tareas, iterator_lines_free);
-//     free(lista_tareas);
-//     return cant_tareas;
-// }
 /* --------------------Fin Administrar Memoria------------------------ */
 
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
@@ -688,7 +588,6 @@ void iniciar_segmentacion()
 {
     admin_segmentacion = malloc(sizeof(administrador_de_segmentacion));
     t_list* segmentos_libre = list_create();
-    // admin_segmentacion->segmentos_libres = list_create();
     
     // Aca hace caca cuando quiero imprimir el archivo de dump
     t_segmento* segmento = malloc(sizeof(t_segmento));
@@ -699,7 +598,6 @@ void iniciar_segmentacion()
     segmento->tipo = 'L';
 
     list_add(segmentos_libre,segmento);
-    // list_add(admin_segmentacion->segmentos_libres,segmento);
     admin_segmentacion->bytes_libres = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
     admin_segmentacion->segmentos_libres = segmentos_libre;
 
@@ -707,10 +605,7 @@ void iniciar_segmentacion()
 
     lista_de_patotas = list_create();
     TABLA_DE_MAPA = list_create();
-    dump_segmentacion = malloc(300);
-    strcpy(dump_segmentacion,"");
-
-    // imprimir_patotas_presentes_dump();
+    list_dump_segmentacion = list_create();
 };
 
 
@@ -726,7 +621,6 @@ t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados)
 {
     char* criterio = config_get_string_value(config,"CRITERIO");
     t_segmento* segmento_libre_buscado;
-    // log_info(logger,"el criterio es: %s",criterio);
     if ( strcmp(criterio,"FIRSTFIT") == 0)
     {
         segmento_libre_buscado = buscar_segmento_libre_first_fit(bytes_ocupados);
@@ -734,16 +628,6 @@ t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados)
     {
         segmento_libre_buscado = buscar_segmento_libre_best_fit(bytes_ocupados);
     }
-
-    // switch (criterio)
-    // {
-    // case "FIRSTFIT":
-    //     /* code */
-    //     break;
-    
-    // default:
-    //     break;
-    // }
 
     return segmento_libre_buscado;
 }
@@ -773,31 +657,20 @@ t_segmento* buscar_segmento_libre_first_fit(uint32_t bytes_ocupados)
             if (bytes_ocupados < diferencia)
             {
                 segmento_ocupado = malloc(sizeof(t_segmento));
-                // segmento_ocupado->se_encuentra = 1;
                 segmento_ocupado->inicio = (uint32_t) segmento_libre->inicio;
                 segmento_ocupado->fin = (uint32_t) segmento_libre->inicio + (uint32_t) bytes_ocupados - 1;
 
                 segmento_libre->inicio += bytes_ocupados;
                 
                 
-                // list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado);
-                // t_segmento* segmento_a_borrar = list_replace(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado);
-                // list_replace_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,segmento_ocupado,iterator_destroy);
-                // free(segmento_a_borrar);
-                // free(segmento_ocupado);
             }else
             {
                 segmento_ocupado = list_remove(admin_segmentacion->segmentos_libres,list_iterator->index);
-                // list_remove_and_destroy_element(admin_segmentacion->segmentos_libres,list_iterator->index,iterator_segmentos_free);
             }
-            // segmento->fin = segmento->inicio + bytes_ocupados; 
             encontrado = true;
         }
-        
-        // free(segmento);
     }
 
-    // string_iterate_lines(list_iterator, iterator_segmentos_free);
     free(list_iterator);
 
     if (encontrado)
@@ -846,7 +719,6 @@ t_segmento* buscar_segmento_libre_best_fit(uint32_t bytes_ocupados)
     
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
     
-    // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
 
     pthread_mutex_unlock(&mutex_segmentos_libres);
     segmento_ocupado->se_encuentra = 1;
@@ -860,7 +732,6 @@ t_segmento* buscar_segmento_libre_best_fit_original(uint32_t bytes_ocupados)
 
     t_segmento* segmento_libre;
     uint32_t menor_distancia = SMOBJ_SIZE;
-    // t_segmento* segmento_elegido;
     t_segmento* segmento_ocupado = malloc(sizeof(t_segmento));
 
     while(list_iterator_has_next(list_iterator))
@@ -892,7 +763,6 @@ void guardar_en_MEMORIA_tcb(t_segmento* segmento_a_ocupar,t_tcb* tcb)
 {
     pthread_mutex_lock(&sem_memoria);    
         int desplazamiento = segmento_a_ocupar->inicio;
-    // segmento_a_ocupar->tipo = 't';
     
     memcpy(MEMORIA + desplazamiento, (void*) (&tcb->tid), sizeof(uint32_t));
     desplazamiento += sizeof(uint32_t);
@@ -920,17 +790,11 @@ void actualizar_en_MEMORIA_tcb_prox_tarea(t_segmento* segmento_a_modificar)
         pthread_mutex_lock(&sem_memoria); 
         int desplazamiento_proxima_tarea = segmento_a_modificar->inicio;
         desplazamiento_proxima_tarea += sizeof(uint32_t)+sizeof(char)+sizeof(uint32_t)+sizeof(uint32_t);
-        // uint32_t* prox_tarea_aux = malloc(sizeof(uint32_t));
         char* MEMORIA_prox_tarea = MEMORIA;
-        // strcpy(prox_tarea_aux, MEMORIA_prox_tarea[desplazamiento_proxima_tarea]);
         uint32_t prox_tarea_aux = MEMORIA_prox_tarea[desplazamiento_proxima_tarea];
         prox_tarea_aux += 1;
-        // strcpy(prox_tarea_aux,MEMORIA_prox_tarea[desplazamiento_proxima_tarea]+1);
-        // strcpy(prox_tarea_aux,prox_tarea_aux+1);
-        // memcpy(prox_tarea_aux, (void*) (&tcb->puntero_pcb), sizeof(uint32_t));
         memcpy(MEMORIA + desplazamiento_proxima_tarea, (&prox_tarea_aux), sizeof(uint32_t));
         pthread_mutex_unlock(&sem_memoria); 
-        // free(prox_tarea_aux);
 }
 
 void actualizar_en_MEMORIA_tcb_estado(t_segmento* segmento_a_modificar, char estado)
@@ -959,42 +823,22 @@ void actualizar_en_MEMORIA_tcb_posiciones(t_segmento* segmento_a_modificar, uint
 void guardar_en_MEMORIA_pcb(t_segmento* segmento_a_ocupar,t_pcb* pcb)
 {
         int desplazamiento = segmento_a_ocupar->inicio;
-    // segmento_a_ocupar->tipo = 'p';
-
-    // loggear_entero(pcb->pid);
-    // loggear_entero(pcb->tareas);
-
-    // uint32_t* pid = malloc(sizeof(uint32_t));
-    // pid = pcb->pid;
-    // uint32_t* tareas = malloc(sizeof(uint32_t));
-    // tareas = pcb->tareas;
-    // char* pid = malloc(strlen(string_itoa(pcb->pid)+1));
-    // pid = (char*) string_itoa(pcb->pid);
-    // log_info(logger,"el pid es %s", pid);
-
-    // char* tareas = malloc(strlen(string_itoa(pcb->tareas)+1));
-    // tareas = (char*) string_itoa(pcb->tareas);
-    // log_info(logger,"las tareas estan en es %s", tareas);
-    // loggear_info_segmentos(segmento_a_ocupar,"Segmento a ocupar");
     pthread_mutex_lock(&sem_memoria); 
     memcpy(MEMORIA + desplazamiento, (&pcb->pid), sizeof(uint32_t));
     desplazamiento += sizeof(uint32_t);
     memcpy(MEMORIA + desplazamiento, (&pcb->tareas), sizeof(uint32_t));
     pthread_mutex_unlock(&sem_memoria); 
     desplazamiento += sizeof(uint32_t)-1;
-    // loggear_entero(desplazamiento);
     if (desplazamiento != segmento_a_ocupar->fin)
     {
         log_info(logger,"Un pcb se cargo mal a memoria");
     }
-    // loggear_entero(segmento_a_ocupar->fin);
 
 }
 
 void guardar_en_MEMORIA_tareas(t_segmento* segmento_a_ocupar,char* tareas_unidas)
 {
     int desplazamiento = segmento_a_ocupar->inicio;
-    // segmento_a_ocupar->tipo = 'i';
 
     pthread_mutex_lock(&sem_memoria); 
     memcpy(MEMORIA + desplazamiento, (void*) (tareas_unidas), strlen(tareas_unidas));
@@ -1027,7 +871,6 @@ void liberar_segmento(t_segmento* segmento)
     segmento->tipo = 'L';
     list_add(admin_segmentacion->segmentos_libres, segmento);
     
-    // list_add_sorted(admin_segmentacion->segmentos_libres, segmento,orden_lista_admin_segmentacion);
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
     pthread_mutex_unlock(&mutex_segmentos_libres);
 }
@@ -1038,93 +881,18 @@ void compactar()
     t_list* lista_ocupada = lista_de_segmentos_ocupados();
         
             
-    // loggear_linea();
-    // log_info(logger,"\tInfo previa");
-    // loggear_linea();
-    // log_info(logger,"\tSegmentos Ocupados");
-    // list_iterate(lista_ocupada, (void*) iterator_segmento);
-    // loggear_linea();
-    // log_info(logger,"\tSegmentos libres");
-    // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
-    // loggear_linea();
-    // log_info(logger,"\tMemoria completa: %d",SMOBJ_SIZE);
-    // loggear_linea();
-
-    // t_list* segmentos_afectados,* segmentos_transformados;
     t_list* segmentos_afectados;
     t_list* segmentos_transformados;
 
-
-    // loggear_linea();
-    // log_info(logger,"\ttesteo previo a mappear");
-    // list_iterate(lista_de_patotas, (void*) iterator_patota);
-    // loggear_linea();
-
-    // log_info(logger,"\tComienza la Compactacion");
     while (list_size(admin_segmentacion->segmentos_libres)>1 && ultimo_segmento_libre_compactable()->fin != SMOBJ_SIZE)
     {
         consolidar_segmentos_libres_se_es_posbile();
-        // ult_segmento_libre = ultimo_segmento_libre_compactable();
         segmentos_afectados = segmentos_ocupados_afectados(lista_ocupada);
-        // loggear_linea();
-        // log_info(logger,"\tSegmentos ocupados desplazados");
-        // list_iterate(segmentos_afectados, (void*) iterator_segmento);
-        // ultimo_segmento_ocupado = list_get(segmentos_afectados,0);
         segmentos_transformados = list_map(segmentos_afectados, transformacion_segmento_afectado);
         // list_iterate(segmentos_afectados, (void*) iterator_segmento);
         list_destroy(segmentos_afectados);
         list_destroy(segmentos_transformados);
     }
-    // list_destroy(lista_ocupada);
-    // loggear_linea();
-    // log_info(logger,"\tSegmentos ocupados desplazados");
-    // list_iterate(segmentos_afectados, (void*) iterator_segmento);
-
-    // list_clean_and_destroy_elements(segmentos_transformados, (void*) iterator_segmentos_free);
-    // list_clean(segmentos_transformados);
-    // list_clean_and_destroy_elements(segmentos_afectados, (void*) iterator_segmentos_free);
-    // list_clean(segmentos_afectados);
-
-
-    // loggear_linea();
-    // ult_segmento_libre = ultimo_segmento_libre_compactable();
-    // segmentos_afectados = segmentos_ocupados_afectados(lista_ocupada);
-    // list_map(segmentos_afectados, transformacion_segmento_afectado);
-    // list_iterate(segmentos_afectados, (void*) iterator_segmento);
-    // loggear_linea();
-    // list_clean_and_destroy_elements(segmentos_transformados, (void*) iterator_destroy_tcb);
-    // list_clean_and_destroy_elements(segmentos_transformados, (void*) iterator_segmentos_free);
-    // list_clean(segmentos_transformados);
-    // list_destroy(segmentos_transformados);
-    // list_clean_and_destroy_elements(segmentos_afectados, (void*) iterator_segmentos_free);
-    // list_destroy(segmentos_afectados);
-    // list_add_all(lista_de_patotas,lista_de_patotas);
-    
-    // loggear_linea();
-    // log_info(logger,"\tFinalizo la Compactacion");
-    // list_iterate(admin_segmentacion->segmentos_libres, (void*) iterator_segmento);
-    
-    // log_info(logger,"\ttesteo");
-    // list_iterate(lista_de_patotas, (void*) iterator_patota);
-    
-    // descomentar
-    // imprimir_patotas_presentes_dump();
-    
-    // t_segmento* nuevo = malloc(sizeof(t_segmento));
-    // nuevo->inicio = 51;
-    // nuevo->fin = 71;
-    // int despl = nuevo->fin - nuevo->inicio;
-    // int nro;
-    // nro = retornar_tid_del_tcb(nuevo);
-    // log_info(logger,"tid %d",nro);
-
-    // nuevo->inicio = 43;
-    // nuevo->fin = 50;
-    // int despl = nuevo->fin - nuevo->inicio;
-    // t_pcb* tarea_nueva = malloc(despl);
-    // int* nro;
-    // nro = retornar_pid_del_pcb(nuevo);
-    // log_info(logger,"pcb %d",nro);
 
     pthread_mutex_unlock(&mutex_segmentos_libres);
 
@@ -1137,7 +905,6 @@ void colocar_ultimo_segmento_libre_al_final()
         int diferencia = ultimo_segmento_libre()->fin - ultimo_segmento_libre()->inicio;
         ultimo_segmento_libre()->fin = SMOBJ_SIZE;
         ultimo_segmento_libre()->inicio = SMOBJ_SIZE - diferencia;
-        // desplazar_memoria(1,diferencia);
     }
 
 }
@@ -1146,7 +913,6 @@ t_list* lista_de_segmentos_ocupados()
 {
     t_list* lista_ocupados = list_create();
     t_list* lista_patota_filtrados, *lista_patota;
-    // t_segmento* pcb, *tcb, *tareas;
     t_list_iterator* list_iterator_patotas = list_iterator_create(lista_de_patotas);
     while(list_iterator_has_next(list_iterator_patotas))
     {
@@ -1154,53 +920,12 @@ t_list* lista_de_segmentos_ocupados()
         
         lista_patota_filtrados = list_filter(lista_patota, condicion_segmento_presente_en_memoria);
         list_add_all(lista_ocupados,lista_patota_filtrados);
-        // list_clean(lista_patota);
-
-        // loggear_linea();
-        // log_info(logger,"caca de adentro");
-        // list_iterate(lista_patota_filtrados, (void*) iterator_segmento);
-        // list_iterate(pcb_dudoso, (void*) iterator_pcb);
-
-        // loggear_linea();
-        // log_info(logger,"aca muere alguien");
-        
-        // log_info(logger,"info del primer segmento");
-        // t_segmento* segment_pcb = list_get(lista_patota_filtrados,0);
-        // uint32_t* pid1 = retornar_pid_del_pcb(segment_pcb);
-        // // log_info(logger,"info del primer segmento %d",pcb1->inicio);
-        // pid1 = 5;
-        // t_pcb* pcb1 = malloc(sizeof(t_pcb));
-        // pcb1->pid = pid1;
-        // guardar_en_MEMO RIA_pcb(segment_pcb,pcb1);
-
-        
-        // loggear_linea();
-        // log_info(logger,"caca de adentro");
-        // list_iterate(lista_patota, (void*) iterator_patota);
-    // list_iterate(lista_ocupados, (void*) iterator_segmento);
-    // loggear_linea();
 
         list_clean(lista_patota_filtrados);
-        // list_clean_and_destroy_elements(lista_patota_filtrados, (void*) iterator_destroy);
         list_destroy(lista_patota_filtrados);
     }
-    // loggear_linea();
-    // log_info(logger,"caca");
-    // list_iterate(lista_de_patotas, (void*) iterator_patota);
-    // loggear_linea();
 
-
-    // list_clean_and_destroy_elements(lista_patota_filtrados, (void*) iterator_destroy);
-    // free(lista_patota_filtrados);
-    // list_destroy(lista_patota_filtrados);
-    // list_clean_and_destroy_elements(lista_patota, (void*) iterator_destroy_tcb);
-    // free(lista_patota);
-
-    // list_destroy(lista_patota);
     free(list_iterator_patotas);
-
-    // list_sort(lista_ocupados, orden_lista_segmentos);
-    // list_iterate(lista_ocupados, (void*) iterator_segmento);
 
     return lista_ocupados;
 }
@@ -1215,15 +940,8 @@ void desplazar_memoria(int nro,int diferencia)
     ultimo_segmento_libre->fin += diferencia; 
     ultimo_segmento_libre->inicio += diferencia;
 
-    // if (nro==1)
-    // {
-    //     ultimo_segmento_libre->fin = SMOBJ_SIZE;
-    // }
-
     log_info(logger,"\tEl primer byte despues es: %d",ultimo_segmento_libre->inicio);
     log_info(logger,"\tEl ultimo byte despues es: %d",ultimo_segmento_libre->fin);
-    
-
 
 }
 
@@ -1243,7 +961,7 @@ void liberar_patota_si_no_hay_tripulantes(int pid)
         }
         
     }
-    // hacer_dump_SEGMENTACION();
+
     if (!hay_tripulantes)
     {
         t_segmento* segmento_a_liberar;
@@ -1255,12 +973,6 @@ void liberar_patota_si_no_hay_tripulantes(int pid)
                 liberar_segmento(segmento_a_liberar);
             }
         }
-        // loggear_linea();
-        // loggear_linea();
-        // list_iterate(segmentos_patota,iterator_segmento);
-        // loggear_linea();
-        // loggear_linea();
-        // t_list* patota_eliminada = list_remove(lista_de_patotas,pid);
     }
     
     
@@ -1269,14 +981,9 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
 {
 /* ------------------------Asignacion de segmentos---------------------------- */
     /* ---------------------validar espacio disponible-------------------------- */
-        // int _tareas_bytes_ocupados = tareas_bytes_ocupados(tareas);
         int _tareas_bytes_ocupados = strlen(tareas_unidas)+1;
 
         int bytes_a_guardar = _tareas_bytes_ocupados + sizeof(t_pcb) + cant_tripulantes * sizeof(t_tcb);
-            // Descomentar para testear
-        // loggear_linea();
-        // log_info(logger,"Bytes ocupados por las tareas (%d) + pcb (%d) y tcbs (%d) \n%40s son: %d bytes en total",_tareas_bytes_ocupados,sizeof(t_pcb),cant_tripulantes * sizeof(t_tcb),"",bytes_a_guardar);
-        // loggear_linea();
         
         // Se pregunta si hay espacio para TODAS los segmentos
         pthread_mutex_lock(&mutex_segmentos_libres);
@@ -1302,62 +1009,22 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
         pthread_mutex_unlock(&mutex_segmentos_libres);
         
         t_list* tabla_segmentos_de_patota = (t_segmento*) list_create();
-        // mostrar_memoria_char();
 
     /* -----------------------------Tareas-------------------------------------- */
         t_segmento* segmento_tareas;
         segmento_tareas = buscar_segmento_libre(_tareas_bytes_ocupados);
         segmento_tareas->tipo = 'I';
-            // Descomentar para testear
-        // loggear_info_segmento(segmento_tareas,"segmento_tareas");
 
         guardar_en_MEMORIA_tareas(segmento_tareas,tareas_unidas);
-        // char* tareass = retornar_tareas(segmento_tareas);
-            // Descomentar para testear
-        // log_info(logger,"Tareas retornadas: %s",tareass);
-        // free(tareass);
-        
-        // mostrar_memoria();
-        // Descomentar para testear lo que se guarda
-        // char* tareas_de_MEMORIA = retornar_tareas(segmento_tareas);
-        // char* tareas_solicitada = retornar_tarea_solicitada(tareas_de_MEMORIA,2);
-        // log_info(logger,"Cantidad de tareas en memoria -> %d", cantidad_de_tareas(tareas_de_MEMORIA));
-        // log_info(logger,"las tarea solicitada sacada de la memoria es -> %s\n",tareas_solicitada);
-        // free(tareas_de_MEMORIA);
-
-
-        // liberar_segmento(segmento_tareas);
     /* ------------------------------PCB---------------------------------------- */
         t_segmento* segmento_pcb;
         segmento_pcb = buscar_segmento_libre(sizeof(t_pcb));
         segmento_pcb->tipo = 'P';
-            // Descomentar para testear
-        // loggear_info_segmento(segmento_pcb,"segmento_pcb");
         
         pcb->tareas = segmento_tareas->inicio;
-        // log_info(logger,"el pid que se guarda en memoria es %d\n",pcb->pid);
         guardar_en_MEMORIA_pcb(segmento_pcb,pcb);
         
-            // Descomentar para testear
-        // log_info(logger,"PCB-%d",retornar_pid_del_pcb(segmento_pcb));
-        
-        // log_info(logger,"el pid en memoria es %d\n",retornar_pid_del_pcb(segmento_pcb));
-        
-        // free(pcb);
-
-        // Descomentar para testear lo que se guarda
-
-        // mostrar_memoria();
-        // uint32_t pid_de_MEMORIA = retornar_pid_del_pcb(segmento_pcb);
-        // uint32_t tareas_del_pcb_de_MEMORIA = retornar_inicio_de_tareas_del_pcb(segmento_pcb);
-        // log_info(logger,"info de pcb retornado de memoria, \n\t pid -> %d \n\t tareas-> %d ",pid_de_MEMORIA,tareas_del_pcb_de_MEMORIA);
-
-        // free(pid_de_MEMORIA);
-        // log_info(logger,"info de pcb retornado de memoria, \n\t pid -> %d \n\t tareas-> %d ",pid_de_MEMORIA,tareas_del_pcb_de_MEMORIA);
-        // free(pcb);
-        // list_iterate(lista_de_patotas, (void*) iterator_patota);
         list_add(tabla_segmentos_de_patota,segmento_pcb);
-        // liberar_segmento(segmento_pcb);
     /* ------------------------------TCBs--------------------------------------- */
         t_list_iterator* list_iterator = list_iterator_create(tcbs);
         t_tcb* tcb;
@@ -1372,27 +1039,7 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
             guardar_en_MEMORIA_tcb(segmento_tcb,tcb);
             list_add(tabla_segmentos_de_patota,segmento_tcb);
             
-            // err = personaje_crear(AmongOS, tripulantes[nro_trip], cols - (tcb->posicion_x), rows - (tcb->posicion_y));
-	        // ASSERT_CREATE(AmongOS, tripulantes[nro_trip], err);
-
-
-
-            // log_info(logger,"TCB-%d",list_iterator->index+1);
-                // Descomentar para testear
-            // log_info(logger,"TCB-%d",retornar_tid_del_tcb(segmento_tcb));
-            // loggear_info_segmento(segmento_tcb,"segmento_tcb");
-
-            // Descomentar para testear lo que se guarda
-
-            // loggear_entero_con_texto("El tid es:",retornar_tid_del_tcb(segmento_tcb));
-            // log_info(logger,"va el tid del tcb-> %d",retornar_tid_del_tcb(segmento_tcb));
-            // log_info(logger,"va estado del tcb-> %c",retornar_estado_del_tcb(segmento_tcb));
-            // log_info(logger,"El pos x es: %d",retornar_pos_x_del_tcb(segmento_tcb));
-            // liberar_segmento(segmento_tcb);
-        // mostrar_memoria();
-        // log_info(logger,"el puntero del pcb dentro del tcb es: %d",retornar_puntero_pid_del_tcb(segmento_tcb));
         }
-        // mostrar_memoria_char();
         free(list_iterator);
 
     /*----------------------Fin Asignacion de segmentos--------------------------*/
@@ -1400,22 +1047,11 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
 
     // Esto tendra el orden de PCB, TCB1 .. TCB N, tareas (en la posicion N de la lista)
         list_add(tabla_segmentos_de_patota,segmento_tareas);
-        // list_add_sorted(lista_de_patotas,tabla_segmentos_de_patota,comparador_patotas);
-        // list_iterate(lista_de_patotas, (void*) iterator_patota);
 
         list_add(lista_de_patotas,tabla_segmentos_de_patota);
         list_sort(lista_de_patotas,comparador_patotas);
         
-        // list_add_sorted(lista_de_patotas,tabla_segmentos_de_patota,comparador_patotas);
-
-        // t_list* patotita = list_get(lista_de_patotas,0);
-        // t_segmento* patotita_pcb = list_get(patotita,0);
-        // loggear_info_segmentos(patotita_pcb,"patotita_pcb");
-        // log_info(logger, "pcb de lista de patotas %d",retornar_pid_del_pcb(patotita_pcb));
-        
     /*---------------------Fin Hidratacion de la patota--------------------------*/
-        // liberar_segmento(segmento_tareas);
-        // liberar_segmento(segmento_pcb);
 }
 
 char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
@@ -1437,8 +1073,6 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
 
     // se calcula el tamanio de la tareas unidas
     int tamanio_tarea = segmento_tareas_prox_tarea->fin - segmento_tareas_prox_tarea->inicio;
-        // Descomentar para testear
-    // log_info(logger,"El tamanio es: %d",tamanio_tarea);
 
     // Obtenemos las TAREAS que se encuentran en MEMORIA
     char* tareas_de_segmentos_patota;
@@ -1449,18 +1083,7 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
     // Obtenemos las TAREA ESPECIFICA (la proxima) que se encuentran en MEMORIA
     char* tarea_solicitada;
     tarea_solicitada = retornar_tarea_solicitada(tareas_de_segmentos_patota,prox_tarea);
-        // Descomentar para testear
-    // log_info(logger,"El taerita solicitada es: %s",tarea_solicitada);
 
-
-    // enviar_proxima_tarea(tarea_solicitada, cliente_fd);
-    // enviar_mensaje(tarea_solicitada,cliente_fd);
-    // t_paquete* paquete = crear_paquete(ENVIAR_PROXIMA_TAREA);
-    // agregar_a_paquete(paquete, tarea_solicitada,strlen(tarea_solicitada));
-    // enviar_paquete(paquete,cliente_fd);
-
-    // Descomentar
-    // enviar_mensaje(tarea_solicitada,cliente_fd);
 
     // liberar estructuras utilizadas
 
@@ -1476,26 +1099,13 @@ void actualizar_estado_SEGMENTACION (uint32_t pid_actualizar_estado, uint32_t ti
     t_list* segmentos_patota_actualizar_estado;
     segmentos_patota_actualizar_estado = retornar_segmentos_patota(pid_actualizar_estado);
     
-    // Obtenemos el segmento de TAREAS de las estructuras administrativas
-    // t_segmento* segmento_tareas_actualizar_estado;
-    // segmento_tareas_actualizar_estado = retornar_segmento_tareas(segmentos_patota_actualizar_estado);
-
     // Obtenemos el segmento de TCB ESPECIFICO (TID) las estructuras administrativas
     t_segmento* segmento_tcb_actualizar_estado;
     segmento_tcb_actualizar_estado = retornar_segmento_tcb(segmentos_patota_actualizar_estado,tid_actualizar_estado);
-        // Descomentar para testear
-    // loggear_tcb(segmento_tcb_actualizar_estado);
 
     // Actualizar el estado del tripulante
     actualizar_en_MEMORIA_tcb_estado(segmento_tcb_actualizar_estado,estado_actualizar_estado);
-        // Descomentar para testear
-    // loggear_linea();
-    // log_info(logger,"Lo proximo se esta consultado desde memoria");
-    // log_info(logger,"El nuevo estado es: %c",estado_actualizar_estado);
-    // loggear_tcb(segmento_tcb_actualizar_estado);
     loggear_tcb(segmento_tcb_actualizar_estado);
-    // list_iterate(lista_de_patotas, (void*) iterator_patota);
-    // enviar_proxima_tarea(tarea_solicitada, cliente_fd);
 }
 
 void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t tid_expulsar_tripulante)
@@ -1503,17 +1113,12 @@ void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t
     // lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota_expulsar_tripulante;
     segmentos_patota_expulsar_tripulante = retornar_segmentos_patota(pid_expulsar_tripulante);
-    // log_info(logger,"\ttesteo");
-    // list_iterate(lista_de_patotas, (void*) iterator_patota);
 
     // Obtenemos el segmento de TCB de las estructuras administrativas
     t_segmento* segmento_tcb_explulsar_tripulante;
     segmento_tcb_explulsar_tripulante = retornar_segmento_tcb(segmentos_patota_expulsar_tripulante,tid_expulsar_tripulante);
-        // Descomentar para testear
-    // log_info(logger,"De la patota %d,\n %39s se nos fue el tripulante : %d",pid_expulsar_tripulante,"",tid_expulsar_tripulante);
     liberar_segmento(segmento_tcb_explulsar_tripulante);
     liberar_patota_si_no_hay_tripulantes(pid_expulsar_tripulante);
-    // loggear_info_segmentos(segmento_tcb_explulsar_tripulante,"segmento_tcb_explulsar_tripulante");
 }
 
 void cambiar_ubicacion_tripulante_SEGMENTACION(uint32_t pid_ubicacion,uint32_t tid_ubicacion,uint32_t nueva_pos_x,uint32_t nueva_pos_y)
@@ -2783,33 +2388,20 @@ void hacer_dump_SEGMENTACION()
     t_list* patotas_presentes = list_filter(lista_de_patotas,condicion_patota_presente_en_memoria);
 
     list_iterate(patotas_presentes, (void*) iterator_patotas_presentes);
-    // printf("%s\n",dump_segmentacion);
-    fprintf(fp, "%s", dump_segmentacion); 
+
+    void imprimir_en_archivo_SEGMENTACION(dump_memoria_segmentacion* data){
+    fprintf(fp, "Proceso:%d\tSegmento:%d\t\tInicio:%d\t\tTam:%d \n",data->pid, data->indice, data->inicio, data->tamanio);
+    }
+    list_iterate(list_dump_segmentacion, imprimir_en_archivo_SEGMENTACION);
 
 
+
+    list_clean_and_destroy_elements(list_dump_segmentacion,iterator_destroy);
     fclose(fp);
 
-    // free(dump_segmentacion);
-    // dump_segmentacion = malloc(1);
-
-    strcpy(dump_segmentacion,"");
     list_destroy(patotas_presentes);
-
-    // free(timestamp);
-    // free(timestamp2);
-
-    // FILE *fp;
-    // fp = fopen("dumps/esto_es_una_prueba.txt", "w");
-    // if (fp == NULL)
-    // {
-    // printf("Error opening the file %s", "dumps/esto_es_una_prueba.txt");
-    // return -1;
-    // }
-
-    // fprintf(fp, "Hola");
-
-
-    // fclose(fp);
+    free(timestamp);
+    free(timestamp2);
 
 }
 
@@ -3291,6 +2883,7 @@ void iterator_patotas_presentes_f(t_list* patota)
     log_info(logger,"Patota con PID -> %d",retornar_pid_del_pcb(segmento_pcb));
 }
 
+
 void iterator_patotas_presentes(t_list* patota)
 {
     t_segmento* segmento_pcb = list_get(patota,0);
@@ -3304,47 +2897,21 @@ void iterator_patotas_presentes(t_list* patota)
         segmento_presente = (t_segmento*) list_iterator_next(list_iterator_patota);
         int tamanio = segmento_presente->fin - segmento_presente->inicio +1;
         
-        // fprintf(fp, "Proceso: %d\t Segmento: %d\t Inicio: %d\t Tam: %d bytes",retornar_pid_del_pcb(segmento_pcb),list_iterator_patota->index+1,segmento_presente->inicio,tamanio);
-        // char string_dump[50];
-        // strcat(string_dump,"\0");
-        // snprintf(string_dump,sizeof(string_dump),'Proceso: %d Segmento: %d Inicio: %d Tam: %d',pid,list_iterator_patota->index+1,segmento_presente->inicio,tamanio);
-        
-        // printf("%s\n",dump_segmentacion);
-        // strcat(dump_segmentacion,string_dump);
-        // printf("%s\n",dump_segmentacion);
+        dump_memoria_segmentacion dto;
+        dto.pid = pid;
+        dto.indice = list_iterator_patota->index+1;
+        dto.inicio =  segmento_presente->inicio;
+        dto.tamanio = tamanio; 
 
-    
-        char* info_segmentos = malloc(60);
-        strcpy(info_segmentos,"Proceso: ");
-        char* info = string_itoa(pid);
-        strcat(info_segmentos,info);
-        free(info);
+        void* aux;
+        aux = malloc(sizeof(dump_memoria_segmentacion));
 
+        memcpy(aux, &dto, sizeof(dump_memoria_segmentacion));
 
-        strcat(info_segmentos," \tSegmento: ");
-        info = string_itoa(list_iterator_patota->index+1);
-        strcat(info_segmentos,info);
-        free(info);
-
-
-        strcat(info_segmentos,"\t\tInicio: ");
-        info = string_itoa(segmento_presente->inicio);
-        strcat(info_segmentos,info);
-        free(info);
-
-        
-        strcat(info_segmentos,"\t\tTam: ");
-        info = string_itoa(tamanio);
-        strcat(info_segmentos,info);
-        free(info);
-        strcat(info_segmentos,"\n");
-
-        strcat(dump_segmentacion,info_segmentos);
-        free(info_segmentos);
+        list_add(list_dump_segmentacion, aux);
 
     }
     free(list_iterator_patota);
-    // list_clean(segmentos_de_la_patota_presentes);
     list_destroy(segmentos_de_la_patota_presentes);
 
 }
@@ -3595,7 +3162,7 @@ void iterator(char* value)
 
 void my_signal_kill(int sig)
 {
-    loggear_linea();
+    // loggear_linea();
     
     char* esquema = config_get_string_value(config,"ESQUEMA_MEMORIA");
     
@@ -3610,18 +3177,18 @@ void my_signal_kill(int sig)
     }
 
 
-    loggear_linea();
+    // loggear_linea();
 }
 
 void my_signal_compactar(int sig)
 {
-    loggear_linea();
-    log_info(logger,"Se utilizo el signal %d correctamente", sig);
-    log_info(logger,"Se procedera a compactar, espere por favor");
+    // loggear_linea();
+    // log_info(logger,"Se utilizo el signal %d correctamente", sig);
+    // log_info(logger,"Se procedera a compactar, espere por favor");
     pthread_mutex_lock(&sem_memoria);
     compactar();
     pthread_mutex_unlock(&sem_memoria);
-    loggear_linea();
+    // loggear_linea();
 }
 
 

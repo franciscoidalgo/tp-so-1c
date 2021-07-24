@@ -140,11 +140,6 @@ config = leer_config("discordiador");
 	pthread_join(otro_hilo,NULL);
 
 
-	sleep(2);
-	conexion = crear_conexion(ip,puerto);
-	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_1_patota_2,conexion);
-	pthread_join(otro_hilo,NULL);
-
 
 
 
@@ -157,11 +152,17 @@ config = leer_config("discordiador");
 	conexion = crear_conexion(ip,puerto);
 	pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
 	pthread_join(otro_hilo,NULL);
+	
+	sleep(2);
+	conexion = crear_conexion(ip,puerto);
+	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_1_patota_2,conexion);
+	pthread_join(otro_hilo,NULL);
 
-	// sleep(2);
-	// conexion = crear_conexion(ip,puerto);
-	// pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
-	// pthread_join(otro_hilo,NULL);
+
+	sleep(2);
+	conexion = crear_conexion(ip,puerto);
+	pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
+	pthread_join(otro_hilo,NULL);
 
 
 	// sleep(2);
