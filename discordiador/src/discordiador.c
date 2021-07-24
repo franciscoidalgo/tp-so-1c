@@ -1,14 +1,21 @@
-#include "discordiador.h"
+#include "../include/discordiador.h"
+#include "planificadorFIFO.h"
 
 t_log* logger;
 t_config* config;
 
-int main(int argc, char ** argv){
+	inicializar_variables();
+	/*
+enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
+luego poder recibir la señal de sabotaje por ese "tunel" establecido
+ */
+//int conexion = crear_conexion(IP, PUERTO);
 
 // t_log* logger = log_create("./cfg/discordiador.log", "DISCORDIADOR", true, LOG_LEVEL_INFO);
 logger = iniciar_logger("discordiador");
 // log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
 
+pthread_destroy(mutex_input_consola);
 
 /*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
 int conexion;
@@ -16,6 +23,13 @@ char* ip;
 char* puerto;
 // char* valor;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void iterator(t_tcb *t)
+{
+	log_info(logger, "TID:%d POSX:%d POSY:%d PCB:%d ESTADO:%c", t->tid, t->posicion_x, t->posicion_y, t->puntero_pcb, t->estado);
+}
 
 //Loggear "soy un log"
 // log_info(logger,"soy un log");
@@ -29,18 +43,49 @@ config = leer_config("discordiador");
 	
 // log_info(logger,valor);
 
+	bool _el_tripulante_que_limpio(void *elemento)
+	{
+		return es_tripu_de_id(id_tripu, elemento);
+	}
 
-//Loggear valor de config
+	t_tcb *tripulante = list_remove_by_condition(lista, _el_tripulante_que_limpio);
+	free(tripulante);
+}
 
-//leer_consola(logger);
+t_tcb *remover_tripu(t_list *lista, int id_tripu)
+{
 
-	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
+	bool _el_tripulante_que_limpio(void *elemento)
+	{
+		return es_tripu_de_id(id_tripu, elemento);
+	}
 
-	//antes de continuar, tenemos que asegurarnos que el servidor esté corriendo porque lo necesitaremos para lo que sigue.
+	return list_remove_by_condition(lista, _el_tripulante_que_limpio);
+}
 
-	//crear conexion
-	ip = config_get_string_value(config,"IP");
-	puerto = config_get_string_value(config,"PUERTO");
+void inicializar_variables()
+{
+	ID_PATOTA = 0;
+	logger = iniciar_logger("discordiador");
+	log_info(logger, "Soy el discordiador! %s", mi_funcion_compartida());
+	config = leer_config("discordiador");
+	READY = list_create();
+	NEW = list_create();
+	BLOCKED = list_create();
+	pthread_mutex_init(&mutex, NULL);
+	IP = config_get_string_value((t_config *)config, "IP");
+	PUERTO = config_get_string_value((t_config *)config, "PUERTO");
+	//sem_init(&semaforo_1,0,2);
+	pthread_cond_init(&condicion_comunicacion_entre_tipos_de_ejecucion,NULL);
+	//diccionario de acciones de consola
+	dic_datos_consola = dictionary_create();
+	dictionary_put(dic_datos_consola, "INICIAR_PATOTA", (void *)INICIAR_PATOTA);
+	dictionary_put(dic_datos_consola, "INICIAR_PLANIFICACION", (void *)INICIAR_PLANIFICACION);
+	dictionary_put(dic_datos_consola, "PAUSAR_PLANIFICACION", (void *)PAUSAR_PLANIFICACION);
+	dictionary_put(dic_datos_consola, "EXPULSAR_TRIPULANTE", (void *)EXPULSAR_TRIPULANTE);
+	dictionary_put(dic_datos_consola, "LISTAR_TRIPULANTE", (void *)LISTAR_TRIPULANTE);
+	dictionary_put(dic_datos_consola, "OBTENER_BITACORA", (void *)OBTENER_BITACORA);
+}
 
 	// log_info(logger,ip);
 	// log_info(logger,puerto);
@@ -50,9 +95,11 @@ config = leer_config("discordiador");
 	// log_info(logger,valor);
 	// enviar_mensaje(valor,conexion);
 
-	// enviar_msj(valor,conexion,logger);
+	int bytes = paquete->buffer->size + 2 * sizeof(int);
 
-	// paquete(conexion);
+	//void* a_enviar = serializar_paquete(paquete, bytes);
+	void *magic = malloc(bytes);
+	int desplazamiento = 0;
 
 
 	conexion = crear_conexion(ip,puerto);
@@ -190,78 +237,207 @@ config = leer_config("discordiador");
 	terminar_programa(conexion, logger, config);
 }
 
-
-
-// t_log* iniciar_logger(void)
-// {
-// 	return log_create("discordiador.log","discordiador",true,LOG_LEVEL_INFO);
-// }
-
-// t_config* leer_config(void)
-// {
-// 	return config_create("cfg/discordiador.config");
-// }
-
-void leer_consola(t_log* logger)
+t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t id)
 {
-	char* leido;
+	t_tcb *t = malloc(sizeof(t_tcb));
 
-	//El primero te lo dejo de yapa
-	leido = readline(">");
+	t->posicion_x = posx;
+	t->posicion_y = posy;
+	//t->proxima_instruccion = 0; //tarea,luego la busca en RAM
+	t->tid = id;
+	t->puntero_pcb = patota;
+	t->estado = 'N';
 
-	while (strcmp(leido,"") != 0)
-	{
-		log_info(logger,(char*)leido);
-		free(leido);
-		leido = readline(">");
-	}
-	free(leido);
+	return t;
 }
 
-// void paquete(int conexion)
-// {
-// 	//Ahora toca lo divertido!
-
-// 	char* leido;
-// 	t_paquete* paquete;
-
-
-// }
-
-// void terminar_programa(int conexion, t_log* logger, t_config* config)
-// {
-// 	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
-// 	log_destroy(logger);
-// 	liberar_conexion(conexion);
-// 	config_destroy(config);
-// }
-
-void enviar_msj(char* mensaje, int socket_cliente,t_log* logger)
+void buscar_tarea_a_RAM(void *tripu)
 {
-	t_paquete* paquete = malloc(sizeof(t_paquete));
 
-	paquete->codigo_operacion = MENSAJE;
+	t_tcb *t = (t_tcb *)tripu;
+
+	char *patota_tripulante = string_new();
+	string_append(&patota_tripulante, (string_itoa(t->puntero_pcb)));
+	string_append(&patota_tripulante, "-");
+	string_append(&patota_tripulante, (string_itoa(t->tid)));
+	//pthread_mutex_lock(&mutex);
+	int socket_cliente = crear_conexion(IP, PUERTO);
+	enviar_msj(patota_tripulante, socket_cliente);
+	t->tarea = malloc(sizeof(t_tarea));
+	t->tarea = recibir_tarea_de_RAM(socket_cliente);
+	liberar_conexion(socket_cliente);
+	free(patota_tripulante);
+	//pthread_mutex_unlock(&mutex);
+	t->estado = 'R';
+	sleep(t->posicion_x + t->posicion_y);
+	pthread_mutex_lock(&mutex_lista_ready);
+	list_add(READY, remover_tripu(NEW, t->tid));
+	pthread_mutex_unlock(&mutex_lista_ready);
+
+	//pthread_mutex_lock(&mutex_mostrar_por_consola);
+	//log_info(logger,"Tarea buscada %s tripulante %d de patota %d",(char*) t->tarea->accion,t->tid,t->puntero_pcb);
+	//pthread_mutex_unlock(&mutex_mostrar_por_consola);
+	//pthread_detach(pthread_self()); --> pareceria que no hace nada, libera recursos del la struct de hilo
+}
+
+void enviar_tareas_a_RAM(int conexion, char **linea_consola)
+{
+
+	char *path = string_new();
+	string_append(&path, "/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/");
+	string_append(&path, linea_consola[2]);
+
+	FILE *archivo = fopen(path, "r");
+	if (archivo == NULL)
+	{
+		puts("ERROR");
+		perror("Error al abrir fichero.txt");
+	}
+
+	char cadena[50];			/* Un array lo suficientemente grande como para guardar la línea más larga del fichero */
+	char *palabra = malloc(50); //= string_itoa(a);//numero de la patota
+	t_paquete *paquete = crear_paquete();
+
+	int id = ID_PATOTA;
+
+	agregar_a_paquete(paquete, string_itoa(id), sizeof(id));
+	agregar_a_paquete(paquete, linea_consola[1], strlen(linea_consola[1]) + 1);
+
+	while (fgets(cadena, 50, archivo) != NULL)
+	{
+		strcpy(palabra, cadena);
+		agregar_a_paquete(paquete, palabra, strlen(palabra) + 1);
+	}
+
+	char *posiciones_linea = string_new();
+	for (int i = 3; linea_consola[i] != NULL; i++)
+	{
+		string_append(&posiciones_linea, linea_consola[i]);
+		if (linea_consola[i + 1] != NULL)
+		{
+			string_append(&posiciones_linea, ";");
+		}
+	}
+
+	agregar_a_paquete(paquete, posiciones_linea, strlen(posiciones_linea) + 1);
+	free(palabra);
+	free(posiciones_linea);
+	pthread_mutex_lock(&mutex_mostrar_por_consola);
+	log_info(logger, "Enviando tareas a MI-RAM con socket: %d", conexion);
+	pthread_mutex_unlock(&mutex_mostrar_por_consola);
+	enviar_paquete(paquete, conexion);
+	fclose(archivo);
+}
+
+void recepcionar_patota(char **linea_consola)
+{
+	int posx, posy;
+
+	for (uint32_t i = 1; i <= atoi(linea_consola[1]); i++)
+	{
+		pthread_mutex_lock(&mutex_mostrar_por_consola);
+		log_info(logger, "INGRESANDO A LISTA NEW TRIPU %d DE PATOTA %d", i, atoi(linea_consola[1]));
+		pthread_mutex_unlock(&mutex_mostrar_por_consola);
+		posx = 0;
+		posy = 0;
+		char **posiciones;
+
+		if (linea_consola[i + 2] != NULL)
+		{ //las posiciones comienzan desde el argumento 3 en adelante.
+			posiciones = string_split(linea_consola[i + 2], "|");
+			posx = atoi(posiciones[0]);
+			posy = atoi(posiciones[1]);
+		}
+
+		list_add(NEW, crear_tripulante(atoi(linea_consola[1]), posx, posy, i));
+	}
+}
+
+void busqueda_de_tareas_por_patota(t_tcb *tripulante)
+{	//tendria que agregar como argumento el numero de patota y buscar en lista
+	// int cantidad_de_tripulantes = list_size(NEW);
+
+	// for (size_t i = 0; i <= cantidad_de_tripulantes; i++)
+	// {
+	pthread_t hilo[tripulante->tid];
+	if (0 != pthread_create(&hilo[tripulante->tid], NULL, (void *)&buscar_tarea_a_RAM, (void *)(tripulante)))
+	{
+		log_info(logger, "Tripulante %d no pudo ejecutar", tripulante->tid);
+	}
+
+	// }
+}
+
+void iterator_lines_free(char *string)
+{
+	free(string);
+}
+
+void *recibir_mensaje_de_RAM(int socket_cliente, t_log *logger, int *direccion_size)
+{
+	// int size;
+	char *buffer = recibir_buffer(direccion_size, socket_cliente);
+	return buffer;
+}
+
+t_tarea *deserealizar_tarea(t_buffer *buffer)
+{
+	t_tarea *tarea = malloc(sizeof(t_tarea));
+
+	void *stream = buffer->stream;
+	// Deserializamos los campos que tenemos en el buffer
+	memcpy(&(tarea->parametro), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	memcpy(&(tarea->posicion_x), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	memcpy(&(tarea->posicion_y), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	memcpy(&(tarea->tiempo), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+
+	// Por último, para obtener el nombre, primero recibimos el tamaño y luego el texto en sí:
+	memcpy(&(tarea->accion_length), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	tarea->accion = malloc(tarea->accion_length);
+	memcpy(tarea->accion, stream, tarea->accion_length);
+
+	return tarea;
+}
+
+t_tarea *recibir_tarea_de_RAM(int socket)
+{
+	t_paquete *paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
-	paquete->buffer->size = strlen(mensaje) + 1;
+	// Primero recibimos el codigo de operacion
+	recv(socket, &(paquete->codigo_operacion), sizeof(uint32_t), 0);
+	// Después ya podemos recibir el buffer. Primero su tamaño seguido del contenido
+	recv(socket, &(paquete->buffer->size), sizeof(uint32_t), 0);
 	paquete->buffer->stream = malloc(paquete->buffer->size);
-	memcpy(paquete->buffer->stream, mensaje, paquete->buffer->size);
+	recv(socket, paquete->buffer->stream, paquete->buffer->size, 0);
+	return deserealizar_tarea(paquete->buffer);
+}
 
-	int bytes = paquete->buffer->size + 2*sizeof(int);
+void realizar_tarea_metodo_FIFO(t_tcb *tripulante)
+{
 
-	//void* a_enviar = serializar_paquete(paquete, bytes);
-		void * magic = malloc(bytes);
-	int desplazamiento = 0;
+	//enviar inicio de la tarea a IMONGOSTORE junto con la tarea
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
-	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
-	desplazamiento+= sizeof(int);
-	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	desplazamiento+= paquete->buffer->size;
+	log_info(logger, "Tarea a realizar: %s", tripulante->tarea->accion);
+	log_info(logger, "Me muevo de %d|%d a %d|%d ",
+			 tripulante->posicion_x, tripulante->posicion_x, tripulante->tarea->posicion_x, tripulante->tarea->posicion_y);
 
-	log_info(logger,mensaje);
+	sleep(tripulante->tarea->tiempo);
 
-	send(socket_cliente, magic, bytes, 0);
+	char *patota_tripulante = string_new();
+	string_append(&patota_tripulante, "Termine mi tarea soy tripulante: ");
+	string_append(&patota_tripulante, (string_itoa(tripulante->puntero_pcb)));
+	string_append(&patota_tripulante, "-");
+	string_append(&patota_tripulante, (string_itoa(tripulante->tid)));
+	int socket_cliente = crear_conexion(IP, PUERTO);
+	enviar_msj(patota_tripulante, socket_cliente);
+	liberar_conexion(socket_cliente);
+	free(patota_tripulante);
+}
 
 	free(magic);
 	free(paquete->buffer->stream);

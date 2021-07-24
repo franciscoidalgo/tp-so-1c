@@ -1,0 +1,12 @@
+bin/*
+!bin/.gitkeep
+obj/*
+!obj/.gitkeep
+
+.cproject
+.project
+.settings/*
+
+.vscode/*
+
+i-mongo-logger.log

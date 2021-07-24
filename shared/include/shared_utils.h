@@ -30,6 +30,9 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	EXPULSAR_TRIPULANTE,
 	COMPACTAR,
 	DUMP
+	INICIAR_TRIPULANTE,
+	FINALIZACION,
+	BITACORA
 }op_code;
 
 //t_log* logger;
@@ -84,6 +87,20 @@ t_tarea;
 
 
 // fin de Structs de Patota
+
+// Structs I-Mongo
+
+typedef struct
+{
+	uint32_t id_tripulante;
+	uint32_t length_mensaje;
+	char* mensaje;
+}__attribute__((packed))
+t_bitacora;
+
+// funcion enviar bitacora
+void enviar_bitacora(t_bitacora bitacora, int socket_cliente);
+
 
 // inciar servidor
 int iniciar_servidor(t_log* logger,t_config* config);
