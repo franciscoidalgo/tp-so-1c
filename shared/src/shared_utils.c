@@ -4,7 +4,7 @@ char* mi_funcion_compartida(){
     return "Hice uso de la shared!";
 }
 
-int iniciar_servidor(t_log* logger)
+int iniciar_servidor(t_log* logger,t_config* config)
 {
 	int socket_servidor;
 
@@ -15,7 +15,7 @@ int iniciar_servidor(t_log* logger)
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
-    getaddrinfo("127.0.0.1", "4001", &hints, &servinfo);
+    getaddrinfo((char*) config_get_string_value(config,"IP"), (char*) config_get_string_value(config,"PUERTO"), &hints, &servinfo);
 
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
@@ -41,16 +41,15 @@ int iniciar_servidor(t_log* logger)
 int esperar_cliente(int socket_servidor,t_log* logger)
 {
 	struct sockaddr_in dir_cliente;
-	// socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
-	socklen_t tam_direccion = sizeof(struct sockaddr_in);
+	socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
+	// socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
 	/*
 	accept --> funcion bloqueante, queda a la espera hasta aceptar cliente
 	*/
 
-	log_info(logger, "Se conecto un cliente con socket: %d",socket_cliente);
-
+	log_info(logger, "Se conecto un cliente!");
 	return socket_cliente;
 }
 
@@ -79,32 +78,36 @@ void* recibir_buffer(int* direccion_size, int socket_cliente)
 
 void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
 {
-	char* buffer = recibir_buffer(direccion_size, socket_cliente);
-	log_info(logger, "Me llego el mensaje %s", buffer);
+	// int size;
+	void* buffer = recibir_buffer(direccion_size, socket_cliente);
+	log_info(logger, "Me llego el mensaje %s", (char*) buffer);
 	free(buffer);
 }
 
 //podemos usar la lista de valores para poder hablar del for y de como recorrer la lista
-t_list* recibir_paquete(int socket_cliente)
+void recibir_paquete(int socket_cliente, t_list* direccion_lista)
 {
 	int size;
 	int desplazamiento = 0;
 	void * buffer;
-	t_list* valores = list_create();
+	// t_list* valores = list_create();
 	int tamanio;
+
+	char* valor;
 
 	buffer = recibir_buffer(&size, socket_cliente);
 	while(desplazamiento < size)
 	{
 		memcpy(&tamanio, buffer + desplazamiento, sizeof(int));
 		desplazamiento+=sizeof(int);
-		char* valor = malloc(tamanio);
+		valor = malloc(tamanio);
 		memcpy(valor, buffer+desplazamiento, tamanio);
 		desplazamiento+=tamanio;
-		list_add(valores, valor);
+		list_add(direccion_lista,(void*) valor);
+		// free(valor);
 	}
 	free(buffer);
-	return valores;
+	// return valores;
 }
 
 
@@ -119,10 +122,26 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->buffer->size), sizeof(int));
 	desplazamiento+= sizeof(int);
 	memcpy(ptr_inicio_paquete + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
-	desplazamiento+= paquete->buffer->size;
+	// desplazamiento+= paquete->buffer->size;
 
 	return ptr_inicio_paquete;
 }
+
+void enviar_bitacora(t_bitacora bitacora, int socket_cliente){
+	t_paquete paquete;
+	int tamanio_bitacora = sizeof(uint32_t) * 2 + bitacora.length_mensaje;
+	paquete.codigo_operacion = BITACORA;
+	paquete.buffer = malloc(tamanio_bitacora + sizeof(int));
+	paquete.buffer->size = tamanio_bitacora;
+	paquete.buffer->stream = &bitacora;	
+	void* a_enviar = serializar_paquete(&paquete, sizeof(op_code) + sizeof(int) + paquete.buffer->size);
+
+	send(socket_cliente, a_enviar, paquete.buffer->size + sizeof(op_code), 0);
+
+	free(a_enviar);
+
+}
+
 
 int crear_conexion(char *ip, char* puerto)
 {
@@ -138,11 +157,8 @@ int crear_conexion(char *ip, char* puerto)
 
 	int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 
-	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1){
-
-	//	printf("error");
-	}
-		
+	if(connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1)
+		printf("error");
 
 	freeaddrinfo(server_info);
 
@@ -188,10 +204,10 @@ void crear_buffer(t_paquete* paquete)
 // 	return paquete;
 // }
 
-t_paquete* crear_paquete(void)
+t_paquete* crear_paquete(int cod_operacion)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
-	paquete->codigo_operacion = PAQUETE;
+	paquete->codigo_operacion = cod_operacion;
 	crear_buffer(paquete);
 	return paquete;
 }
@@ -263,7 +279,6 @@ t_config* leer_config(char* name)
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
-	log_info(logger,"POINT1");
 	log_destroy(logger);
 	liberar_conexion(conexion);
 	config_destroy(config);

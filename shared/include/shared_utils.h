@@ -23,7 +23,11 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 {
 	MENSAJE,
 	PAQUETE,
-	SABOTAJE
+	INICIAR_PATOTA,
+	INICIAR_TRIPULANTE,
+	FINALIZACION,
+	BITACORA,
+	IO
 }op_code;
 
 //t_log* logger;
@@ -40,8 +44,61 @@ typedef struct
 	t_buffer* buffer;			//Tiene lo que nos interesa y su tamanio
 } t_paquete;
 
+// Structs de Mi RAM
+
+// La seniora patota (PCB - proceso)
+typedef struct	// Tamanio de 8 Bytes
+{
+	uint32_t pid;		// Id de la patota
+	uint32_t tareas;	// Indica el COMIENZO de la lista
+}__attribute__((packed))
+t_pcb;
+
+
+// El senior tripulante (TCB - hilo)
+typedef struct	// Tamanio de 21 Bytes
+{
+	uint32_t tid;			// Id del tripulante
+	char estado;			// Estado del tripulante (New/Ready/Exec/Blocked)
+	uint32_t posicion_x;	// Pos x
+	uint32_t posicion_y;	// Pos y
+	uint32_t proxima_instruccion;	// instruccion que el tripulante debera hacer
+	uint32_t puntero_pcb;	// quien es mi patota?
+}__attribute__((packed))
+t_tcb;
+
+// Una tarea generica (Tarea - acciones)
+// "accion cantidad;posx;posy;rafagas de CPU"
+// "tarea parametro;posx;posy;Tiempo"
+typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
+{
+	char* accion;			// Accion de la tarea
+	uint32_t parametro;		// Numero relacionado a la tarea
+	uint32_t posicion_x;	// Pos x
+	uint32_t posicion_y;	// Pos y
+	uint32_t tiempo;		// Tiempo en realizar la tarea
+}__attribute__((packed))
+t_tarea;
+
+
+// fin de Structs de Patota
+
+// Structs I-Mongo
+
+typedef struct
+{
+	uint32_t id_tripulante;
+	uint32_t length_mensaje;
+	char* mensaje;
+}__attribute__((packed))
+t_bitacora;
+
+// funcion enviar bitacora
+void enviar_bitacora(t_bitacora, int);
+
+
 // inciar servidor
-int iniciar_servidor(t_log* logger);
+int iniciar_servidor(t_log* logger,t_config* config);
 
 // creacion
 	// administracion
@@ -50,7 +107,7 @@ t_log* iniciar_logger(char* name);
 int crear_conexion(char* ip, char* puerto);
 
 	// estructura
-t_paquete* crear_paquete(void);
+t_paquete* crear_paquete(int);
 t_paquete* crear_super_paquete(void);
 
 // validacion
@@ -59,7 +116,7 @@ void validar_config(t_config* config);
 
 // recibir
 void* recibir_buffer(int*, int);
-t_list* recibir_paquete(int);
+void recibir_paquete(int, t_list*);
 void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size);
 int recibir_operacion(int);
 
