@@ -41,6 +41,12 @@ typedef struct{
 			u_int32_t pagina; 		
 		} dump_memoria;
 
+typedef struct{
+			u_int32_t pid;			
+			u_int32_t tid;
+			char mapid;
+		} t_mapa;
+
 
 
 void* MEMORIA;
@@ -59,6 +65,9 @@ int TAMANIO_MEMORIA_VIRTUAL = 100;
 int CANTIDAD_MARCOS;
 int CANTIDAD_MARCOS_VIRTUALES;
 int OFFSET = 15000;
+
+char ID_MAPA = 'A';
+t_list* TABLA_DE_MAPA;
 	
 
 
@@ -450,7 +459,6 @@ t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inici
 
 void liberar_marcos(t_list* lista_marcos_borrado){
 	void liberar_marco(uint32_t marco){
-		printf("%d\n", marco);
 		if(marco>OFFSET){
 			ESTADO_MARCOS_VIRTUALES[marco-OFFSET] = 0;
 		} else {
@@ -582,23 +590,42 @@ t_list* obtener_marcos_segun_direccion_logica(uint32_t direccion_logica_inicio, 
 	return aux;
 }
 
+uint32_t obtener_indice_del_proceso(uint32_t pid){
+	uint32_t aux = 0;
+	uint32_t indice = 0;
+	void buscar_id_proceso(t_tabla_proceso* tabla_proceso){
+		if(tabla_proceso->pid==pid){
+			indice = aux;
+		}
+		aux++;
+	}
+	list_iterate(TABLA_DE_PAGINAS, buscar_id_proceso);
+	return indice;
+}
+
 void expulsar_tripulante(uint32_t id_proceso, uint32_t id_tripulante){
 	t_tabla_proceso* aux = buscar_proceso(id_proceso);
-	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
-	uint32_t direccion_logica_inicio = 8 + (21*tripulante_logico);
-	uint32_t direccion_logica_fin = 8 + (21*tripulante_logico) + 21;
-	uint32_t pagina_inicio_borrado = redondear_para_arriba(direccion_logica_inicio, TAMANIO_PAGINAS);
-	uint32_t pagina_fin_borrado = direccion_logica_fin / TAMANIO_PAGINAS;
-	t_list* lista_marcos_borrado = obtener_marcos_de_paginas(aux->lista_de_marcos, pagina_inicio_borrado, pagina_fin_borrado);
-	uint32_t valor_a_restar = (pagina_fin_borrado - pagina_inicio_borrado)*TAMANIO_PAGINAS;
-	t_list* lista_de_marcos_de_tareas;
-	necesito_en_ppal(4, 8, id_proceso);
-	lista_de_marcos_de_tareas = obtener_marcos_segun_direccion_logica(4, 8, aux->lista_de_marcos);
-	modificar_direccion_tareas(lista_de_marcos_de_tareas, valor_a_restar, (4%TAMANIO_PAGINAS));
-	liberar_marcos(lista_marcos_borrado);
-	liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
-	list_destroy(lista_marcos_borrado);
-	list_destroy(lista_de_marcos_de_tareas);
+	if(list_size(aux->lista_de_tids)==1){
+		liberar_marcos(aux->lista_de_marcos);
+		list_remove(TABLA_DE_PAGINAS, obtener_indice_del_proceso(id_proceso));
+	}else{
+		uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
+		uint32_t direccion_logica_inicio = 8 + (21*tripulante_logico);
+		uint32_t direccion_logica_fin = 8 + (21*tripulante_logico) + 21;
+		uint32_t pagina_inicio_borrado = redondear_para_arriba(direccion_logica_inicio, TAMANIO_PAGINAS);
+		uint32_t pagina_fin_borrado = direccion_logica_fin / TAMANIO_PAGINAS;
+		t_list* lista_marcos_borrado = obtener_marcos_de_paginas(aux->lista_de_marcos, pagina_inicio_borrado, pagina_fin_borrado);
+		uint32_t valor_a_restar = (pagina_fin_borrado - pagina_inicio_borrado)*TAMANIO_PAGINAS;
+		t_list* lista_de_marcos_de_tareas;
+		necesito_en_ppal(4, 8, id_proceso);
+		lista_de_marcos_de_tareas = obtener_marcos_segun_direccion_logica(4, 8, aux->lista_de_marcos);
+		modificar_direccion_tareas(lista_de_marcos_de_tareas, valor_a_restar, (4%TAMANIO_PAGINAS));
+		liberar_marcos(lista_marcos_borrado);
+		liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
+		list_remove(aux->lista_de_tids, tripulante_logico);
+		list_destroy(lista_marcos_borrado);
+		list_destroy(lista_de_marcos_de_tareas);
+	}
 }
 
 t_list* deconstruir_string(char* array){
@@ -857,8 +884,6 @@ void hacer_dump(){
     fclose(fp);
 
 	list_destroy(lista_dump);
-	free(timestamp);
-	free(timestamp2);
 }
 
 void mostrar_array_marcos(){
@@ -935,6 +960,37 @@ void mostrar_tabla_de_paginas(){
 	printf("********************************\n\n");
 }
 
+void iniciar_patota_en_mapa(u_int32_t pid, t_list* lista_tcb){
+
+	void agregar_a_mapa(t_tcb* tcb){
+			
+			t_mapa dto;
+			dto.pid = pid;
+			dto.tid = tcb->tid;
+			dto.mapid = ID_MAPA;
+			ID_MAPA ++;
+			
+			void* aux;
+			aux = malloc(sizeof(t_mapa));
+
+			memcpy(aux, &dto, sizeof(t_mapa));
+
+			list_add(TABLA_DE_MAPA, aux);
+			//iniciar
+	}
+
+	list_iterate(lista_tcb, agregar_a_mapa);
+}
+
+char obtener_id_mapa(u_int32_t pid, u_int32_t tid){
+	t_mapa* aux;
+	bool buscar_id_mapa(t_mapa* personaje){
+		return (personaje->pid == pid && personaje->tid == tid);
+	}
+	aux = list_find(TABLA_DE_MAPA, buscar_id_mapa);
+	return aux->mapid;
+}
+
 int main () {
 	
 	CANTIDAD_MARCOS = obtener_tamanio_array_de_marcos();
@@ -970,6 +1026,8 @@ int main () {
 	printf("Tamaño del Archivo: %ld\n",sb.st_size);
 
 	MEMORIA_VIRTUAL = mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+
+	TABLA_DE_MAPA = list_create();
 
 	t_pcb mockpcb;
 	mockpcb.pid= 2;
@@ -1047,7 +1105,7 @@ int main () {
 	memcpy(&b, MEMORIA+35, 4);
 	printf("El valor es %d\n",redondear_para_arriba(11,2));*/
 	
-	//expulsar_tripulante(2, 19);
+	expulsar_tripulante(4, 2);
 	/*t_list* loro = list_create();
 	list_add(loro, 15002);
 	list_add(loro, 15003);
@@ -1063,9 +1121,9 @@ int main () {
 
 	
 
-	/*mostrar_array_marcos();
+	mostrar_array_marcos();
 	mostrar_tabla_de_paginas();
-	mostrar_array_marcos_virtuales();*/
+	mostrar_array_marcos_virtuales();
 
 	/*char* pedepepe;
 	pedepepe = (char*) malloc(sizeof(char)*18);
@@ -1079,11 +1137,11 @@ int main () {
 	char* pepepepe = proxima_tarea(2, 19);
 	printf("EL VALOR QUE SALIO ES %s", pepepepe);*/
 
-	actualizar_estado(2, 19, 'B');
+	/*actualizar_estado(2, 19, 'B');
 
 	mostrar_array_marcos();
 	mostrar_tabla_de_paginas();
-	mostrar_array_marcos_virtuales();
+	mostrar_array_marcos_virtuales();*/
 	/*char b;
 	memcpy(&b, MEMORIA+30, 4);
 	printf("El valor es %c\n",b);*/
@@ -1096,8 +1154,13 @@ int main () {
 	uint32_t v;
 	memcpy(&v, MEMORIA+35, 4);
 	printf("Virtual %d\n",v);*/
+	/*char axs;
 
-	//hacer_dump();
-	
+	iniciar_patota_en_mapa(2, tcblist);
+	axs = obtener_id_mapa(2, 3);
+	printf("%c\n", axs);*/
+
+	//printf("%d\n", obtener_indice_del_proceso(4));
+
 	return 0;
 }
