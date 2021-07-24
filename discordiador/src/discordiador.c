@@ -67,6 +67,18 @@ config = leer_config("discordiador");
 
 	// sleep(2);
 	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
+	// pthread_join(otro_hilo,NULL);
+
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&un_hilo,NULL, (void*) iniciar_tercera_patota,conexion);
+	// pthread_join(un_hilo,NULL);
+
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
 	// pthread_create(&otro_hilo,NULL, (void*) enviar_actualizar_estado,conexion);
 	// pthread_join(otro_hilo,NULL);
 
@@ -75,6 +87,23 @@ config = leer_config("discordiador");
 	// conexion = crear_conexion(ip,puerto);
 	// pthread_create(&otro_hilo,NULL, (void*) enviar_ubicacion_del_tripulante,conexion);
 	// pthread_join(otro_hilo,NULL);
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_1,conexion);
+	// pthread_join(otro_hilo,NULL);
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&un_hilo,NULL, (void*) iniciar_tercera_patota,conexion);
+	// pthread_join(un_hilo,NULL);
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
+	// pthread_join(otro_hilo,NULL);
+// 
+
 
 
 	// sleep(2);
@@ -97,6 +126,7 @@ config = leer_config("discordiador");
 	// pthread_create(&otro_hilo,NULL, (void*) enviar_proxima_tarea,conexion);
 	// pthread_join(otro_hilo,NULL);
 
+// 
 
 	sleep(2);
 	conexion = crear_conexion(ip,puerto);
@@ -106,24 +136,43 @@ config = leer_config("discordiador");
 
 	sleep(2);
 	conexion = crear_conexion(ip,puerto);
-	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_5,conexion);
+	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_3,conexion);
 	pthread_join(otro_hilo,NULL);
 
 
 	sleep(2);
 	conexion = crear_conexion(ip,puerto);
-	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_3_patota_2,conexion);
+	pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_1_patota_2,conexion);
 	pthread_join(otro_hilo,NULL);
 
 
+
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) expulsar_tripulante_2,conexion);
+	// pthread_join(otro_hilo,NULL);
 
 	sleep(2);
 	conexion = crear_conexion(ip,puerto);
-	pthread_create(&otro_hilo,NULL, (void*) envio_compactar,conexion);
+	pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
 	pthread_join(otro_hilo,NULL);
 
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
+	// pthread_join(otro_hilo,NULL);
 
 
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) envio_compactar,conexion);
+	// pthread_join(otro_hilo,NULL);
+
+	// sleep(2);
+	// conexion = crear_conexion(ip,puerto);
+	// pthread_create(&otro_hilo,NULL, (void*) envio_dump,conexion);
+	// pthread_join(otro_hilo,NULL);
 
 
 
@@ -307,6 +356,50 @@ void iniciar_otra_patota(int conexion)
 	eliminar_paquete(paquete);
 }
 
+void iniciar_tercera_patota(int conexion)
+{
+		// int cod_operacion = FINALIZACION; 
+		int cod_operacion = INICIAR_PATOTA; 
+	t_paquete* paquete = crear_paquete(cod_operacion);
+	
+	char* pid;
+	pid = config_get_string_value(config,"PID_TERCERA");
+	log_info(logger,pid);
+	agregar_a_paquete(paquete,pid,strlen(pid)+1);
+	
+	char* cant_tripulantes = (char*) config_get_string_value(config,"CANT_TRIPULANTES_TERCERA");
+	agregar_a_paquete(paquete,cant_tripulantes,strlen(cant_tripulantes)+1);
+
+	// free(cant_tripulantes);
+
+	// char* tarea = string_new();
+	// char* parametro = string_new();
+	char* tarea,*posiciones;
+	// char* parametro;
+	// char separador = (char) '-';
+	
+	tarea = config_get_string_value(config,"TAREA_1_COMPLETA_TERCERA");
+	log_info(logger,tarea);
+	agregar_a_paquete(paquete,tarea,strlen(tarea)+1);
+	// free(tarea);
+
+	tarea = config_get_string_value(config,"TAREA_2_COMPLETA_TERCERA");
+	log_info(logger,tarea);
+	agregar_a_paquete(paquete,tarea,strlen(tarea)+1);
+	
+	tarea = config_get_string_value(config,"TAREA_3_COMPLETA_TERCERA");
+	log_info(logger,tarea);
+	agregar_a_paquete(paquete,tarea,strlen(tarea)+1);
+
+	posiciones = config_get_string_value(config,"POS_TERCERA");
+	log_info(logger,posiciones);
+	agregar_a_paquete(paquete,posiciones,strlen(posiciones)+1);
+
+
+	enviar_paquete(paquete,conexion);
+	eliminar_paquete(paquete);
+}
+
 
 char* enviar_proxima_tarea(int conexion)
 {
@@ -419,11 +512,32 @@ char* expulsar_tripulante_1(int conexion)
 	
 	char* pid, *tid;
 	char* estado;
-	pid = config_get_string_value(config,"PID_EXP");
+	pid = config_get_string_value(config,"PID");
 	log_info(logger,pid);
 	agregar_a_paquete(paquete,pid,strlen(pid)+1);
 
-	tid = config_get_string_value(config,"TID_EXP_1");
+	tid = config_get_string_value(config,"TID");
+	log_info(logger,tid);
+	agregar_a_paquete(paquete,tid,strlen(tid)+1);
+
+	enviar_paquete(paquete,conexion);
+	eliminar_paquete(paquete);
+	return NULL;
+}
+
+char* expulsar_tripulante_2(int conexion)
+{
+		// int cod_operacion = FINALIZACION; 
+		int cod_operacion = EXPULSAR_TRIPULANTE; 
+	t_paquete* paquete = crear_paquete(cod_operacion);
+	
+	char* pid, *tid;
+	char* estado;
+	pid = config_get_string_value(config,"PID");
+	log_info(logger,pid);
+	agregar_a_paquete(paquete,pid,strlen(pid)+1);
+
+	tid = config_get_string_value(config,"TID_EXP_2");
 	log_info(logger,tid);
 	agregar_a_paquete(paquete,tid,strlen(tid)+1);
 
@@ -516,6 +630,7 @@ char* expulsar_tripulante_3_patota_2(int conexion)
 	return NULL;
 }
 
+
 char* expulsar_tripulante_5_patota_2(int conexion)
 {
 		// int cod_operacion = FINALIZACION; 
@@ -540,6 +655,26 @@ char* expulsar_tripulante_5_patota_2(int conexion)
 char* envio_compactar(int conexion)
 {
 		int cod_operacion = COMPACTAR; 
+	t_paquete* paquete = crear_paquete(cod_operacion);
+	
+	char* pid, *tid;
+	char* estado;
+	pid = config_get_string_value(config,"PID_EXP");
+	log_info(logger,pid);
+	agregar_a_paquete(paquete,pid,strlen(pid)+1);
+
+	tid = config_get_string_value(config,"TID_EXP_1");
+	log_info(logger,tid);
+	agregar_a_paquete(paquete,tid,strlen(tid)+1);
+
+	enviar_paquete(paquete,conexion);
+	eliminar_paquete(paquete);
+	return NULL;
+}
+
+char* envio_dump(int conexion)
+{
+		int cod_operacion = DUMP; 
 	t_paquete* paquete = crear_paquete(cod_operacion);
 	
 	char* pid, *tid;

@@ -29,7 +29,7 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	ACTUALIZAR_ESTADO,
 	EXPULSAR_TRIPULANTE,
 	COMPACTAR,
-	FINALIZACION
+	DUMP
 }op_code;
 
 //t_log* logger;

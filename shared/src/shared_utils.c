@@ -49,7 +49,7 @@ int esperar_cliente(int socket_servidor,t_log* logger)
 	accept --> funcion bloqueante, queda a la espera hasta aceptar cliente
 	*/
 
-	log_info(logger, "Se conecto un cliente!");
+	// log_info(logger, "Se conecto un cliente!");
 	return socket_cliente;
 }
 

@@ -18,10 +18,12 @@ void enviar_msj(char* mensaje, int socket_cliente,t_log* logger);
 // Enviar
 void iniciar_patota(int conexion);
 void iniciar_otra_patota(int conexion);
+void iniciar_tercera_patota(int conexion);
 char* enviar_proxima_tarea(int conexion);
 char* enviar_actualizar_estado( int conexion);
 char* enviar_ubicacion_del_tripulante(int conexion);
 char* expulsar_tripulante_1(int conexion);
+char* expulsar_tripulante_2(int conexion);
 char* expulsar_tripulante_3(int conexion);
 char* expulsar_tripulante_5(int conexion);
 char* expulsar_tripulante_1_patota_2(int conexion);
@@ -29,6 +31,7 @@ char* expulsar_tripulante_3_patota_2(int conexion);
 char* expulsar_tripulante_5_patota_2(int conexion);
 
 char* envio_compactar(int conexion);
+char* envio_dump(int conexion);
 
 
 

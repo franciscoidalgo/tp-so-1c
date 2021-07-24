@@ -29,7 +29,9 @@
 			"memory.h": "c",
 			"typeinfo": "c",
 			"semaphore.h": "c",
-			"log.h": "c"
+			"log.h": "c",
+			"stdbool.h": "c",
+			"curses.h": "c"
 		}
 	}
 }
