@@ -7,6 +7,4 @@ obj/*
 .project
 .settings/*
 
-.vscode/*
-
 i-mongo-logger.log
