@@ -44,7 +44,6 @@ pthread_t hilo_blocks;
 pthread_mutex_t mutex_blocks;
 uint32_t blocks;
 uint32_t block_size;
-int posicion_sabotaje;
 
 //declaracion de funciones locales usadas en inicializacion
 void recuperar_fs(int);
@@ -64,7 +63,6 @@ void interpretar_mensaje_discordiador (char* mensaje);
 void formatear_meta_file (int, char*);
 void generar_meta_recursos();
 char* obtener_bitacora (uint32_t);
-void procedimiento_sabotaje (char*, int);
 
 //Hash Table para recursos y sus caracteres de llenado
 t_instruccion tabla_comandos []={
@@ -74,13 +72,11 @@ t_instruccion tabla_comandos []={
 	{"CONSUMIR_OXIGENO", "Oxigeno", 'O', consumir_recurso},
 	{"CONSUMIR_COMIDA", "Comida", 'C', consumir_recurso},
 	{"DESCARTAR_BASURA", "Basura", 'B', consumir_recurso},
-	{"fsck", "Filesystem Check", 0, procedimiento_sabotaje},
 	{"\0", "\0", 0, NULL}
 };
 
 //Funcion que genera las estructuras necesarias
 void iniciar_en_limpio(t_config* config_fs, t_log* logger_fs){
-	posicion_sabotaje = 0;
     pthread_mutex_init(&mutex_blocks, NULL);
     logger = logger_fs;
     config = config_fs;
@@ -861,9 +857,6 @@ void chequear_files(char* path_elegido){
 	closedir(dh);
 }
 
-void procedimiento_sabotaje (char* junk, int more_junk){
-	
-}
 
 void recuperar_fs(int received_signal){
 	pthread_mutex_lock(&mutex_blocks);

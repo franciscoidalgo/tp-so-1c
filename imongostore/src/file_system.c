@@ -75,7 +75,6 @@ void realizar_operaciones(void* conexion){
 				memcpy((void*) bitacora, buffer + sizeof(int), size);
 				generar_bitacora(bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
 			case FINALIZACION:
-				liberar_conexion(conexion_cliente->socket_cliente);
 				pthread_exit(NULL);
 		}
 	}
