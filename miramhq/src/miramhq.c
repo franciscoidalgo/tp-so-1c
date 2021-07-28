@@ -56,7 +56,7 @@ uint32_t* ESTADO_MARCOS_VIRTUALES;
 uint32_t* TIMESTAMP_MARCOS;
 uint32_t COUNTER_LRU = 1;
 uint32_t PUNTERO_CLOCK = 0;
-uint32_t* BIT_CLOCK;
+uint32_t* ARRAY_BIT_USO;
 uint32_t MODO_DESALOJO = 0; //0 LRU 1 CLOCK
 t_list* TABLA_DE_PAGINAS;
 uint32_t TAMANIO_PAGINAS = 32;
@@ -220,7 +220,7 @@ void setear_marco_como_usado(uint32_t numero_marco){
 		ESTADO_MARCOS[numero_marco] = 1;
 		TIMESTAMP_MARCOS[numero_marco] = COUNTER_LRU;
 		COUNTER_LRU++;
-		BIT_CLOCK[numero_marco] = 1;
+		ARRAY_BIT_USO[numero_marco] = 1;
 }
 
 void setear_marcos_usados(t_list* lista_a_reservar){
@@ -318,15 +318,19 @@ t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar) {
 		}
 	} else {
 		for(uint32_t i=0; i<numero_de_paginas_a_desalojar; i++){
-			while (BIT_CLOCK[PUNTERO_CLOCK]!= 0){
-				BIT_CLOCK[PUNTERO_CLOCK] = 0;
-				if (PUNTERO_CLOCK == CANTIDAD_MARCOS-1){
+			while (ARRAY_BIT_USO[PUNTERO_CLOCK]!= 0){
+				ARRAY_BIT_USO[PUNTERO_CLOCK] = 0;
+				PUNTERO_CLOCK ++;
+
+				if (PUNTERO_CLOCK == CANTIDAD_MARCOS){
 					PUNTERO_CLOCK = 0;
-				} else {
-					PUNTERO_CLOCK++;
-				}
+				} 
 			}
 			list_add(victimas, PUNTERO_CLOCK);
+			PUNTERO_CLOCK++;
+			if (PUNTERO_CLOCK == CANTIDAD_MARCOS){
+					PUNTERO_CLOCK = 0;
+			} 
 		}
 	}
 	return victimas;
@@ -998,7 +1002,7 @@ void mostrar_array_marcos(){
 }
 
 void mostrar_array_timestamp(){
-	printf("\n*****ARRAY DE MARCOS*****\n");
+	printf("\n*****ARRAY DE TIMESTAMP*****\n");
 	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
 		if(i<10)
 			printf("--%d ", i);
@@ -1010,7 +1014,25 @@ void mostrar_array_timestamp(){
 	printf("\n");
 
 	for(uint32_t a = 0; a<CANTIDAD_MARCOS; a++){
-		printf("--%d ", TIMESTAMP_MARCOS[a]);
+		printf("-%d ", TIMESTAMP_MARCOS[a]);
+	}
+	printf("\n*************************\n\n");
+}
+
+void mostrar_array_bit_uso(){
+	printf("\n*****BIT DE USO*****\n");
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
+		if(i<10)
+			printf("--%d ", i);
+		if(i>=10 && i<100)
+			printf("-%d ", i);	
+		if(i>=100 && i<1000)
+			printf("%d ", i);
+	}
+	printf("\n");
+
+	for(uint32_t a = 0; a<CANTIDAD_MARCOS; a++){
+		printf("-%d ", ARRAY_BIT_USO[a]);
 	}
 	printf("\n*************************\n\n");
 }
@@ -1113,7 +1135,7 @@ uint32_t main () {
 	CANTIDAD_MARCOS = obtener_tamanio_array_de_marcos();
 	ESTADO_MARCOS = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
 	TIMESTAMP_MARCOS = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
-	BIT_CLOCK =  (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
+	ARRAY_BIT_USO =  (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
 	CANTIDAD_MARCOS_VIRTUALES = obtener_tamanio_array_de_marcos_virtuales();
 	ESTADO_MARCOS_VIRTUALES = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS_VIRTUALES);
 	
@@ -1125,6 +1147,10 @@ uint32_t main () {
 
 	for (uint32_t i = 0; i < CANTIDAD_MARCOS; i++) {
 		TIMESTAMP_MARCOS[i] = 0;
+	}
+
+	for (uint32_t i = 0; i < CANTIDAD_MARCOS; i++) {
+		ARRAY_BIT_USO[i] = 0;
 	}
 
 	for (uint32_t i = 0; i < CANTIDAD_MARCOS_VIRTUALES; i++) {
@@ -1234,8 +1260,13 @@ uint32_t main () {
 
 
 	iniciar_patota(&mockwrapeado);
+	mostrar_tabla_de_paginas();
 	iniciar_patota(&mockwrapeado2);
+	mostrar_tabla_de_paginas();
 	iniciar_patota(&mockwrapeado3);
+	mostrar_tabla_de_paginas();
+	mostrar_array_bit_uso();	
+	
 	cambiar_ubicacion_tripulante(1, 10, 2, 3);
 	mostrar_tabla_de_paginas();
 	cambiar_ubicacion_tripulante(2, 20, 3, 4);
