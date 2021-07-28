@@ -1109,10 +1109,18 @@ void iniciar_patota_en_mapa(uint32_t pid, t_list* lista_tcb){
 			memcpy(aux, &dto, sizeof(t_mapa));
 
 			list_add(TABLA_DE_MAPA, aux);
-			//iniciar
 	}
 
 	list_iterate(lista_tcb, agregar_a_mapa);
+}
+
+void expulsar_tripulante_en_mapa(uint32_t pid, uint32_t tid){
+
+	void matchear_tripulante(t_mapa* tripulante){
+		return (tripulante->pid == pid && tripulante->tid == tid);
+	}
+
+	list_remove_by_condition(TABLA_DE_MAPA, matchear_tripulante);
 }
 
 char obtener_id_mapa(uint32_t pid, uint32_t tid){
@@ -1199,6 +1207,7 @@ uint32_t main () {
 
 	t_list* tcblist = list_create();
 	list_add(tcblist, mocktcb);
+	list_add(tcblist, mocktcb4);
 	
 	char* pepe;
 	pepe = "A00;1;1;5-A01;1;1;5-A02;1;1;5";
@@ -1254,11 +1263,12 @@ uint32_t main () {
 	mockwrapeado3.lista_de_tcb = tcblist3;
 	mockwrapeado3.lista_de_tareas = pepe3;
 
-
+	iniciar_patota_en_mapa(2, tcblist);
+	expulsar_tripulante_en_mapa(2, 10);
 
 	
 
-
+/*
 	iniciar_patota(&mockwrapeado);
 	mostrar_tabla_de_paginas();
 	iniciar_patota(&mockwrapeado2);
@@ -1290,7 +1300,7 @@ uint32_t main () {
 	cambiar_ubicacion_tripulante(3, 30, 4, 5);
 	mostrar_tabla_de_paginas();
 	cambiar_ubicacion_tripulante(3, 30, 4, 5);
-
+*/
 
 
 	/*
