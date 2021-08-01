@@ -1,10 +1,10 @@
-#include "../include/shared_utils.h"
+#include "shared_utils.h"
 
 char* mi_funcion_compartida(){
     return "Hice uso de la shared!";
 }
 
-int iniciar_servidor(t_log* logger,t_config* config)
+int iniciar_servidor(t_log* logger, t_config* config)
 {
 	int socket_servidor;
 
