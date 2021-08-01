@@ -100,6 +100,7 @@ pthread_barrier_t barrera;
 sem_t sem_IO;
 sem_t sem_IO_queue;
 sem_t sem_exe;
+sem_t sem_exe_notificacion;
 //INICIALIZACION DE SEMAFOROS
 
 bool EXISTE_SABOTAJE;
@@ -129,9 +130,7 @@ void enviar_tareas_a_RAM(int conexion,char** argv);
 void recepcionar_patota(char** argv); //agregar tripulantes a lista NEW
 void iterator_lines_free(char* string);
 int get_diccionario_accion(char* accion);
-bool es_tripu_de_id(int id,t_tcb* tripulante);
-void expulsar_tripu(t_list* lista, int id_tripu);
-t_tcb* remover_tripu(t_list* lista, int id_tripu);
+bool es_tripu_de_patota(int patota, int id_tripu,t_tcb* tripu);
 void* recibir_mensaje_de_RAM(int socket_cliente, t_log* logger,int* direccion_size);
 t_tarea* deserealizar_tarea(t_buffer* buffer);
 t_tarea* recibir_tarea_de_RAM(int socket);
@@ -141,7 +140,7 @@ void realizar_tarea_exe(t_tcb* tripulante);
 void atender_accion_de_consola(char* retorno_consola);
 void add_queue(int lista, t_tcb* tripulante);
 void atender_sabotaje();
-void moverme_hacia_tarea(t_tcb* tripu);
+void mover_a_la_posicion_de_la_tarea(t_tcb* tripu);
 void iniciar_planificacion();
 void expulsar_si_no_hay_tarea(t_tcb * tripu);
 void realizar_tarea_comun(t_tcb * tripulante);
@@ -165,7 +164,10 @@ int obtener_algoritmo(char* algoritmo_de_planificacion);
 void enviar_nuevo_estado_a_ram(t_tcb* tripulante);
 void enviar_posicion_a_ram(t_tcb* tripulante,int socket);
 void enviar_expulsar_tripulante_a_ram(t_tcb* tripulante);
-t_tcb* sacar_tripulante_de(t_list *lista, int id_tripu);
 void enviar_info_para_bitacora_a_imongostore(t_tcb *tripulante,int socket);
-
+void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tcb *tripulante);
+void mover_tripulante_entre_listas_si_existe(int lista_origen,int lista_destino,int patota, int id_tripu);
+void control_de_tripulantes_listos(t_tcb* tripu);
+t_list *obtener_lista(int lista);
+void controlar_forma_de_salida(t_tcb* t);
 #endif

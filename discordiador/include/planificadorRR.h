@@ -29,7 +29,7 @@ void planificar_RR(t_tcb *tripulante)
                 if (!es_tarea_comun(tripulante_exe))
                 {
                     pthread_mutex_lock(&mutex_lista_exec);
-                    add_queue(_BLOCKED_, remover_tripu(EXEC, tripulante_exe->tid));
+                   mover_tripulante_entre_listas_si_existe(_EXEC_,_BLOCKED_,tripulante_exe->puntero_pcb,tripulante_exe->tid);
                     pthread_mutex_unlock(&mutex_lista_exec);
                     sem_post(&sem_IO_queue);
                     if ((list_size(EXEC) < GRADO_MULTITAREA && list_size(READY) > 0))
@@ -47,7 +47,7 @@ void planificar_RR(t_tcb *tripulante)
         }
 
         pthread_mutex_lock(&mutex_lista_exec);
-        add_queue(_READY_, remover_tripu(EXEC, tripulante_exe->tid));
+        mover_tripulante_entre_listas_si_existe(_EXEC_,_READY_,tripulante_exe->puntero_pcb,tripulante_exe->tid);
         pthread_mutex_unlock(&mutex_lista_exec);
         sem_post(&sem_exe);
     }
