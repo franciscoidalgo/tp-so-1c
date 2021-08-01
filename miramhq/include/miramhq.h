@@ -34,7 +34,7 @@ uint32_t* ESTADO_MARCOS_VIRTUALES;
 uint32_t* TIMESTAMP_MARCOS;
 uint32_t COUNTER_LRU = 1;
 uint32_t PUNTERO_CLOCK = 0;
-uint32_t* BIT_CLOCK;
+uint32_t* ARRAY_BIT_USO;
 uint32_t MODO_DESALOJO; //0 LRU 1 CLOCK
 t_list* TABLA_DE_PAGINAS;
 char* dump_segmentacion;
@@ -53,6 +53,8 @@ t_list* TABLA_DE_MAPA;
 typedef struct{
     uint32_t pid;			
     uint32_t tid;
+    uint32_t pos_x;
+    uint32_t pos_y;
     char mapid;
 } t_mapa;
 
@@ -119,8 +121,10 @@ typedef struct{
 
 
 // Orden de listas
+bool orden_mayor_a_menor(int entero_A, int entero_B);
 bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB);
 bool orden_lista_admin_segmentacion_best_free(t_segmento* segmento_libre_A, t_segmento* segmento_libreB);
+bool orden_lista_admin_segmentacion_best_free_mayor_a_menor(t_segmento* segmento_libre_A, t_segmento* segmento_libre_B);
 
 // administrador_de_segmentacion* admin_segmentacion;
 
@@ -129,8 +133,13 @@ bool orden_lista_admin_segmentacion_best_free(t_segmento* segmento_libre_A, t_se
 void iniciar_mapa();
 void eliminar_mapa();
 void crear_personaje(char id, uint32_t pos_x, uint32_t pos_y);
+void mostrar_patotas_presentes_en_mapa();
 void mover_personaje(char id, uint32_t pos_x, uint32_t pos_y);
+void expulsar_tripulante_en_mapa(uint32_t pid, uint32_t tid);
+void mover_personaje_en_mapa(uint32_t pid,uint32_t tid, char id,uint32_t pos_x_nuevo, uint32_t pos_y_nuevo);
 void eliminar_personaje(char id);
+void eliminar_personaje_ubicado(char id, uint32_t pos_x, uint32_t pos_y);
+void refrescar_tabla_de_mapas();
 void iniciar_patota_en_mapa(uint32_t pid, t_list* lista_tcb);
 char obtener_id_mapa(uint32_t pid, uint32_t tid);
 
@@ -150,6 +159,7 @@ int tareas_bytes_ocupados(t_list* tareas);
 // int cantidad_de_tareas(char* tareas);
 t_segmento* buscar_segmento_libre_first_fit(uint32_t bytes_ocupados);
 t_segmento* buscar_segmento_libre_best_fit(uint32_t bytes_ocupados);
+bool es_necesario_compactar(int tamanio_tareas, int cantidad_de_tripulantes);
 void guardar_en_MEMORIA_tcb(t_segmento* segmento_a_ocupar,t_tcb* tcb);
 void guardar_en_MEMORIA_tareas(t_segmento* segmento_a_ocupar,char* tareas_unidas);
 
@@ -169,23 +179,23 @@ void hacer_dump_SEGMENTACION();
 
 // Paginacion
 void iniciar_paginacion();
-int obtener_tamanio_array_de_marcos ();
-int obtener_tamanio_array_de_marcos_virtuales ();
+uint32_t obtener_tamanio_array_de_marcos ();
+uint32_t obtener_tamanio_array_de_marcos_virtuales ();
 dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* data_a_empaquetar);
 void modificar_tlb (uint32_t id_proceso, t_list* lista_tids, t_list* marcos_utilizados);
-int obtener_marcos_vacios();
-int obtener_marcos_vacios_virtuales();
-int paginas_que_ocupa(int cantidad_bytes);
+uint32_t obtener_marcos_vacios();
+uint32_t obtener_marcos_vacios_virtuales();
+uint32_t paginas_que_ocupa(uint32_t cantidad_bytes);
 void setear_memoria(t_list* lista_a_reservar, void* data_empaquetada);
 void pasar_un_marco_de_memoria(uint32_t marco_virtual, uint32_t marco_principal, bool sentido);
-t_list* obtener_marcos_a_reservar(int paginas_solicitadas);
-void setear_marco_como_usado(int numero_marco);
+t_list* obtener_marcos_a_reservar(uint32_t paginas_solicitadas);
+void setear_marco_como_usado(uint32_t numero_marco);
 void setear_marcos_usados(t_list* lista_a_reservar);
 uint32_t indice_del_minimo_de_un_array(uint32_t* array, uint32_t tamanio_array);
 uint32_t obtener_proceso_de_marco(uint32_t marco);
-void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t nuevo_marco, int presencia);
+void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t nuevo_marco, uint32_t presencia);
 uint32_t obtener_marco_virtual_vacio();
-void desalojar_un_marco(int marco_a_desalojar);
+void desalojar_un_marco(uint32_t marco_a_desalojar);
 t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar);
 void desalojar(uint32_t numero_de_paginas_a_desalojar);
 t_list* listar_tids(estructura_administrativa_paginacion* dato);
@@ -199,13 +209,15 @@ uint32_t redondear_para_arriba (uint32_t numero, uint32_t divisor);
 t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inicio, uint32_t pagina_fin);
 void liberar_marcos(t_list* lista_marcos_borrado);
 void liberar_tabla(t_list* marcos, t_list* presencia, uint32_t pagina_inicio, uint32_t pagina_fin);
-void modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t valor_logico_a_restar, uint32_t dezplazamiento);
+uint32_t modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t dezplazamiento);
 void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logica_fin, uint32_t id_proceso);
-void reemplazar_marco_de_tabla_por_indice(uint32_t id_proceso, uint32_t nuevo_marco, uint32_t numero_pagina, int presencia);
+void reemplazar_marco_de_tabla_por_indice(uint32_t id_proceso, uint32_t nuevo_marco, uint32_t numero_pagina, uint32_t presencia);
 uint32_t obtener_indice_de_marco(uint32_t marco, uint32_t id_proceso);
 void alojar(t_list* lista_marcos_en_virtual);
 t_list* obtener_marcos_segun_direccion_logica(uint32_t direccion_logica_inicio, uint32_t direccion_logica_fin, t_list* lista_de_marcos_completa);
 uint32_t obtener_indice_del_proceso(uint32_t pid);
+uint32_t tamanio_lista_tareas(uint32_t id_proceso, uint32_t direccion_logica_tareas);
+t_list* compactar_tripulante(uint32_t id_proceso, uint32_t direccion_logica_inicio, uint32_t ultima_direccion_logica, uint32_t lista_tareas);
 void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante);
 t_list* deconstruir_string(char* array);
 uint32_t obtener_direccion_logica_tareas(uint32_t id_proceso);
@@ -228,6 +240,7 @@ void mostrar_tabla_de_paginas();
 void guardar_tarea_segmentacion(t_tarea* tarea);
 char* removeDigits(char* input);
 char* unir_tareas(t_list* lista);
+int tamanio_de_tareas(t_list* lista);
 char* retornar_tareas(t_segmento* segmento_tareas);
 int cantidad_de_tareas (char* tareas);
 int cantidad_de_apariciones (char* string, char caracter);
@@ -286,6 +299,7 @@ void iterator_tarea(t_tarea* tarea);
 void iterator_segmento(t_segmento* segmento_libre);
 bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB);
 bool orden_lista_pcbs(t_pcb* pcb_a, t_pcb* pcb_b);
+bool orden_lista_mapa(t_mapa* mapa_a, t_mapa* mapa_b);
 bool orden_lista_segmentos(t_segmento* seg_a, t_segmento* seg_b);
 bool orden_lista_segmentos_contraria(t_segmento* seg_a, t_segmento* seg_b);
 bool comparador_patotas(t_list* seg_patota_a, t_list* seg_patota_b);
@@ -357,6 +371,7 @@ void enviar_proxima_tarea(char* tarea_solicitada, int cliente_fd);
 
 // Archivos
 void leer_archivo(char* path);
+char* trimwhitespace(char *str);
 
 
 #endif

@@ -26,7 +26,9 @@ pthread_mutex_t sem_memoria, mutex_segmentos_libres, mutex_mapa;
 int SMOBJ_SIZE;
 int cod_cierre;
 NIVEL* AmongOS;
+char* CRITERIO;
 
+int x_max, y_max;
 int cols, rows;
 int err;
 
@@ -53,7 +55,6 @@ int main(int argc, char ** argv){
     reservar_espacio_de_memoria();
 
 
-    iniciar_mapa();
 
     char* esquema = config_get_string_value(config,"ESQUEMA_MEMORIA");
     if ( strcmp(esquema,"SEGMENTACION") == 0)
@@ -132,7 +133,6 @@ void atender_cliente(int cliente_fd)
         atender_cliente_SEGMENTACION(cliente_fd);
     }else
     {
-        log_info(logger,"PAGINACION");
         atender_cliente_PAGINACION(cliente_fd);
     }
 }
@@ -143,6 +143,9 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 {
         int cod_op = recibir_operacion(cliente_fd);
         
+        pthread_mutex_lock(&mutex_segmentos_libres);
+        pthread_mutex_lock(&sem_memoria); 
+        pthread_mutex_lock(&mutex_mapa);
         t_list* lista = list_create();
 
 
@@ -162,6 +165,9 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 			list_iterate(lista, (void*) iterator);
 			break;
 		case INICIAR_PATOTA:
+            // pthread_mutex_lock(&mutex_segmentos_libres);
+            // pthread_mutex_lock(&sem_memoria); 
+            // pthread_mutex_lock(&mutex_mapa);
 
                 // Descomentar para testear
             // log_info(logger,"Una patota se ha iniciado");
@@ -182,21 +188,28 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
     /* ------------------------Creacion de tcbs---------------------------- */
             t_list* tcbs = crear_tcbs(lista,cant_tripulantes);
-           iniciar_patota_en_mapa(pid,tcbs);
-
+            // pthread_mutex_lock(&mutex_mapa);
+            iniciar_patota_en_mapa(pid,tcbs);
+            // pthread_mutex_unlock(&mutex_mapa);
     /* ------------------------Creacion de tareas---------------------------- */
 
             char* tareas_unidas = unir_tareas(lista);
-
+            // loggear_linea();
+            // loggear_entero(strlen(tareas_unidas));
+            // log_info(logger,"Tareas unidas retornadas-> %s",tareas_unidas);
+            
             iniciar_patota_SEGMENTACION (lista, pcb, tcbs, tareas_unidas, cant_tripulantes);
 
-    
+            // mostrar_patotas_presentes_en_mapa();
     /*-----------------------Liberacion de estructuras---------------------------*/
             free(pcb);
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             list_clean_and_destroy_elements(tcbs, (void*) iterator_destroy_tcb);
 			list_destroy(tcbs);
             free(tareas_unidas);
+            // pthread_mutex_unlock(&mutex_mapa);
+            // pthread_mutex_unlock(&sem_memoria); 
+            // pthread_mutex_unlock(&mutex_segmentos_libres);
             break;
 		case ENVIAR_PROXIMA_TAREA:
         // DISCORDIADOR me manda un pid y un tid
@@ -207,7 +220,8 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             uint32_t tid_prox_tarea = recibir_pid(lista);
             
             char* tarea_solicitada = enviar_proxima_tarea_SEGMENTACION(pid_prox_tarea,tid_prox_tarea);
-            
+            // enviar_mensaje(tarea_solicitada,cliente_fd);
+
             free(tarea_solicitada);        
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
 			break;
@@ -226,31 +240,45 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             break;
         case EXPULSAR_TRIPULANTE:
+
+            // pthread_mutex_lock(&mutex_segmentos_libres);
+            // pthread_mutex_lock(&sem_memoria); 
+            
             recibir_paquete(cliente_fd,lista);
 
             uint32_t pid_expulsar_tripulante = recibir_pid(lista);
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
 
-            char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
-            eliminar_personaje(aux_expulsar);
+            // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
+            // pthread_mutex_lock(&mutex_mapa);
+            expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
+            // pthread_mutex_unlock(&mutex_mapa);
+
             
             expulsar_tripulante_SEGMENTACION(pid_expulsar_tripulante,tid_expulsar_tripulante);
-            
+            // pthread_mutex_unlock(&sem_memoria); 
+            // pthread_mutex_unlock(&mutex_segmentos_libres);
             break;
         case COMPACTAR:
-
+            
             compactar();
+            // list_iterate(admin_segmentacion->segmentos_libres,iterator_segmento);
+
             break;
         case DUMP:
             
-            pthread_mutex_lock(&sem_memoria);
-            pthread_mutex_lock(&mutex_segmentos_libres);
-            pthread_mutex_lock(&mutex_mapa);
-
+            // pthread_mutex_lock(&sem_memoria);
+            // pthread_mutex_lock(&mutex_segmentos_libres);
+            // pthread_mutex_lock(&mutex_mapa);
+            // getyx(stdscr,);
+            // move(y_max-2,0);
+            // mvprintw(y_max-2,1,"%s","Patotas presentes ->");
+            // clrtoeol();
+            // mostrar_patotas_presentes_en_mapa();
             hacer_dump_SEGMENTACION();
-            pthread_mutex_unlock(&mutex_mapa);
-            pthread_mutex_unlock(&mutex_segmentos_libres);
-            pthread_mutex_unlock(&sem_memoria);
+            // pthread_mutex_unlock(&mutex_mapa);
+            // pthread_mutex_unlock(&mutex_segmentos_libres);
+            // pthread_mutex_unlock(&sem_memoria);
 
             break;
         case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:
@@ -264,7 +292,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             uint32_t nueva_pos_y = recibir_pid(lista);
 
             char aux_ubicacion = obtener_id_mapa(pid_ubicacion,tid_ubicacion);
-            mover_personaje(aux_ubicacion,nueva_pos_x,nueva_pos_y);
+            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,aux_ubicacion,nueva_pos_x,nueva_pos_y);
 
             cambiar_ubicacion_tripulante_SEGMENTACION(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
 
@@ -278,6 +306,9 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 		}
 
         list_destroy(lista);
+        pthread_mutex_unlock(&mutex_mapa);
+        pthread_mutex_unlock(&sem_memoria);
+        pthread_mutex_unlock(&mutex_segmentos_libres);
         pthread_exit(pthread_self);
 }
 
@@ -294,7 +325,6 @@ void atender_cliente_PAGINACION(int cliente_fd)
 		{
 		case INICIAR_PATOTA:
 
-            log_info(logger,"Una patota se ha iniciado");
 			recibir_paquete(cliente_fd,lista);
 
     /* ----------------------Estrucutras administrativas-------------------------- */
@@ -303,18 +333,20 @@ void atender_cliente_PAGINACION(int cliente_fd)
             t_pcb aux;
             aux.pid = pid;
             aux.tareas = 0;
-    
+
     /* ------------------------Cantidad de tripulantes---------------------------- */
             int cant_tripulantes = recibir_catidad_de_tripulantes(lista);
+            // loggear_entero(cant_tripulantes);
 
     /* ------------------------Creacion de tcbs---------------------------- */
             t_list* tcbs = crear_tcbs(lista,cant_tripulantes);
+            // loggear_entero(list_size(tcbs));
             iniciar_patota_en_mapa(pid,tcbs);
 
 
     /* ------------------------Creacion de tareas---------------------------- */
             char* tareas_unidas = unir_tareas(lista);
-
+            // loggear_entero(strlen(tareas_unidas)+1);
 
     /* ------------------------PAGINACION---------------------------- */
 
@@ -324,21 +356,16 @@ void atender_cliente_PAGINACION(int cliente_fd)
             admin_paginacion.lista_de_tareas = tareas_unidas;
             iniciar_patota_PAGINACION(&admin_paginacion);
 
-            mostrar_array_marcos();
-            mostrar_array_marcos_virtuales();
-            mostrar_tabla_de_paginas();
-
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             list_clean_and_destroy_elements(tcbs, (void*) iterator_destroy_tcb);
 			list_destroy(tcbs);
             free(tareas_unidas);
+            // mostrar_tabla_de_paginas();
             break;
 		case ENVIAR_PROXIMA_TAREA:
         // DISCORDIADOR me manda un pid y un tid
-            log_info(logger,"Una tarea se esta pidiendo!");
             recibir_paquete(cliente_fd,lista);
 
-            loggear_linea();
             uint32_t pid_prox_tarea = recibir_pid(lista);
             uint32_t tid__prox_tarea = recibir_pid(lista);
 
@@ -351,7 +378,6 @@ void atender_cliente_PAGINACION(int cliente_fd)
 			break;
         case ACTUALIZAR_ESTADO:
         // DISCORDIADOR me manda un pid y un tid
-            log_info(logger,"Se esta pidiendo una actualizacion de estado!");
             recibir_paquete(cliente_fd,lista);
 
             loggear_linea();
@@ -364,21 +390,18 @@ void atender_cliente_PAGINACION(int cliente_fd)
             
             break;
         case EXPULSAR_TRIPULANTE:
-            log_info(logger,"Un tripulante se esta por despedir!");
             recibir_paquete(cliente_fd,lista);
 
-            loggear_linea();
             uint32_t pid_expulsar_tripulante = recibir_pid(lista);
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
 
-            char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
-            eliminar_personaje(aux_expulsar);
+            // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
+            expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
 
             expulsar_tripulante_PAGINACION(pid_expulsar_tripulante,tid_expulsar_tripulante);
 
             break;
         case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:
-            log_info(logger,"Se movio un tripulante, parate un tantito que actualizo la info!");
             recibir_paquete(cliente_fd,lista);
             uint32_t pid_ubicacion = recibir_pid(lista);
             uint32_t tid_ubicacion = recibir_pid(lista);
@@ -387,10 +410,23 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t nueva_pos_y = recibir_pid(lista);
 
             char aux_ubicacion = obtener_id_mapa(pid_ubicacion,tid_ubicacion);
-            mover_personaje(aux_ubicacion,nueva_pos_x,nueva_pos_y);
+            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,aux_ubicacion,nueva_pos_x,nueva_pos_y);
 
             cambiar_ubicacion_tripulante_PAGINACION(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
             
+            break;
+        case DUMP:
+            
+            pthread_mutex_lock(&sem_memoria);
+            pthread_mutex_lock(&mutex_segmentos_libres);
+            pthread_mutex_lock(&mutex_mapa);
+            
+            hacer_dump_PAGINACION();
+            
+            pthread_mutex_unlock(&mutex_mapa);
+            pthread_mutex_unlock(&mutex_segmentos_libres);
+            pthread_mutex_unlock(&sem_memoria);
+
             break;
 		case -1:
 			log_error(logger, "el cliente se desconecto. Terminando servidor");
@@ -414,14 +450,39 @@ void atender_cliente_PAGINACION(int cliente_fd)
 void iniciar_mapa()
 {
     initscr();
+    if( !has_colors() )
+    {
+        endwin();
+        fprintf(stderr, "Error - El terminal que estas utilizando no soporta colores\n");
+        exit(1);
+    }
+    if( start_color() != OK )
+    {
+        endwin();
+        fprintf(stderr, " Error - No se pudo inicializar los colores\n");
+        exit(1);
+    }
 
-	nivel_gui_inicializar();
+    init_pair(1,COLOR_WHITE,COLOR_BLUE);
+	init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
+	init_pair(3,COLOR_WHITE,COLOR_CYAN);
+	init_pair(4,COLOR_CYAN,COLOR_BLACK);
+	init_pair(97,COLOR_MAGENTA,COLOR_BLACK);
+	init_pair(98,COLOR_RED,COLOR_BLACK);
+	init_pair(99,COLOR_MAGENTA,COLOR_BLACK);
 
+    getmaxyx(stdscr,y_max,x_max);
+    // nivel_gui_inicializar();
 	nivel_gui_get_area_nivel(&cols, &rows);
 
-	AmongOS = nivel_crear("AmongOS");
-
-    nivel_gui_dibujar(AmongOS);
+    attron(COLOR_PAIR(98) | A_BOLD);
+    mvprintw(0,(x_max/2-(strlen("AmonOS")/2)-2),"%s","AmongOS");
+    attroff(COLOR_PAIR(98) | A_BOLD);
+    refresh();
+    // attron(COLOR_PAIR(99) | A_BOLD);
+    // mvprintw(y_max-3,5,"%s","Referencias");
+    // attroff(COLOR_PAIR(99) | A_BOLD);
+    // refresh();
 }
 
 void eliminar_mapa()
@@ -431,11 +492,62 @@ void eliminar_mapa()
 
 void crear_personaje(char id, uint32_t pos_x, uint32_t pos_y)
 {
-    err = personaje_crear(AmongOS, id, pos_x, pos_y);
-    ASSERT_CREATE(AmongOS, id, err);
-    refresh();
-    nivel_gui_dibujar(AmongOS);
+	init_pair(65,COLOR_BLACK,COLOR_WHITE);
+	init_pair(66,COLOR_BLUE,COLOR_CYAN);
+	init_pair(67,COLOR_CYAN,COLOR_WHITE);
+	init_pair(68,COLOR_CYAN,COLOR_BLACK);
+    
+    // attroff(A_BOLD);
+    // attrset(COLOR_PAIR(5));
+    // err = personaje_crear(AmongOS, id, pos_x, pos_y);
+    // int nro = id;
+    // printf("%d",nro);
+    // sleep(1);
+    // attrset(COLOR_PAIR(id)  | A_BOLD);
+    mvprintw(pos_x,pos_y,"%c",id);
+    
+    // ASSERT_CREATE(AmongOS, id, err);
+    
+    // mvprintw(5+1,25,"El tripulante es %d", id);
+    // nivel_gui_dibujar(AmongOS);
+    refrescar_tabla_de_mapas();
+    // refresh();
 }
+
+void mostrar_patotas_presentes_en_mapa()
+{
+    move(y_max-2,0);
+    mvprintw(y_max-2,(x_max/2 - 13),"%s","Patotas presentes ->");
+    clrtoeol();
+    // init_pair(1,COLOR_WHITE,COLOR_BLUE);
+	// init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
+	// init_pair(3,COLOR_WHITE,COLOR_CYAN);
+	// init_pair(4,COLOR_CYAN,COLOR_BLACK);
+    
+    uint32_t ultimo_pid = -1;
+    list_sort(TABLA_DE_MAPA,orden_lista_mapa);
+    t_list_iterator* list_iterator_mapa = list_iterator_create(TABLA_DE_MAPA);
+    
+    int espacio = 0;
+    while(list_iterator_has_next(list_iterator_mapa))
+    {
+        
+        t_mapa* tripulante_en_mapa = (t_mapa*) list_iterator_next(list_iterator_mapa);
+        if (tripulante_en_mapa->pid != ultimo_pid)
+        {
+            attron(COLOR_PAIR(tripulante_en_mapa->pid) | A_BOLD);
+            mvprintw(y_max-2,(x_max/2+7+1+(2*espacio)),"%d",tripulante_en_mapa->pid);
+            attroff(COLOR_PAIR(tripulante_en_mapa->pid) | A_BOLD);
+
+            ultimo_pid = tripulante_en_mapa->pid;
+            espacio++;
+        }
+        
+    }
+    list_iterator_destroy(list_iterator_mapa);
+
+}
+
 
 void mover_personaje(char id, uint32_t pos_x, uint32_t pos_y)
 {
@@ -444,25 +556,157 @@ void mover_personaje(char id, uint32_t pos_x, uint32_t pos_y)
     nivel_gui_dibujar(AmongOS);
 }
 
+void expulsar_tripulante_en_mapa(uint32_t pid, uint32_t tid)
+{
+    bool matchear_tripulante(t_mapa* tripulante)
+    {
+        return (tripulante->pid == pid && tripulante->tid == tid);
+    };
+    t_mapa* tcb_mapa = list_remove_by_condition(TABLA_DE_MAPA, matchear_tripulante);
+    free(tcb_mapa);
+    refrescar_tabla_de_mapas();
+}
+
+
+void mover_personaje_en_mapa(uint32_t pid,uint32_t tid, char id,uint32_t pos_x_nuevo, uint32_t pos_y_nuevo)
+{
+    // bool matchear_tripulante(t_mapa* tripulante)
+    // {
+    //     return (tripulante->pid == pid && tripulante->tid == tid);
+    // };
+
+    // t_mapa* tcb_mapa = list_remove_by_condition(TABLA_DE_MAPA, matchear_tripulante);
+    // strcpy(tcb_mapa->pos_x,pos_x_nuevo);
+    // strcpy(tcb_mapa->pos_y,pos_y_nuevo);
+    
+    t_mapa* tripulante_en_mapa;
+
+    t_list_iterator* list_tripulantes_en_mapa = list_iterator_create(TABLA_DE_MAPA);
+    while(list_iterator_has_next(list_tripulantes_en_mapa))
+    {
+        tripulante_en_mapa = (t_mapa*) list_iterator_next(list_tripulantes_en_mapa);
+        if (tripulante_en_mapa->pid == pid && tripulante_en_mapa->tid == tid )
+        {
+            tripulante_en_mapa->pos_x = pos_x_nuevo;
+            tripulante_en_mapa->pos_y = pos_y_nuevo;
+            list_replace(TABLA_DE_MAPA,list_tripulantes_en_mapa->index,tripulante_en_mapa);
+        }
+        
+    }
+    free(list_tripulantes_en_mapa);
+
+    
+    // tcb_mapa->pos_x = pos_x_nuevo;
+    // tcb_mapa->pos_y = pos_y_nuevo;
+    // list_add(TABLA_DE_MAPA,tcb_mapa);
+    // list_sort(TABLA_DE_MAPA,orden_lista_mapa);
+ 
+    refrescar_tabla_de_mapas();
+}
+
 void eliminar_personaje(char id)
 {
-    item_borrar(AmongOS,id);
+    mvprintw(1,5,"%s"," ");
     refresh();
-    nivel_gui_dibujar(AmongOS);
+    // item_borrar(AmongOS,id);
+    // refresh();
+    // nivel_gui_dibujar(AmongOS);
 }
+
+void eliminar_personaje_ubicado(char id, uint32_t pos_x, uint32_t pos_y)
+{
+    
+    mvprintw(pos_x,pos_y,"%s"," ");
+    refresh();
+}
+
+void refrescar_tabla_de_mapas()
+{
+    // clrtobot();
+    // clrtobot();
+    // erase();
+    // clear();
+    // getmaxyx(stdscr,y_max,x_max);
+	// nivel_gui_get_area_nivel(&cols, &rows);
+    // sleep(1);
+
+
+    for (int i = 6; i <= x_max-7; i++) {
+        for (int j = 1; j <= y_max - 4; j++) {
+            if (i == 6 || i == x_max-7){
+                mvprintw(j,i,"%c",'*');
+            }else{
+                mvprintw(j,i,"%c",' ');
+            }
+            if (j == 1 || j == y_max-4)
+            {
+                mvprintw(j,i,"%s","* ");
+            }
+            
+        }
+
+        mvprintw(0,i,"%s","\n");
+    }
+
+    attron(COLOR_PAIR(98) | A_BOLD);
+    mvprintw(0,3,"%s","1C - 2021");
+    mvprintw(0,(x_max-25),"%s","TP - Sistemas Operativos");
+    mvprintw(0,(x_max/2-(strlen("AmonOS")/2)-2),"%s","AmongOS");
+    attroff(COLOR_PAIR(98) | A_BOLD);
+    attron(COLOR_PAIR(97) | A_BOLD);
+    mvprintw(y_max-1,(x_max-(17)),"%s","Quinta-Recursada");
+    attroff(COLOR_PAIR(97) | A_BOLD);
+    attron(COLOR_PAIR(99) | A_BOLD);
+    mvprintw(y_max-3,x_max/2-6,"%s","Referencias");
+    attroff(COLOR_PAIR(99) | A_BOLD);
+
+
+    int inicio_x=7, inicio_y=2;
+    t_list_iterator* tripulantes_en_mapa = list_iterator_create(TABLA_DE_MAPA);
+    
+    while(list_iterator_has_next(tripulantes_en_mapa))
+    {
+        t_mapa* tripulante = (t_mapa*) list_iterator_next(tripulantes_en_mapa);
+
+        attron(COLOR_PAIR(tripulante->pid) | A_BOLD);
+        mvprintw(inicio_y+tripulante->pos_y,inicio_x+tripulante->pos_x,"%c",tripulante->mapid);
+        attroff(COLOR_PAIR(tripulante->pid) | A_BOLD);
+        refresh();
+    }
+    list_iterator_destroy(tripulantes_en_mapa);
+    refresh();
+    mostrar_patotas_presentes_en_mapa();
+    refresh();
+    // sleep(1);
+}
+
 
 void iniciar_patota_en_mapa(uint32_t pid, t_list* lista_tcb)
 {
+    init_pair(1,COLOR_WHITE,COLOR_BLUE);
+	init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
+	init_pair(3,COLOR_WHITE,COLOR_CYAN);
+	init_pair(4,COLOR_CYAN,COLOR_BLACK);
+    // nivel_gui_dibujar(AmongOS);
+
+
+    // attrset(COLOR_PAIR(pid)  | A_BOLD);
+    // attron(COLOR_PAIR(pid) | A_BOLD);
+    // printw("Patota %d",pid);
+    // nivel_gui_dibujar(AmongOS);
+    // refresh();
 
 	void agregar_a_mapa(t_tcb* tcb){
 			
-            pthread_mutex_lock(&mutex_mapa);    
+            // pthread_mutex_lock(&mutex_mapa);    
 			t_mapa dto;
 			dto.pid = pid;
 			dto.tid = tcb->tid;
+			dto.pos_x = tcb->posicion_x;
+			dto.pos_y = tcb->posicion_y;
 			dto.mapid = ID_MAPA;
             ID_MAPA ++;
-            pthread_mutex_unlock(&mutex_mapa);    
+            // pthread_mutex_unlock(&mutex_mapa);    
 			
 			void* aux;
 			aux = malloc(sizeof(t_mapa));
@@ -470,10 +714,17 @@ void iniciar_patota_en_mapa(uint32_t pid, t_list* lista_tcb)
 			memcpy(aux, &dto, sizeof(t_mapa));
 
 			list_add(TABLA_DE_MAPA, aux);
-			crear_personaje(dto.mapid,tcb->posicion_x,tcb->posicion_y);
+            // refrescar_tabla_de_mapas();
+			// crear_personaje(dto.mapid,dto.pos_x,dto.pos_y);
 	}
 
 	list_iterate(lista_tcb, agregar_a_mapa);
+    // list_sort(TABLA_DE_MAPA,orden_lista_mapa);
+    refrescar_tabla_de_mapas();
+    // mvprintw(y_max-2,21+pid,"%d",pid);
+    // attroff(COLOR_PAIR(pid) | A_BOLD);
+    // mostrar_patotas_presentes_en_mapa();
+    // refresh();
 }
 
 char obtener_id_mapa(uint32_t pid, uint32_t tid)
@@ -601,6 +852,8 @@ void iniciar_segmentacion()
     admin_segmentacion->bytes_libres = (uint32_t) config_get_int_value(config,"TAMANIO_MEMORIA");
     admin_segmentacion->segmentos_libres = segmentos_libre;
 
+    CRITERIO = config_get_string_value(config,"CRITERIO");
+
     limpiar_memoria();
 
     lista_de_patotas = list_create();
@@ -619,9 +872,8 @@ void asignar_segmento(uint32_t bytes_ocupados)
 
 t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados)
 {
-    char* criterio = config_get_string_value(config,"CRITERIO");
     t_segmento* segmento_libre_buscado;
-    if ( strcmp(criterio,"FIRSTFIT") == 0)
+    if ( strcmp(CRITERIO,"FIRSTFIT") == 0)
     {
         segmento_libre_buscado = buscar_segmento_libre_first_fit(bytes_ocupados);
     }else
@@ -637,7 +889,7 @@ t_segmento* buscar_segmento_libre(uint32_t bytes_ocupados)
 
 t_segmento* buscar_segmento_libre_first_fit(uint32_t bytes_ocupados)
 {
-    pthread_mutex_lock(&mutex_segmentos_libres);
+    // pthread_mutex_lock(&mutex_segmentos_libres);
 
     t_list_iterator* list_iterator = list_iterator_create(admin_segmentacion->segmentos_libres);
     bool encontrado = false;
@@ -676,20 +928,22 @@ t_segmento* buscar_segmento_libre_first_fit(uint32_t bytes_ocupados)
     if (encontrado)
     {
         segmento_ocupado->se_encuentra = 1;
-        pthread_mutex_unlock(&mutex_segmentos_libres);
+        // pthread_mutex_unlock(&mutex_segmentos_libres);
         return segmento_ocupado;
         
     }
     else{
-        log_info(logger,"No hay espacio para colocar esta cantidad de bytes, te recomendaria compactar");
-        pthread_mutex_unlock(&mutex_segmentos_libres);
-        return NULL;
+        compactar();
+        segmento_ocupado = buscar_segmento_libre_first_fit(bytes_ocupados);
+        // log_info(logger,"No hay espacio para colocar esta cantidad de bytes, te recomendaria compactar");
+        // pthread_mutex_unlock(&mutex_segmentos_libres);
+        return segmento_ocupado;
     }
 }
 
 t_segmento* buscar_segmento_libre_best_fit(uint32_t bytes_ocupados)
 {
-    pthread_mutex_lock(&mutex_segmentos_libres);
+    // pthread_mutex_lock(&mutex_segmentos_libres);
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion_best_free);
     t_list_iterator* list_iterator = list_iterator_create(admin_segmentacion->segmentos_libres);
     bool encontrado = false;
@@ -710,9 +964,11 @@ t_segmento* buscar_segmento_libre_best_fit(uint32_t bytes_ocupados)
             segmento_libre->inicio += bytes_ocupados;
             
             encontrado = true;
-        }else
+        }
+        if(bytes_ocupados == diferencia)
         {
             segmento_ocupado = list_remove(admin_segmentacion->segmentos_libres,list_iterator->index);
+            encontrado = true;
         }
     }
     free(list_iterator);
@@ -720,11 +976,75 @@ t_segmento* buscar_segmento_libre_best_fit(uint32_t bytes_ocupados)
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
     
 
-    pthread_mutex_unlock(&mutex_segmentos_libres);
+    // pthread_mutex_unlock(&mutex_segmentos_libres);
     segmento_ocupado->se_encuentra = 1;
 
     return segmento_ocupado;
 }
+
+bool es_necesario_compactar(int tamanio_tareas, int cantidad_de_tripulantes)
+{
+    t_list* lista_a_ocupar = list_create();
+    list_add(lista_a_ocupar,tamanio_tareas);
+    for (int i = 1; i <= cantidad_de_tripulantes; i++)
+    {
+        list_add(lista_a_ocupar,sizeof(t_tcb));
+    }
+    list_add(lista_a_ocupar,sizeof(t_pcb));
+    list_sort(lista_a_ocupar,orden_mayor_a_menor);
+    int tamanio_lista_a_ocupar_original = list_size(lista_a_ocupar);
+
+    // pthread_mutex_lock(&mutex_segmentos_libres);
+    list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion_best_free_mayor_a_menor);
+    t_list_iterator* list_iterator = list_iterator_create(admin_segmentacion->segmentos_libres);
+    bool encontrados = false;
+    
+    t_segmento* segmento_libre;
+    int valor_a_guardar;
+    int indice = 0;
+    int contador_de_eliminados = 0;
+    while(!encontrados && list_iterator_has_next(list_iterator))
+    {
+        segmento_libre = (t_segmento*) list_iterator_next(list_iterator);
+        uint32_t diferencia = (segmento_libre->fin - segmento_libre->inicio)+1;
+        valor_a_guardar = list_remove(lista_a_ocupar,indice);
+        contador_de_eliminados ++;
+        if (valor_a_guardar > diferencia)
+        {
+            list_destroy(lista_a_ocupar);
+            free(list_iterator);
+            list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion_best_free);
+            return true;
+        }
+        int nuevo_valor_libre;
+        while (valor_a_guardar < diferencia && !encontrados)
+        {
+            nuevo_valor_libre = diferencia - valor_a_guardar;
+            valor_a_guardar = list_get(lista_a_ocupar,indice+1);
+            
+            if (valor_a_guardar <= nuevo_valor_libre)
+            {
+                contador_de_eliminados ++;
+                valor_a_guardar = list_remove(lista_a_ocupar,indice);
+                diferencia = nuevo_valor_libre;
+                // indice == list_size(admin_segmentacion->segmentos_libres)
+                if ( contador_de_eliminados+1 == tamanio_lista_a_ocupar_original )
+                {
+                    encontrados = true;
+                }
+                
+            }
+            
+        }
+    list_destroy(lista_a_ocupar);
+    free(list_iterator);
+    list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion_best_free);
+
+    return false;
+    }
+}
+
+
 
 t_segmento* buscar_segmento_libre_best_fit_original(uint32_t bytes_ocupados)
 {
@@ -761,7 +1081,7 @@ t_segmento* buscar_segmento_libre_best_fit_original(uint32_t bytes_ocupados)
 
 void guardar_en_MEMORIA_tcb(t_segmento* segmento_a_ocupar,t_tcb* tcb)
 {
-    pthread_mutex_lock(&sem_memoria);    
+    // pthread_mutex_lock(&sem_memoria);    
         int desplazamiento = segmento_a_ocupar->inicio;
     
     memcpy(MEMORIA + desplazamiento, (void*) (&tcb->tid), sizeof(uint32_t));
@@ -775,7 +1095,7 @@ void guardar_en_MEMORIA_tcb(t_segmento* segmento_a_ocupar,t_tcb* tcb)
     memcpy(MEMORIA + desplazamiento, (void*) (&tcb->proxima_instruccion), sizeof(uint32_t));
     desplazamiento += sizeof(uint32_t);
     memcpy(MEMORIA + desplazamiento, (void*) (&tcb->puntero_pcb), sizeof(uint32_t));
-    pthread_mutex_unlock(&sem_memoria); 
+    // pthread_mutex_unlock(&sem_memoria); 
     
     desplazamiento += sizeof(uint32_t)-1;
 
@@ -809,25 +1129,25 @@ void actualizar_en_MEMORIA_tcb_estado(t_segmento* segmento_a_modificar, char est
 
 void actualizar_en_MEMORIA_tcb_posiciones(t_segmento* segmento_a_modificar, uint32_t pos_x, uint32_t pos_y)
 {
-        pthread_mutex_lock(&sem_memoria); 
+        // pthread_mutex_lock(&sem_memoria); 
         int desplazamiento_posiciones = segmento_a_modificar->inicio;
         desplazamiento_posiciones += sizeof(uint32_t) +sizeof(char);
 
         memcpy(MEMORIA + desplazamiento_posiciones, (&pos_x), sizeof(uint32_t));
         desplazamiento_posiciones += sizeof(uint32_t);
         memcpy(MEMORIA + desplazamiento_posiciones, (&pos_y), sizeof(uint32_t));
-        pthread_mutex_unlock(&sem_memoria); 
+        // pthread_mutex_unlock(&sem_memoria); 
 }
 
 
 void guardar_en_MEMORIA_pcb(t_segmento* segmento_a_ocupar,t_pcb* pcb)
 {
         int desplazamiento = segmento_a_ocupar->inicio;
-    pthread_mutex_lock(&sem_memoria); 
+    // pthread_mutex_lock(&sem_memoria); 
     memcpy(MEMORIA + desplazamiento, (&pcb->pid), sizeof(uint32_t));
     desplazamiento += sizeof(uint32_t);
     memcpy(MEMORIA + desplazamiento, (&pcb->tareas), sizeof(uint32_t));
-    pthread_mutex_unlock(&sem_memoria); 
+    // pthread_mutex_unlock(&sem_memoria); 
     desplazamiento += sizeof(uint32_t)-1;
     if (desplazamiento != segmento_a_ocupar->fin)
     {
@@ -839,13 +1159,16 @@ void guardar_en_MEMORIA_pcb(t_segmento* segmento_a_ocupar,t_pcb* pcb)
 void guardar_en_MEMORIA_tareas(t_segmento* segmento_a_ocupar,char* tareas_unidas)
 {
     int desplazamiento = segmento_a_ocupar->inicio;
-
-    pthread_mutex_lock(&sem_memoria); 
+    // loggear_linea();
+    // loggear_entero(segmento_a_ocupar->inicio);
+    // loggear_entero(segmento_a_ocupar->fin);
+    // loggear_linea();
+    // pthread_mutex_lock(&sem_memoria); 
     memcpy(MEMORIA + desplazamiento, (void*) (tareas_unidas), strlen(tareas_unidas));
-    pthread_mutex_unlock(&sem_memoria); 
-    
+    // pthread_mutex_unlock(&sem_memoria); 
+    int tamanio = strlen(tareas_unidas);
     desplazamiento += strlen(tareas_unidas);
-    if (desplazamiento != segmento_a_ocupar->fin)
+    if (desplazamiento != segmento_a_ocupar->fin+1)
     {
         log_info(logger,"Las tareas se cargaron mal a memoria");
     }
@@ -856,15 +1179,15 @@ void guardar_en_MEMORIA_tareas(t_segmento* segmento_a_ocupar,char* tareas_unidas
 
 void liberar_segmento(t_segmento* segmento)
 {
-    pthread_mutex_lock(&mutex_segmentos_libres);
+    // pthread_mutex_lock(&mutex_segmentos_libres);
 
     admin_segmentacion->bytes_libres += segmento->fin - segmento->inicio;
     
-    for (int i = segmento->inicio; i < segmento->fin; i++)
+    for (int i = segmento->inicio; i <= segmento->fin; i++)
     {
-        pthread_mutex_lock(&sem_memoria); 
-        memcpy(MEMORIA+i, (void*) "", sizeof(char));
-        pthread_mutex_unlock(&sem_memoria); 
+        // pthread_mutex_lock(&sem_memoria); 
+        memcpy(MEMORIA+i, (void*) " ", sizeof(char));
+        // pthread_mutex_unlock(&sem_memoria); 
     }
     
     segmento->se_encuentra = 0;
@@ -872,17 +1195,19 @@ void liberar_segmento(t_segmento* segmento)
     list_add(admin_segmentacion->segmentos_libres, segmento);
     
     list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
-    pthread_mutex_unlock(&mutex_segmentos_libres);
+    // pthread_mutex_unlock(&mutex_segmentos_libres);
 }
 
 void compactar()
 {
-    pthread_mutex_lock(&mutex_segmentos_libres);
+    // pthread_mutex_lock(&mutex_segmentos_libres);
     t_list* lista_ocupada = lista_de_segmentos_ocupados();
         
             
     t_list* segmentos_afectados;
     t_list* segmentos_transformados;
+    list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion);
+
 
     while (list_size(admin_segmentacion->segmentos_libres)>1 && ultimo_segmento_libre_compactable()->fin != SMOBJ_SIZE)
     {
@@ -894,7 +1219,9 @@ void compactar()
         list_destroy(segmentos_transformados);
     }
 
-    pthread_mutex_unlock(&mutex_segmentos_libres);
+    list_sort(admin_segmentacion->segmentos_libres,orden_lista_admin_segmentacion_best_free);
+    list_destroy(lista_ocupada);
+    // pthread_mutex_unlock(&mutex_segmentos_libres);
 
 }
 
@@ -924,7 +1251,6 @@ t_list* lista_de_segmentos_ocupados()
         list_clean(lista_patota_filtrados);
         list_destroy(lista_patota_filtrados);
     }
-
     free(list_iterator_patotas);
 
     return lista_ocupados;
@@ -965,14 +1291,24 @@ void liberar_patota_si_no_hay_tripulantes(int pid)
     if (!hay_tripulantes)
     {
         t_segmento* segmento_a_liberar;
-        for (int i = 0; i < list_size(segmentos_patota); i++)
+        segmento_a_liberar = list_get(segmentos_patota,0);
+        liberar_segmento(segmento_a_liberar);
+        segmento_a_liberar = list_get(segmentos_patota,list_size(segmentos_patota)-1);
+        liberar_segmento(segmento_a_liberar);
+
+        for (int i = 1; i < list_size(segmentos_patota)-1; i++)
         {
-            segmento_a_liberar = list_get(segmentos_patota,i);
-            if (segmento_a_liberar->se_encuentra == 1)
-            {
-                liberar_segmento(segmento_a_liberar);
-            }
+            segmento_tcb = list_get(segmentos_patota,i);
+            free(segmento_tcb);
         }
+        // for (int i = 0; i < list_size(segmentos_patota); i++)
+        // {
+        //     segmento_a_liberar = list_get(segmentos_patota,i);
+        //     if (segmento_a_liberar->se_encuentra == 1)
+        //     {
+        //         liberar_segmento(segmento_a_liberar);
+        //     }
+        // }
     }
     
     
@@ -981,12 +1317,14 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
 {
 /* ------------------------Asignacion de segmentos---------------------------- */
     /* ---------------------validar espacio disponible-------------------------- */
-        int _tareas_bytes_ocupados = strlen(tareas_unidas)+1;
-
+        int _tareas_bytes_ocupados = strlen(tareas_unidas);
         int bytes_a_guardar = _tareas_bytes_ocupados + sizeof(t_pcb) + cant_tripulantes * sizeof(t_tcb);
         
+        // loggear_linea();
+        // log_info(logger, "Es necsario compactar? -> %s",es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes)?"true":"false");
+        
         // Se pregunta si hay espacio para TODAS los segmentos
-        pthread_mutex_lock(&mutex_segmentos_libres);
+        // pthread_mutex_lock(&mutex_segmentos_libres);
         if (bytes_a_guardar >= admin_segmentacion->bytes_libres)
         {
             if (bytes_a_guardar > admin_segmentacion->bytes_libres)
@@ -1002,11 +1340,16 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
                 free(tareas_unidas);
                 pthread_exit(pthread_self);
             }
-            pthread_mutex_lock(&sem_memoria); 
+            // pthread_mutex_lock(&sem_memoria); 
             compactar();
-            pthread_mutex_unlock(&sem_memoria); 
+            // pthread_mutex_unlock(&sem_memoria); 
         }
-        pthread_mutex_unlock(&mutex_segmentos_libres);
+        if ( strcmp(CRITERIO,"BESTFIT") == 0 && es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes))
+        {
+            compactar();
+        }
+        
+        // pthread_mutex_unlock(&mutex_segmentos_libres);
         
         t_list* tabla_segmentos_de_patota = (t_segmento*) list_create();
 
@@ -1014,8 +1357,10 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
         t_segmento* segmento_tareas;
         segmento_tareas = buscar_segmento_libre(_tareas_bytes_ocupados);
         segmento_tareas->tipo = 'I';
-
+        
+        // pthread_mutex_lock(&sem_memoria); 
         guardar_en_MEMORIA_tareas(segmento_tareas,tareas_unidas);
+        // pthread_mutex_unlock(&sem_memoria); 
     /* ------------------------------PCB---------------------------------------- */
         t_segmento* segmento_pcb;
         segmento_pcb = buscar_segmento_libre(sizeof(t_pcb));
@@ -1048,8 +1393,9 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
     // Esto tendra el orden de PCB, TCB1 .. TCB N, tareas (en la posicion N de la lista)
         list_add(tabla_segmentos_de_patota,segmento_tareas);
 
-        list_add(lista_de_patotas,tabla_segmentos_de_patota);
-        list_sort(lista_de_patotas,comparador_patotas);
+        list_add_sorted(lista_de_patotas,tabla_segmentos_de_patota,comparador_patotas);
+        // list_add(lista_de_patotas,tabla_segmentos_de_patota);
+        // list_sort(lista_de_patotas,comparador_patotas);
         
     /*---------------------Fin Hidratacion de la patota--------------------------*/
 }
@@ -1117,6 +1463,15 @@ void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t
     // Obtenemos el segmento de TCB de las estructuras administrativas
     t_segmento* segmento_tcb_explulsar_tripulante;
     segmento_tcb_explulsar_tripulante = retornar_segmento_tcb(segmentos_patota_expulsar_tripulante,tid_expulsar_tripulante);
+    
+    // int pos_x,pos_y;
+    // pos_x = retornar_pos_x_del_tcb(segmento_tcb_explulsar_tripulante);
+    // pos_y = retornar_pos_y_del_tcb(segmento_tcb_explulsar_tripulante);
+    // eliminar_personaje_ubicado(id_mapa,pos_x,pos_y);
+    
+    t_segmento* segmento_vacio = malloc(sizeof(t_segmento));
+    segmento_vacio->se_encuentra = 0;
+    list_replace(segmentos_patota_expulsar_tripulante,tid_expulsar_tripulante,segmento_vacio);
     liberar_segmento(segmento_tcb_explulsar_tripulante);
     liberar_patota_si_no_hay_tripulantes(pid_expulsar_tripulante);
 }
@@ -1126,14 +1481,23 @@ void cambiar_ubicacion_tripulante_SEGMENTACION(uint32_t pid_ubicacion,uint32_t t
     // lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota_ubicacion;
     segmentos_patota_ubicacion = retornar_segmentos_patota(pid_ubicacion);
-    t_segmento* segmento_tcb_ubicacion;
+    t_segmento* segmento_tcb_ubicacion, *segmento_pcb_ubicacion;
+    segmento_pcb_ubicacion = list_get(segmentos_patota_ubicacion,0);
     segmento_tcb_ubicacion = retornar_segmento_tcb(segmentos_patota_ubicacion,tid_ubicacion);
 
         // Descomentar para testear
     // loggear_tcb(segmento_tcb_ubicacion);
+
+    // uint32_t pos_x,pos_y,pid;
+    // t_segmento* pcb;
+    // pos_x = retornar_pos_x_del_tcb(segmento_tcb_ubicacion);
+    // pos_y = retornar_pos_y_del_tcb(segmento_tcb_ubicacion);
+    // pid = retornar_pid_del_pcb(segmento_pcb_ubicacion);
+    // mover_personaje_ubicacion(pid,id,pos_x,pos_y,nueva_pos_x,nueva_pos_y);
+    
     actualizar_en_MEMORIA_tcb_posiciones(segmento_tcb_ubicacion,nueva_pos_x,nueva_pos_y);
     
-    loggear_tcb(segmento_tcb_ubicacion);
+
         // Descomentar para testear
     // loggear_tcb(segmento_tcb_ubicacion);
 }
@@ -1147,7 +1511,6 @@ void cambiar_ubicacion_tripulante_SEGMENTACION(uint32_t pid_ubicacion,uint32_t t
 
 void iniciar_paginacion()
 {   
-    loggear_linea();
     char* algoritmo = config_get_string_value(config,"ALGORITMO_REEMPLAZO");
     if ( strcmp(algoritmo,"LRU") == 0)
     {
@@ -1166,15 +1529,16 @@ void iniciar_paginacion()
     CANTIDAD_MARCOS = obtener_tamanio_array_de_marcos();
 	ESTADO_MARCOS = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
 	TIMESTAMP_MARCOS = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
-	BIT_CLOCK =  (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
+	ARRAY_BIT_USO =  (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS);
 	CANTIDAD_MARCOS_VIRTUALES = obtener_tamanio_array_de_marcos_virtuales();
 	ESTADO_MARCOS_VIRTUALES = (uint32_t *) malloc( sizeof (uint32_t) * CANTIDAD_MARCOS_VIRTUALES);
 	
-    loggear_linea();
 	//inicializo en 0 todo el bitmap
 
 	for (int i = 0; i < CANTIDAD_MARCOS; i++) {
 		ESTADO_MARCOS[i] = 0;
+		TIMESTAMP_MARCOS[i] = 0;
+		ARRAY_BIT_USO[i] = 0;
 	}
 
 	for (int i = 0; i < CANTIDAD_MARCOS_VIRTUALES; i++) {
@@ -1193,13 +1557,13 @@ void iniciar_paginacion()
 		perror("No pude obtener el tamaño del archivo.\n");
 	}
 
-	printf("Tamaño del Archivo: %ld\n",sb.st_size);
+	// printf("Tamaño del Archivo: %ld\n",sb.st_size);
 
 	MEMORIA_VIRTUAL = mmap(NULL, sb.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     TABLA_DE_MAPA = list_create();
 }
 
-int obtener_tamanio_array_de_marcos (){
+uint32_t obtener_tamanio_array_de_marcos (){
 	if (TAMANIO_MEMORIA >= TAMANIO_PAGINAS) {
 		//printf("La cantidad de marcos disponibles es de %d marcos\n", TAMANIO_MEMORIA / TAMANIO_PAGINAS);
 		//printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", TAMANIO_MEMORIA % TAMANIO_PAGINAS);
@@ -1210,7 +1574,7 @@ int obtener_tamanio_array_de_marcos (){
 	}
 }
 
-int obtener_tamanio_array_de_marcos_virtuales (){
+uint32_t obtener_tamanio_array_de_marcos_virtuales (){
 	if (TAMANIO_MEMORIA_VIRTUAL >= TAMANIO_PAGINAS) {
 		//printf("La cantidad de marcos disponibles es de %d marcos\n", TAMANIO_MEMORIA / TAMANIO_PAGINAS);
 		//printf("La cantidad de memoria que quedara inutilizable sera de %d bytes\n", TAMANIO_MEMORIA % TAMANIO_PAGINAS);
@@ -1221,23 +1585,30 @@ int obtener_tamanio_array_de_marcos_virtuales (){
 	}
 }
 
+uint32_t redondear_para_arriba (uint32_t numero, uint32_t divisor) {
+	if (numero%divisor!= 0){
+		return numero/divisor+1;
+	} else {
+		return numero/divisor;
+	}
+}
+
 dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* data_a_empaquetar){
 	dto_memoria dto_aux;
 
-	int aux_tamanio = 0;
-	int cantidad_de_tripulantes = list_size(data_a_empaquetar->lista_de_tcb);
-	int largo_lista_de_tareas = strlen(data_a_empaquetar->lista_de_tareas) + 1;
+	uint32_t aux_tamanio = 0;
+	uint32_t cantidad_de_tripulantes = list_size(data_a_empaquetar->lista_de_tcb);
+	uint32_t largo_lista_de_tareas = strlen(data_a_empaquetar->lista_de_tareas) + 1;
 	aux_tamanio += 8;
 	aux_tamanio += cantidad_de_tripulantes * 21;
 	data_a_empaquetar->pcb.tareas = aux_tamanio;
 	aux_tamanio += largo_lista_de_tareas;
 	
 	dto_aux.tamanio_data = aux_tamanio;
-	
 	void* memaux;
-	memaux = (void*) malloc (aux_tamanio);
+	memaux = (void*) malloc (redondear_para_arriba(aux_tamanio, TAMANIO_PAGINAS)*TAMANIO_PAGINAS);
 	memcpy(memaux, &data_a_empaquetar->pcb, 8);
-	for (int i = 0; i < cantidad_de_tripulantes; i++ ) {
+	for (uint32_t i = 0; i < cantidad_de_tripulantes; i++ ) {
 		 t_tcb* aux_tcb = list_get(data_a_empaquetar->lista_de_tcb, i);
 		 memcpy(memaux + 8 + 21*i, &aux_tcb->tid, 4);
 		 memcpy(memaux + 12 + 21*i, &aux_tcb->estado, 1);
@@ -1248,8 +1619,8 @@ dto_memoria empaquetar_data_paginacion (estructura_administrativa_paginacion* da
 	}
 	memcpy(memaux + 8 + cantidad_de_tripulantes * 21, data_a_empaquetar->lista_de_tareas, largo_lista_de_tareas);
 	dto_aux.data_empaquetada = memaux;
-	free(memaux);
-    return dto_aux;
+	
+	return dto_aux;
 }
 
 void modificar_tlb (uint32_t id_proceso, t_list* lista_tids, t_list* marcos_utilizados) {
@@ -1266,18 +1637,18 @@ void modificar_tlb (uint32_t id_proceso, t_list* lista_tids, t_list* marcos_util
 		dto->lista_de_tids = lista_tids;
 		t_list* lista_presencia;
 		lista_presencia = list_create();
-		int aux2 = list_size(marcos_utilizados);
-		for(int i = 0; i<aux2; i++) {
+		uint32_t aux2 = list_size(marcos_utilizados);
+		for(uint32_t i = 0; i<aux2; i++) {
 			list_add(lista_presencia, 1);
 		}	
 		dto->lista_de_presencia = lista_presencia;
 		list_add(TABLA_DE_PAGINAS, dto);
 }
 
-int obtener_marcos_vacios() {
-	int marcos_vacios = 0;
+uint32_t obtener_marcos_vacios() {
+	uint32_t marcos_vacios = 0;
 	
-	for(int i=0; i<CANTIDAD_MARCOS; i++) {
+	for(uint32_t i=0; i<CANTIDAD_MARCOS; i++) {
 		if(ESTADO_MARCOS[i]==0) {
 			marcos_vacios++;
 		}
@@ -1285,10 +1656,10 @@ int obtener_marcos_vacios() {
 	return marcos_vacios;
 }
 
-int obtener_marcos_vacios_virtuales() {
-	int marcos_vacios_virtuales = 0;
+uint32_t obtener_marcos_vacios_virtuales() {
+	uint32_t marcos_vacios_virtuales = 0;
 	
-	for(int i=0; i<CANTIDAD_MARCOS_VIRTUALES; i++) {
+	for(uint32_t i=0; i<CANTIDAD_MARCOS_VIRTUALES; i++) {
 		if(ESTADO_MARCOS_VIRTUALES[i]==0) {
 			marcos_vacios_virtuales++;
 		}
@@ -1296,8 +1667,8 @@ int obtener_marcos_vacios_virtuales() {
 	return marcos_vacios_virtuales;
 }
 
-int paginas_que_ocupa(int cantidad_bytes){
-	int aux = cantidad_bytes / TAMANIO_PAGINAS;
+uint32_t paginas_que_ocupa(uint32_t cantidad_bytes){
+	uint32_t aux = cantidad_bytes / TAMANIO_PAGINAS;
 	if (cantidad_bytes % TAMANIO_PAGINAS != 0) {
 		aux ++;
 	}
@@ -1305,12 +1676,13 @@ int paginas_que_ocupa(int cantidad_bytes){
 }
 
 void setear_memoria(t_list* lista_a_reservar, void* data_empaquetada){
-	int aux = 0;
-	void setear_una_pagina(int numero_marco){
+	uint32_t aux = 0;
+	void setear_una_pagina(uint32_t numero_marco){
 		memcpy(MEMORIA + (numero_marco * TAMANIO_PAGINAS), data_empaquetada + aux, TAMANIO_PAGINAS);
-		aux += TAMANIO_PAGINAS;
+		aux = TAMANIO_PAGINAS + aux;
 	}
 	list_iterate(lista_a_reservar, (void*)setear_una_pagina);
+	free(data_empaquetada);
 }
 
 void pasar_un_marco_de_memoria(uint32_t marco_virtual, uint32_t marco_principal, bool sentido){
@@ -1322,10 +1694,10 @@ void pasar_un_marco_de_memoria(uint32_t marco_virtual, uint32_t marco_principal,
 }
 
 
-t_list* obtener_marcos_a_reservar(int paginas_solicitadas){
+t_list* obtener_marcos_a_reservar(uint32_t paginas_solicitadas){
 	t_list* aux_list = list_create();
-	int contador_array = 0;
-	for(int i=0; i<paginas_solicitadas; i++) {
+	uint32_t contador_array = 0;
+	for(uint32_t i=0; i<paginas_solicitadas; i++) {
 		if(ESTADO_MARCOS[contador_array]==0) {
 			list_add(aux_list, contador_array);
 		} else {
@@ -1336,11 +1708,11 @@ t_list* obtener_marcos_a_reservar(int paginas_solicitadas){
 	return aux_list;
 }
 
-void setear_marco_como_usado(int numero_marco){
+void setear_marco_como_usado(uint32_t numero_marco){
 		ESTADO_MARCOS[numero_marco] = 1;
 		TIMESTAMP_MARCOS[numero_marco] = COUNTER_LRU;
 		COUNTER_LRU++;
-		BIT_CLOCK[numero_marco] = 1;
+		ARRAY_BIT_USO[numero_marco] = 1;
 }
 
 void setear_marcos_usados(t_list* lista_a_reservar){
@@ -1350,7 +1722,7 @@ void setear_marcos_usados(t_list* lista_a_reservar){
 uint32_t indice_del_minimo_de_un_array(uint32_t* array, uint32_t tamanio_array){
 	uint32_t min = array[0];
 	uint32_t indice_min = 0;
-	for(int i = 1; i<tamanio_array; i++) {
+	for(uint32_t i = 1; i<tamanio_array; i++) {
 		if(min > array[i]){
 			min = array[i];
 			indice_min = i;
@@ -1374,8 +1746,7 @@ uint32_t obtener_proceso_de_marco(uint32_t marco){
 	return aux->pid;
 }
 
-void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t nuevo_marco, int presencia)
-{
+void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t nuevo_marco, uint32_t presencia) {
 	t_tabla_proceso* aux2;
 	uint32_t indice = 0;
 	uint32_t aux3 = 0;
@@ -1411,14 +1782,14 @@ void reemplazar_marco_de_tabla_de_paginas(uint32_t marco_a_reemplazar, uint32_t 
 }
 
 uint32_t obtener_marco_virtual_vacio(){
-	int aux = 0;
+	uint32_t aux = 0;
 	while (ESTADO_MARCOS_VIRTUALES[aux]!=0){
 		aux++;
 	}
 	return aux;
 }
 
-void desalojar_un_marco(int marco_a_desalojar){
+void desalojar_un_marco(uint32_t marco_a_desalojar){
 	if(ESTADO_MARCOS[marco_a_desalojar]==1){
 		uint32_t marco_virtual = obtener_marco_virtual_vacio();
 		pasar_un_marco_de_memoria(marco_virtual, marco_a_desalojar, false);
@@ -1431,23 +1802,27 @@ void desalojar_un_marco(int marco_a_desalojar){
 t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar) {
 	t_list* victimas = list_create();
 	if(MODO_DESALOJO == 0){
-		for(int i=0; i<numero_de_paginas_a_desalojar; i++){
+		for(uint32_t i=0; i<numero_de_paginas_a_desalojar; i++){
 			uint32_t marco_a_desalojar = indice_del_minimo_de_un_array(TIMESTAMP_MARCOS, CANTIDAD_MARCOS);
 			TIMESTAMP_MARCOS[marco_a_desalojar] = COUNTER_LRU;
 			COUNTER_LRU++;
 			list_add(victimas, marco_a_desalojar);
 		}
 	} else {
-		for(int i=0; i<numero_de_paginas_a_desalojar; i++){
-			while (BIT_CLOCK[PUNTERO_CLOCK]!= 0){
-				BIT_CLOCK[PUNTERO_CLOCK] = 0;
-				if (PUNTERO_CLOCK == CANTIDAD_MARCOS-1){
+		for(uint32_t i=0; i<numero_de_paginas_a_desalojar; i++){
+			while (ARRAY_BIT_USO[PUNTERO_CLOCK]!= 0){
+				ARRAY_BIT_USO[PUNTERO_CLOCK] = 0;
+				PUNTERO_CLOCK ++;
+
+				if (PUNTERO_CLOCK == CANTIDAD_MARCOS){
 					PUNTERO_CLOCK = 0;
-				} else {
-					PUNTERO_CLOCK++;
-				}
+				} 
 			}
 			list_add(victimas, PUNTERO_CLOCK);
+			PUNTERO_CLOCK++;
+			if (PUNTERO_CLOCK == CANTIDAD_MARCOS){
+					PUNTERO_CLOCK = 0;
+			} 
 		}
 	}
 	return victimas;
@@ -1455,7 +1830,7 @@ t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar) {
 
 void desalojar(uint32_t numero_de_paginas_a_desalojar) {
 	if(numero_de_paginas_a_desalojar!=0){
-		t_list* marcos_a_desalojar = list_create();
+		t_list* marcos_a_desalojar;
 		marcos_a_desalojar = obtener_marcos_a_desalojar(numero_de_paginas_a_desalojar);
 		list_iterate(marcos_a_desalojar, desalojar_un_marco);
 		list_destroy(marcos_a_desalojar);
@@ -1478,6 +1853,7 @@ void iniciar_patota_PAGINACION (estructura_administrativa_paginacion* dato_a_pag
 		modificar_tlb(dato_a_paginar->pcb.pid, listar_tids(dato_a_paginar), marcos_a_reservar);
 		setear_marcos_usados(marcos_a_reservar);
 		setear_memoria(marcos_a_reservar, dato_empaquetado.data_empaquetada);
+	
 	} else {
 		if(paginas_que_ocupa(dato_empaquetado.tamanio_data) <= (obtener_marcos_vacios() + obtener_marcos_vacios_virtuales())) {
 			desalojar(paginas_que_ocupa(dato_empaquetado.tamanio_data));
@@ -1500,8 +1876,8 @@ t_tabla_proceso* buscar_proceso(uint32_t id_proceso){
 }
 
 uint32_t indice_de_tripulante(t_list* lista_de_ids, uint32_t id_tripulante){
-	int indice = 0;
-	int aux = 0;
+	uint32_t indice = 0;
+	uint32_t aux = 0;
 
 	void buscarIndice(uint32_t elem){
 		if(elem == id_tripulante){
@@ -1516,25 +1892,29 @@ uint32_t indice_de_tripulante(t_list* lista_de_ids, uint32_t id_tripulante){
 
 t_list* lista_marcos_en_virtual(t_list* lista_de_paginas, uint32_t id_proceso){
 	t_tabla_proceso* aux = buscar_proceso(id_proceso);
-	bool estan_en_virtual(uint32_t numero){
-		return 0 == list_get(aux->lista_de_presencia, numero);			
+	t_list* lista_de_marcos = list_create();
+	uint32_t mapeo_a_marco_virtual(uint32_t pagina){
+		if(0 == list_get(aux->lista_de_presencia, pagina)){
+		uint32_t marco = list_get(aux->lista_de_marcos, pagina);
+		list_add(lista_de_marcos, marco);
+		}
 	}
-
-	uint32_t mapeo_a_marco(uint32_t elem){
-		return list_get(aux->lista_de_marcos, elem);	
-	}
-	return list_map(list_filter(lista_de_paginas, estan_en_virtual), mapeo_a_marco);
+	list_iterate(lista_de_paginas, mapeo_a_marco_virtual);
+	return lista_de_marcos;
 }
 
 void setear_nueva_posicion(t_list* marcos_a_cambiar, uint32_t posx, uint32_t posy, uint32_t desplazamiento){
 	void* memoria_aux;
-	memoria_aux = (void*) malloc (8 + desplazamiento);
-	uint32_t aux = list_get(marcos_a_cambiar, 0);
-	memcpy(memoria_aux, MEMORIA + aux * TAMANIO_PAGINAS, desplazamiento);
-	memcpy(memoria_aux + desplazamiento, &posx, desplazamiento);
-	memcpy(memoria_aux + desplazamiento + 4, &posy, desplazamiento);
+	uint32_t tamanio_a_alojar = list_size(marcos_a_cambiar)*TAMANIO_PAGINAS;
+	uint32_t primer_marco = list_get(marcos_a_cambiar, 0);
+	uint32_t ultimo_marco = list_get(marcos_a_cambiar, list_size(marcos_a_cambiar) - 1);
+
+	memoria_aux = (void*) malloc (tamanio_a_alojar);
+	memcpy(memoria_aux, MEMORIA + primer_marco * TAMANIO_PAGINAS, desplazamiento);
+	memcpy(memoria_aux + desplazamiento, &posx, 4);
+	memcpy(memoria_aux + desplazamiento + 4, &posy, 4);
+	memcpy(memoria_aux + desplazamiento + 8, MEMORIA + ultimo_marco*TAMANIO_PAGINAS + (desplazamiento + 8)%TAMANIO_PAGINAS, tamanio_a_alojar-desplazamiento-8);
 	setear_memoria(marcos_a_cambiar, memoria_aux);
-	free(memoria_aux);
 }
 
 void cambiar_ubicacion_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, uint32_t nueva_posx, uint32_t nueva_posy){
@@ -1542,46 +1922,36 @@ void cambiar_ubicacion_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tr
 	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
 	uint32_t direccion_logica = 8 + 5 + (21*tripulante_logico);
 	t_list* paginas_a_cambiar = list_create();
+
 	 
 	if(direccion_logica/TAMANIO_PAGINAS == (direccion_logica+8)/TAMANIO_PAGINAS){
 		list_add(paginas_a_cambiar, direccion_logica/TAMANIO_PAGINAS);
 	} else {
-		for (int i = direccion_logica/TAMANIO_PAGINAS; i<=(direccion_logica+8)/TAMANIO_PAGINAS; i++){
+		for (uint32_t i = direccion_logica/TAMANIO_PAGINAS; i<=(direccion_logica+8)/TAMANIO_PAGINAS; i++){
 			list_add(paginas_a_cambiar, i);
 		}
 	}
+
 	uint32_t direccion_logica_inicio = list_get(paginas_a_cambiar, 0);
 	direccion_logica_inicio = direccion_logica_inicio * TAMANIO_PAGINAS;
-
 	t_list* marcos_en_virtual = lista_marcos_en_virtual(paginas_a_cambiar, id_proceso);
-
 	if(list_size(marcos_en_virtual)!=0){
 		alojar(marcos_en_virtual);
 	}
-	
 	t_list* marcos_a_cambiar;
 	uint32_t mapeo_de_marco(uint32_t elem){
 		return list_get(aux->lista_de_marcos, elem);	
 	}
 	marcos_a_cambiar = list_map(paginas_a_cambiar, mapeo_de_marco);
-
 	setear_nueva_posicion(marcos_a_cambiar, nueva_posx, nueva_posy, direccion_logica - direccion_logica_inicio);
-	free(paginas_a_cambiar);
-	free(marcos_en_virtual);
-	free(marcos_a_cambiar);
-}
-
-uint32_t redondear_para_arriba (uint32_t numero, uint32_t divisor) {
-	if (numero%divisor!= 0){
-		return numero/2+1;
-	} else {
-		return numero/2;
-	}
+	list_destroy(marcos_en_virtual);
+	list_destroy(marcos_a_cambiar);
+	list_destroy(paginas_a_cambiar);
 }
 
 t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inicio, uint32_t pagina_fin){
 	t_list* aux = list_create();
-	for (uint32_t i=pagina_inicio; i<pagina_fin; i++){
+	for (uint32_t i=pagina_inicio; i<=pagina_fin; i++){
 		list_add(aux, list_get(lista_de_marcos, i));
 	}
 	return aux;
@@ -1589,7 +1959,6 @@ t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inici
 
 void liberar_marcos(t_list* lista_marcos_borrado){
 	void liberar_marco(uint32_t marco){
-		printf("%d\n", marco);
 		if(marco>OFFSET){
 			ESTADO_MARCOS_VIRTUALES[marco-OFFSET] = 0;
 		} else {
@@ -1601,14 +1970,15 @@ void liberar_marcos(t_list* lista_marcos_borrado){
 }
 
 void liberar_tabla(t_list* marcos, t_list* presencia, uint32_t pagina_inicio, uint32_t pagina_fin){
-	for (uint32_t i=pagina_inicio; i<pagina_fin; i++){
+	for (uint32_t i=pagina_inicio; i<=pagina_fin; i++){
 		list_remove(marcos, pagina_inicio);
 		list_remove(presencia, pagina_inicio);
 	}
 }
 
 
-void modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t valor_logico_a_restar, uint32_t dezplazamiento) {
+uint32_t modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t dezplazamiento) {
+	//devuelve direccion logica anterior de tareas
 	uint32_t cantidad_de_marcos = list_size(marcos_a_modificar);
 	void* memoria_auxi;
 	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
@@ -1618,10 +1988,10 @@ void modificar_direccion_tareas(t_list* marcos_a_modificar, uint32_t valor_logic
 	}
 	uint32_t direccion_logica_tareas;
 	memcpy(&direccion_logica_tareas, memoria_auxi + dezplazamiento, 4);
-	direccion_logica_tareas = direccion_logica_tareas - valor_logico_a_restar;
+	direccion_logica_tareas = direccion_logica_tareas - 21;
 	memcpy(memoria_auxi + dezplazamiento, &direccion_logica_tareas, 4);
 	setear_memoria(marcos_a_modificar, memoria_auxi);
-	free(memoria_auxi);
+	return (direccion_logica_tareas + 21);
 }
 
 void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logica_fin, uint32_t id_proceso){
@@ -1629,7 +1999,7 @@ void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logic
 	uint32_t pagina_inicio_check = direccion_logica_inicio/TAMANIO_PAGINAS;
 	uint32_t pagina_fin_check = redondear_para_arriba (direccion_logica_fin, TAMANIO_PAGINAS);
 	t_list* marcos_a_alojar = list_create();
-	for(int i=pagina_inicio_check; i< pagina_fin_check; i++){
+	for(uint32_t i=pagina_inicio_check; i< pagina_fin_check; i++){
 		uint32_t marco_aux = list_get(aux->lista_de_marcos, i);
 		if(marco_aux>=OFFSET){
 			list_add(marcos_a_alojar, marco_aux);
@@ -1639,7 +2009,7 @@ void necesito_en_ppal(uint32_t direccion_logica_inicio, uint32_t direccion_logic
 	list_destroy(marcos_a_alojar);
 }
 
-void reemplazar_marco_de_tabla_por_indice(uint32_t id_proceso, uint32_t nuevo_marco, uint32_t numero_pagina, int presencia) {
+void reemplazar_marco_de_tabla_por_indice(uint32_t id_proceso, uint32_t nuevo_marco, uint32_t numero_pagina, uint32_t presencia) {
 	t_tabla_proceso* aux2;
 	aux2 = buscar_proceso(id_proceso);
 	list_replace(aux2->lista_de_marcos, numero_pagina, nuevo_marco);
@@ -1700,7 +2070,6 @@ void alojar(t_list* lista_marcos_en_virtual){
 		aux2++;
 	}
 	list_iterate(lista_marcos_en_virtual, corregir_tabla_paginas);
-	free(memoriaaux);
 	list_destroy(paginas_a_corregir);
 	list_destroy(procesos_a_corregir);
 	list_destroy(marcos_a_reservar);
@@ -1721,8 +2090,7 @@ t_list* obtener_marcos_segun_direccion_logica(uint32_t direccion_logica_inicio, 
 	return aux;
 }
 
-uint32_t obtener_indice_del_proceso(uint32_t pid)
-{
+uint32_t obtener_indice_del_proceso(uint32_t pid){
 	uint32_t aux = 0;
 	uint32_t indice = 0;
 	void buscar_id_proceso(t_tabla_proceso* tabla_proceso){
@@ -1735,23 +2103,108 @@ uint32_t obtener_indice_del_proceso(uint32_t pid)
 	return indice;
 }
 
-void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante){
+uint32_t tamanio_lista_tareas(uint32_t id_proceso, uint32_t direccion_logica_tareas){
 	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+	uint32_t ultima_direccion_logica = list_size(aux->lista_de_marcos) * TAMANIO_PAGINAS;
+
+	t_list* marcos_de_lista_de_tareas;
+	necesito_en_ppal(direccion_logica_tareas, ultima_direccion_logica, id_proceso);
+	marcos_de_lista_de_tareas = obtener_marcos_segun_direccion_logica(direccion_logica_tareas, ultima_direccion_logica, aux->lista_de_marcos);
+	
+	uint32_t offset_tareas;
+	offset_tareas = list_get(marcos_de_lista_de_tareas, 0);
+	offset_tareas = offset_tareas * TAMANIO_PAGINAS;
+	offset_tareas = offset_tareas + (direccion_logica_tareas%TAMANIO_PAGINAS);
+	void* lista_tareas;
+	lista_tareas = (void*) malloc (ultima_direccion_logica-direccion_logica_tareas);
+	memcpy(lista_tareas, MEMORIA + offset_tareas, TAMANIO_PAGINAS - (direccion_logica_tareas%TAMANIO_PAGINAS));
+	for(uint32_t i = 1; i < list_size(marcos_de_lista_de_tareas); i++) {
+		uint32_t aux = list_get(marcos_de_lista_de_tareas, i);
+		aux = aux * TAMANIO_PAGINAS;
+		memcpy(lista_tareas +  TAMANIO_PAGINAS - (direccion_logica_tareas%TAMANIO_PAGINAS) + ((i-1) * TAMANIO_PAGINAS), MEMORIA + aux, TAMANIO_PAGINAS);
+	}
+	uint32_t tam_lista_tareas = strlen(lista_tareas)+1;
+	free(lista_tareas);	
+	list_destroy(marcos_de_lista_de_tareas);
+	return tam_lista_tareas;
+}
+
+t_list* compactar_tripulante(uint32_t id_proceso, uint32_t direccion_logica_inicio, uint32_t ultima_direccion_logica, uint32_t lista_tareas){
+	t_tabla_proceso* aux2 = buscar_proceso(id_proceso);
+	t_list* lista_de_marcos_aux;
+	uint32_t aux = 0;
+	necesito_en_ppal(direccion_logica_inicio, ultima_direccion_logica, aux2->pid);
+	lista_de_marcos_aux = obtener_marcos_segun_direccion_logica(direccion_logica_inicio, ultima_direccion_logica, aux2->lista_de_marcos);
+	uint32_t tamanio_a_reservar = list_size(lista_de_marcos_aux)*TAMANIO_PAGINAS;
+	void* memoria_aux;
+	memoria_aux = (void*) malloc (tamanio_a_reservar);
+	void copiar_a_memoria(uint32_t numero_marco){
+		memcpy(memoria_aux + aux*TAMANIO_PAGINAS, MEMORIA + numero_marco*TAMANIO_PAGINAS, TAMANIO_PAGINAS);
+		aux++;
+	}
+	list_iterate(lista_de_marcos_aux, copiar_a_memoria);
+	
+	uint32_t direccion_logica_inicio_real = (direccion_logica_inicio/TAMANIO_PAGINAS)*TAMANIO_PAGINAS;
+	uint32_t desplazamiento = direccion_logica_inicio-direccion_logica_inicio_real;
+	uint32_t cantidad_a_copiar = list_size(aux2->lista_de_tids);
+	cantidad_a_copiar = (cantidad_a_copiar - 1) * 21 + lista_tareas;  
+	
+	memcpy(memoria_aux+desplazamiento, memoria_aux+desplazamiento+21, cantidad_a_copiar);
+
+	uint32_t paginas_antes = redondear_para_arriba((8 + list_size(aux2->lista_de_tids) * 21 + lista_tareas), TAMANIO_PAGINAS);
+	uint32_t paginas_ahora = redondear_para_arriba((8 + list_size(aux2->lista_de_tids) * 21 - 21 + lista_tareas), TAMANIO_PAGINAS); 
+	uint32_t paginas_a_agarrar = list_size(lista_de_marcos_aux) - (paginas_antes-paginas_ahora);
+
+	t_list* marcos_a_memoria;
+	marcos_a_memoria = list_take(lista_de_marcos_aux, paginas_a_agarrar);
+
+	setear_memoria(marcos_a_memoria, memoria_aux);
+
+	list_destroy(marcos_a_memoria);
+
+	t_list* marcos_a_borrar;
+	marcos_a_borrar = list_create();
+	for(uint32_t i = paginas_a_agarrar; i<list_size(lista_de_marcos_aux); i++){
+		uint32_t auxiliar = list_get(lista_de_marcos_aux, i);
+		list_add(marcos_a_borrar, auxiliar);
+	}
+
+	list_destroy(lista_de_marcos_aux);
+
+	return marcos_a_borrar;
+}
+
+
+void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante){
+	
+	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+
 	if(list_size(aux->lista_de_tids)==1){
 		liberar_marcos(aux->lista_de_marcos);
-		list_remove(TABLA_DE_PAGINAS, obtener_indice_del_proceso(id_proceso));
+		list_destroy(aux->lista_de_marcos);
+		list_destroy(aux->lista_de_presencia);
+		list_destroy(aux->lista_de_tids);
+		list_remove_and_destroy_element(TABLA_DE_PAGINAS, obtener_indice_del_proceso(id_proceso),free);
 	}else{
+		
+		
 		uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
 		uint32_t direccion_logica_inicio = 8 + (21*tripulante_logico);
 		uint32_t direccion_logica_fin = 8 + (21*tripulante_logico) + 21;
-		uint32_t pagina_inicio_borrado = redondear_para_arriba(direccion_logica_inicio, TAMANIO_PAGINAS);
-		uint32_t pagina_fin_borrado = direccion_logica_fin / TAMANIO_PAGINAS;
-		t_list* lista_marcos_borrado = obtener_marcos_de_paginas(aux->lista_de_marcos, pagina_inicio_borrado, pagina_fin_borrado);
-		uint32_t valor_a_restar = (pagina_fin_borrado - pagina_inicio_borrado)*TAMANIO_PAGINAS;
+		uint32_t direccion_logica_tareas;
+		uint32_t ultima_direccion_logica = list_size(aux->lista_de_marcos) * TAMANIO_PAGINAS;
+
+
 		t_list* lista_de_marcos_de_tareas;
 		necesito_en_ppal(4, 8, id_proceso);
 		lista_de_marcos_de_tareas = obtener_marcos_segun_direccion_logica(4, 8, aux->lista_de_marcos);
-		modificar_direccion_tareas(lista_de_marcos_de_tareas, valor_a_restar, (4%TAMANIO_PAGINAS));
+		direccion_logica_tareas = modificar_direccion_tareas(lista_de_marcos_de_tareas, (4%TAMANIO_PAGINAS));
+
+
+		uint32_t lista_tareas = tamanio_lista_tareas(id_proceso, direccion_logica_tareas);
+		t_list* lista_marcos_borrado = compactar_tripulante(id_proceso, direccion_logica_inicio, ultima_direccion_logica, lista_tareas);
+		uint32_t pagina_inicio_borrado = list_get(lista_marcos_borrado, 0);
+		uint32_t pagina_fin_borrado = list_get(lista_marcos_borrado, list_size(lista_marcos_borrado) - 1);
 		liberar_marcos(lista_marcos_borrado);
 		liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
 		list_remove(aux->lista_de_tids, tripulante_logico);
@@ -1770,7 +2223,7 @@ t_list* deconstruir_string(char* array){
 			uint32_t aux2=0;
 			char* palabra;
 			palabra = (char*) malloc(sizeof(char)*contador_palabras);
-			for(int i = contador-contador_palabras; i <= contador; i++ ){
+			for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
 				palabra[aux2]=array[i];
 				aux2++;
 			}
@@ -1787,7 +2240,7 @@ t_list* deconstruir_string(char* array){
 	uint32_t aux2=0;
 	char* palabra;
 	palabra = (char*) malloc(sizeof(char)*contador_palabras);
-	for(int i = contador-contador_palabras; i <= contador; i++ ){
+	for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
 		palabra[aux2]=array[i];
 		aux2++;
 	}
@@ -1814,7 +2267,9 @@ uint32_t obtener_direccion_logica_tareas(uint32_t id_proceso){
 	}
 	uint32_t direccion_logica_tareas;
 	memcpy(&direccion_logica_tareas, memoria_auxi + 4%TAMANIO_PAGINAS, 4);
-
+	
+	list_destroy(marcos_a_modificar);
+	free(memoria_auxi);
 	return direccion_logica_tareas;
 }
 
@@ -1886,20 +2341,24 @@ uint32_t obtener_id_proxima_tarea(uint32_t id_proceso, uint32_t id_tripulante){
 	setear_memoria(marcos_a_copiar, memoria_auxi);
 
 	list_destroy(marcos_a_copiar);
-	free(memoria_auxi);
 
 	return (direccion_proxima_tarea - 1);
 };
 
-char* proxima_tarea_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante){
+char* proxima_tarea_PAGINACION (uint32_t id_proceso, uint32_t id_tripulante){
 	uint32_t direccion_logica_tareas = obtener_direccion_logica_tareas(id_proceso);
 	char* todas_las_tareas = obtener_lista_de_tareas(direccion_logica_tareas, id_proceso);
 	t_list* lista_de_tareas = deconstruir_string(todas_las_tareas);
 	uint32_t proxima_tarea = obtener_id_proxima_tarea(id_proceso, id_tripulante);
 	uint32_t cantidad_tareas = list_size(lista_de_tareas);
-
+	free(todas_las_tareas);
 	if(proxima_tarea < cantidad_tareas) {
-		return list_get(lista_de_tareas, proxima_tarea);
+		char* aux = list_get(lista_de_tareas, proxima_tarea);
+		void* memoria_auxiliar;
+		memoria_auxiliar = (void*) malloc (strlen(aux)+1);
+		memcpy(memoria_auxiliar, aux, strlen(aux)+1);
+		list_destroy_and_destroy_elements(lista_de_tareas, free);
+		return memoria_auxiliar;
 	} else {
 		return "NULL";
 	}
@@ -1915,7 +2374,6 @@ void actualizar_estado_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, c
 	t_list* marcos_a_copiar;
 	marcos_a_copiar = obtener_marcos_segun_direccion_logica(direccion_logica_inicio, direccion_logica_fin, aux->lista_de_marcos);
 	uint32_t cantidad_de_marcos = list_size(marcos_a_copiar);
-	mostrar_lista(marcos_a_copiar);
 	void* memoria_auxi;
 	memoria_auxi = (void*) malloc (cantidad_de_marcos*TAMANIO_PAGINAS);
 	for(uint32_t i=0; i<cantidad_de_marcos; i++){
@@ -1929,7 +2387,6 @@ void actualizar_estado_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, c
 	memcpy(memoria_auxi +  direccion_logica_inicio%TAMANIO_PAGINAS, &estado, 1);
 	setear_memoria(marcos_a_copiar, memoria_auxi);
 
-	free(memoria_auxi);
 	list_destroy(marcos_a_copiar);
 }
 
@@ -1962,67 +2419,65 @@ void hacer_dump_PAGINACION(){
 	uint32_t aux_pag = 0;
 	
 
-    void barrer_un_proceso(uint32_t marco){
-        if(marco<OFFSET){
-            dump_memoria dto;
-            dto.marco = marco;
-            dto.estado = estado_marco(marco);
-            dto.proceso =  aux_pid;
-            dto.pagina = aux_pag; 
+	void barrer_un_proceso(uint32_t marco){
+		if(marco<OFFSET){
+			dump_memoria dto;
+			dto.marco = marco;
+			dto.estado = estado_marco(marco);
+			dto.proceso =  aux_pid;
+			dto.pagina = aux_pag; 
 
-            void* aux;
-            aux = malloc(sizeof(dump_memoria));
+			void* aux;
+			aux = malloc(sizeof(dump_memoria));
 
-            memcpy(aux, &dto, sizeof(dump_memoria));
+			memcpy(aux, &dto, sizeof(dump_memoria));
 
-            list_add(lista_dump, aux);
-        }
-        aux_pag++;
-    }
+			list_add(lista_dump, aux);
+		}
+		aux_pag++;
+	}
 
-    void llenar_lista(t_tabla_proceso* item_tabla){
-    aux_pid = item_tabla->pid;
-    list_iterate(item_tabla->lista_de_marcos, barrer_un_proceso);
-    aux_pag = 0; 
-    }
+	void llenar_lista(t_tabla_proceso* item_tabla){
+		aux_pid = item_tabla->pid;
+		list_iterate(item_tabla->lista_de_marcos, barrer_un_proceso);
+		aux_pag = 0; 
+	}
 
-    bool ordenar(dump_memoria* a, dump_memoria*b){
-    return (a->marco < b->marco);
-    }
+	bool ordenar(dump_memoria* a, dump_memoria*b){
+		return (a->marco < b->marco);
+	}
 
-    list_iterate(TABLA_DE_PAGINAS, llenar_lista);
-    list_sort(lista_dump, ordenar);	
+	list_iterate(TABLA_DE_PAGINAS, llenar_lista);
+	list_sort(lista_dump, ordenar);	
 
-    char filename[32];
-    strcpy(filename, "dumps/");
-    strcat(filename, "Dump_<");
-    strcat(filename, timestamp2);
-    strcat(filename, ">");
+	char filename[32];
+	strcpy(filename, "dumps/");
+	strcat(filename, "Dump_<");
+	strcat(filename, timestamp2);
+	strcat(filename, ">");
 
     FILE *fp = fopen(filename, "w");
     if (fp == NULL)
     {
-    printf("Error opening the file %s", filename);
-    return -1;
+        printf("Error opening the file %s", filename);
+        return -1;
     }
-    fprintf(fp, "%s\n", timestamp);
+	fprintf(fp, "%s\n", timestamp);
 
-    void imprimir_en_archivo(dump_memoria* data){
-    fprintf(fp, "Marco:%d Estado:%s Proceso:%d Pagina:%d \n",data->marco, data->estado, data->proceso, data->pagina);
-    }
+	void imprimir_en_archivo(dump_memoria* data){
+		fprintf(fp, "Marco:%d Estado:%s Proceso:%d Pagina:%d \n",data->marco, data->estado, data->proceso, data->pagina);
+	}
 
-    list_iterate(lista_dump, imprimir_en_archivo);
+	list_iterate(lista_dump, imprimir_en_archivo);
 
     fclose(fp);
 
-    list_destroy(lista_dump);
+	list_destroy(lista_dump);
 }
-
-
 
 void mostrar_array_marcos(){
 	printf("\n*****ARRAY DE MARCOS*****\n");
-	for(int i = 0; i<CANTIDAD_MARCOS; i++){
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
 		if(i<10)
 			printf("--%d ", i);
 		if(i>=10 && i<100)
@@ -2032,15 +2487,51 @@ void mostrar_array_marcos(){
 	}
 	printf("\n");
 
-	for(int a = 0; a<CANTIDAD_MARCOS; a++){
+	for(uint32_t a = 0; a<CANTIDAD_MARCOS; a++){
 		printf("--%d ", ESTADO_MARCOS[a]);
+	}
+	printf("\n*************************\n\n");
+}
+
+void mostrar_array_timestamp(){
+	printf("\n*****ARRAY DE TIMESTAMP*****\n");
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
+		if(i<10)
+			printf("--%d ", i);
+		if(i>=10 && i<100)
+			printf("-%d ", i);	
+		if(i>=100 && i<1000)
+			printf("%d ", i);
+	}
+	printf("\n");
+
+	for(uint32_t a = 0; a<CANTIDAD_MARCOS; a++){
+		printf("-%d ", TIMESTAMP_MARCOS[a]);
+	}
+	printf("\n*************************\n\n");
+}
+
+void mostrar_array_bit_uso(){
+	printf("\n*****BIT DE USO*****\n");
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
+		if(i<10)
+			printf("--%d ", i);
+		if(i>=10 && i<100)
+			printf("-%d ", i);	
+		if(i>=100 && i<1000)
+			printf("%d ", i);
+	}
+	printf("\n");
+
+	for(uint32_t a = 0; a<CANTIDAD_MARCOS; a++){
+		printf("-%d ", ARRAY_BIT_USO[a]);
 	}
 	printf("\n*************************\n\n");
 }
 
 void mostrar_array_marcos_virtuales(){
 	printf("\n*****ARRAY DE MARCOS VIRTUALES*****\n");
-	for(int i = 0; i<CANTIDAD_MARCOS_VIRTUALES; i++){
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS_VIRTUALES; i++){
 		if(i<10)
 			printf("--%d ", i);
 		if(i>=10 && i<100)
@@ -2050,7 +2541,7 @@ void mostrar_array_marcos_virtuales(){
 	}
 	printf("\n");
 
-	for(int a = 0; a<CANTIDAD_MARCOS_VIRTUALES; a++){
+	for(uint32_t a = 0; a<CANTIDAD_MARCOS_VIRTUALES; a++){
 		printf("--%d ", ESTADO_MARCOS_VIRTUALES[a]);
 	}
 	printf("\n*************************\n\n");
@@ -2069,18 +2560,18 @@ void mostrar_tabla_de_paginas(){
 	
 	printf("\n*****TABLA DE PAGINAS*****\n");
 	void imprimir_un_valor(t_tabla_proceso* item_tlb){
-		int i = 0;
+		uint32_t i = 0;
 		printf("PID: %d - ", item_tlb->pid);
 
 		printf("TIDS: ", item_tlb->pid);
-		void imprimir_marco2(int num){
+		void imprimir_marco2(uint32_t num){
 			printf("%d ", num);
 		}
 
 		list_iterate(item_tlb->lista_de_tids, imprimir_marco2);
 		
 		printf("- ");
-		void imprimir_marco(int num){
+		void imprimir_marco(uint32_t num){
 		printf("%d/", num);
 		printf("%d ", list_get(item_tlb->lista_de_presencia, i));
 		i++;
@@ -2312,12 +2803,17 @@ t_list* retornar_segmentos_patota(uint32_t pid)
     {
         segmentos_patota = list_get(lista_de_patotas,i);
         t_segmento* patota_segmento_pcb = (t_segmento*) list_get(segmentos_patota,0);
-        uint32_t patota_pcb_pid = retornar_pid_del_pcb(patota_segmento_pcb);
         
-        if (patota_pcb_pid == pid)
+        if (patota_segmento_pcb->se_encuentra == 1)
         {
-            break;
+            uint32_t patota_pcb_pid = retornar_pid_del_pcb(patota_segmento_pcb);
+            
+            if (patota_pcb_pid == pid)
+            {
+                return segmentos_patota;
+            }
         }
+        
         // free(patota_segmento_pcb);
     }
 
@@ -2383,18 +2879,34 @@ void hacer_dump_SEGMENTACION()
     }
 
     rewind(fp);
-    fprintf(fp, "\t\t\t%s\n", timestamp);
+    // fprintf(fp, "\t\t\t%s\n", timestamp);
 
     t_list* patotas_presentes = list_filter(lista_de_patotas,condicion_patota_presente_en_memoria);
 
     list_iterate(patotas_presentes, (void*) iterator_patotas_presentes);
 
     void imprimir_en_archivo_SEGMENTACION(dump_memoria_segmentacion* data){
-    fprintf(fp, "Proceso:%d\tSegmento:%d\t\tInicio:%d\t\tTam:%d \n",data->pid, data->indice, data->inicio, data->tamanio);
+        fprintf(fp, "Proceso:%d\t\tSegmento:%d\t\tInicio:%d\t\tTam:%d \n",data->pid, data->indice, data->inicio, data->tamanio);
+    };
+
+
+    void imprimir_en_archivo_libre_SEGMENTACION(t_segmento* segmento){
+        fprintf(fp, "\t\t\t\tSegmento :%c\t\tInicio:%d\t\tTam:%d \n",segmento->tipo, segmento->inicio, (segmento->fin - segmento->inicio)+1);
+    };
+    
+    if(list_is_empty(list_dump_segmentacion))
+    {
+        fprintf(fp, "\t%s\n", timestamp);
+        fprintf(fp, "%s", "  No hay ningun proceso en memoria\n");
+        list_iterate(admin_segmentacion->segmentos_libres,imprimir_en_archivo_libre_SEGMENTACION);
+    }else
+    {
+        fprintf(fp, "  \t\t\t%s\n", timestamp);
+        list_iterate(list_dump_segmentacion, imprimir_en_archivo_SEGMENTACION);
+        list_iterate(admin_segmentacion->segmentos_libres,imprimir_en_archivo_libre_SEGMENTACION);
     }
-    list_iterate(list_dump_segmentacion, imprimir_en_archivo_SEGMENTACION);
-
-
+    
+        
 
     list_clean_and_destroy_elements(list_dump_segmentacion,iterator_destroy);
     fclose(fp);
@@ -2542,35 +3054,68 @@ t_list* crear_tareas(t_list* lista)
 
 char* unir_tareas(t_list* lista)
 {
-    // t_list* tareas = list_create();
-    t_list_iterator* list_iterator = list_iterator_create(lista);
+    // int tamanio = tamanio_de_tareas(lista);
+    // t_list_iterator* list_iterator = list_iterator_create(lista);
     
+    // char* tareas_completas_unidas = malloc(tamanio);
+    // while(list_iterator_has_next(list_iterator))
+    // {
+    //     char* nueva_tarea = (char*) list_iterator_next(list_iterator);
+    //     if (!list_iterator_has_next(list_iterator))
+    //     {
+    //         // nueva_tarea[strlen(nueva_tarea)-1] = "\0";
+    //         strncat(tareas_completas_unidas,nueva_tarea,strlen(nueva_tarea)-1);
+    //     }else
+    //     {
+    //         strcat(tareas_completas_unidas,nueva_tarea);
+    //     }
+        
+    // }
+    // list_iterator_destroy(list_iterator);
+    
+    // strcpy(tareas_completas_unidas,tareas_completas);
 
-    // char* tareas_unidas="";
-    char tareas_unidas[100];
+
+
+
+    t_list_iterator* list_iterator = list_iterator_create(lista);
+
+    char tareas_unidas[150];
     strcpy(tareas_unidas,"");
+    char* tareas_completas;
     while(list_iterator_has_next(list_iterator))
     {
         char* nueva_tarea = (char*) list_iterator_next(list_iterator);
-        
         strcat(tareas_unidas,nueva_tarea);
-        // calloc();
-
-        // log_info(logger,"String: %s",tareas_unidas);
     }
-
-    // log_info(logger,"Las tareas son: %d",strlen(tareas_unidas));
     list_iterator_destroy(list_iterator);
 
     strcat(tareas_unidas,"\0");
-
     char* tareas = (char*) malloc(strlen(tareas_unidas)+1);
     strcpy(tareas,tareas_unidas);
-
+    
     tareas[strlen(tareas)-1] = '\0';
-
+    // loggear_entero(strlen(tareas));
+    // log_info(logger,"tareas-> %s",tareas);
     return tareas;
+    // return tareas_completas_unidas;
 };
+
+int tamanio_de_tareas(t_list* lista)
+{
+    t_list_iterator* list_iterator = list_iterator_create(lista);
+    int tamanio=0;
+    int espacio_ocupado_por_las_tareas(char* tarea){
+        
+    }
+    while(list_iterator_has_next(list_iterator))
+    {
+        char* nueva_tarea = (char*) list_iterator_next(list_iterator);
+        tamanio += strlen(nueva_tarea);
+    }
+    list_iterator_destroy(list_iterator);
+    return tamanio;
+}
 
 int cantidad_de_tareas (char* tareas)
 {
@@ -2612,7 +3157,7 @@ t_list* crear_tcbs(t_list* lista,int cant_tripulantes)
         tcb->posicion_y = (uint32_t) 0;
         tcb->proxima_instruccion = (uint32_t) 0;
         tcb->puntero_pcb = (uint32_t) 0; // despues hay que actualizarlo con el byte del pcb donde este guardado
-
+        
         list_add(lista_tcbs,(t_tcb*) tcb);
     }
     
@@ -3014,6 +3559,11 @@ void iterator_patota(t_list* segmentos_patota)
     loggear_linea();
 }
 
+bool orden_mayor_a_menor(int entero_A, int entero_B)
+{
+    return entero_A > entero_B;
+}
+
 bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB)
 {
     return segmento_libre_A->inicio < segmento_libreB->inicio;
@@ -3026,6 +3576,13 @@ bool orden_lista_admin_segmentacion_best_free(t_segmento* segmento_libre_A, t_se
     return diferencia_A < diferencia_B;
 }
 
+bool orden_lista_admin_segmentacion_best_free_mayor_a_menor(t_segmento* segmento_libre_A, t_segmento* segmento_libre_B)
+{
+    int diferencia_A = segmento_libre_A->fin - segmento_libre_A->inicio + 1;
+    int diferencia_B = segmento_libre_B->fin - segmento_libre_B->inicio + 1;
+    return diferencia_A > diferencia_B;
+}
+
 bool orden_lista_pcbs(t_pcb* pcb_a, t_pcb* pcb_b)
 {
     return pcb_a->pid < pcb_b->pid;
@@ -3034,6 +3591,11 @@ bool orden_lista_pcbs(t_pcb* pcb_a, t_pcb* pcb_b)
 bool orden_lista_segmentos(t_segmento* seg_a, t_segmento* seg_b)
 {
     return seg_a->inicio < seg_b->inicio;
+}
+
+bool orden_lista_mapa(t_mapa* mapa_a, t_mapa* mapa_b)
+{
+    return mapa_a->pid < mapa_b->pid;
 }
 
 bool orden_lista_segmentos_contraria(t_segmento* seg_a, t_segmento* seg_b)
@@ -3231,4 +3793,24 @@ void leer_archivo(char* path)
         // log_info(logger,line);
     }
     fclose(archivo);
+}
+
+char* trimwhitespace(char *str)
+{
+  char *end;
+
+  // Trim leading space
+  while(isspace((unsigned char)*str)) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && isspace((unsigned char)*end)) end--;
+
+  // Write new null terminator character
+  end[1] = '\0';
+
+  return str;
 }
