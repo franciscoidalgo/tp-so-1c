@@ -31,7 +31,8 @@
 			"semaphore.h": "c",
 			"log.h": "c",
 			"stdbool.h": "c",
-			"curses.h": "c"
+			"curses.h": "c",
+			"nivel-gui.h": "c"
 		}
 	}
 }

@@ -33,7 +33,7 @@ int iniciar_servidor(t_log* logger,t_config* config)
 
     freeaddrinfo(servinfo);
 
-    log_info(logger, "Listo para escuchar a mi cliente");
+    // log_info(logger, "Listo para escuchar a mi cliente");
 
     return socket_servidor;
 }

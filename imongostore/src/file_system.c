@@ -6,7 +6,7 @@
  */
 
 #include "fs_functions.h"
-#include "file_system.h"
+#include "../src/file_system.h"
 #include "fs_paths.h"
 #include "../../shared/include/shared_utils.h"
 
