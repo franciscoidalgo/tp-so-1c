@@ -9,7 +9,6 @@ void planificar_FIFO(t_tcb *tripulante)
 	while (1)
 	{
 		//para pausar la planificacion, en accion de PAUSAR_PLANIFICACION se decrementara un semaforo que estará en funciones de exe y entrada_salida
-		//sem_wait(&sem_exe_notificacion);
 		control_de_tripulantes_listos(tripulante);
 		sem_wait(&sem_exe); //semaforo de multiprocesamiento
 		tripulante = list_remove(READY, 0);
@@ -108,9 +107,9 @@ void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
 	 int socket;
 	while (tripulante->posicion_x < tripulante->tarea->posicion_x)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x + 1, tripulante->posicion_y);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x + 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x + 1;
 		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
@@ -122,9 +121,9 @@ void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
 
 	while (tripulante->posicion_x > tripulante->tarea->posicion_x)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x - 1, tripulante->posicion_y);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x - 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x - 1;
 		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
@@ -136,9 +135,9 @@ void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
 
 	while (tripulante->posicion_y < tripulante->tarea->posicion_y)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x, tripulante->posicion_y + 1);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x, tripulante->posicion_y + 1);
 		tripulante->posicion_y = tripulante->posicion_y + 1;
 		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
@@ -150,9 +149,9 @@ void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
 
 	while (tripulante->posicion_y > tripulante->tarea->posicion_y)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x, tripulante->posicion_y - 1);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x, tripulante->posicion_y - 1);
 		tripulante->posicion_y = tripulante->posicion_y - 1;
 		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
@@ -204,19 +203,17 @@ void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tcb *tripulant
 {
 	if (es_tarea_comun(tripulante))
 	{
-	// free(tripulante->tarea);
 	buscar_tarea_a_RAM(tripulante);
 	}
 	else
 	{
 		peticion_ES(tripulante);
-		if (list_size(BLOCKED) == 0)
-			sem_post(&sem_IO);
+		if (list_size(BLOCKED) == 0) sem_post(&sem_IO);
 		mover_tripulante_entre_listas_si_existe(_EXEC_, _BLOCKED_, tripulante->puntero_pcb, tripulante->tid);
 		sem_post(&sem_IO_queue);
-		if (list_size(READY) >= 1)
-		{
+		// if (list_size(READY) >= 1)
+		// {
 			sem_post(&sem_exe);
-		}
+		// }
 	}
 }

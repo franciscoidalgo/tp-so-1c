@@ -7,8 +7,10 @@ int main(void)
 
 	int server_fd = iniciar_servidor(logger);
 
-	CONTADOR = 0;
-	int contador = 0;
+	a=0;
+	b=0;
+	c=0;
+	tareas=0;
 	TAREAS_GLOBAL = malloc(sizeof(t_tareas));
 	TAREAS_GLOBAL->tareas = list_create();
 	lista_tareas = list_create();
@@ -47,7 +49,7 @@ t_tarea *recibir_tarea(int socket_cliente)
 		list_add(valores, valor);
 	}
 	free(buffer);
-	return valores;
+	//return valores;
 	return NULL;
 }
 
@@ -127,7 +129,7 @@ void atender_cliente(int socket_cliente)
 
 		if (primer_linea > 1)
 		{
-			if (!string_contains(value, "|") && string_contains(value, ";") )
+			if (!string_contains(value, "|") && string_contains(value, ";"))
 			{
 				list_add(TAREAS_GLOBAL->tareas, string_duplicate(value));
 				//list_add(TAREAS_GLOBAL->tareas, string_substring_until(value,string_length(value)-1));
@@ -138,7 +140,7 @@ void atender_cliente(int socket_cliente)
 		{
 			primer_linea = primer_linea + 1;
 		}
-		
+
 		log_info(logger, value);
 	}
 
@@ -147,30 +149,76 @@ void atender_cliente(int socket_cliente)
 	int cod_op = recibir_operacion(socket_cliente);
 	switch (cod_op)
 	{
-	case MENSAJE:;
+	case ENVIAR_PROXIMA_TAREA:;
 		pthread_mutex_lock(&mutex);
-		int size;
-		recibir_mensaje(socket_cliente, logger, &size);
+		lista = list_create();
+		lista = recibir_paquete(socket_cliente);
 
-		if (list_size(TAREAS_GLOBAL->tareas) != 0)
-		{
-			enviar_mensaje(list_remove(TAREAS_GLOBAL->tareas, 0), socket_cliente);
+		tareas = list_size(TAREAS_GLOBAL->tareas);
+		int tripulante_id = (int)atoi(list_remove(lista,0));
+
+		log_info(logger,"Se conecto el tripulante %d",tripulante_id);
+
+		if(tripulante_id==1){
+			if(tareas-1<a){
+					enviar_mensaje("NULL", socket_cliente);
+
+			} else{
+			enviar_mensaje(list_get(TAREAS_GLOBAL->tareas, a), socket_cliente);
+			a =a +1;}
 		}
-		else
-		{
-			enviar_mensaje("NULL", socket_cliente);
+		
+		if(tripulante_id==2){
+			if(tareas-1<b){
+					enviar_mensaje("NULL", socket_cliente);
+
+			} else{
+			enviar_mensaje(list_get(TAREAS_GLOBAL->tareas, b), socket_cliente);
+			b =b +1;}
 		}
+
+		if(tripulante_id==3){
+			if(tareas-1<c){
+					enviar_mensaje("NULL", socket_cliente);
+
+			} else{
+			enviar_mensaje(list_get(TAREAS_GLOBAL->tareas, c), socket_cliente);
+			c =c +1;}
+		}
+		
 
 		liberar_conexion(socket_cliente);
+		list_clean(lista);
 		pthread_mutex_unlock(&mutex);
 		break;
-	case PAQUETE:
+	case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:;
 		lista = recibir_paquete(socket_cliente);
 		log_info(logger, "Me llegaron los siguientes valores");
 		list_iterate(lista, (void *)iterator);
+		list_clean(lista);
 		break;
-	case SABOTAJE:
-		log_info(logger, "Conectado con DISCORDIARDOR para situaciones de sabotaje");
+	case ACTUALIZAR_ESTADO:
+		lista = recibir_paquete(socket_cliente);
+		log_info(logger, "Me llegaron los siguientes valores");
+		list_iterate(lista, (void *)iterator);
+		list_clean(lista);
+		break;
+	case INICIAR_PATOTA:
+		lista_tareas = recibir_paquete(socket_cliente);
+		log_info(logger, "Me llegaron los siguientes valores");
+		list_iterate(lista_tareas, (void *)iterator);
+		break;
+	case SABOTAJE:;
+		// int direccion_size; 
+		// recv((int)socket_cliente,direccion_size, sizeof(int), MSG_WAITALL);
+		// void *buffer = malloc(direccion_size);
+		// recv((int)socket_cliente, buffer,direccion_size, MSG_WAITALL);
+		// log_info(logger, "Conectado con DISCORDIARDOR para situaciones de %s",buffer);
+
+		//  sleep(15);
+
+		// enviar_mensaje("ESTADO_DE_EMERGENCIA", socket_cliente);
+
 		break;
 	case -1:
 		log_error(logger, "el cliente se desconecto. Terminando servidor");

@@ -41,16 +41,9 @@ int iniciar_servidor(t_log* logger)
 int esperar_cliente(int socket_servidor,t_log* logger)
 {
 	struct sockaddr_in dir_cliente;
-	// socklen_t * restrict tam_direccion = (socklen_t * restrict) sizeof(struct sockaddr_in);
 	socklen_t tam_direccion = sizeof(struct sockaddr_in);
 
 	int socket_cliente = accept(socket_servidor, (void*) &dir_cliente, &tam_direccion);
-	/*
-	accept --> funcion bloqueante, queda a la espera hasta aceptar cliente
-	*/
-
-	log_info(logger, "Se conecto un cliente con socket: %d",socket_cliente);
-
 	return socket_cliente;
 }
 
@@ -77,11 +70,11 @@ void* recibir_buffer(int* direccion_size, int socket_cliente)
 	return buffer;
 }
 
-void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
+char* recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size)
 {
 	char* buffer = recibir_buffer(direccion_size, socket_cliente);
 	log_info(logger, "Me llego el mensaje %s", buffer);
-	free(buffer);
+	return buffer;
 }
 
 //podemos usar la lista de valores para poder hablar del for y de como recorrer la lista
@@ -113,14 +106,12 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 {
 	void * ptr_inicio_paquete = malloc(bytes);
 	int desplazamiento = 0;
-
 	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
 	desplazamiento+= sizeof(int);
 	memcpy(ptr_inicio_paquete + desplazamiento, &(paquete->buffer->size), sizeof(int));
 	desplazamiento+= sizeof(int);
 	memcpy(ptr_inicio_paquete + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
 	desplazamiento+= paquete->buffer->size;
-
 	return ptr_inicio_paquete;
 }
 

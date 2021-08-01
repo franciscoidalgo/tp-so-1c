@@ -26,7 +26,10 @@ typedef struct{
 }t_tareas;
 
 
-int CONTADOR;
+int a;
+int b;
+int c;
+int tareas;
 
 t_tareas* TAREAS_GLOBAL;
 

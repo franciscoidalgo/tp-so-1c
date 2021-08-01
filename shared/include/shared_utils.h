@@ -23,7 +23,14 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 {
 	MENSAJE,
 	PAQUETE,
-	SABOTAJE
+	SABOTAJE,
+	INICIAR_PATOTA,
+	TAREA_A_REALIZAR,
+	BITACORA,
+    RECIBIR_LA_UBICACION_DEL_TRIPULANTE,
+    ENVIAR_PROXIMA_TAREA,
+    ACTUALIZAR_ESTADO,
+    EXPULSAR_TRIPULANTE
 }op_code;
 
 //t_log* logger;
@@ -60,7 +67,7 @@ void validar_config(t_config* config);
 // recibir
 void* recibir_buffer(int*, int);
 t_list* recibir_paquete(int);
-void recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size);
+char* recibir_mensaje(int socket_cliente, t_log* logger,int* direccion_size);
 int recibir_operacion(int);
 
 // enviar
