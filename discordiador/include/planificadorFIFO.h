@@ -1,6 +1,6 @@
 #include "discordiador.h"
 
-void planificar_FIFO(t_tcb *tripulante)
+void planificar_FIFO(t_tripulante *tripulante)
 {
 	//buscar tarea inicial a RAM
 	buscar_tarea_a_RAM(tripulante);
@@ -24,7 +24,7 @@ void planificar_FIFO(t_tcb *tripulante)
 	}
 }
 
-void control_de_tripulantes_listos(t_tcb *tripu)
+void control_de_tripulantes_listos(t_tripulante *tripu)
 {
 	if (list_size(READY) == 0 && list_size(BLOCKED) == 0)
 		pthread_exit((void *)pthread_self());
@@ -39,7 +39,7 @@ void entrada_salida()
 		sem_wait(&sem_IO_queue);
 		sem_wait(&sem_IO); //semaforo de entrada salida
 
-		t_tcb *tripulante_io = list_get(BLOCKED, 0);
+		t_tripulante *tripulante_io = list_get(BLOCKED, 0);
 
 		log_info(logger, "EJECUTANDO IO soy tripu %d de patota %d", tripulante_io->tid, tripulante_io->puntero_pcb);
 
@@ -75,7 +75,7 @@ void entrada_salida()
 	}
 }
 
-void realizar_tarea_exe(t_tcb *tripulante)
+void realizar_tarea_exe(t_tripulante *tripulante)
 {
 
 	//compruebo que tipo de tarea es (E/S o común)
@@ -102,7 +102,7 @@ void realizar_tarea_exe(t_tcb *tripulante)
 	}
 }
 
-void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
+void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 {
 	 int socket;
 	while (tripulante->posicion_x < tripulante->tarea->posicion_x)
@@ -162,7 +162,7 @@ void mover_a_la_posicion_de_la_tarea(t_tcb *tripulante)
 	}
 }
 
-void expulsar_si_no_hay_tarea(t_tcb *tripu)
+void expulsar_si_no_hay_tarea(t_tripulante *tripu)
 {
 	if (string_equals_ignore_case(tripu->tarea->accion, "NULL"))
 	{
@@ -173,7 +173,7 @@ void expulsar_si_no_hay_tarea(t_tcb *tripu)
 	}
 }
 
-void realizar_tarea_comun(t_tcb *tripulante)
+void realizar_tarea_comun(t_tripulante *tripulante)
 {
 	if (es_tarea_comun(tripulante))
 	{
@@ -188,18 +188,18 @@ void realizar_tarea_comun(t_tcb *tripulante)
 	}
 }
 
-bool es_tarea_comun(t_tcb *tripulante)
+bool es_tarea_comun(t_tripulante *tripulante)
 {
 	return tripulante->tarea->parametro == -1;
 }
 
-void peticion_ES(t_tcb *tripulante)
+void peticion_ES(t_tripulante *tripulante)
 {
 	log_info(logger, "Peticion de E/S en EXE de %d-%d", tripulante->tid, tripulante->puntero_pcb);
 	sleep(1);
 }
 
-void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tcb *tripulante)
+void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tripulante *tripulante)
 {
 	if (es_tarea_comun(tripulante))
 	{

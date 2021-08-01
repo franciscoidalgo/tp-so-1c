@@ -29,7 +29,7 @@ luego poder recibir la señal de sabotaje por ese "tunel" establecido
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////IMPLEMENTACION DE FUNCIONES//////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void iterator(t_tcb *t)
+void iterator(t_tripulante *t)
 {
 	log_info(logger, "TID:%d POSX:%d POSY:%d PCB:%d ESTADO:%c", t->tid, t->posicion_x, t->posicion_y, t->puntero_pcb, t->estado);
 }
@@ -41,7 +41,7 @@ void terminar_variables_globales(int socket)
 	//config_destroy(config);
 }
 
-bool es_tripu_de_patota(int patota, int id, t_tcb *tripulante)
+bool es_tripu_de_patota(int patota, int id, t_tripulante *tripulante)
 {
 	return (tripulante->tid == id && tripulante->puntero_pcb == patota);
 }
@@ -170,9 +170,9 @@ void enviar_mensaje_and_codigo_op(char *mensaje, int cod_op, int socket_cliente)
 	free(paquete);
 }
 
-t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t tid)
+t_tripulante *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t tid)
 {
-	t_tcb *t = malloc(sizeof(t_tcb));
+	t_tripulante *t = malloc(sizeof(t_tripulante));
 
 	t->posicion_x = posx;
 	t->posicion_y = posy;
@@ -181,7 +181,7 @@ t_tcb *crear_tripulante(uint32_t patota, uint32_t posx, uint32_t posy, uint32_t 
 	t->puntero_pcb = patota;
 	t->estado = 'N';
 	// t->socket_MIRAM = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
-	// t->socket_IMONGOSTORE = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+	// t->socket_IMONGOSTORE = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 
 	return t;
 }
@@ -204,8 +204,7 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	// char cadena[50]; /* Un array lo suficientemente grande como para guardar la línea más larga del fichero */
 	//strcpy(cadena,"");
 	//char *linea_file = malloc(50);
-	t_paquete *paquete = crear_paquete();
-	paquete->codigo_operacion = INICIAR_PATOTA;
+	t_paquete *paquete = crear_paquete(INICIAR_PATOTA);
 
 	int id = ID_PATOTA;
 
@@ -264,7 +263,7 @@ void recepcionar_patota(char **linea_consola)
 		}
 
 		//INICIARLIZAR TRIPULANTE
-		t_tcb *tripulante = crear_tripulante(id_patota, posx, posy, i);
+		t_tripulante *tripulante = crear_tripulante(id_patota, posx, posy, i);
 
 		add_queue(_NEW_, tripulante);
 	}
@@ -332,7 +331,7 @@ t_tarea *recibir_tarea_de_RAM(int socket)
 	return tarea_recibida;
 }
 
-void add_queue(int lista, t_tcb *tripulante)
+void add_queue(int lista, t_tripulante *tripulante)
 {
 	switch (lista)
 	{
@@ -364,7 +363,7 @@ void add_queue(int lista, t_tcb *tripulante)
 	case _EXIT_:;
 		tripulante->estado = 'F';
 		pthread_mutex_lock(&mutex_lista_exit);
-		enviar_nuevo_estado_a_ram(tripulante);
+		// Agregar Funcion Expulsar
 		controlar_forma_de_salida(tripulante);
 		list_add(EXIT, tripulante);
 		pthread_mutex_unlock(&mutex_lista_exit);
@@ -381,7 +380,7 @@ void add_queue(int lista, t_tcb *tripulante)
 	}
 }
 
-void controlar_forma_de_salida(t_tcb* t){
+void controlar_forma_de_salida(t_tripulante* t){
 	if((strcmp(&t->estado, "E") == 0) ||(strcmp(&t->estado, "B") == 0)){
 	if(!(string_equals_ignore_case(t->tarea->accion,"NULL"))==0){
 		strcpy(t->tarea->accion,"NULL");
@@ -404,7 +403,7 @@ void atender_accion_de_consola(char *linea_consola)
 	case INICIAR_PATOTA_:;
 		ID_PATOTA = ID_PATOTA + 1;
 		//SEND TAREAS A RAM
-		int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		int conexion = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 		enviar_tareas_a_RAM(conexion, array_parametros);
 		liberar_conexion(conexion);
 		//SEND TAREAS A RAM
@@ -456,7 +455,7 @@ void iniciar_planificacion()
 
 			for (size_t i = 1; i <= tripulantes_en_new; i++)
 			{
-				t_tcb *tripulante = list_remove(NEW, 0);
+				t_tripulante *tripulante = list_remove(NEW, 0);
 				pthread_create(&hilo[i], NULL, (void *)planificar_FIFO, tripulante);
 			}
 
@@ -481,7 +480,7 @@ void iniciar_planificacion()
 
 			for (size_t i = 1; i <= tripulantes_en_new; i++)
 			{
-				t_tcb *tripulante = list_remove(NEW, 0);
+				t_tripulante *tripulante = list_remove(NEW, 0);
 				pthread_create(&hilo[i], NULL, (void *)planificar_RR, tripulante);
 			}
 
@@ -502,7 +501,7 @@ void atender_sabotaje()
 	{
 		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
 		int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
+		// log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
 
 		// int *f = (int *)SABOTAJE;
 	
@@ -565,13 +564,13 @@ void agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje()
 
 	for (size_t i = 0; i < list_size(EXEC); i++)
 	{
-		t_tcb *tripulante_e = list_get(EXEC, i);
+		t_tripulante *tripulante_e = list_get(EXEC, i);
 		add_queue(_BLOCKED_EMERGENCY_, tripulante_e);
 	}
 
 	for (size_t i = 0; i < list_size(READY); i++)
 	{
-		t_tcb *tripulante_r = list_get(READY, i);
+		t_tripulante *tripulante_r = list_get(READY, i);
 		add_queue(_BLOCKED_EMERGENCY_, tripulante_r);
 	}
 }
@@ -580,7 +579,7 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 {
 
 	//aca deberia sacar al tripulante mas cercano a la posicion (x,y)
-	t_tcb *tripulante = list_remove(BLOCKED_EMERGENCY, 0);
+	t_tripulante *tripulante = list_remove(BLOCKED_EMERGENCY, 0);
 
 	moverme_hacia_tarea_en_sabotaje(tripulante, 5, 5);
 
@@ -601,9 +600,9 @@ void sacar_tripulantes_de_BLOCKED_EMERGENCY()
 	}
 }
 
-void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante, int x, int y)
+void moverme_hacia_tarea_en_sabotaje(t_tripulante *tripulante, int x, int y)
 {
-	int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	while (tripulante->posicion_x < x)
 	{
 		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
@@ -612,7 +611,7 @@ void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante, int x, int y)
 		tripulante->posicion_x = tripulante->posicion_x + 1;
 		sleep(1);
 		enviar_posicion_a_ram(tripulante, (int)socket);
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	}
 
 	while (tripulante->posicion_x > x)
@@ -623,7 +622,7 @@ void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante, int x, int y)
 		tripulante->posicion_x = tripulante->posicion_x - 1;
 		sleep(1);
 		enviar_posicion_a_ram(tripulante, (int)socket);
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	}
 
 	while (tripulante->posicion_y < y)
@@ -635,7 +634,7 @@ void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante, int x, int y)
 		sleep(1);
 
 		enviar_posicion_a_ram(tripulante, (int)socket);
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	}
 
 	while (tripulante->posicion_y > y)
@@ -646,7 +645,7 @@ void moverme_hacia_tarea_en_sabotaje(t_tcb *tripulante, int x, int y)
 		tripulante->posicion_y = tripulante->posicion_y - 1;
 		sleep(1);
 		enviar_posicion_a_ram(tripulante, (int)socket);
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	}
 	liberar_conexion(socket);
 
@@ -667,10 +666,9 @@ int obtener_algoritmo(char *algoritmo_de_planificacion)
 }
 
 ////envios de mensajes a RAM
-void enviar_posicion_a_ram(t_tcb *tripulante, int socket)
+void enviar_posicion_a_ram(t_tripulante *tripulante, int socket)
 {
-	t_paquete *paquete = crear_paquete();
-	paquete->codigo_operacion = RECIBIR_LA_UBICACION_DEL_TRIPULANTE;
+	t_paquete *paquete = crear_paquete(RECIBIR_LA_UBICACION_DEL_TRIPULANTE);
 
 	char *patota = string_itoa(tripulante->puntero_pcb);
 	char *trip = string_itoa(tripulante->tid);
@@ -691,11 +689,10 @@ void enviar_posicion_a_ram(t_tcb *tripulante, int socket)
 	eliminar_paquete(paquete);
 }
 
-void enviar_nuevo_estado_a_ram(t_tcb *tripulante)
+void enviar_nuevo_estado_a_ram(t_tripulante *tripulante)
 {
-	int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-	t_paquete *paquete = crear_paquete();
-	paquete->codigo_operacion = ACTUALIZAR_ESTADO;
+	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+	t_paquete *paquete = crear_paquete(ACTUALIZAR_ESTADO);
 
 	char *patota = string_itoa(tripulante->puntero_pcb);
 	char *trip = string_itoa(tripulante->tid);
@@ -717,11 +714,10 @@ void enviar_nuevo_estado_a_ram(t_tcb *tripulante)
 	liberar_conexion(socket);
 }
 
-void enviar_expulsar_tripulante_a_ram(t_tcb *tripulante)
+void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
 {
-	int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-	t_paquete *paquete = crear_paquete();
-	paquete->codigo_operacion = EXPULSAR_TRIPULANTE;
+	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+	t_paquete *paquete = crear_paquete(EXPULSAR_TRIPULANTE);
 
 	agregar_a_paquete(paquete, string_itoa(tripulante->puntero_pcb), strlen(string_itoa(tripulante->puntero_pcb) + 1));
 	agregar_a_paquete(paquete, string_itoa(tripulante->tid), strlen(string_itoa(tripulante->tid) + 1));
@@ -732,12 +728,11 @@ void enviar_expulsar_tripulante_a_ram(t_tcb *tripulante)
 	liberar_conexion(socket);
 }
 
-void buscar_tarea_a_RAM(t_tcb *tripulante)
+void buscar_tarea_a_RAM(t_tripulante *tripulante)
 {
 	pthread_mutex_lock(&mutex_mostrar_por_consola);
-	int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-	t_paquete *paquete = crear_paquete();
-	paquete->codigo_operacion = ENVIAR_PROXIMA_TAREA;
+	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+	t_paquete *paquete = crear_paquete(ENVIAR_PROXIMA_TAREA);
 
 	// char *patota = string_itoa(tripulante->puntero_pcb);
 	char *trip = string_itoa(tripulante->tid);
@@ -766,7 +761,7 @@ void buscar_tarea_a_RAM(t_tcb *tripulante)
  ● Se resuelve el sabotaje
  */
 
-// void enviar_info_para_bitacora_a_imongostore(t_tcb *tripulante, int socket)
+// void enviar_info_para_bitacora_a_imongostore(t_tripulante *tripulante, int socket)
 // {
 // 	t_paquete *paquete = crear_paquete();
 // 	paquete->codigo_operacion = RECIBIR_LA_UBICACION_DEL_TRIPULANTE;

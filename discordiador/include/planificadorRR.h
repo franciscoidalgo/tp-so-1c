@@ -1,6 +1,6 @@
 #include "discordiador.h"
 
-void planificar_RR(t_tcb *tripulante)
+void planificar_RR(t_tripulante *tripulante)
 {
     //buscar tarea inicial a RAM
     buscar_tarea_a_RAM(tripulante);
@@ -14,7 +14,7 @@ void planificar_RR(t_tcb *tripulante)
         log_info(logger, "EJECUTANDO Tripulante %d de patota %d", tripulante->tid, tripulante->puntero_pcb);
         //sacar de lista de READY y pasar a EXE
         pthread_mutex_lock(&mutex_lista_ready);
-        t_tcb *tripulante_exe = list_remove(READY, 0);
+        t_tripulante *tripulante_exe = list_remove(READY, 0);
         pthread_mutex_unlock(&mutex_lista_ready);
         add_queue(_EXEC_, tripulante_exe);
 
@@ -53,7 +53,7 @@ void planificar_RR(t_tcb *tripulante)
     }
 }
 
-void realizar_tarea_comun_RR(t_tcb *tripulante)
+void realizar_tarea_comun_RR(t_tripulante *tripulante)
 {
 
     if (!(tripulante->tarea->posicion_x == tripulante->posicion_x && tripulante->tarea->posicion_y == tripulante->posicion_y) || tripulante->QUANTUM_ACTUAL <= 0)
@@ -102,7 +102,7 @@ void realizar_tarea_comun_RR(t_tcb *tripulante)
         
 }
 
-void moverme_hacia_tarea_RR(t_tcb *tripulante)
+void moverme_hacia_tarea_RR(t_tripulante *tripulante)
 {
     int cantidad_de_pasos_en_x = abs(tripulante->posicion_x - tripulante->tarea->posicion_x);
     int cantidad_de_pasos_en_y = abs(tripulante->posicion_y - tripulante->tarea->posicion_y);

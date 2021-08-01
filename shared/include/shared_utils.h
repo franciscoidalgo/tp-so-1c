@@ -32,6 +32,7 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	DUMP,
 	INICIAR_TRIPULANTE,
 	FINALIZACION,
+	SABOTAJE,
 	BITACORA
 }op_code;
 
@@ -71,20 +72,6 @@ typedef struct	// Tamanio de 21 Bytes
 	uint32_t puntero_pcb;	// quien es mi patota?
 }__attribute__((packed))
 t_tcb;
-
-// Una tarea generica (Tarea - acciones)
-// "accion cantidad;posx;posy;rafagas de CPU"
-// "tarea parametro;posx;posy;Tiempo"
-typedef struct	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
-{
-	char* accion;			// Accion de la tarea
-	uint32_t parametro;		// Numero relacionado a la tarea
-	uint32_t posicion_x;	// Pos x
-	uint32_t posicion_y;	// Pos y
-	uint32_t tiempo;		// Tiempo en realizar la tarea
-}
-t_tarea;
-
 
 // fin de Structs de Patota
 
