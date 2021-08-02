@@ -104,7 +104,7 @@ void realizar_tarea_exe(t_tripulante *tripulante)
 
 void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 {
-	 int socket;
+	int socket;
 	while (tripulante->posicion_x < tripulante->tarea->posicion_x)
 	{
 		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
@@ -117,6 +117,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 		sleep(RETARDO_CICLO_CPU);
 		verificar_existencia_de_sabotaje();
 		verificar_existencia_de_pausado();
+		if((strcmp(&tripulante->estado, "F") == 0)) pthread_exit((void*) pthread_self());
 	}
 
 	while (tripulante->posicion_x > tripulante->tarea->posicion_x)
@@ -131,6 +132,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 		sleep(RETARDO_CICLO_CPU);
 		verificar_existencia_de_sabotaje();
 		verificar_existencia_de_pausado();
+		if((strcmp(&tripulante->estado, "F") == 0)) pthread_exit((void*) pthread_self());
 	}
 
 	while (tripulante->posicion_y < tripulante->tarea->posicion_y)
@@ -145,6 +147,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 		sleep(RETARDO_CICLO_CPU);
 		verificar_existencia_de_sabotaje();
 		verificar_existencia_de_pausado();
+		if((strcmp(&tripulante->estado, "F") == 0)) pthread_exit((void*) pthread_self());
 	}
 
 	while (tripulante->posicion_y > tripulante->tarea->posicion_y)
@@ -159,6 +162,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 		sleep(RETARDO_CICLO_CPU);
 		verificar_existencia_de_sabotaje();
 		verificar_existencia_de_pausado();
+		if((strcmp(&tripulante->estado, "F") == 0)) pthread_exit((void*) pthread_self());
 	}
 }
 
