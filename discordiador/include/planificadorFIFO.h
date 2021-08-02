@@ -107,11 +107,11 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 	 int socket;
 	while (tripulante->posicion_x < tripulante->tarea->posicion_x)
 	{
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
 				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
 				 tripulante->posicion_x + 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x + 1;
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
 		liberar_conexion(socket);
 		sleep(RETARDO_CICLO_CPU);
@@ -121,11 +121,11 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 
 	while (tripulante->posicion_x > tripulante->tarea->posicion_x)
 	{
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
 				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
 				 tripulante->posicion_x - 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x - 1;
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
 		liberar_conexion(socket);
 		sleep(RETARDO_CICLO_CPU);
@@ -135,11 +135,11 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 
 	while (tripulante->posicion_y < tripulante->tarea->posicion_y)
 	{
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
 				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
 				 tripulante->posicion_x, tripulante->posicion_y + 1);
 		tripulante->posicion_y = tripulante->posicion_y + 1;
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
 		liberar_conexion(socket);
 		sleep(RETARDO_CICLO_CPU);
@@ -149,11 +149,11 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 
 	while (tripulante->posicion_y > tripulante->tarea->posicion_y)
 	{
+		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
 				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
 				 tripulante->posicion_x, tripulante->posicion_y - 1);
 		tripulante->posicion_y = tripulante->posicion_y - 1;
-		socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		enviar_posicion_a_ram(tripulante, socket);
 		liberar_conexion(socket);
 		sleep(RETARDO_CICLO_CPU);
@@ -200,12 +200,13 @@ void peticion_ES(t_tripulante *tripulante)
 }
 
 void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tripulante *tripulante)
-{
+{	
 	if (es_tarea_comun(tripulante))
-	{
-	buscar_tarea_a_RAM(tripulante);
-	}
-	else
+	{	
+		free(tripulante->tarea->accion);
+		free(tripulante->tarea);
+		buscar_tarea_a_RAM(tripulante);
+	}else
 	{
 		peticion_ES(tripulante);
 		if (list_size(BLOCKED) == 0) sem_post(&sem_IO);

@@ -170,4 +170,6 @@ void mover_tripulante_entre_listas_si_existe(int lista_origen,int lista_destino,
 void control_de_tripulantes_listos(t_tripulante* tripu);
 t_list *obtener_lista(int lista);
 void controlar_forma_de_salida(t_tripulante* t);
+void loggear_linea();
+
 #endif

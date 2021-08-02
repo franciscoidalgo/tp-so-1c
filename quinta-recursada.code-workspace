@@ -32,7 +32,10 @@
 			"log.h": "c",
 			"stdbool.h": "c",
 			"curses.h": "c",
-			"nivel-gui.h": "c"
+			"nivel-gui.h": "c",
+			"malloc.h": "c",
+			"stat.h": "c",
+			"signal.h": "c"
 		}
 	}
 }

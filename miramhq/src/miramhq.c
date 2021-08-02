@@ -161,10 +161,13 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 			break;
 		case PAQUETE:
 			// lista = recibir_paquete(cliente_fd);
-			printf("Me llegaron los siguientes valores:\n");
+			// printf("Me llegaron los siguientes valores:\n");
 			list_iterate(lista, (void*) iterator);
 			break;
 		case INICIAR_PATOTA:
+            // loggear_linea();
+            // log_info(logger,"Entro a INICIAR PATOTA");
+
             // pthread_mutex_lock(&mutex_segmentos_libres);
             // pthread_mutex_lock(&sem_memoria); 
             // pthread_mutex_lock(&mutex_mapa);
@@ -213,14 +216,22 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             break;
 		case ENVIAR_PROXIMA_TAREA:
         // DISCORDIADOR me manda un pid y un tid
+            // loggear_linea();
+            // log_info(logger,"Entro a proxima tarea");
+
             recibir_paquete(cliente_fd,lista);
 
             // loggear_linea();
             uint32_t pid_prox_tarea = recibir_pid(lista);
             uint32_t tid_prox_tarea = recibir_pid(lista);
             
+            // loggear_entero(pid_prox_tarea);
+            // loggear_entero(tid_prox_tarea);
+
             char* tarea_solicitada = enviar_proxima_tarea_SEGMENTACION(pid_prox_tarea,tid_prox_tarea);
-            // enviar_mensaje(tarea_solicitada,cliente_fd);
+            // loggear_entero(strlen(tarea_solicitada));
+            // log_info(logger,"Tarea solicitada-> %s",tarea_solicitada);
+            enviar_mensaje(tarea_solicitada,cliente_fd);
 
             free(tarea_solicitada);        
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
@@ -228,11 +239,14 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
         case ACTUALIZAR_ESTADO:
         // DISCORDIADOR me manda un pid y un tid
             recibir_paquete(cliente_fd,lista);
+            // loggear_linea();
+            // log_info(logger,"Entro a Actualizar estado");
 
             // loggear_linea();
             uint32_t pid_actualizar_estado = recibir_pid(lista);
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
+	        // log_info(logger,"estado %c",estado_actualizar_estado);
             
             actualizar_estado_SEGMENTACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
             
@@ -240,6 +254,8 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             break;
         case EXPULSAR_TRIPULANTE:
+            // loggear_linea();
+            // log_info(logger,"Entro a Expulsar");
 
             // pthread_mutex_lock(&mutex_segmentos_libres);
             // pthread_mutex_lock(&sem_memoria); 
@@ -282,6 +298,8 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
             break;
         case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:
+            // loggear_linea();
+            // log_info(logger,"Entro a cambiar ubicacion");
 
             recibir_paquete(cliente_fd,lista);
             uint32_t pid_ubicacion = recibir_pid(lista);
@@ -380,7 +398,7 @@ void atender_cliente_PAGINACION(int cliente_fd)
         // DISCORDIADOR me manda un pid y un tid
             recibir_paquete(cliente_fd,lista);
 
-            loggear_linea();
+            // loggear_linea();
             uint32_t pid_actualizar_estado = recibir_pid(lista);
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
@@ -809,26 +827,6 @@ t_list* segmentos_ocupados_afectados(t_list* lista_ocupados)
 }
 
 
-/* ------------------------------tarea-------------------------------- */
-
-int tareas_bytes_ocupados(t_list* tareas)
-{
-    t_list_iterator* list_iterator = list_iterator_create(tareas);
-    int bytes_ocupados = 0;
-
-    while(list_iterator_has_next(list_iterator))
-    {
-        t_tarea* tarea = (t_tarea*) list_iterator_next(list_iterator);
-        
-        bytes_ocupados += sizeof(t_tarea);
-        bytes_ocupados += strlen(tarea->accion);
-    }
-
-    list_iterator_destroy(list_iterator);
-
-    return bytes_ocupados;
-}
-
 /* --------------------Fin Administrar Memoria------------------------ */
 
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
@@ -1107,24 +1105,24 @@ void guardar_en_MEMORIA_tcb(t_segmento* segmento_a_ocupar,t_tcb* tcb)
 
 void actualizar_en_MEMORIA_tcb_prox_tarea(t_segmento* segmento_a_modificar)
 {
-        pthread_mutex_lock(&sem_memoria); 
+        // pthread_mutex_lock(&sem_memoria); 
         int desplazamiento_proxima_tarea = segmento_a_modificar->inicio;
         desplazamiento_proxima_tarea += sizeof(uint32_t)+sizeof(char)+sizeof(uint32_t)+sizeof(uint32_t);
         char* MEMORIA_prox_tarea = MEMORIA;
         uint32_t prox_tarea_aux = MEMORIA_prox_tarea[desplazamiento_proxima_tarea];
         prox_tarea_aux += 1;
         memcpy(MEMORIA + desplazamiento_proxima_tarea, (&prox_tarea_aux), sizeof(uint32_t));
-        pthread_mutex_unlock(&sem_memoria); 
+        // pthread_mutex_unlock(&sem_memoria); 
 }
 
 void actualizar_en_MEMORIA_tcb_estado(t_segmento* segmento_a_modificar, char estado)
 {
-        pthread_mutex_lock(&sem_memoria); 
+        // pthread_mutex_lock(&sem_memoria); 
         int desplazamiento_estado = segmento_a_modificar->inicio;
         desplazamiento_estado += sizeof(uint32_t);
 
         memcpy(MEMORIA + desplazamiento_estado, (&estado), sizeof(char));
-        pthread_mutex_unlock(&sem_memoria); 
+        // pthread_mutex_unlock(&sem_memoria); 
 }
 
 void actualizar_en_MEMORIA_tcb_posiciones(t_segmento* segmento_a_modificar, uint32_t pos_x, uint32_t pos_y)
@@ -1434,7 +1432,6 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
     // liberar estructuras utilizadas
 
     free(tareas_de_segmentos_patota);
-    free(tarea_solicitada);
     return tarea_solicitada;
 }
 
@@ -1451,7 +1448,7 @@ void actualizar_estado_SEGMENTACION (uint32_t pid_actualizar_estado, uint32_t ti
 
     // Actualizar el estado del tripulante
     actualizar_en_MEMORIA_tcb_estado(segmento_tcb_actualizar_estado,estado_actualizar_estado);
-    loggear_tcb(segmento_tcb_actualizar_estado);
+    // loggear_tcb(segmento_tcb_actualizar_estado);
 }
 
 void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t tid_expulsar_tripulante)
@@ -2642,18 +2639,20 @@ void limpiar_memoria()
 
 char* retornar_tareas(t_segmento* segmento_tareas)
 {
-    int tamanio_segmento = segmento_tareas->fin - segmento_tareas->inicio;
-
-    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento);
+    int tamanio_segmento = segmento_tareas->fin - segmento_tareas->inicio + 1;
+    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento+1);
     int desplazamiento = segmento_tareas->inicio;
 
     // mutex por bytes a utilizar - no recuerdo el nombre
-    pthread_mutex_lock(&sem_memoria); 
+    // pthread_mutex_lock(&sem_memoria); 
     memcpy(tareas_en_MEMORIA, MEMORIA+desplazamiento, tamanio_segmento);
-    pthread_mutex_unlock(&sem_memoria); 
+    // pthread_mutex_unlock(&sem_memoria); 
     // mutex por bytes a utilizar - no recuerdo el nombre
     
-    tareas_en_MEMORIA[segmento_tareas->fin] = '\0';
+    // log_info(logger,"tareas_en_memoria %s",tareas_en_MEMORIA);
+    // tareas_en_MEMORIA[segmento_tareas->fin] = '\0';
+
+
     // log_info(logger,"%s",(char*) MEMORIA);
     // mostrar_memoria_char();
     // log_info(logger,"las tareas_en_MEMORIA retornadas dentro de la funcion son: %s", tareas_en_MEMORIA);
@@ -2666,13 +2665,11 @@ char* retornar_tarea_solicitada(char* tareas_en_MEMORIA,int nro_de_tarea)
     int cant_tareas = cantidad_de_tareas(tareas_en_MEMORIA);
     if (nro_de_tarea == cant_tareas)
     {
-        char* ultima_tarea = malloc(20);
-        strcpy(ultima_tarea,"NULL");
-        return ultima_tarea;  
+        return "NULL";
     } 
 
     char** tarea_subs = string_split(tareas_en_MEMORIA,"-");
-    log_info(logger,"la tarea a buscar -> %s",tarea_subs[nro_de_tarea]);
+    // log_info(logger,"la tarea a buscar -> %s",tarea_subs[nro_de_tarea]);
     // log_info(logger,"esto es asi %s",tarea_subs[3]);
     // log_info(logger,"Tamnio de la tarea %d",strlen(tarea_subs[2]));
     char* tarea_solicitada = malloc(strlen(tarea_subs[nro_de_tarea])+1);
@@ -3002,55 +2999,6 @@ void crear_patota(int pid,t_list* lista)
 /* *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* */
 
 /* -----------Creacion de tareas--------------- */
-
-t_list* crear_tareas(t_list* lista)
-{
-    pthread_mutex_lock(&sem_memoria); 
-    // t_list* tareas = (t_tarea*) list_create();  initialization from incompatible pointer
-    t_list* tareas = list_create();
-    // t_list_iterator* list_iterator = (char*) list_iterator_create(lista);  idem tareas
-    t_list_iterator* list_iterator = list_iterator_create(lista);
-    // char** substrings;
-
-    while(list_iterator_has_next(list_iterator))
-    {
-        t_tarea* tarea = malloc(sizeof(t_tarea));
-        // substrings = string_split(list_iterator_next(list_iterator),"-");
-        char* string = (char*) list_iterator_next(list_iterator);
-        char** substrings = string_split(string,";");
-
-        // Muestro lo que contienen los arrays, un dia con mas ganas crear una funcion que lo haga
-        // log_info(logger,"Tarea Parametro: %s",substrings[0]);
-        // log_info(logger,"Pos X: %s",substrings[1]);
-        // log_info(logger,"Pos Y: %s",substrings[2]);
-        // log_info(logger,"Tiempo: %s",substrings[3]);
-
-        char** linea_tarea = string_split(substrings[0]," ");
-        // log_info(logger,"Tarea: %s",linea_tarea[0]);
-        // log_info(logger,"Parametro: %s",linea_tarea[1]);
-        
-        tarea->accion = malloc(strlen(linea_tarea[0])+1);
-        memcpy(tarea->accion,linea_tarea[0], strlen(linea_tarea[0])+1);
-        tarea->parametro = (uint32_t) atoi(linea_tarea[1]);
-        tarea->posicion_x = (uint32_t) atoi(substrings[1]);
-        tarea->posicion_y = (uint32_t) atoi(substrings[2]);
-        tarea->tiempo = (uint32_t) atoi(substrings[3]);
-
-        list_add(tareas,tarea);
-        string_iterate_lines(substrings, iterator_lines_free);
-        // string_iterate_lines(substrings, free);
-        free(substrings);
-        string_iterate_lines(linea_tarea, iterator_lines_free);
-        // string_iterate_lines(linea_tarea, free);
-        free(linea_tarea);
-        pthread_mutex_unlock(&sem_memoria); 
-
-    }
-
-    list_iterator_destroy(list_iterator);
-
-    return tareas;
-};
 
 char* unir_tareas(t_list* lista)
 {
@@ -3400,11 +3348,6 @@ void iterator_destroy_tcb(t_tcb* tcb)
 {
     free(tcb);
 };
-void iterator_destroy_tarea(t_tarea* tarea)
-{
-    free(tarea->accion);
-    free(tarea);
-};
 
 void iterator_lines_free(char* string)
 {
@@ -3494,17 +3437,6 @@ void iterator_tcb(t_tcb* tcb)
     log_info(logger,"Posicion Y: %d", tcb->posicion_y);
     log_info(logger,"Proxima Instruccion: %d", tcb->proxima_instruccion);
     log_info(logger,"PCB: %d", tcb->puntero_pcb);
-};
-
-void iterator_tarea(t_tarea* tarea)
-{
-    log_info(logger,"Tarea: %s", tarea->accion);
-    // uint32_t numero = (uint32_t) string_itoa(tarea->parametro);
-    // log_info(logger, numero);
-    log_info(logger,"Parametro: %d", tarea->parametro);
-    log_info(logger,"Pos X %d y Pos Y: %d", tarea->posicion_x,tarea->posicion_y);
-    log_info(logger,"Tiempo: %d", tarea->tiempo);
-    // free(numero);
 };
 
 void iterator_segmento(t_segmento* segmento_libre)
@@ -3681,33 +3613,6 @@ bool mismo_pid(t_list* lista_patota_A,t_list* lista_patota_B)
     return pcb_A->pid == pcb_B->pid;
 }
 
-void iterator_tarea_cargar_a_memoria(t_tarea* tarea)
-{
-    // Buscar proximo hueco libre -- HACER FUNCION
-    int desplazamiento = 0;
-    char delimitador_entre_accion_parametro = (char) ' ';
-    char delimitador_entre_tareas = (char) ';';
-    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->accion), strlen(tarea->accion));
-    desplazamiento += strlen(tarea->accion);
-    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_accion_parametro), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->parametro), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->posicion_x), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->posicion_y), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&delimitador_entre_tareas), sizeof(char));
-    desplazamiento += sizeof(char);
-    memcpy(MEMORIA + desplazamiento, (void*) (&tarea->tiempo), sizeof(char));
-    desplazamiento += sizeof(char);
-
-};
-
 void iterator(char* value)
 {
     log_info(logger,value);
@@ -3765,7 +3670,7 @@ void enviar_proxima_tarea(char* tarea_solicitada, int cliente_fd)
 		int cod_operacion = ENVIAR_PROXIMA_TAREA; 
 	t_paquete* paquete = crear_paquete(cod_operacion);
 	
-	log_info(logger,tarea_solicitada);
+	// log_info(logger,tarea_solicitada);
 	agregar_a_paquete(paquete,tarea_solicitada,strlen(tarea_solicitada)+1);
 
 	enviar_paquete(paquete,cliente_fd);

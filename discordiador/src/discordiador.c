@@ -216,13 +216,28 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 	ssize_t line_size;
 
 	line_size = getline(&line_buf, &line_buf_size, archivo);
+	char* tarea_trim = malloc(line_size+2);
 
 	while (line_size >= 0)
 	{
-		strcat(line_buf, "-");
-		agregar_a_paquete(paquete, line_buf, strlen(line_buf) + 1);
+		strcpy(tarea_trim,line_buf);
+
+		if ( tarea_trim[line_size-1] != '\n') 
+		{
+			tarea_trim[line_size]='-';
+			tarea_trim[line_size+1]='\0';
+		}else
+		{
+			tarea_trim[line_size-1]='-';
+			tarea_trim[line_size]='\0';
+		}
+		
+		 
+		log_info(logger,"%s",tarea_trim);
+		agregar_a_paquete(paquete, tarea_trim, strlen(tarea_trim) + 1);
 		line_size = getline(&line_buf, &line_buf_size, archivo);
 	}
+	free(tarea_trim);
 
 	char *posiciones_linea = string_new();
 	for (int i = 3; linea_consola[i] != NULL; i++)
@@ -298,6 +313,7 @@ t_tarea *recibir_tarea_de_RAM(int socket)
 	char **tarea;
 
 	t_tarea *tarea_recibida = malloc(sizeof(t_tarea));
+	log_info(logger,"tarea recibida %s",paquete->buffer->stream);
 	if (strcmp(paquete->buffer->stream, "NULL") == 0)
 	{
 		tarea_recibida->accion = "NULL";
@@ -313,7 +329,7 @@ t_tarea *recibir_tarea_de_RAM(int socket)
 	}
 	else
 	{
-		tarea_recibida->accion = malloc(strlen(tarea_completa_array[0]));
+		tarea_recibida->accion = malloc(strlen(tarea_completa_array[0])+1);
 		strcpy(tarea_recibida->accion, tarea_completa_array[0]);
 		tarea_recibida->parametro = -1;
 	}
@@ -452,7 +468,6 @@ void iniciar_planificacion()
 			int tripulantes_en_new = list_size(NEW);
 			pthread_t hilo[tripulantes_en_new];
 			pthread_t planificador_ES;
-
 			for (size_t i = 1; i <= tripulantes_en_new; i++)
 			{
 				t_tripulante *tripulante = list_remove(NEW, 0);
@@ -699,7 +714,8 @@ void enviar_nuevo_estado_a_ram(t_tripulante *tripulante)
 	char *estado_ = malloc(2);
 	estado_[0] = tripulante->estado;
 	estado_[1] = '\0';
-
+	log_info(logger,"estado %c",tripulante->estado);
+	log_info(logger,"estado string %s",estado_);
 	agregar_a_paquete(paquete, patota, strlen(patota) + 1);
 	agregar_a_paquete(paquete, trip, strlen(trip) + 1);
 	agregar_a_paquete(paquete, estado_, strlen(estado_) + 1);
@@ -734,22 +750,28 @@ void buscar_tarea_a_RAM(t_tripulante *tripulante)
 	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	t_paquete *paquete = crear_paquete(ENVIAR_PROXIMA_TAREA);
 
-	// char *patota = string_itoa(tripulante->puntero_pcb);
+	char *patota = string_itoa(tripulante->puntero_pcb);
 	char *trip = string_itoa(tripulante->tid);
 
-	// agregar_a_paquete(paquete, patota, strlen(patota) + 1);
+	agregar_a_paquete(paquete, patota, strlen(patota) + 1);
 	agregar_a_paquete(paquete, trip, strlen(trip) + 1);
 
 	enviar_paquete(paquete, socket);
-
+	
 	tripulante->tarea = recibir_tarea_de_RAM(socket);
 
-	// free(patota);
+	free(patota);
 	free(trip);
 	eliminar_paquete(paquete);
 	liberar_conexion(socket);
 	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 }
+
+void loggear_linea()
+{
+    log_info(logger,"-------------------------------------------------------------");
+}
+
 
 //mensajes a IMONGOSTORE
 

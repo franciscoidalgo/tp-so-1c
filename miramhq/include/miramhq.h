@@ -237,7 +237,6 @@ void mostrar_tabla_de_paginas();
 
 
 // Tarea
-void guardar_tarea_segmentacion(t_tarea* tarea);
 char* removeDigits(char* input);
 char* unir_tareas(t_list* lista);
 int tamanio_de_tareas(t_list* lista);
@@ -288,14 +287,12 @@ t_list* lista_de_segmentos_ocupados();
 void iterator_agregar_tareas(char* value);
 void iterator_destroy(char* value);
 void iterator_destroy_tcb(t_tcb* tcb);
-void iterator_destroy_tarea(t_tarea* tarea);
 void iterator_lines_free(char* string);
 void iterator_segmentos_free(t_segmento* segmento);
 void iterator_posicion(char* pos);
 void iterator_patotas_presentes(t_list* patota);
 void iterator_pcb(t_pcb* pcb);
 void iterator_tcb(t_tcb* tcb);
-void iterator_tarea(t_tarea* tarea);
 void iterator_segmento(t_segmento* segmento_libre);
 bool orden_lista_admin_segmentacion(t_segmento* segmento_libre_A, t_segmento* segmento_libreB);
 bool orden_lista_pcbs(t_pcb* pcb_a, t_pcb* pcb_b);
@@ -308,7 +305,6 @@ bool condicion_segmento_afectado(t_segmento* seg);
 bool condicion_segmento_presente_en_memoria(t_segmento* seg);
 bool condicion_patota_presente_en_memoria(t_list* segmentos_patota);
 void transformacion_segmento_afectado(t_segmento* seg);
-void iterator_tarea_cargar_a_memoria(t_tarea* tarea);
 void iterator(char* value);
 void iterator_patota(t_list* segmentos_patota);
 
