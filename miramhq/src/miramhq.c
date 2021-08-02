@@ -253,7 +253,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             // liberar estructuras utilizadas
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             break;
-        case EXPULSAR_TRIPULANTE:
+        case EXPULSAR_TRIPULANTE:;
             // loggear_linea();
             // log_info(logger,"Entro a Expulsar");
 
@@ -264,7 +264,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
             uint32_t pid_expulsar_tripulante = recibir_pid(lista);
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
-
+            
             // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
             // pthread_mutex_lock(&mutex_mapa);
             expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
@@ -1355,7 +1355,6 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
         t_segmento* segmento_tareas;
         segmento_tareas = buscar_segmento_libre(_tareas_bytes_ocupados);
         segmento_tareas->tipo = 'I';
-        
         // pthread_mutex_lock(&sem_memoria); 
         guardar_en_MEMORIA_tareas(segmento_tareas,tareas_unidas);
         // pthread_mutex_unlock(&sem_memoria); 
@@ -1407,7 +1406,6 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
     // Obtenemos el segmento de TAREAS de las estructuras administrativas
     t_segmento* segmento_tareas_prox_tarea;
     segmento_tareas_prox_tarea = retornar_segmento_tareas(segmentos_patota);
-
     // Obtenemos el segmento de TCB ESPECIFICO (TID) las estructuras administrativas
     t_segmento* segmento_tcb_prox_tarea;
     segmento_tcb_prox_tarea = retornar_segmento_tcb(segmentos_patota,tid);
@@ -2640,7 +2638,7 @@ void limpiar_memoria()
 char* retornar_tareas(t_segmento* segmento_tareas)
 {
     int tamanio_segmento = segmento_tareas->fin - segmento_tareas->inicio + 1;
-    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento+1);
+    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento);
     int desplazamiento = segmento_tareas->inicio;
 
     // mutex por bytes a utilizar - no recuerdo el nombre
@@ -2650,7 +2648,8 @@ char* retornar_tareas(t_segmento* segmento_tareas)
     // mutex por bytes a utilizar - no recuerdo el nombre
     
     // log_info(logger,"tareas_en_memoria %s",tareas_en_MEMORIA);
-    // tareas_en_MEMORIA[segmento_tareas->fin] = '\0';
+    tareas_en_MEMORIA[segmento_tareas->fin+1] = '\0';
+    // log_info(logger,"tareas_en_memoria %s",tareas_en_MEMORIA);
 
 
     // log_info(logger,"%s",(char*) MEMORIA);
@@ -2665,7 +2664,9 @@ char* retornar_tarea_solicitada(char* tareas_en_MEMORIA,int nro_de_tarea)
     int cant_tareas = cantidad_de_tareas(tareas_en_MEMORIA);
     if (nro_de_tarea == cant_tareas)
     {
-        return "NULL";
+        char* nulo = malloc(strlen("NULL")+1);
+        strcpy(nulo,"NULL");
+        return nulo;
     } 
 
     char** tarea_subs = string_split(tareas_en_MEMORIA,"-");

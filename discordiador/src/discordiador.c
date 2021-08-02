@@ -56,8 +56,8 @@ void mover_tripulante_entre_listas_si_existe(int lista_origen, int list_destino,
 
 	if (list_any_satisfy((t_list*)obtener_lista(lista_origen), _el_tripulante_que_limpio))
 	{
-
-		add_queue(list_destino, list_remove_by_condition((t_list*)obtener_lista(lista_origen), _el_tripulante_que_limpio));
+		t_tripulante* tripu = (t_tripulante*) list_remove_by_condition((t_list*)obtener_lista(lista_origen), _el_tripulante_que_limpio);
+		add_queue(list_destino, tripu);
 	}
 }
 
@@ -152,19 +152,19 @@ void enviar_mensaje_and_codigo_op(char *mensaje, int cod_op, int socket_cliente)
 	int bytes = paquete->buffer->size + 2 * sizeof(int);
 
 	//void* a_enviar = serializar_paquete(paquete, bytes);
-	void *magic = malloc(bytes);
+	void *INICIO = malloc(bytes);
 	int desplazamiento = 0;
 
-	memcpy(magic + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
+	memcpy(INICIO + desplazamiento, &(paquete->codigo_operacion), sizeof(int));
 	desplazamiento += sizeof(int);
-	memcpy(magic + desplazamiento, &(paquete->buffer->size), sizeof(int));
+	memcpy(INICIO + desplazamiento, &(paquete->buffer->size), sizeof(int));
 	desplazamiento += sizeof(int);
-	memcpy(magic + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
+	memcpy(INICIO + desplazamiento, paquete->buffer->stream, paquete->buffer->size);
 	desplazamiento += paquete->buffer->size;
 
-	send(socket_cliente, magic, bytes, 0); //envia y espera la respuesta
+	send(socket_cliente, INICIO, bytes, 0); //envia y espera la respuesta
 
-	free(magic);
+	free(INICIO);
 	free(paquete->buffer->stream);
 	free(paquete->buffer);
 	free(paquete);
@@ -380,6 +380,7 @@ void add_queue(int lista, t_tripulante *tripulante)
 		tripulante->estado = 'F';
 		pthread_mutex_lock(&mutex_lista_exit);
 		// Agregar Funcion Expulsar
+		enviar_expulsar_tripulante_a_ram(tripulante);
 		controlar_forma_de_salida(tripulante);
 		list_add(EXIT, tripulante);
 		pthread_mutex_unlock(&mutex_lista_exit);
@@ -695,12 +696,12 @@ void enviar_posicion_a_ram(t_tripulante *tripulante, int socket)
 	agregar_a_paquete(paquete, pos_x, strlen(pos_x) + 1);
 	agregar_a_paquete(paquete, pos_y, strlen(pos_y) + 1);
 
+	enviar_paquete(paquete, socket);
+
 	free(patota);
 	free(trip);
 	free(pos_x);
 	free(pos_y);
-
-	enviar_paquete(paquete, socket);
 	eliminar_paquete(paquete);
 }
 
@@ -714,18 +715,16 @@ void enviar_nuevo_estado_a_ram(t_tripulante *tripulante)
 	char *estado_ = malloc(2);
 	estado_[0] = tripulante->estado;
 	estado_[1] = '\0';
-	log_info(logger,"estado %c",tripulante->estado);
-	log_info(logger,"estado string %s",estado_);
 	agregar_a_paquete(paquete, patota, strlen(patota) + 1);
 	agregar_a_paquete(paquete, trip, strlen(trip) + 1);
 	agregar_a_paquete(paquete, estado_, strlen(estado_) + 1);
 
+	enviar_paquete(paquete, socket);
+
+
 	free(patota);
 	free(trip);
 	free(estado_);
-
-	enviar_paquete(paquete, socket);
-
 	eliminar_paquete(paquete);
 	liberar_conexion(socket);
 }
@@ -735,14 +734,32 @@ void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
 	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	t_paquete *paquete = crear_paquete(EXPULSAR_TRIPULANTE);
 
-	agregar_a_paquete(paquete, string_itoa(tripulante->puntero_pcb), strlen(string_itoa(tripulante->puntero_pcb) + 1));
-	agregar_a_paquete(paquete, string_itoa(tripulante->tid), strlen(string_itoa(tripulante->tid) + 1));
+	char *patota = string_itoa(tripulante->puntero_pcb);
+	char *trip = string_itoa(tripulante->tid);
+	agregar_a_paquete(paquete, patota, strlen(patota) + 1);
+	agregar_a_paquete(paquete, trip, strlen(trip) + 1);
 
 	enviar_paquete(paquete, socket);
 
+	// free(patota);
+	// free(trip);
 	eliminar_paquete(paquete);
 	liberar_conexion(socket);
 }
+
+// void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
+// {
+// 	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+// 	t_paquete *paquete = crear_paquete(EXPULSAR_TRIPULANTE);
+
+// 	agregar_a_paquete(paquete, string_itoa(tripulante->puntero_pcb), strlen(string_itoa(tripulante->puntero_pcb) + 1));
+// 	agregar_a_paquete(paquete, string_itoa(tripulante->tid), strlen(string_itoa(tripulante->tid) + 1));
+
+// 	enviar_paquete(paquete, socket);
+
+// 	eliminar_paquete(paquete);
+// 	liberar_conexion(socket);
+// }
 
 void buscar_tarea_a_RAM(t_tripulante *tripulante)
 {
