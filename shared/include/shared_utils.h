@@ -80,13 +80,14 @@ t_tcb;
 typedef struct
 {
 	uint32_t id_tripulante;
+	uint32_t id_patota;
 	uint32_t length_mensaje;
 	char* mensaje;
 }__attribute__((packed))
 t_bitacora;
 
 // funcion enviar bitacora
-void enviar_bitacora(t_bitacora bitacora, int socket_cliente);
+void enviar_bitacora(t_bitacora* bitacora, int socket_cliente);
 
 
 // inciar servidor

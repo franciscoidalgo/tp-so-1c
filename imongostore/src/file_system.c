@@ -63,7 +63,7 @@ void atender_cliente (int socket_cliete){
 
 void realizar_operaciones(void* conexion){
 	int size;
-	conexion_t* conexion_cliente = (conexion_t*) conexion_cliente;
+	conexion_t* conexion_cliente = (conexion_t*) conexion;
 	while(conexion_cliente->cod_op != FINALIZACION){
 		switch (conexion_cliente->cod_op) {
 			case MENSAJE: ;

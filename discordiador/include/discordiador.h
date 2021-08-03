@@ -31,8 +31,9 @@ typedef struct t_tarea{	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria 
 
 // El senior tripulante (TCB - hilo)
 typedef struct t_tripulante   // Tamanio de 21 Bytes
-{
+{   
     int tid;        // Id del tripulante
+    int tid_imongostore;
     uint32_t posicion_x;    // Pos x
     uint32_t posicion_y;    // Pos y
     t_tarea* tarea;    // instruccion que el tripulante debera hacer
@@ -171,5 +172,8 @@ void control_de_tripulantes_listos(t_tripulante* tripu);
 t_list *obtener_lista(int lista);
 void controlar_forma_de_salida(t_tripulante* t);
 void loggear_linea();
+void enviar_movimiento_a_imongo_store_para_BITACORA(t_tripulante *tripulante);
+void enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* msj);
+void enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* mensaje);
 
 #endif

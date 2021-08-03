@@ -420,13 +420,16 @@ void atender_accion_de_consola(char *linea_consola)
 	case INICIAR_PATOTA_:;
 		ID_PATOTA = ID_PATOTA + 1;
 		//SEND TAREAS A RAM
-		int conexion = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
-		enviar_tareas_a_RAM(conexion, array_parametros);
-		liberar_conexion(conexion);
+		// int conexion = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+		// enviar_tareas_a_RAM(conexion, array_parametros);
+		// liberar_conexion(conexion);
 		//SEND TAREAS A RAM
 		recepcionar_patota(array_parametros);
 		string_iterate_lines(array_parametros, iterator_lines_free);
 		free(array_parametros);
+		int conexion_imongo = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		enviar_mensaje_and_codigo_op("GENERAR_OXIGENO 4",MENSAJE,conexion_imongo);
+		liberar_conexion(conexion_imongo);
 		break;
 	case INICIAR_PLANIFICACION:
 		continuar_planificacion();
@@ -800,26 +803,81 @@ void loggear_linea()
  ● Se resuelve el sabotaje
  */
 
-// void enviar_info_para_bitacora_a_imongostore(t_tripulante *tripulante, int socket)
-// {
-// 	t_paquete *paquete = crear_paquete();
-// 	paquete->codigo_operacion = RECIBIR_LA_UBICACION_DEL_TRIPULANTE;
+void enviar_movimiento_a_imongo_store_para_BITACORA(t_tripulante *tripulante){
+/*
+mensaje: "Se mueve de X|Y a X’|Y’"
+ */
 
-// 	char *patota = string_itoa((tripulante->puntero_pcb));
-// 	char *trip = string_itoa((tripulante->tid - 1) / 10);
-// 	char *pos_x = string_itoa(tripulante->posicion_x);
-// 	char *pos_y = string_itoa(tripulante->posicion_y);
+char* tripulante_pos_x =string_itoa(tripulante->posicion_x);
+char* tripulante_pos_y =string_itoa(tripulante->posicion_y);
 
-// 	agregar_a_paquete(paquete, patota, strlen(patota) + 1);
-// 	agregar_a_paquete(paquete, trip, strlen(trip) + 1);
-// 	agregar_a_paquete(paquete, pos_x, strlen(pos_x) + 1);
-// 	agregar_a_paquete(paquete, pos_y, strlen(pos_y) + 1);
+char* tripu_posicion_x = strcat(tripulante_pos_x,"|");
+char* coordenada_tripu = strcat(tripu_posicion_x,tripulante_pos_y);
 
-// 	enviar_paquete(paquete, socket);
-// 	free(patota);
-// 	free(trip);
-// 	free(pos_x);
-// 	free(pos_y);
+char* tarea_pos_x =string_itoa(tripulante->tarea->posicion_x);
+char* tarea_pos_y =string_itoa(tripulante->tarea->posicion_y);
 
-// 	eliminar_paquete(paquete);
-// }
+char* tarea_posicion_x = strcat(tarea_pos_x,"|");
+char* coordenada_tarea = strcat(tarea_posicion_x,tarea_pos_y);
+
+char* mensaje = malloc(strlen("Se mueve de ")+strlen(coordenada_tripu)+strlen(coordenada_tarea)+strlen(" a ")+1);
+strcat(mensaje,"Se mueve de ");
+strcat(mensaje,coordenada_tripu);
+strcat(mensaje," a ");
+strcat(mensaje,coordenada_tarea);
+
+t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
+bitacora->id_tripulante = tripulante->tid;
+bitacora->id_patota = tripulante->puntero_pcb;
+bitacora->length_mensaje = strlen(mensaje);
+bitacora->mensaje = mensaje;
+
+int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+enviar_bitacora(bitacora,conexion);
+
+free(tripulante_pos_x);
+free(tripulante_pos_y);
+free(tarea_pos_x);
+free(tarea_pos_y);
+liberar_conexion(conexion);
+}
+
+void enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* mensaje){
+/*
+mensaje:"Comienza ejecución de tarea X" o "Se finaliza la tarea X"
+ */
+char* msj = malloc(strlen(mensaje)+strlen(tripulante->tarea->accion)+1);
+strcat(msj,mensaje);
+
+t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
+bitacora->id_tripulante = tripulante->tid;
+bitacora->id_patota = tripulante->puntero_pcb;
+bitacora->length_mensaje = strlen(mensaje);
+bitacora->mensaje = msj;
+
+int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+enviar_bitacora(bitacora,conexion);
+free(msj);
+free(bitacora);
+liberar_conexion(conexion);
+}
+
+void enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* mensaje){
+/*
+mensaje: "Se corre en pánico hacia la ubicación del sabotaje"
+y " Se resuelve el sabotaje"
+ */
+t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
+bitacora->id_tripulante = tripulante->tid;
+bitacora->id_patota = tripulante->puntero_pcb;
+bitacora->length_mensaje = strlen(mensaje);
+bitacora->mensaje = malloc(strlen(mensaje)+1);
+bitacora->mensaje = mensaje;
+
+int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+enviar_bitacora(bitacora,conexion);
+free(bitacora->mensaje);
+free(bitacora);
+liberar_conexion(conexion);
+}
+
