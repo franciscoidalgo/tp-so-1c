@@ -20,7 +20,7 @@ void planificar_FIFO(t_tripulante *tripulante)
 			realizar_tarea_comun(tripulante);
 			buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(tripulante);
 			expulsar_si_no_hay_tarea(tripulante);
-		} while ((strcmp(&tripulante->estado, "E") == 0));
+		} while(tripulante->estado=='E');
 	}
 }
 
@@ -173,7 +173,7 @@ void expulsar_si_no_hay_tarea(t_tripulante *tripu)
 		//si no existe proxima tarea lo finalizo
 		log_info(logger, "FINALICE %d-%d", tripu->tid, tripu->puntero_pcb);
 		mover_tripulante_entre_listas_si_existe(_EXEC_, _EXIT_, tripu->puntero_pcb, tripu->tid);
-		sem_post(&sem_exe);
+		if (list_size(READY) >= 1) sem_post(&sem_exe);
 	}
 }
 
@@ -216,9 +216,6 @@ void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tripulante *tr
 		if (list_size(BLOCKED) == 0) sem_post(&sem_IO);
 		mover_tripulante_entre_listas_si_existe(_EXEC_, _BLOCKED_, tripulante->puntero_pcb, tripulante->tid);
 		sem_post(&sem_IO_queue);
-		// if (list_size(READY) >= 1)
-		// {
-			sem_post(&sem_exe);
-		// }
+		if (list_size(READY) >= 1) sem_post(&sem_exe);
 	}
 }

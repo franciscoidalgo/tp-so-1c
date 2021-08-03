@@ -18,7 +18,7 @@
 
 typedef struct t_tarea{	// Tamanio de 16 Bytes+strlen(tarea). Aunque en memoria debe ser todo char*
 	char* accion;			// Accion de la tarea
-	uint32_t parametro;		// Numero relacionado a la tarea
+	int parametro;		// Numero relacionado a la tarea
 	uint32_t posicion_x;	// Pos x
 	uint32_t posicion_y;	// Pos y
 	uint32_t tiempo;		// Tiempo en realizar la tarea

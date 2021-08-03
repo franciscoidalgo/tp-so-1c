@@ -419,17 +419,17 @@ void atender_accion_de_consola(char *linea_consola)
 	{
 	case INICIAR_PATOTA_:;
 		ID_PATOTA = ID_PATOTA + 1;
-		//SEND TAREAS A RAM
-		// int conexion = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
-		// enviar_tareas_a_RAM(conexion, array_parametros);
-		// liberar_conexion(conexion);
-		//SEND TAREAS A RAM
+		// SEND TAREAS A RAM
+		int conexion = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+		enviar_tareas_a_RAM(conexion, array_parametros);
+		liberar_conexion(conexion);
+		// SEND TAREAS A RAM
 		recepcionar_patota(array_parametros);
 		string_iterate_lines(array_parametros, iterator_lines_free);
 		free(array_parametros);
-		int conexion_imongo = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-		enviar_mensaje_and_codigo_op("GENERAR_OXIGENO 4",MENSAJE,conexion_imongo);
-		liberar_conexion(conexion_imongo);
+		// int conexion_imongo = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		// enviar_mensaje_and_codigo_op("GENERAR_OXIGENO 4",MENSAJE,conexion_imongo);
+		// liberar_conexion(conexion_imongo);
 		break;
 	case INICIAR_PLANIFICACION:
 		continuar_planificacion();
