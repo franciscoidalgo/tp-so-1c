@@ -52,10 +52,11 @@ void mover_tripulante_entre_listas_si_existe(int lista_origen, int list_destino,
 	bool _el_tripulante_que_limpio(void *elemento)
 	{
 		return es_tripu_de_patota(patota, id_tripu, elemento);
-	}
+	};
 
 	if (list_any_satisfy((t_list*)obtener_lista(lista_origen), _el_tripulante_que_limpio))
 	{
+		if( lista_origen == _EXEC_) sem_post(&sem_exe);
 		t_tripulante* tripu = (t_tripulante*) list_remove_by_condition((t_list*)obtener_lista(lista_origen), _el_tripulante_que_limpio);
 		add_queue(list_destino, tripu);
 	}
@@ -110,6 +111,8 @@ void inicializar_variables()
 	DURACION_SABOTAJE = config_get_int_value((t_config *)config, "DURACION_SABOTAJE");
 	RETARDO_CICLO_CPU = config_get_int_value((t_config *)config, "RETARDO_CICLO_CPU");
 	pthread_mutex_init(&mutex_sabotaje, NULL);
+	pthread_mutex_init(&mutex_entrada_salida, NULL);
+	// pthread_mutex_lock(&mutex_entrada_salida);
 	sem_init(&sem_IO, 0, 1);
 	sem_init(&sem_IO_queue, 0, 0);
 	sem_init(&sem_exe_notificacion, 0, 0);
@@ -465,21 +468,22 @@ void iniciar_planificacion()
 {
 	if (ALGORITMO == FIFO)
 	{
+		// pthread_t planificador_ES;
+		// pthread_create(&planificador_ES, NULL, (void *)entrada_salida, NULL);
+		// pthread_detach(planificador_ES);
+
 		while (1)
 		{
 			pthread_mutex_lock(&mutex_planificacion);
 			//sem_post(&sem_exe);
 			int tripulantes_en_new = list_size(NEW);
 			pthread_t hilo[tripulantes_en_new];
-			pthread_t planificador_ES;
 			for (size_t i = 1; i <= tripulantes_en_new; i++)
 			{
 				t_tripulante *tripulante = list_remove(NEW, 0);
 				pthread_create(&hilo[i], NULL, (void *)planificar_FIFO, tripulante);
 			}
 
-			pthread_create(&planificador_ES, NULL, (void *)entrada_salida, NULL);
-			pthread_detach(planificador_ES);
 
 			for (uint32_t j = 1; j <= tripulantes_en_new; j++)
 			{
@@ -734,6 +738,7 @@ void enviar_nuevo_estado_a_ram(t_tripulante *tripulante)
 
 void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
 {
+	pthread_mutex_lock(&mutex_mostrar_por_consola);
 	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
 	t_paquete *paquete = crear_paquete(EXPULSAR_TRIPULANTE);
 
@@ -744,10 +749,11 @@ void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
 
 	enviar_paquete(paquete, socket);
 
-	// free(patota);
-	// free(trip);
+	free(patota);
+	free(trip);
 	eliminar_paquete(paquete);
 	liberar_conexion(socket);
+	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 }
 
 // void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)

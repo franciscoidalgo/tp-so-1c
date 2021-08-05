@@ -197,8 +197,8 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
     /* ------------------------Creacion de tareas---------------------------- */
 
             char* tareas_unidas = unir_tareas(lista);
-            // loggear_linea();
             // loggear_entero(strlen(tareas_unidas));
+            // loggear_linea();
             // log_info(logger,"Tareas unidas retornadas-> %s",tareas_unidas);
             
             iniciar_patota_SEGMENTACION (lista, pcb, tcbs, tareas_unidas, cant_tripulantes);
@@ -264,7 +264,8 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
             uint32_t pid_expulsar_tripulante = recibir_pid(lista);
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
-            
+            // loggear_entero(pid_expulsar_tripulante);
+            // loggear_entero(tid_expulsar_tripulante);
             // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
             // pthread_mutex_lock(&mutex_mapa);
             expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
@@ -481,10 +482,13 @@ void iniciar_mapa()
         exit(1);
     }
 
-    init_pair(1,COLOR_WHITE,COLOR_BLUE);
-	init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
-	init_pair(3,COLOR_WHITE,COLOR_CYAN);
-	init_pair(4,COLOR_CYAN,COLOR_BLACK);
+    // init_pair(1,COLOR_WHITE,COLOR_BLUE);
+	// init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
+	// init_pair(3,COLOR_WHITE,COLOR_CYAN);
+	// init_pair(4,COLOR_CYAN,COLOR_CYAN);
+	// init_pair(5,COLOR_MAGENTA,COLOR_BLACK);
+	// init_pair(6,COLOR_RED,COLOR_BLACK);
+	// init_pair(7,COLOR_YELLOW,COLOR_BLACK);
 	init_pair(97,COLOR_MAGENTA,COLOR_BLACK);
 	init_pair(98,COLOR_RED,COLOR_BLACK);
 	init_pair(99,COLOR_MAGENTA,COLOR_BLACK);
@@ -704,7 +708,10 @@ void iniciar_patota_en_mapa(uint32_t pid, t_list* lista_tcb)
     init_pair(1,COLOR_WHITE,COLOR_BLUE);
 	init_pair(2,COLOR_BLUE,COLOR_MAGENTA);
 	init_pair(3,COLOR_WHITE,COLOR_CYAN);
-	init_pair(4,COLOR_CYAN,COLOR_BLACK);
+	init_pair(4,COLOR_CYAN,COLOR_WHITE);
+	init_pair(5,COLOR_RED,COLOR_BLUE);
+	init_pair(6,COLOR_RED,COLOR_BLACK);
+	init_pair(7,COLOR_YELLOW,COLOR_BLACK);
     // nivel_gui_dibujar(AmongOS);
 
 
@@ -1342,7 +1349,8 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
             compactar();
             // pthread_mutex_unlock(&sem_memoria); 
         }
-        if ( strcmp(CRITERIO,"BESTFIT") == 0 && es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes))
+        // if ( strcmp(CRITERIO,"BESTFIT") == 0 && es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes))
+        if ( es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes) )
         {
             compactar();
         }
@@ -2638,7 +2646,7 @@ void limpiar_memoria()
 char* retornar_tareas(t_segmento* segmento_tareas)
 {
     int tamanio_segmento = segmento_tareas->fin - segmento_tareas->inicio + 1;
-    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento);
+    char* tareas_en_MEMORIA = (char*) malloc(tamanio_segmento+1);
     int desplazamiento = segmento_tareas->inicio;
 
     // mutex por bytes a utilizar - no recuerdo el nombre
@@ -2648,7 +2656,7 @@ char* retornar_tareas(t_segmento* segmento_tareas)
     // mutex por bytes a utilizar - no recuerdo el nombre
     
     // log_info(logger,"tareas_en_memoria %s",tareas_en_MEMORIA);
-    tareas_en_MEMORIA[segmento_tareas->fin+1] = '\0';
+    tareas_en_MEMORIA[tamanio_segmento] = '\0';
     // log_info(logger,"tareas_en_memoria %s",tareas_en_MEMORIA);
 
 
@@ -3029,7 +3037,7 @@ char* unir_tareas(t_list* lista)
 
     t_list_iterator* list_iterator = list_iterator_create(lista);
 
-    char tareas_unidas[150];
+    char tareas_unidas[600];
     strcpy(tareas_unidas,"");
     char* tareas_completas;
     while(list_iterator_has_next(list_iterator))

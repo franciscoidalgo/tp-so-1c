@@ -91,6 +91,7 @@ pthread_mutex_t mutex_lista_ready = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_blocked = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_exit = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_lista_exec = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_entrada_salida = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_planificacion = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_sabotaje = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_pausar =PTHREAD_MUTEX_INITIALIZER;
