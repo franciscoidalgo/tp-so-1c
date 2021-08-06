@@ -57,7 +57,7 @@ uint32_t* TIMESTAMP_MARCOS;
 uint32_t COUNTER_LRU = 1;
 uint32_t PUNTERO_CLOCK = 0;
 uint32_t* ARRAY_BIT_USO;
-uint32_t MODO_DESALOJO = 0; //0 LRU 1 CLOCK
+uint32_t MODO_DESALOJO = 1; //0 LRU 1 CLOCK
 t_list* TABLA_DE_PAGINAS;
 uint32_t TAMANIO_PAGINAS = 32;
 uint32_t TAMANIO_MEMORIA = 128;
@@ -326,6 +326,7 @@ t_list* obtener_marcos_a_desalojar(uint32_t numero_de_paginas_a_desalojar) {
 					PUNTERO_CLOCK = 0;
 				} 
 			}
+			ARRAY_BIT_USO[PUNTERO_CLOCK] = 1;
 			list_add(victimas, PUNTERO_CLOCK);
 			PUNTERO_CLOCK++;
 			if (PUNTERO_CLOCK == CANTIDAD_MARCOS){
@@ -711,10 +712,13 @@ void expulsar_tripulante(uint32_t id_proceso, uint32_t id_tripulante){
 
 		uint32_t lista_tareas = tamanio_lista_tareas(id_proceso, direccion_logica_tareas);
 		t_list* lista_marcos_borrado = compactar_tripulante(id_proceso, direccion_logica_inicio, ultima_direccion_logica, lista_tareas);
-		uint32_t pagina_inicio_borrado = list_get(lista_marcos_borrado, 0);
-		uint32_t pagina_fin_borrado = list_get(lista_marcos_borrado, list_size(lista_marcos_borrado) - 1);
-		liberar_marcos(lista_marcos_borrado);
-		liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
+		uint32_t pagina_inicio_borrado = obtener_indice_de_marco(list_get(lista_marcos_borrado, 0), id_proceso);
+		uint32_t pagina_fin_borrado = obtener_indice_de_marco (list_get(lista_marcos_borrado, list_size(lista_marcos_borrado) - 1), id_proceso);
+
+		if(list_size(lista_marcos_borrado) != 0){
+			liberar_marcos(lista_marcos_borrado);
+			liberar_tabla(aux->lista_de_marcos, aux->lista_de_presencia, pagina_inicio_borrado, pagina_fin_borrado);
+		}
 		list_remove(aux->lista_de_tids, tripulante_logico);
 		list_destroy(lista_marcos_borrado);
 		list_destroy(lista_de_marcos_de_tareas);
@@ -1263,12 +1267,7 @@ uint32_t main () {
 	mockwrapeado3.lista_de_tcb = tcblist3;
 	mockwrapeado3.lista_de_tareas = pepe3;
 
-	iniciar_patota_en_mapa(2, tcblist);
-	expulsar_tripulante_en_mapa(2, 10);
 
-	
-
-/*
 	iniciar_patota(&mockwrapeado);
 	mostrar_tabla_de_paginas();
 	iniciar_patota(&mockwrapeado2);
@@ -1300,7 +1299,7 @@ uint32_t main () {
 	cambiar_ubicacion_tripulante(3, 30, 4, 5);
 	mostrar_tabla_de_paginas();
 	cambiar_ubicacion_tripulante(3, 30, 4, 5);
-*/
+
 
 
 	/*
