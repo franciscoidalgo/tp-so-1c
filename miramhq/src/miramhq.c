@@ -2270,40 +2270,15 @@ void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante)
 
 t_list* deconstruir_string(char* array){
 	t_list* aux = list_create();
-	uint32_t contador = 0;
-	uint32_t contador_palabras = 0;
-
-	while (array[contador]!=NULL){
-		if(array[contador]=='-'){
-			uint32_t aux2=0;
-			char* palabra;
-			palabra = (char*) malloc(sizeof(char)*contador_palabras);
-			for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-				palabra[aux2]=array[i];
-				aux2++;
-			}
-			palabra[contador_palabras] = NULL;
-			list_add(aux, palabra);
-			aux2 = 0;
-			contador_palabras= -1;
-		}
-		
-		contador++;
-		contador_palabras++;	
+	uint32_t cantidad_de_palabras = 0;
+	char** array_spliteado = string_split(array, "-");
+	void contar_palabras(char* palabra){
+		cantidad_de_palabras++;
 	}
-
-	uint32_t aux2=0;
-	char* palabra;
-	palabra = (char*) malloc(sizeof(char)*contador_palabras);
-	for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-		palabra[aux2]=array[i];
-		aux2++;
+	string_iterate_lines(array_spliteado, contar_palabras);
+	for(uint32_t i=0; i<cantidad_de_palabras; i++){
+		list_add(aux, array_spliteado[i]);
 	}
-	palabra[contador_palabras] = NULL;
-	list_add(aux, palabra);
-	aux2 = 0;
-	contador_palabras= -1;
-	
 
 	return aux;
 }
@@ -2362,9 +2337,7 @@ char* obtener_lista_de_tareas(uint32_t direccion_logica, uint32_t id_proceso){
 	char* tareas;
 	tareas = (char*) malloc(sizeof(char)*tamanio_tareas);
 
-	for(uint32_t i= direccion_logica%TAMANIO_PAGINAS; i < tamanio_tareas; i++){
-		memcpy(tareas+ i - direccion_logica%TAMANIO_PAGINAS, memoria_auxi+i, 1);
-	}
+	memcpy(tareas, memoria_auxi+direccion_logica%TAMANIO_PAGINAS, tamanio_tareas);
 	
 	free(memoria_auxi);
 	list_destroy(marcos_a_copiar);
