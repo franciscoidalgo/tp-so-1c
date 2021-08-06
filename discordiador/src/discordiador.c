@@ -530,21 +530,23 @@ void atender_sabotaje()
 		send(socket_conexion, &f, sizeof(int), 0);
 
 		int direccion_size;
-		char* coordenada_sabotaje = recibir_mensaje(socket_conexion,logger,direccion_size);
 
-		log_info(logger, "Posicion del sabotaje: %s",coordenada_sabotaje);
+		recibir_operacion(socket_conexion);
+		char* coordenada_sabotaje = (char*) recibir_buffer(&direccion_size,socket_conexion);
+		log_info(logger,"%s tamanio %d",coordenada_sabotaje,direccion_size);
 		
-		char** coor = string_split(coordenada_sabotaje;"|");
-		int sabotaje_x=string_atoi(coor[0]);
-		int sabotaje_y=string_atoi(coor[1]);
+		char** coor = string_split(coordenada_sabotaje,"|");
+		int sabotaje_x=atoi(coor[0]);
+		int sabotaje_y=atoi(coor[1]);
 
 		free(coordenada_sabotaje);
 		activar_sabotaje();
-		log_info(logger,"Haciendo sabotaje");
+		log_info(logger,"Moviendome al sabotaje en %d %d",sabotaje_x,sabotaje_y);
 		agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje();
 		resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(sabotaje_x, sabotaje_y);
 		volver_a_actividad();
 		list_clean(BLOCKED_EMERGENCY);
+
 		desactivar_sabotaje();
 	}
 }
