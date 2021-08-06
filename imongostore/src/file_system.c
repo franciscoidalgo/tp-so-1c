@@ -37,7 +37,6 @@ void incializar_fs(){
 	logger_fs = log_create(PATH_LOGGER, "I-Mongo-Store", 1, LOG_LEVEL_INFO);
 	config_fs = config_create(PATH_CONFIG);
 	iniciar_en_limpio(config_fs, logger_fs);
-	signal(SIGUSR1, recuperar_fs);
 	iniciar_server_fs();
 }
 
@@ -64,19 +63,19 @@ void atender_cliente (int socket_cliete){
 void realizar_operaciones(void* conexion){
 	int size;
 	conexion_t* conexion_cliente = (conexion_t*) conexion;
-	while(conexion_cliente->cod_op != FINALIZACION){
-		switch (conexion_cliente->cod_op) {
-			case MENSAJE: ;
-				char* mensaje = (char*) recibir_buffer(&size, conexion_cliente->socket_cliente);
-				interpretar_mensaje_discordiador(mensaje);
-			case BITACORA: ;
-				void* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
-				t_bitacora* bitacora = malloc(size);
-				memcpy((void*) bitacora, buffer + sizeof(int), size);
-				generar_bitacora(bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
-			case FINALIZACION:
-				liberar_conexion(conexion_cliente->socket_cliente);
-				pthread_exit(NULL);
-		}
+	switch (conexion_cliente->cod_op) {
+		case MENSAJE: ;
+			char* mensaje = (char*) recibir_buffer(&size, conexion_cliente->socket_cliente);
+			interpretar_mensaje_discordiador(mensaje);
+		case BITACORA: ;
+			void* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
+			t_bitacora* bitacora = malloc(size);
+			memcpy((void*) bitacora, buffer + sizeof(int), size);
+			generar_bitacora(bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
+		case SABOTAJE:
+			setear_socket_sabo(conexion_cliente->socket_cliente);
+			pthread_exit(NULL);			
 	}
+	liberar_conexion(conexion_cliente->socket_cliente);
+	pthread_exit(NULL);
 }

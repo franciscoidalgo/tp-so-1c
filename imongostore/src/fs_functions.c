@@ -45,6 +45,9 @@ pthread_mutex_t mutex_blocks;
 uint32_t blocks;
 uint32_t block_size;
 int posicion_sabotaje;
+char** posiciones_sabotajes;
+
+int socket_sabo;
 
 //declaracion de funciones locales usadas en inicializacion
 void recuperar_fs(int);
@@ -66,6 +69,8 @@ void generar_meta_recursos();
 char* obtener_bitacora (uint32_t);
 void procedimiento_sabotaje (char*, int);
 
+void setear_socket_sabo(int socket_sabotaje);
+
 //Hash Table para recursos y sus caracteres de llenado
 t_instruccion tabla_comandos []={
 	{"GENERAR_OXIGENO", "Oxigeno", 'O', generar_recurso},
@@ -74,9 +79,12 @@ t_instruccion tabla_comandos []={
 	{"CONSUMIR_OXIGENO", "Oxigeno", 'O', consumir_recurso},
 	{"CONSUMIR_COMIDA", "Comida", 'C', consumir_recurso},
 	{"DESCARTAR_BASURA", "Basura", 'B', consumir_recurso},
-	{"fsck", "Filesystem Check", 0, procedimiento_sabotaje},
 	{"\0", "\0", 0, NULL}
 };
+
+void setear_socket_sabo(int socket_sabotaje){
+	socket_sabo = socket_sabotaje;
+}
 
 //Funcion que genera las estructuras necesarias
 void iniciar_en_limpio(t_config* config_fs, t_log* logger_fs){
@@ -87,6 +95,7 @@ void iniciar_en_limpio(t_config* config_fs, t_log* logger_fs){
 	path = config_get_string_value(config, "PUNTO_MONTAJE");
 	blocks = config_get_int_value(config, "BLOCKS");
 	block_size = config_get_int_value(config, "BLOCKS_SIZE");
+	posiciones_sabotajes = config_get_array_value(config, "POSICIONES_SABOTAJE");
 
 	generar_directorios(path);
 	generar_superbloque();
@@ -861,16 +870,20 @@ void chequear_files(char* path_elegido){
 	closedir(dh);
 }
 
-void procedimiento_sabotaje (char* junk, int more_junk){
-	
-}
-
 void recuperar_fs(int received_signal){
 	pthread_mutex_lock(&mutex_blocks);
+	int cant_sabotajes;
+	int direccion_size;
+	for(cant_sabotajes = 0; posiciones_sabotajes[cant_sabotajes] != NULL; cant_sabotajes++);
+	enviar_mensaje(posiciones_sabotajes[posicion_sabotaje], socket_sabo);
+	recibir_mensaje(socket_sabo, logger, &direccion_size);
 	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	chequear_files(path_files);
 	chequear_superbloque();
 	log_info(logger, "\033[0;32mFin del protocolo.\033[0m");
+	posicion_sabotaje++;
+	if(posicion_sabotaje>=cant_sabotajes)
+		posicion_sabotaje = 0;
 	pthread_mutex_unlock(&mutex_blocks);
 }
 
