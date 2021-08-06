@@ -135,7 +135,7 @@ void crear_personaje(char id, uint32_t pos_x, uint32_t pos_y);
 void mostrar_patotas_presentes_en_mapa();
 void mover_personaje(char id, uint32_t pos_x, uint32_t pos_y);
 void expulsar_tripulante_en_mapa(uint32_t pid, uint32_t tid);
-void mover_personaje_en_mapa(uint32_t pid,uint32_t tid, char id,uint32_t pos_x_nuevo, uint32_t pos_y_nuevo);
+void mover_personaje_en_mapa(uint32_t pid,uint32_t tid,uint32_t pos_x_nuevo, uint32_t pos_y_nuevo);
 void eliminar_personaje(char id);
 void eliminar_personaje_ubicado(char id, uint32_t pos_x, uint32_t pos_y);
 void refrescar_tabla_de_mapas();
