@@ -37,6 +37,7 @@ void incializar_fs(){
 	logger_fs = log_create(PATH_LOGGER, "I-Mongo-Store", 1, LOG_LEVEL_INFO);
 	config_fs = config_create(PATH_CONFIG);
 	iniciar_en_limpio(config_fs, logger_fs);
+	signal(SIGUSR1, recuperar_fs);
 	iniciar_server_fs();
 }
 
