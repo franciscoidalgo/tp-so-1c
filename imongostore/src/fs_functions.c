@@ -60,13 +60,13 @@ char* generar_md5(char*, size_t);
 char* get_blocks_data (t_config* recurso);
 void chequear_blocks_data(t_config* recurso, char log_option);
 void chequear_block_count(t_config* recurso, char log_option);
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int size_entrada);
+void generar_bitacora(uint32_t id_patota, uint32_t tripulante_id, char* entrada, int size_entrada);
 void generar_recurso(char* nombre_recurso, int cantidad);
 void consumir_recurso(char* nombre_recurso, int cantidad);
 void interpretar_mensaje_discordiador (char* mensaje);
 void formatear_meta_file (int, char*);
 void generar_meta_recursos();
-char* obtener_bitacora (uint32_t);
+char* obtener_bitacora (uint32_t, uint32_t);
 void procedimiento_sabotaje (char*, int);
 
 void setear_socket_sabo(int socket_sabotaje);
@@ -406,8 +406,8 @@ void generar_file(t_config* recurso, char* entrada, int size_entrada){
 }
 
 
-char* generar_path_bitacora(uint32_t tripulante_id){
-	char* file_name = string_from_format("Tripulante%lu.ims", tripulante_id);
+char* generar_path_bitacora(uint32_t patota_id, uint32_t tripulante_id){
+	char* file_name = string_from_format("Tripulante%lu-%lu.ims", patota_id, tripulante_id);
 	char* file_path = string_duplicate(path_bitacoras);
 	string_append(&file_path, "/");
 	string_append(&file_path, file_name);
@@ -416,9 +416,9 @@ char* generar_path_bitacora(uint32_t tripulante_id){
 }
 
 
-char* obtener_bitacora (uint32_t tripulante_id){
+char* obtener_bitacora (uint32_t patota_id, uint32_t tripulante_id){
 	t_config* bitacora;
-	char* file_path = generar_path_bitacora(tripulante_id);
+	char* file_path = generar_path_bitacora(patota_id, tripulante_id);
 	char* string_bitacora;
 	int size;
 	char** blocks_array;
@@ -466,9 +466,9 @@ char* obtener_bitacora (uint32_t tripulante_id){
 }
 
 
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada){
+void generar_bitacora(uint32_t id_patota, uint32_t tripulante_id, char* entrada, int sizeofentrada){
 	t_config* recurso;
-	char* file_path = generar_path_bitacora(tripulante_id);
+	char* file_path = generar_path_bitacora(id_patota, tripulante_id);
 	int fd = open(file_path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 	if(lseek(fd, 0, SEEK_END) <= 1){
 		formatear_meta_file(fd, FORMATO_BITACORA);

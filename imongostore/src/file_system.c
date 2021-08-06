@@ -72,7 +72,7 @@ void realizar_operaciones(void* conexion){
 			void* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
 			t_bitacora* bitacora = malloc(size);
 			memcpy((void*) bitacora, buffer + sizeof(int), size);
-			generar_bitacora(bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
+			generar_bitacora(bitacora->id_patota, bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
 		case SABOTAJE:
 			log_info(logger_fs,"Se establecio socket para sabotaje %d",conexion_cliente->socket_cliente);
 			setear_socket_sabo(conexion_cliente->socket_cliente);

@@ -12,7 +12,7 @@ void iniciar_en_limpio(t_config*, t_log*);
 
 void recuperar_fs(int);
 void interpretar_mensaje_discordiador (char* mensaje);
-void generar_bitacora(uint32_t tripulante_id, char* entrada, int sizeofentrada);
+void generar_bitacora(uint32_t id_patota, uint32_t tripulante_id, char* entrada, int sizeofentrada);
 
 void setear_socket_sabo(int socket_sabotaje);
 
