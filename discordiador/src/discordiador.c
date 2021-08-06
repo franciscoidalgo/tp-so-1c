@@ -519,32 +519,34 @@ void iniciar_planificacion()
 
 void atender_sabotaje()
 {
-	// while (1)
-	// {	
-		sleep(15);
+	while (1)
+	{	
 		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
-		// int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-		// log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
+		int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
 
-		// int *f = (int *)SABOTAJE;
+		int *f = (int *)SABOTAJE;
 	
-		// send(socket_conexion, &f, sizeof(int), 0);
+		send(socket_conexion, &f, sizeof(int), 0);
 
-		// int direccion_size;
-		// char* mensaje = recibir_mensaje(socket_conexion,logger,direccion_size);
+		int direccion_size;
+		char* coordenada_sabotaje = recibir_mensaje(socket_conexion,logger,direccion_size);
 
-		// log_info(logger, "Señal del SABOTAJE recibida %s",mensaje);
-		// free(mensaje);
+		log_info(logger, "Posicion del sabotaje: %s",coordenada_sabotaje);
 		
-		sleep(5);
+		char** coor = string_split(coordenada_sabotaje;"|");
+		int sabotaje_x=string_atoi(coor[0]);
+		int sabotaje_y=string_atoi(coor[1]);
+
+		free(coordenada_sabotaje);
 		activar_sabotaje();
 		log_info(logger,"Haciendo sabotaje");
 		agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje();
-		resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(3, 3);
+		resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(sabotaje_x, sabotaje_y);
 		volver_a_actividad();
 		list_clean(BLOCKED_EMERGENCY);
 		desactivar_sabotaje();
-	// }
+	}
 }
 
 void verificar_existencia_de_sabotaje()
@@ -794,20 +796,6 @@ void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
 	liberar_conexion(socket);
 	pthread_mutex_unlock(&mutex_mostrar_por_consola);
 }
-
-// void enviar_expulsar_tripulante_a_ram(t_tripulante *tripulante)
-// {
-// 	int socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
-// 	t_paquete *paquete = crear_paquete(EXPULSAR_TRIPULANTE);
-
-// 	agregar_a_paquete(paquete, string_itoa(tripulante->puntero_pcb), strlen(string_itoa(tripulante->puntero_pcb) + 1));
-// 	agregar_a_paquete(paquete, string_itoa(tripulante->tid), strlen(string_itoa(tripulante->tid) + 1));
-
-// 	enviar_paquete(paquete, socket);
-
-// 	eliminar_paquete(paquete);
-// 	liberar_conexion(socket);
-// }
 
 void buscar_tarea_a_RAM(t_tripulante *tripulante)
 {
