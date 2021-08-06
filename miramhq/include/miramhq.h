@@ -8,7 +8,6 @@
 #include <commons/memory.h>
 #include <stdbool.h>
 #include "shared_utils.h"
-#include "tests.h"
 #include <malloc.h>
 #include <pthread.h>
 #include <semaphore.h>
