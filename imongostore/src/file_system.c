@@ -37,6 +37,7 @@ void incializar_fs(){
 	logger_fs = log_create(PATH_LOGGER, "I-Mongo-Store", 1, LOG_LEVEL_INFO);
 	config_fs = config_create(PATH_CONFIG);
 	iniciar_en_limpio(config_fs, logger_fs);
+	signal(SIGUSR1, recuperar_fs);
 	iniciar_server_fs();
 }
 
@@ -73,6 +74,7 @@ void realizar_operaciones(void* conexion){
 			memcpy((void*) bitacora, buffer + sizeof(int), size);
 			generar_bitacora(bitacora->id_tripulante, bitacora->mensaje, bitacora->length_mensaje);
 		case SABOTAJE:
+			log_info(logger_fs,"Se establecio socket para sabotaje %d",conexion_cliente->socket_cliente);
 			setear_socket_sabo(conexion_cliente->socket_cliente);
 			pthread_exit(NULL);			
 	}

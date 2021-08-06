@@ -221,6 +221,7 @@ void realizar_tarea_comun(t_tripulante *tripulante)
 {
 	if (es_tarea_comun(tripulante))
 	{
+		// enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Comienza ejecución de tarea ");
 		log_info(logger, "Tripu %d de Patota %d, realizando mi tarea %s que me lleva %d segundos",
 				 tripulante->tid, tripulante->puntero_pcb, tripulante->tarea->accion,
 				 tripulante->tarea->tiempo);
