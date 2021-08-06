@@ -54,3 +54,6 @@ dkms.conf
 #so libs
 so-commons-library/*
 so-nivel-gui-library/*
+
+#logs
+*.log

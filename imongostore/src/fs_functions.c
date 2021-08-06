@@ -867,10 +867,16 @@ void procedimiento_sabotaje (char* junk, int more_junk){
 
 void recuperar_fs(int received_signal){
 	pthread_mutex_lock(&mutex_blocks);
+	char** blocks = config_get_array_value(config, "POSICIONES_SABOTAJE");
+	int cant_sabotajes;
+	for(cant_sabotajes = 0; blocks[cant_sabotajes] != NULL; cant_sabotajes++);
 	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	chequear_files(path_files);
 	chequear_superbloque();
 	log_info(logger, "\033[0;32mFin del protocolo.\033[0m");
+	posicion_sabotaje++;
+	if(posicion_sabotaje>=cant_sabotajes)
+		posicion_sabotaje = 0;
 	pthread_mutex_unlock(&mutex_blocks);
 }
 
