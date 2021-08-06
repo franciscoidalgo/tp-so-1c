@@ -176,5 +176,6 @@ void loggear_linea();
 void enviar_movimiento_a_imongo_store_para_BITACORA(t_tripulante *tripulante);
 void enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* msj);
 void enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* mensaje);
+void volver_a_actividad();
 
 #endif
