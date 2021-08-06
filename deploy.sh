@@ -11,8 +11,15 @@ sudo make uninstall
 make all
 sudo make install
 cd $CWD
+echo -e "\n\nInstalling gui-library...\n\n"
+git clone "https://github.com/sisoputnfrba/so-nivel-gui-library/"
+cd so-nivel-gui-library
+sudo make uninstall
+sudo make all
+sudo make install
+cd $CWD
 echo -e "\n\nBuilding projects...\n\n"
-make -C ./proceso1
-make -C ./proceso2
-make -C ./proceso3
+make -C discordiador
+make -C miramhq
+make release -C imongostore
 echo -e "\n\nDeploy done!\n\n"
