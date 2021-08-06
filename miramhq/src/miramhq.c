@@ -727,41 +727,15 @@ void expulsar_tripulante(uint32_t id_proceso, uint32_t id_tripulante){
 
 t_list* deconstruir_string(char* array){
 	t_list* aux = list_create();
-	uint32_t contador = 0;
-	uint32_t contador_palabras = 0;
-
-	while (array[contador]!=NULL){
-		if(array[contador]=='-'){
-			uint32_t aux2=0;
-			char* palabra;
-			palabra = (char*) malloc(sizeof(char)*contador_palabras);
-			for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-				palabra[aux2]=array[i];
-				aux2++;
-			}
-			palabra[contador_palabras] = NULL;
-			list_add(aux, palabra);
-			aux2 = 0;
-			contador_palabras= -1;
-		}
-		
-		contador++;
-		contador_palabras++;	
+	uint32_t cantidad_de_palabras = 0;
+	char** array_spliteado = string_split(array, "-");
+	void contar_palabras(char* palabra){
+		cantidad_de_palabras++;
 	}
-
-	uint32_t aux2=0;
-	char* palabra;
-	palabra = (char*) malloc(sizeof(char)*contador_palabras);
-	for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-		palabra[aux2]=array[i];
-		aux2++;
+	string_iterate_lines(array_spliteado, contar_palabras);
+	for(uint32_t i=0; i<cantidad_de_palabras; i++){
+		list_add(aux, array_spliteado[i]);
 	}
-	palabra[contador_palabras] = NULL;
-	list_add(aux, palabra);
-	aux2 = 0;
-	contador_palabras= -1;
-	
-
 	return aux;
 }
 
@@ -810,7 +784,6 @@ char* obtener_lista_de_tareas(uint32_t direccion_logica, uint32_t id_proceso){
 		char p;
 		memcpy(&p, memoria_auxi+i, 1);
 		if(p==NULL && tamanio_tareas==0){
-			
 			tamanio_tareas = aux3;
 		}
 		aux3++;
@@ -819,10 +792,8 @@ char* obtener_lista_de_tareas(uint32_t direccion_logica, uint32_t id_proceso){
 	char* tareas;
 	tareas = (char*) malloc(sizeof(char)*tamanio_tareas);
 
-	for(uint32_t i= direccion_logica%TAMANIO_PAGINAS; i < tamanio_tareas; i++){
-		memcpy(tareas+ i - direccion_logica%TAMANIO_PAGINAS, memoria_auxi+i, 1);
-	}
-	
+	memcpy(tareas, memoria_auxi+direccion_logica%TAMANIO_PAGINAS, tamanio_tareas);
+
 	free(memoria_auxi);
 	list_destroy(marcos_a_copiar);
 
@@ -1211,7 +1182,6 @@ uint32_t main () {
 
 	t_list* tcblist = list_create();
 	list_add(tcblist, mocktcb);
-	list_add(tcblist, mocktcb4);
 	
 	char* pepe;
 	pepe = "A00;1;1;5-A01;1;1;5-A02;1;1;5";
@@ -1274,9 +1244,11 @@ uint32_t main () {
 	mostrar_tabla_de_paginas();
 	iniciar_patota(&mockwrapeado3);
 	mostrar_tabla_de_paginas();
-	mostrar_array_bit_uso();	
+	printf("%s\n", proxima_tarea(3, 30));
+	printf("%s\n", proxima_tarea(2, 20));
+
 	
-	cambiar_ubicacion_tripulante(1, 10, 2, 3);
+	/*cambiar_ubicacion_tripulante(1, 10, 2, 3);
 	mostrar_tabla_de_paginas();
 	cambiar_ubicacion_tripulante(2, 20, 3, 4);
 	mostrar_tabla_de_paginas();
@@ -1298,7 +1270,7 @@ uint32_t main () {
 	mostrar_tabla_de_paginas();
 	cambiar_ubicacion_tripulante(3, 30, 4, 5);
 	mostrar_tabla_de_paginas();
-	cambiar_ubicacion_tripulante(3, 30, 4, 5);
+	cambiar_ubicacion_tripulante(3, 30, 4, 5);*/
 
 
 
