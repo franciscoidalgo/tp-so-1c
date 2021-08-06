@@ -7,6 +7,7 @@
 #include <commons/collections/list.h>
 #include <stdbool.h>
 #include "shared_utils.h"
+#include "tests.h"
 #include<pthread.h>
 #include<commons/string.h>
 #include<commons/collections/dictionary.h>
