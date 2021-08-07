@@ -398,9 +398,7 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
             
-            pthread_mutex_lock(&mutex_mapa);
             actualizar_estado_PAGINACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
-            pthread_mutex_unlock(&mutex_mapa);
 
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             
@@ -2392,7 +2390,9 @@ char* proxima_tarea_PAGINACION (uint32_t id_proceso, uint32_t id_tripulante){
         return memoria_auxiliar;
 	} else {
         pthread_mutex_unlock(&sem_memoria);
-		return "NULL";
+        char* nulo = malloc(strlen("NULL")+1);
+        strcpy(nulo,"NULL");
+        return nulo;
 	}
 
 }
