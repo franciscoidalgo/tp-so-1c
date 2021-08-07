@@ -63,6 +63,7 @@ void atender_cliente (int socket_cliete){
 
 void realizar_operaciones(void* conexion){
 	int size;
+	char msj_bitacora [250];
 	conexion_t* conexion_cliente = (conexion_t*) conexion;
 	switch (conexion_cliente->cod_op) {
 		case MENSAJE: ;
@@ -70,14 +71,15 @@ void realizar_operaciones(void* conexion){
 			interpretar_mensaje_discordiador(mensaje);
 			break;
 		case BITACORA: ;
-			void* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
-			t_bitacora* bitacora = malloc(size);
-			memcpy((void*) bitacora, buffer + sizeof(int), size);
-			log_info(logger_fs,bitacora->mensaje);
-			generar_bitacora(bitacora->id_patota,bitacora->id_tripulante,bitacora->mensaje, bitacora->length_mensaje);
+			char* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
+			log_info(logger_fs,"mensaje: %s", buffer);
+			uint32_t id_patota;
+			uint32_t id_tripulante;
+			sscanf(buffer, "%lu-%lu-%s", &id_patota, &id_tripulante, msj_bitacora);
+			generar_bitacora(id_patota, id_tripulante, msj_bitacora, strlen(msj_bitacora)+1);
 			break;
 		case SABOTAJE:
-			log_info(logger_fs,"Se establecio socket para sabotaje %d",conexion_cliente->socket_cliente);
+			log_info(logger_fs,"Se establecio socket para sabotaje.",conexion_cliente->socket_cliente);
 			setear_socket_sabo(conexion_cliente->socket_cliente);
 			pthread_exit(NULL);			
 			break;

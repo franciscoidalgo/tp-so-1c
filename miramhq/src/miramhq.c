@@ -907,7 +907,7 @@ t_segmento* buscar_segmento_libre_first_fit(uint32_t bytes_ocupados)
     while(!encontrado && list_iterator_has_next(list_iterator))
     {
         segmento_libre = (t_segmento*) list_iterator_next(list_iterator);
-        int diferencia = (segmento_libre->fin - segmento_libre->inicio);
+        int diferencia = (segmento_libre->fin - segmento_libre->inicio)+1;
 
         if (bytes_ocupados <= diferencia)
         {
@@ -1155,8 +1155,8 @@ void guardar_en_MEMORIA_pcb(t_segmento* segmento_a_ocupar,t_pcb* pcb)
     desplazamiento += sizeof(uint32_t);
     memcpy(MEMORIA + desplazamiento, (&pcb->tareas), sizeof(uint32_t));
     // pthread_mutex_unlock(&sem_memoria); 
-    desplazamiento += sizeof(uint32_t)-1;
-    if (desplazamiento != segmento_a_ocupar->fin)
+    desplazamiento += sizeof(uint32_t);
+    if (desplazamiento != segmento_a_ocupar->fin+1)
     {
         log_info(logger,"Un pcb se cargo mal a memoria");
     }
