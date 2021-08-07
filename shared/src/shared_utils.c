@@ -1,4 +1,5 @@
 #include "shared_utils.h"
+#include <commons/string.h>
 
 char* mi_funcion_compartida(){
     return "Hice uso de la shared!";
@@ -128,18 +129,40 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 }
 
 void enviar_bitacora(t_bitacora* bitacora, int socket_cliente){
+	char* msj = string_from_format("%lu-%lu-%s\n", bitacora->id_patota, bitacora->id_tripulante, bitacora->mensaje);
 	t_paquete* paquete = malloc(sizeof(t_paquete));
-	int tamanio_bitacora = sizeof(uint32_t) * 3 + bitacora->length_mensaje;
+
+	paquete->codigo_operacion = BITACORA;
+	paquete->buffer = malloc(sizeof(t_buffer));
+	paquete->buffer->size = strlen(msj) + 1;
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+	memcpy(paquete->buffer->stream, msj, paquete->buffer->size);
+
+	int bytes = paquete->buffer->size + 2*sizeof(int);
+
+	void* a_enviar = serializar_paquete(paquete, bytes);
+
+	send(socket_cliente, a_enviar, bytes, 0);
+
+	free(a_enviar);
+	eliminar_paquete(paquete);
+
+	/*
+	int tamanio_bitacora = sizeof(uint32_t) * 3 + bitacora->length_mensaje + 1;
+	t_paquete* paquete = malloc(tamanio_bitacora + sizeof(int) + sizeof(op_code));
 	paquete->codigo_operacion = BITACORA;
 	paquete->buffer = malloc(tamanio_bitacora + sizeof(int));
 	paquete->buffer->size = tamanio_bitacora;
-	paquete->buffer->stream = bitacora;	
+	memcpy(paquete->buffer->stream, bitacora, paquete->buffer->size);
+	
 	void* a_enviar = serializar_paquete(paquete, sizeof(op_code) + sizeof(int) + paquete->buffer->size);
 
-	send(socket_cliente, a_enviar, paquete->buffer->size + sizeof(op_code), 0);
+	send(socket_cliente, a_enviar, paquete->buffer->size + sizeof(op_code) + sizeof(int), 0);
+	
 
 	free(paquete);
 	free(a_enviar);
+	*/
 }
 
 
