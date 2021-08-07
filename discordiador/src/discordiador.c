@@ -461,6 +461,7 @@ void atender_accion_de_consola(char *linea_consola)
 		break;
 	case OBTENER_BITACORA:
 		//solicitar a IMONGOSTORE la bitacora del tripulante
+		
 		break;
 	case PAUSAR_PLANIFICACION:
 		pausar_planificacion();
@@ -642,9 +643,10 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 {
 
 	//aca deberia sacar al tripulante mas cercano a la posicion (x,y)
-	t_tripulante *tripulante = list_get(BLOCKED_EMERGENCY, 0);
+	
+	t_tripulante *tripulante = devolver_el_tripulante_mas_cercano_a_la_emergencia(x,y);
 				log_info(logger,"%s","Lo copie de la cola de emergencia para mover hacia la tarea de sabotaje");
-
+iterator(tripulante);
 
 	moverme_hacia_tarea_en_sabotaje(tripulante,x,y);
 
@@ -656,6 +658,33 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 	}
 		log_info(logger,"%s","Se resolvio el sabotaje");
 		iterator(tripulante);
+}
+
+t_tripulante* devolver_el_tripulante_mas_cercano_a_la_emergencia(int sabotaje_pos_x, int sabotaje_pos_y)
+{
+    // list_sort(BLOCKED_EMERGENCY,orden_lista_BLOCKED_EMERGENCY);
+    t_list_iterator* list_iterator_sabotaje = list_iterator_create(BLOCKED_EMERGENCY);
+
+    t_tripulante* tripulante_mas_cercano;
+    int menor_distancia = 9999;
+    while(list_iterator_has_next(list_iterator_sabotaje))
+    {
+        t_tripulante* tripulante_en_emergencia = (t_tripulante*) list_iterator_next(list_iterator_sabotaje);
+        int diferencia_x = abs(tripulante_en_emergencia->posicion_x - sabotaje_pos_x);
+        int diferencia_y = abs(tripulante_en_emergencia->posicion_y - sabotaje_pos_y);
+
+        int distancia = diferencia_x + diferencia_y;
+
+        if ( distancia < menor_distancia)
+        {
+            menor_distancia = distancia;
+            tripulante_mas_cercano = tripulante_en_emergencia;
+        }
+
+    }
+    list_iterator_destroy(list_iterator_sabotaje);
+
+    return tripulante_mas_cercano;
 }
 
 void sacar_tripulantes_de_BLOCKED_EMERGENCY()

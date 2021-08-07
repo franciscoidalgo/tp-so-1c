@@ -176,5 +176,6 @@ void volver_a_actividad();
 void enviar_tarea_de_ES_a_imongostore(t_tripulante* t);
 void peticion_ES_RR(t_tripulante *tripulante);
 void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida_RR(t_tripulante *tripulante);
+t_tripulante* devolver_el_tripulante_mas_cercano_a_la_emergencia(int sabotaje_pos_x, int sabotaje_pos_y);
 
 #endif

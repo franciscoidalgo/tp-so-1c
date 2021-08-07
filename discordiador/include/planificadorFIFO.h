@@ -233,6 +233,7 @@ void realizar_tarea_comun(t_tripulante *tripulante)
 			log_info(logger, "%d-%d tiempo tarea %d",tripulante->tid ,tripulante->puntero_pcb,tripulante->tarea->tiempo);
 			verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
+			log_info(logger,"semaforo multiprocesamiento %d",sem_exe);
 			// pthread_mutex_lock(&mutex_movimiento);
 			tripulante->tarea->tiempo -= 1;
 			// pthread_mutex_unlock(&mutex_movimiento);
