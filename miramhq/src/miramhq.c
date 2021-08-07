@@ -22,7 +22,7 @@ t_config* config;
 administrador_de_segmentacion* admin_segmentacion;
 t_list* lista_de_patotas;
 t_list* list_dump_segmentacion;
-pthread_mutex_t sem_memoria, mutex_segmentos_libres, mutex_mapa;
+pthread_mutex_t sem_memoria, mutex_segmentos_libres, mutex_mapa, mutex_paginacion;
 int SMOBJ_SIZE;
 int cod_cierre;
 NIVEL* AmongOS;
@@ -89,7 +89,6 @@ int main(int argc, char ** argv){
     cod_cierre = 0;
 
     pthread_mutex_init(&sem_memoria,NULL);
-    pthread_mutex_init(&mutex_segmentos_libres,NULL);
     pthread_mutex_init(&mutex_mapa,NULL);
 
     while(cod_cierre == 0)
@@ -143,9 +142,6 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 {
         int cod_op = recibir_operacion(cliente_fd);
         
-        pthread_mutex_lock(&mutex_segmentos_libres);
-        pthread_mutex_lock(&sem_memoria); 
-        pthread_mutex_lock(&mutex_mapa);
         t_list* lista = list_create();
 
 
@@ -168,14 +164,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             // loggear_linea();
             // log_info(logger,"Entro a INICIAR PATOTA");
 
-            // pthread_mutex_lock(&mutex_segmentos_libres);
-            // pthread_mutex_lock(&sem_memoria); 
-            // pthread_mutex_lock(&mutex_mapa);
-
-                // Descomentar para testear
-            // log_info(logger,"Una patota se ha iniciado");
 			recibir_paquete(cliente_fd,lista);
-            // crear_patota();
 
     /* ----------------------Estrucutras administrativas-------------------------- */
     /* -----------------------------Recibir pid----------------------------------- */
@@ -184,21 +173,21 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             // log_info(logger,"\t El pid de la patota es: %d\n",pid);
             t_pcb* pcb = malloc(sizeof(t_pcb));
             pcb->pid = pid;
-            // strcpy(pcb->pid,pid);
     
     /* ------------------------Cantidad de tripulantes---------------------------- */
             int cant_tripulantes = recibir_catidad_de_tripulantes(lista);
 
     /* ------------------------Creacion de tcbs---------------------------- */
             t_list* tcbs = crear_tcbs(lista,cant_tripulantes);
-            // pthread_mutex_lock(&mutex_mapa);
+            pthread_mutex_lock(&mutex_mapa);
             iniciar_patota_en_mapa(pid,tcbs);
-            // pthread_mutex_unlock(&mutex_mapa);
+            pthread_mutex_unlock(&mutex_mapa);
     /* ------------------------Creacion de tareas---------------------------- */
 
             char* tareas_unidas = unir_tareas(lista);
-            // loggear_entero(strlen(tareas_unidas));
+                // Descomentar para testear
             // loggear_linea();
+            // loggear_entero(strlen(tareas_unidas));
             // log_info(logger,"Tareas unidas retornadas-> %s",tareas_unidas);
             
             iniciar_patota_SEGMENTACION (lista, pcb, tcbs, tareas_unidas, cant_tripulantes);
@@ -210,9 +199,6 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             list_clean_and_destroy_elements(tcbs, (void*) iterator_destroy_tcb);
 			list_destroy(tcbs);
             free(tareas_unidas);
-            // pthread_mutex_unlock(&mutex_mapa);
-            // pthread_mutex_unlock(&sem_memoria); 
-            // pthread_mutex_unlock(&mutex_segmentos_libres);
             break;
 		case ENVIAR_PROXIMA_TAREA:
         // DISCORDIADOR me manda un pid y un tid
@@ -247,7 +233,7 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
 	        // log_info(logger,"estado %c",estado_actualizar_estado);
-            
+        
             actualizar_estado_SEGMENTACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
             
             // liberar estructuras utilizadas
@@ -267,9 +253,9 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             // loggear_entero(pid_expulsar_tripulante);
             // loggear_entero(tid_expulsar_tripulante);
             // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
-            // pthread_mutex_lock(&mutex_mapa);
+            pthread_mutex_lock(&mutex_mapa);
             expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
-            // pthread_mutex_unlock(&mutex_mapa);
+            pthread_mutex_unlock(&mutex_mapa);
 
             
             expulsar_tripulante_SEGMENTACION(pid_expulsar_tripulante,tid_expulsar_tripulante);
@@ -277,25 +263,33 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
             // pthread_mutex_unlock(&mutex_segmentos_libres);
             break;
         case COMPACTAR:
-            
+            pthread_mutex_lock(&mutex_segmentos_libres);
+            pthread_mutex_lock(&sem_memoria); 
+            pthread_mutex_lock(&mutex_mapa); 
+
             compactar();
+
+            pthread_mutex_unlock(&mutex_segmentos_libres);
+            pthread_mutex_unlock(&sem_memoria); 
+            pthread_mutex_unlock(&mutex_mapa); 
             // list_iterate(admin_segmentacion->segmentos_libres,iterator_segmento);
 
             break;
         case DUMP:
             
-            // pthread_mutex_lock(&sem_memoria);
-            // pthread_mutex_lock(&mutex_segmentos_libres);
-            // pthread_mutex_lock(&mutex_mapa);
+            pthread_mutex_lock(&sem_memoria);
+            pthread_mutex_lock(&mutex_segmentos_libres);
+            pthread_mutex_lock(&mutex_mapa);
             // getyx(stdscr,);
             // move(y_max-2,0);
             // mvprintw(y_max-2,1,"%s","Patotas presentes ->");
             // clrtoeol();
             // mostrar_patotas_presentes_en_mapa();
             hacer_dump_SEGMENTACION();
-            // pthread_mutex_unlock(&mutex_mapa);
-            // pthread_mutex_unlock(&mutex_segmentos_libres);
-            // pthread_mutex_unlock(&sem_memoria);
+
+            pthread_mutex_unlock(&mutex_mapa);
+            pthread_mutex_unlock(&mutex_segmentos_libres);
+            pthread_mutex_unlock(&sem_memoria);
 
             break;
         case RECIBIR_LA_UBICACION_DEL_TRIPULANTE:
@@ -309,9 +303,9 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 
             uint32_t nueva_pos_x = recibir_pid(lista);
             uint32_t nueva_pos_y = recibir_pid(lista);
-
-            char aux_ubicacion = obtener_id_mapa(pid_ubicacion,tid_ubicacion);
-            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,aux_ubicacion,nueva_pos_x,nueva_pos_y);
+            pthread_mutex_lock(&mutex_mapa);
+            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
+            pthread_mutex_unlock(&mutex_mapa);
 
             cambiar_ubicacion_tripulante_SEGMENTACION(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
 
@@ -325,9 +319,6 @@ void atender_cliente_SEGMENTACION(int cliente_fd)
 		}
 
         list_destroy(lista);
-        pthread_mutex_unlock(&mutex_mapa);
-        pthread_mutex_unlock(&sem_memoria);
-        pthread_mutex_unlock(&mutex_segmentos_libres);
         pthread_exit(pthread_self);
 }
 
@@ -360,7 +351,9 @@ void atender_cliente_PAGINACION(int cliente_fd)
     /* ------------------------Creacion de tcbs---------------------------- */
             t_list* tcbs = crear_tcbs(lista,cant_tripulantes);
             // loggear_entero(list_size(tcbs));
+            pthread_mutex_lock(&mutex_mapa);
             iniciar_patota_en_mapa(pid,tcbs);
+            pthread_mutex_unlock(&mutex_mapa);
 
 
     /* ------------------------Creacion de tareas---------------------------- */
@@ -390,7 +383,8 @@ void atender_cliente_PAGINACION(int cliente_fd)
 
             char* tarea_solicitada = proxima_tarea_PAGINACION(pid_prox_tarea,tid__prox_tarea);
 
-            // enviar_mensaje(tarea_solicitada,cliente_fd);
+            enviar_mensaje(tarea_solicitada,cliente_fd);
+
             free(tarea_solicitada);
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
 
@@ -404,7 +398,10 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
             
+            pthread_mutex_lock(&mutex_mapa);
             actualizar_estado_PAGINACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
+            pthread_mutex_unlock(&mutex_mapa);
+
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             
             break;
@@ -415,7 +412,9 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t tid_expulsar_tripulante = recibir_pid(lista);
 
             // char aux_expulsar = obtener_id_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
+            pthread_mutex_lock(&mutex_mapa);
             expulsar_tripulante_en_mapa(pid_expulsar_tripulante,tid_expulsar_tripulante);
+            pthread_mutex_unlock(&mutex_mapa);
 
             expulsar_tripulante_PAGINACION(pid_expulsar_tripulante,tid_expulsar_tripulante);
 
@@ -428,8 +427,9 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t nueva_pos_x = recibir_pid(lista);
             uint32_t nueva_pos_y = recibir_pid(lista);
 
-            char aux_ubicacion = obtener_id_mapa(pid_ubicacion,tid_ubicacion);
-            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,aux_ubicacion,nueva_pos_x,nueva_pos_y);
+            pthread_mutex_lock(&mutex_mapa);
+            mover_personaje_en_mapa(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
+            pthread_mutex_unlock(&mutex_mapa);
 
             cambiar_ubicacion_tripulante_PAGINACION(pid_ubicacion,tid_ubicacion,nueva_pos_x,nueva_pos_y);
             
@@ -437,13 +437,11 @@ void atender_cliente_PAGINACION(int cliente_fd)
         case DUMP:
             
             pthread_mutex_lock(&sem_memoria);
-            pthread_mutex_lock(&mutex_segmentos_libres);
             pthread_mutex_lock(&mutex_mapa);
             
             hacer_dump_PAGINACION();
             
             pthread_mutex_unlock(&mutex_mapa);
-            pthread_mutex_unlock(&mutex_segmentos_libres);
             pthread_mutex_unlock(&sem_memoria);
 
             break;
@@ -590,7 +588,7 @@ void expulsar_tripulante_en_mapa(uint32_t pid, uint32_t tid)
 }
 
 
-void mover_personaje_en_mapa(uint32_t pid,uint32_t tid, char id,uint32_t pos_x_nuevo, uint32_t pos_y_nuevo)
+void mover_personaje_en_mapa(uint32_t pid,uint32_t tid, uint32_t pos_x_nuevo, uint32_t pos_y_nuevo)
 {
     // bool matchear_tripulante(t_mapa* tripulante)
     // {
@@ -864,6 +862,10 @@ void iniciar_segmentacion()
     lista_de_patotas = list_create();
     TABLA_DE_MAPA = list_create();
     list_dump_segmentacion = list_create();
+
+    pthread_mutex_init(&mutex_segmentos_libres,NULL);
+
+
 };
 
 
@@ -1329,7 +1331,9 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
         // log_info(logger, "Es necsario compactar? -> %s",es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes)?"true":"false");
         
         // Se pregunta si hay espacio para TODAS los segmentos
-        // pthread_mutex_lock(&mutex_segmentos_libres);
+        pthread_mutex_lock(&mutex_segmentos_libres);
+        pthread_mutex_lock(&sem_memoria); 
+
         if (bytes_a_guardar >= admin_segmentacion->bytes_libres)
         {
             if (bytes_a_guardar > admin_segmentacion->bytes_libres)
@@ -1345,14 +1349,24 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
                 free(tareas_unidas);
                 pthread_exit(pthread_self);
             }
-            // pthread_mutex_lock(&sem_memoria); 
+            pthread_mutex_lock(&mutex_segmentos_libres);
+            pthread_mutex_lock(&sem_memoria); 
+            pthread_mutex_lock(&mutex_mapa);
             compactar();
-            // pthread_mutex_unlock(&sem_memoria); 
+            pthread_mutex_unlock(&mutex_segmentos_libres);
+            pthread_mutex_unlock(&sem_memoria); 
+            pthread_mutex_unlock(&mutex_mapa);
         }
         // if ( strcmp(CRITERIO,"BESTFIT") == 0 && es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes))
         if ( es_necesario_compactar(_tareas_bytes_ocupados,cant_tripulantes) )
         {
+            pthread_mutex_lock(&mutex_segmentos_libres);
+            pthread_mutex_lock(&sem_memoria); 
+            pthread_mutex_lock(&mutex_mapa);
             compactar();
+            pthread_mutex_unlock(&mutex_segmentos_libres);
+            pthread_mutex_unlock(&sem_memoria); 
+            pthread_mutex_unlock(&mutex_mapa);
         }
         
         // pthread_mutex_unlock(&mutex_segmentos_libres);
@@ -1401,12 +1415,17 @@ void iniciar_patota_SEGMENTACION (t_list* lista,t_pcb* pcb,t_list* tcbs, char* t
         list_add_sorted(lista_de_patotas,tabla_segmentos_de_patota,comparador_patotas);
         // list_add(lista_de_patotas,tabla_segmentos_de_patota);
         // list_sort(lista_de_patotas,comparador_patotas);
+        pthread_mutex_unlock(&mutex_segmentos_libres);
+        pthread_mutex_unlock(&sem_memoria); 
         
     /*---------------------Fin Hidratacion de la patota--------------------------*/
 }
 
 char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
 {
+    pthread_mutex_lock(&mutex_segmentos_libres);
+    pthread_mutex_lock(&sem_memoria); 
+
     //  lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota;
     segmentos_patota = retornar_segmentos_patota(pid);
@@ -1437,6 +1456,8 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
 
     // liberar estructuras utilizadas
 
+    pthread_mutex_unlock(&mutex_segmentos_libres);
+    pthread_mutex_unlock(&sem_memoria); 
     free(tareas_de_segmentos_patota);
     return tarea_solicitada;
 }
@@ -1444,6 +1465,9 @@ char* enviar_proxima_tarea_SEGMENTACION(uint32_t pid, uint32_t tid)
 
 void actualizar_estado_SEGMENTACION (uint32_t pid_actualizar_estado, uint32_t tid_actualizar_estado, char estado_actualizar_estado)
 {
+    pthread_mutex_lock(&mutex_segmentos_libres);
+    pthread_mutex_lock(&sem_memoria); 
+
     //  lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota_actualizar_estado;
     segmentos_patota_actualizar_estado = retornar_segmentos_patota(pid_actualizar_estado);
@@ -1455,10 +1479,15 @@ void actualizar_estado_SEGMENTACION (uint32_t pid_actualizar_estado, uint32_t ti
     // Actualizar el estado del tripulante
     actualizar_en_MEMORIA_tcb_estado(segmento_tcb_actualizar_estado,estado_actualizar_estado);
     // loggear_tcb(segmento_tcb_actualizar_estado);
+    pthread_mutex_unlock(&mutex_segmentos_libres);
+    pthread_mutex_unlock(&sem_memoria); 
 }
 
 void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t tid_expulsar_tripulante)
 {
+    pthread_mutex_lock(&mutex_segmentos_libres);
+    pthread_mutex_lock(&sem_memoria); 
+
     // lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota_expulsar_tripulante;
     segmentos_patota_expulsar_tripulante = retornar_segmentos_patota(pid_expulsar_tripulante);
@@ -1477,10 +1506,16 @@ void expulsar_tripulante_SEGMENTACION(uint32_t pid_expulsar_tripulante, uint32_t
     list_replace(segmentos_patota_expulsar_tripulante,tid_expulsar_tripulante,segmento_vacio);
     liberar_segmento(segmento_tcb_explulsar_tripulante);
     liberar_patota_si_no_hay_tripulantes(pid_expulsar_tripulante);
+
+    pthread_mutex_unlock(&mutex_segmentos_libres);
+    pthread_mutex_unlock(&sem_memoria); 
 }
 
 void cambiar_ubicacion_tripulante_SEGMENTACION(uint32_t pid_ubicacion,uint32_t tid_ubicacion,uint32_t nueva_pos_x,uint32_t nueva_pos_y)
 {
+    pthread_mutex_lock(&mutex_segmentos_libres);
+    pthread_mutex_lock(&sem_memoria);
+
     // lista de segmentos de ese pid de las estructuras administrativas
     t_list* segmentos_patota_ubicacion;
     segmentos_patota_ubicacion = retornar_segmentos_patota(pid_ubicacion);
@@ -1500,6 +1535,8 @@ void cambiar_ubicacion_tripulante_SEGMENTACION(uint32_t pid_ubicacion,uint32_t t
     
     actualizar_en_MEMORIA_tcb_posiciones(segmento_tcb_ubicacion,nueva_pos_x,nueva_pos_y);
     
+    pthread_mutex_unlock(&mutex_segmentos_libres);
+    pthread_mutex_unlock(&sem_memoria);
 
         // Descomentar para testear
     // loggear_tcb(segmento_tcb_ubicacion);
@@ -1549,6 +1586,7 @@ void iniciar_paginacion()
 	}
 
 	TABLA_DE_PAGINAS = list_create();
+    pthread_mutex_init(&mutex_paginacion,NULL);
 
 
 	int fd = open("cfg/virtualmemory.txt",O_RDWR , S_IRUSR | S_IWUSR);
@@ -1851,7 +1889,10 @@ t_list* listar_tids(estructura_administrativa_paginacion* dato){
 
 
 void iniciar_patota_PAGINACION (estructura_administrativa_paginacion* dato_a_paginar){
-	dto_memoria dato_empaquetado = empaquetar_data_paginacion(dato_a_paginar);
+	
+    pthread_mutex_lock(&sem_memoria);
+
+    dto_memoria dato_empaquetado = empaquetar_data_paginacion(dato_a_paginar);
 	if(paginas_que_ocupa(dato_empaquetado.tamanio_data) <= obtener_marcos_vacios()){
 		t_list* marcos_a_reservar = obtener_marcos_a_reservar(paginas_que_ocupa(dato_empaquetado.tamanio_data));
 		modificar_tlb(dato_a_paginar->pcb.pid, listar_tids(dato_a_paginar), marcos_a_reservar);
@@ -1867,6 +1908,8 @@ void iniciar_patota_PAGINACION (estructura_administrativa_paginacion* dato_a_pag
 			setear_memoria(marcos_a_reservar, dato_empaquetado.data_empaquetada);
 		}
 	}
+
+    pthread_mutex_unlock(&sem_memoria);
 }
 
 
@@ -1922,7 +1965,9 @@ void setear_nueva_posicion(t_list* marcos_a_cambiar, uint32_t posx, uint32_t pos
 }
 
 void cambiar_ubicacion_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, uint32_t nueva_posx, uint32_t nueva_posy){
-	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+    pthread_mutex_lock(&sem_memoria);
+	
+    t_tabla_proceso* aux = buscar_proceso(id_proceso);
 	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
 	uint32_t direccion_logica = 8 + 5 + (21*tripulante_logico);
 	t_list* paginas_a_cambiar = list_create();
@@ -1951,6 +1996,7 @@ void cambiar_ubicacion_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tr
 	list_destroy(marcos_en_virtual);
 	list_destroy(marcos_a_cambiar);
 	list_destroy(paginas_a_cambiar);
+    pthread_mutex_unlock(&sem_memoria);
 }
 
 t_list* obtener_marcos_de_paginas(t_list* lista_de_marcos, uint32_t pagina_inicio, uint32_t pagina_fin){
@@ -2180,6 +2226,7 @@ t_list* compactar_tripulante(uint32_t id_proceso, uint32_t direccion_logica_inic
 
 
 void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante){
+    pthread_mutex_lock(&sem_memoria);
 	
 	t_tabla_proceso* aux = buscar_proceso(id_proceso);
 
@@ -2218,44 +2265,20 @@ void expulsar_tripulante_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante)
 		list_destroy(lista_marcos_borrado);
 		list_destroy(lista_de_marcos_de_tareas);
 	}
+    pthread_mutex_unlock(&sem_memoria);
 }
 
 t_list* deconstruir_string(char* array){
 	t_list* aux = list_create();
-	uint32_t contador = 0;
-	uint32_t contador_palabras = 0;
-
-	while (array[contador]!=NULL){
-		if(array[contador]=='-'){
-			uint32_t aux2=0;
-			char* palabra;
-			palabra = (char*) malloc(sizeof(char)*contador_palabras);
-			for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-				palabra[aux2]=array[i];
-				aux2++;
-			}
-			palabra[contador_palabras] = NULL;
-			list_add(aux, palabra);
-			aux2 = 0;
-			contador_palabras= -1;
-		}
-		
-		contador++;
-		contador_palabras++;	
+	uint32_t cantidad_de_palabras = 0;
+	char** array_spliteado = string_split(array, "-");
+	void contar_palabras(char* palabra){
+		cantidad_de_palabras++;
 	}
-
-	uint32_t aux2=0;
-	char* palabra;
-	palabra = (char*) malloc(sizeof(char)*contador_palabras);
-	for(uint32_t i = contador-contador_palabras; i <= contador; i++ ){
-		palabra[aux2]=array[i];
-		aux2++;
+	string_iterate_lines(array_spliteado, contar_palabras);
+	for(uint32_t i=0; i<cantidad_de_palabras; i++){
+		list_add(aux, array_spliteado[i]);
 	}
-	palabra[contador_palabras] = NULL;
-	list_add(aux, palabra);
-	aux2 = 0;
-	contador_palabras= -1;
-	
 
 	return aux;
 }
@@ -2314,9 +2337,7 @@ char* obtener_lista_de_tareas(uint32_t direccion_logica, uint32_t id_proceso){
 	char* tareas;
 	tareas = (char*) malloc(sizeof(char)*tamanio_tareas);
 
-	for(uint32_t i= direccion_logica%TAMANIO_PAGINAS; i < tamanio_tareas; i++){
-		memcpy(tareas+ i - direccion_logica%TAMANIO_PAGINAS, memoria_auxi+i, 1);
-	}
+	memcpy(tareas, memoria_auxi+direccion_logica%TAMANIO_PAGINAS, tamanio_tareas);
 	
 	free(memoria_auxi);
 	list_destroy(marcos_a_copiar);
@@ -2353,7 +2374,9 @@ uint32_t obtener_id_proxima_tarea(uint32_t id_proceso, uint32_t id_tripulante){
 };
 
 char* proxima_tarea_PAGINACION (uint32_t id_proceso, uint32_t id_tripulante){
-	uint32_t direccion_logica_tareas = obtener_direccion_logica_tareas(id_proceso);
+    pthread_mutex_lock(&sem_memoria);
+	
+    uint32_t direccion_logica_tareas = obtener_direccion_logica_tareas(id_proceso);
 	char* todas_las_tareas = obtener_lista_de_tareas(direccion_logica_tareas, id_proceso);
 	t_list* lista_de_tareas = deconstruir_string(todas_las_tareas);
 	uint32_t proxima_tarea = obtener_id_proxima_tarea(id_proceso, id_tripulante);
@@ -2365,14 +2388,18 @@ char* proxima_tarea_PAGINACION (uint32_t id_proceso, uint32_t id_tripulante){
 		memoria_auxiliar = (void*) malloc (strlen(aux)+1);
 		memcpy(memoria_auxiliar, aux, strlen(aux)+1);
 		list_destroy_and_destroy_elements(lista_de_tareas, free);
-		return memoria_auxiliar;
+        pthread_mutex_unlock(&sem_memoria);
+        return memoria_auxiliar;
 	} else {
+        pthread_mutex_unlock(&sem_memoria);
 		return "NULL";
 	}
+
 }
 
 void actualizar_estado_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, char nuevo_estado){
-	t_tabla_proceso* aux = buscar_proceso(id_proceso);
+    pthread_mutex_lock(&sem_memoria);	
+    t_tabla_proceso* aux = buscar_proceso(id_proceso);
 	uint32_t tripulante_logico = indice_de_tripulante(aux->lista_de_tids, id_tripulante);
 	uint32_t direccion_logica_inicio = 8 + 4 +(21*tripulante_logico);
 	uint32_t direccion_logica_fin = direccion_logica_inicio + 1;
@@ -2395,6 +2422,7 @@ void actualizar_estado_PAGINACION(uint32_t id_proceso, uint32_t id_tripulante, c
 	setear_memoria(marcos_a_copiar, memoria_auxi);
 
 	list_destroy(marcos_a_copiar);
+    pthread_mutex_unlock(&sem_memoria);	
 }
 
 char* estado_marco(uint32_t marco){
