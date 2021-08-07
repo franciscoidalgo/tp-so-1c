@@ -874,9 +874,11 @@ void recuperar_fs(int received_signal){
 	pthread_mutex_lock(&mutex_blocks);
 	int cant_sabotajes;
 	int direccion_size;
+	int cod_op;
 	for(cant_sabotajes = 0; posiciones_sabotajes[cant_sabotajes] != NULL; cant_sabotajes++);
 	log_info(logger,posiciones_sabotajes[posicion_sabotaje]);
 	enviar_mensaje(posiciones_sabotajes[posicion_sabotaje], socket_sabo);
+	recibir_operacion(cod_op);
 	recibir_mensaje(socket_sabo, logger, &direccion_size);
 	log_info(logger, "\033[0;31mSe inicio el protocolo fsck\033[0m.");
 	chequear_files(path_files);
