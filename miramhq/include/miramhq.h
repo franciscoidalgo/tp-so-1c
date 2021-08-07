@@ -106,8 +106,8 @@ typedef struct{
 typedef struct{
 			uint32_t marco;			
 			char* estado;
-			uint32_t proceso;
-			uint32_t pagina; 		
+			char* proceso;
+			char* pagina; 		
 		} dump_memoria;
 
 typedef struct{

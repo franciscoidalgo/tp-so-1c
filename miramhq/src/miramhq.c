@@ -398,9 +398,9 @@ void atender_cliente_PAGINACION(int cliente_fd)
             uint32_t tid_actualizar_estado = recibir_pid(lista);
             char estado_actualizar_estado = recibir_estado(lista);
             
-            pthread_mutex_lock(&mutex_mapa);
+           
             actualizar_estado_PAGINACION(pid_actualizar_estado,tid_actualizar_estado,estado_actualizar_estado);
-            pthread_mutex_unlock(&mutex_mapa);
+         
 
             list_clean_and_destroy_elements(lista, (void*) iterator_destroy);
             
@@ -2392,7 +2392,9 @@ char* proxima_tarea_PAGINACION (uint32_t id_proceso, uint32_t id_tripulante){
         return memoria_auxiliar;
 	} else {
         pthread_mutex_unlock(&sem_memoria);
-		return "NULL";
+		char* nulo = malloc(strlen("NULL")+1);         
+        strcpy(nulo,"NULL");         
+        return nulo;
 	}
 
 }
@@ -2456,11 +2458,13 @@ void hacer_dump_PAGINACION(){
 
 	void barrer_un_proceso(uint32_t marco){
 		if(marco<OFFSET){
+            char* procesoId = string_itoa(aux_pid);             
+            char* paginaId = string_itoa(aux_pag);
 			dump_memoria dto;
 			dto.marco = marco;
 			dto.estado = estado_marco(marco);
-			dto.proceso =  aux_pid;
-			dto.pagina = aux_pag; 
+			dto.proceso =  procesoId;
+			dto.pagina = paginaId; 
 
 			void* aux;
 			aux = malloc(sizeof(dump_memoria));
@@ -2483,6 +2487,19 @@ void hacer_dump_PAGINACION(){
 	}
 
 	list_iterate(TABLA_DE_PAGINAS, llenar_lista);
+    for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){         
+        if(ESTADO_MARCOS[i]==0){            
+            dump_memoria dto;             
+            dto.marco = i;             
+            dto.estado = "LIBRE  ";            
+            dto.proceso =  "-";            
+            dto.pagina = "-";               
+            void* aux;             
+            aux = malloc(sizeof(dump_memoria));             
+            memcpy(aux, &dto, sizeof(dump_memoria));              
+            list_add(lista_dump, aux);         
+        }
+    }
 	list_sort(lista_dump, ordenar);	
 
 	char filename[32];
@@ -2500,14 +2517,14 @@ void hacer_dump_PAGINACION(){
 	fprintf(fp, "%s\n", timestamp);
 
 	void imprimir_en_archivo(dump_memoria* data){
-		fprintf(fp, "Marco:%d Estado:%s Proceso:%d Pagina:%d \n",data->marco, data->estado, data->proceso, data->pagina);
+		fprintf(fp, "Marco:%d Estado:%s Proceso:%s Pagina:%s \n",data->marco, data->estado, data->proceso, data->pagina);
 	}
 
 	list_iterate(lista_dump, imprimir_en_archivo);
 
     fclose(fp);
 
-	list_destroy(lista_dump);
+	list_destroy_and_destroy_elements(lista_dump, free);
 }
 
 void mostrar_array_marcos(){

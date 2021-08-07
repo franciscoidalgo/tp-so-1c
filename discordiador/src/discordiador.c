@@ -10,9 +10,9 @@ int main()
 enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
 luego poder recibir la señal de sabotaje por ese "tunel" establecido
  */
-	pthread_t hiloEscuchaSabotaje;
-	pthread_create(&hiloEscuchaSabotaje, NULL, (void *)atender_sabotaje, NULL);
-	pthread_detach(hiloEscuchaSabotaje);
+	// pthread_t hiloEscuchaSabotaje;
+	// pthread_create(&hiloEscuchaSabotaje, NULL, (void *)atender_sabotaje, NULL);
+	// pthread_detach(hiloEscuchaSabotaje);
 
 	pthread_t hilo_recepcionista;
 	while (1)
@@ -193,7 +193,7 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 {
 
 	char *path = string_new();
-	string_append(&path, "/home/utnso/workspace/tp-2021-1c-Quinta-Recursada/discordiador/tareas/");
+	string_append(&path, "tareas/");
 	string_append(&path, linea_consola[2]);
 
 	FILE *archivo = fopen(path, "r");
@@ -211,6 +211,7 @@ void enviar_tareas_a_RAM(int conexion, char **linea_consola)
 
 	int id = ID_PATOTA;
 
+	log_info(logger,"%d %d",id,atoi(linea_consola[1]));
 	agregar_a_paquete(paquete, string_itoa(id), sizeof(id));
 	agregar_a_paquete(paquete, linea_consola[1], strlen(linea_consola[1]) + 1);
 
@@ -380,11 +381,12 @@ void add_queue(int lista, t_tripulante *tripulante)
 		list_add(BLOCKED_EMERGENCY, tripulante);
 		break;
 	case _EXIT_:;
-		tripulante->estado = 'F';
+
 		pthread_mutex_lock(&mutex_lista_exit);
 		// Agregar Funcion Expulsar
 		enviar_expulsar_tripulante_a_ram(tripulante);
 		controlar_forma_de_salida(tripulante);
+		tripulante->estado = 'F';
 		list_add(EXIT, tripulante);
 		pthread_mutex_unlock(&mutex_lista_exit);
 		break;
@@ -401,12 +403,14 @@ void add_queue(int lista, t_tripulante *tripulante)
 }
 
 void controlar_forma_de_salida(t_tripulante* t){
-	if((strcmp(&t->estado, "E") == 0) ||(strcmp(&t->estado, "B") == 0)){
-	if(!(string_equals_ignore_case(t->tarea->accion,"NULL"))==0){
+	if(t->estado== 'E' || t->estado=='B'){
+	if(!string_equals_ignore_case(t->tarea->accion,"NULL")){
 		strcpy(t->tarea->accion,"NULL");
 		t->posicion_x = t->tarea->posicion_x;
 		t->posicion_y = t->tarea->posicion_y;
+		pthread_mutex_lock(&mutex_movimiento);
 		t->tarea->tiempo = 0;
+		pthread_mutex_unlock(&mutex_movimiento);
 	}
 	}
 }
@@ -469,7 +473,7 @@ void atender_accion_de_consola(char *linea_consola)
 void iniciar_planificacion()
 {
 	if (ALGORITMO == FIFO)
-	{
+	{log_info(logger,"Planificador FIFO");
 
 		while (1)
 		{
@@ -492,22 +496,18 @@ void iniciar_planificacion()
 	}
 
 	if (ALGORITMO == RR)
-	{
+	{	log_info(logger,"Planificador RR Q=%d",QUANTUM);
 		while (1)
 		{
 			pthread_mutex_lock(&mutex_planificacion);
 			int tripulantes_en_new = list_size(NEW);
 			pthread_t hilo[tripulantes_en_new];
-			// pthread_t planificador_ES;
 
 			for (size_t i = 1; i <= tripulantes_en_new; i++)
 			{
 				t_tripulante *tripulante = list_remove(NEW, 0);
 				pthread_create(&hilo[i], NULL, (void *)planificar_RR, tripulante);
 			}
-
-			// pthread_create(&planificador_ES, NULL, (void *)entrada_salida, NULL);
-			// // pthread_detach(planificador_ES);
 
 			for (uint32_t j = 1; j <= tripulantes_en_new; j++)
 			{

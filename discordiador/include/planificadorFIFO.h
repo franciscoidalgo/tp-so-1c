@@ -14,7 +14,7 @@ void planificar_FIFO(t_tripulante *tripulante)
 		if (tripulante->estado == 'F')
 		{
 			sem_post(&sem_exe);
-			break;
+			pthread_exit((void*)pthread_self());
 		}
 		tripulante = list_remove(READY, 0); //se saca el primer tripulante de la cola de ready
 		add_queue(_EXEC_, tripulante);
@@ -23,6 +23,7 @@ void planificar_FIFO(t_tripulante *tripulante)
 		{
 			mover_a_la_posicion_de_la_tarea(tripulante);
 			realizar_tarea_comun(tripulante);
+			if(strcmp(tripulante->tarea->accion,"NULL")==0) {pthread_exit((void*)pthread_self());}
 			buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(tripulante);
 			expulsar_si_no_hay_tarea(tripulante);
 		} while (tripulante->estado == 'E');
@@ -120,7 +121,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 {
 	//se envia la posicion inicial del tripulante y la coordenada de la tarea
 	
-	enviar_movimiento_a_imongo_store_para_BITACORA(tripulante);
+	// enviar_movimiento_a_imongo_store_para_BITACORA(tripulante);
 
 	do{
 	int socket;
@@ -141,7 +142,7 @@ void mover_a_la_posicion_de_la_tarea(t_tripulante *tripulante)
 		}
 		// enviar_posicion_a_ram(tripulante, socket);
 		if (tripulante->estado == 'F')
-			pthread_exit((void *)pthread_self());
+			pthread_exit(NULL);
 	}
 
 	while (tripulante->posicion_x > tripulante->tarea->posicion_x)
@@ -223,19 +224,21 @@ void realizar_tarea_comun(t_tripulante *tripulante)
 {
 	if (es_tarea_comun(tripulante))
 	{
-		enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Comienza ejecución de tarea ");
-		log_info(logger, "Tripu %d de Patota %d, realizando mi tarea %s que me lleva %d segundos",
-				 tripulante->tid, tripulante->puntero_pcb, tripulante->tarea->accion,
-				 tripulante->tarea->tiempo);
-		while (tripulante->tarea->tiempo != 0)
+		// enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Comienza ejecución de tarea ");
+		// log_info(logger, "Tripu %d de Patota %d, realizando mi tarea %s que me lleva %d segundos",
+		// 		 tripulante->tid, tripulante->puntero_pcb, tripulante->tarea->accion,
+		// 		 tripulante->tarea->tiempo);
+		while (tripulante->tarea->tiempo > 0)
 		{
-			log_info(logger, "%d", tripulante->tarea->tiempo);
+			log_info(logger, "%d-%d tiempo tarea %d",tripulante->tid ,tripulante->puntero_pcb,tripulante->tarea->tiempo);
 			verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
+			pthread_mutex_lock(&mutex_movimiento);
 			tripulante->tarea->tiempo -= 1;
+			pthread_mutex_unlock(&mutex_movimiento);
 			sleep(RETARDO_CICLO_CPU);
 		}
-		enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Se finaliza la tarea ");
+		// enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Se finaliza la tarea ");
 	}
 }
 
@@ -246,7 +249,7 @@ bool es_tarea_comun(t_tripulante *tripulante)
 
 void peticion_ES(t_tripulante *tripulante)
 {
-	enviar_tarea_de_ES_a_imongostore(tripulante);
+	// enviar_tarea_de_ES_a_imongostore(tripulante);
 				verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
 	log_info(logger, "Peticion de E/S en EXE de %d-%d", tripulante->tid, tripulante->puntero_pcb);
