@@ -90,7 +90,7 @@ t_bitacora;
 
 // funciones bitacora
 void enviar_bitacora(t_bitacora* bitacora, int socket_cliente);
-char* obtener_bitacoras(uint32_t id_patota, uint32_t id_tripulante);
+char* obtener_bitacoras(uint32_t id_patota, uint32_t id_tripulante, int);
 
 // inciar servidor
 int iniciar_servidor(t_log* logger,t_config* config);
