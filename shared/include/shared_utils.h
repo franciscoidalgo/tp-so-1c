@@ -1,6 +1,7 @@
 #ifndef SHARED_UTILS_H
 #define SHARED_UTILS_H
 
+#include <cstdint>
 #include <stdio.h>
 #include <commons/log.h>
 #include <stdbool.h>
@@ -129,5 +130,7 @@ void terminar_programa(int conexion, t_log* logger, t_config* config);
 // espera
 int esperar_cliente(int socket_servidor,t_log* logger);
 
+// bitacoras
+char* obtener_bitacoras(uint32_t id_patota, uint32_t );
 
 #endif
