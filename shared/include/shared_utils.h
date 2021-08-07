@@ -33,6 +33,7 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	INICIAR_TRIPULANTE,
 	FINALIZACION,
 	SABOTAJE,
+	SABOTAJE_RESUELTO,
 	BITACORA
 }op_code;
 

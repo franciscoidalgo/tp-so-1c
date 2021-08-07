@@ -526,11 +526,8 @@ void atender_sabotaje()
 		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
 
 		int *f = (int *)SABOTAJE;
-	
 		send(socket_conexion, &f, sizeof(int), 0);
-
 		int direccion_size;
-
 		recibir_operacion(socket_conexion);
 		char* coordenada_sabotaje = (char*) recibir_buffer(&direccion_size,socket_conexion);
 		log_info(logger,"%s tamanio %d",coordenada_sabotaje,direccion_size);
@@ -538,12 +535,20 @@ void atender_sabotaje()
 		char** coor = string_split(coordenada_sabotaje,"|");
 		int sabotaje_x=atoi(coor[0]);
 		int sabotaje_y=atoi(coor[1]);
-
 		free(coordenada_sabotaje);
+
+
 		activar_sabotaje();
-		log_info(logger,"Moviendome al sabotaje en %d %d",sabotaje_x,sabotaje_y);
+		log_info(logger,"Buscando un tripulante para resolver sabotaje en %d %d",sabotaje_x,sabotaje_y);
 		agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje();
 		resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(sabotaje_x, sabotaje_y);
+
+		//dar aviso a IMONGO STORE de sabotaje resuelto
+				int *a = (int *)SABOTAJE_RESUELTO;
+		send(socket_conexion, &a, sizeof(int), 0);
+		liberar_conexion(socket_conexion);
+		//dar aviso a IMONGO STORE de sabotaje resuelto
+
 		volver_a_actividad();
 		list_clean(BLOCKED_EMERGENCY);
 
@@ -597,13 +602,17 @@ void agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje()
 	{
 		t_tripulante* tripulante_e = list_get(EXEC,i);
 		tripulante_e->estado = 'S';
+		
+		enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_e,"Se corre en pánico hacia la ubicación del sabotaje");
 		list_add(BLOCKED_EMERGENCY,tripulante_e);
+
 	}
 
 	for (size_t i = 0; i < list_size(READY); i++)
 	{
 		t_tripulante *tripulante_r = list_get(READY, i);
 		tripulante_r->estado = 'S';
+		enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_r,"Se corre en pánico hacia la ubicación del sabotaje");
 		add_queue(_BLOCKED_EMERGENCY_, tripulante_r);
 	}
 }
@@ -640,7 +649,6 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 		
 	moverme_hacia_tarea_en_sabotaje(tripulante, 5, 5);
 
-
 	//realizar tarea
 	for (size_t i = 0; i < DURACION_SABOTAJE; i++)
 	{
@@ -649,9 +657,6 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 	}
 		log_info(logger,"%s","Se resolvio el sabotaje");
 		iterator(tripulante);
-	// mover_tripulante_entre_listas_si_existe(_BLOCKED_EMERGENCY_,_EXEC_,tripulante->puntero_pcb,tripulante->tid);
-	
-	// sleep(DURACION_SABOTAJE); //variable GLOBAL que viene por config
 }
 
 void sacar_tripulantes_de_BLOCKED_EMERGENCY()
@@ -827,9 +832,7 @@ void loggear_linea()
     log_info(logger,"-------------------------------------------------------------");
 }
 
-
 //mensajes a IMONGOSTORE
-
 /*
  ●  Se mueve de X|Y a X’|Y’
  ● Comienza ejecución de tarea X
@@ -855,11 +858,13 @@ char* tarea_pos_y =string_itoa(tripulante->tarea->posicion_y);
 char* tarea_posicion_x = strcat(tarea_pos_x,"|");
 char* coordenada_tarea = strcat(tarea_posicion_x,tarea_pos_y);
 
-char* mensaje = malloc(strlen("Se mueve de ")+strlen(coordenada_tripu)+strlen(coordenada_tarea)+strlen(" a ")+1);
-strcat(mensaje,"Se mueve de ");
+char* mensaje = malloc(strlen("Se mueve de ")+strlen(coordenada_tripu)+strlen(coordenada_tarea)
+						+strlen(" a ")+1+1);
+strcpy(mensaje,"Se mueve de ");
 strcat(mensaje,coordenada_tripu);
 strcat(mensaje," a ");
 strcat(mensaje,coordenada_tarea);
+strcat(mensaje,"\n");
 
 t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
 bitacora->id_tripulante = tripulante->tid;
@@ -868,6 +873,7 @@ bitacora->length_mensaje = strlen(mensaje);
 bitacora->mensaje = mensaje;
 
 int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+log_info(logger,bitacora->mensaje);
 enviar_bitacora(bitacora,conexion);
 
 free(tripulante_pos_x);
@@ -881,16 +887,20 @@ void enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(t_trip
 /*
 mensaje:"Comienza ejecución de tarea X" o "Se finaliza la tarea X"
  */
-char* msj = malloc(strlen(mensaje)+strlen(tripulante->tarea->accion)+1);
-strcat(msj,mensaje);
+char* msj = malloc(strlen(mensaje)+strlen(tripulante->tarea->accion)+1+1);
+strcpy(msj,mensaje);
+strcat(msj,tripulante->tarea->accion);
+strcat(msj,"\n");
+
 
 t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
 bitacora->id_tripulante = tripulante->tid;
 bitacora->id_patota = tripulante->puntero_pcb;
-bitacora->length_mensaje = strlen(mensaje);
+bitacora->length_mensaje = strlen(msj);
 bitacora->mensaje = msj;
 
 int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+log_info(logger,bitacora->mensaje);
 enviar_bitacora(bitacora,conexion);
 free(msj);
 free(bitacora);
@@ -902,6 +912,7 @@ void enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(t_tripulante *trip
 mensaje: "Se corre en pánico hacia la ubicación del sabotaje"
 y " Se resuelve el sabotaje"
  */
+
 t_bitacora* bitacora = malloc(sizeof(t_bitacora)); 
 bitacora->id_tripulante = tripulante->tid;
 bitacora->id_patota = tripulante->puntero_pcb;
@@ -910,9 +921,29 @@ bitacora->mensaje = malloc(strlen(mensaje)+1);
 bitacora->mensaje = mensaje;
 
 int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+log_info(logger,bitacora->mensaje);
 enviar_bitacora(bitacora,conexion);
 free(bitacora->mensaje);
 free(bitacora);
+liberar_conexion(conexion);
+}
+
+void enviar_tarea_de_ES_a_imongostore(t_tripulante *tripulante){
+
+char* parametro_de_tarea = string_itoa(tripulante->tarea->parametro);
+
+char* tarea_espacio_parametro = malloc(strlen(tripulante->tarea->accion)+1
+							+strlen(parametro_de_tarea)+1+1);
+
+strcpy(tarea_espacio_parametro,tripulante->tarea->accion);
+strcat(tarea_espacio_parametro," ");
+strcat(tarea_espacio_parametro,parametro_de_tarea);
+
+int conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+log_info(logger,tarea_espacio_parametro);
+enviar_mensaje_and_codigo_op(tarea_espacio_parametro,MENSAJE,conexion);
+free(parametro_de_tarea);
+free(tarea_espacio_parametro);
 liberar_conexion(conexion);
 }
 
