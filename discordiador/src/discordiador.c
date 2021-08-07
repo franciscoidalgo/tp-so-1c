@@ -10,9 +10,9 @@ int main()
 enviar un mensaje a IMONGOSTORE para mantener una conexion activa (clavarme en un recv) y 
 luego poder recibir la señal de sabotaje por ese "tunel" establecido
  */
-	// pthread_t hiloEscuchaSabotaje;
-	// pthread_create(&hiloEscuchaSabotaje, NULL, (void *)atender_sabotaje, NULL);
-	// pthread_detach(hiloEscuchaSabotaje);
+	pthread_t hiloEscuchaSabotaje;
+	pthread_create(&hiloEscuchaSabotaje, NULL, (void *)atender_sabotaje, NULL);
+	pthread_detach(hiloEscuchaSabotaje);
 
 	pthread_t hilo_recepcionista;
 	while (1)
@@ -408,6 +408,7 @@ void controlar_forma_de_salida(t_tripulante* t){
 		strcpy(t->tarea->accion,"NULL");
 		t->posicion_x = t->tarea->posicion_x;
 		t->posicion_y = t->tarea->posicion_y;
+		t->QUANTUM_ACTUAL = 0;
 		pthread_mutex_lock(&mutex_movimiento);
 		t->tarea->tiempo = 0;
 		pthread_mutex_unlock(&mutex_movimiento);
@@ -519,19 +520,20 @@ void iniciar_planificacion()
 
 void atender_sabotaje()
 {
+	
 	while (1)
 	{	
 		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
-		int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		// int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
-
+		int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 		int *f = (int *)SABOTAJE;
 		send(socket_conexion, &f, sizeof(int), 0);
 		int direccion_size;
 		recibir_operacion(socket_conexion);
 		char* coordenada_sabotaje = (char*) recibir_buffer(&direccion_size,socket_conexion);
 		log_info(logger,"%s tamanio %d",coordenada_sabotaje,direccion_size);
-		
+		// liberar_conexion(socket_conexion);
 		char** coor = string_split(coordenada_sabotaje,"|");
 		int sabotaje_x=atoi(coor[0]);
 		int sabotaje_y=atoi(coor[1]);
@@ -544,15 +546,17 @@ void atender_sabotaje()
 		resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(sabotaje_x, sabotaje_y);
 
 		//dar aviso a IMONGO STORE de sabotaje resuelto
-				int *a = (int *)SABOTAJE_RESUELTO;
-		send(socket_conexion, &a, sizeof(int), 0);
-		liberar_conexion(socket_conexion);
+		// int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+				// int *a = (int *)SABOTAJE_RESUELTO;
+		enviar_mensaje("SABOTAJE_OK",socket_conexion);
+		// send(socket, &a, sizeof(int), 0);
+
 		//dar aviso a IMONGO STORE de sabotaje resuelto
 
-		volver_a_actividad();
 		list_clean(BLOCKED_EMERGENCY);
-
+		volver_a_actividad();
 		desactivar_sabotaje();
+		liberar_conexion(socket_conexion);
 	}
 }
 
@@ -603,7 +607,7 @@ void agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje()
 		t_tripulante* tripulante_e = list_get(EXEC,i);
 		tripulante_e->estado = 'S';
 		
-		enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_e,"Se corre en pánico hacia la ubicación del sabotaje");
+		//enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_e,"Se corre en pánico hacia la ubicación del sabotaje");
 		list_add(BLOCKED_EMERGENCY,tripulante_e);
 
 	}
@@ -612,7 +616,7 @@ void agregar_tripulantes_a_BLOCKED_EMERGENCY_en_sabotaje()
 	{
 		t_tripulante *tripulante_r = list_get(READY, i);
 		tripulante_r->estado = 'S';
-		enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_r,"Se corre en pánico hacia la ubicación del sabotaje");
+		//enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(tripulante_r,"Se corre en pánico hacia la ubicación del sabotaje");
 		add_queue(_BLOCKED_EMERGENCY_, tripulante_r);
 	}
 }
