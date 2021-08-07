@@ -39,8 +39,7 @@ typedef struct t_tripulante   // Tamanio de 21 Bytes
     uint32_t puntero_pcb;    // quien es mi patota?
     char estado;        // Estado del tripulante (New/Ready/Exec/Blocked)
     int QUANTUM_ACTUAL;
-    // int socket_MIRAM;
-    // int socket_IMONGOSTORE; 
+    int hilo_ejecucion;
 }__attribute__ ((packed)) t_tripulante;
 
 t_list* BLOCKED;
@@ -94,6 +93,7 @@ pthread_mutex_t mutex_entrada_salida = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_planificacion = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_sabotaje = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_pausar =PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_movimiento =PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t condicion_pausear_planificacion;
 pthread_cond_t semaforo_sabotaje;
@@ -147,9 +147,6 @@ void expulsar_si_no_hay_tarea(t_tripulante * tripu);
 void realizar_tarea_comun(t_tripulante * tripulante);
 bool es_tarea_comun(t_tripulante* tripulante);
 void peticion_ES(t_tripulante* tripulante);
-void planificar_RR(t_tripulante *tripulante);
-void realizar_tarea_comun_RR(t_tripulante *tripulante);
-void moverme_hacia_tarea_RR(t_tripulante *tripulante);
 void verificar_existencia_de_sabotaje();
 void planificar_FIFO_con_sabotaje();
 void activar_sabotaje();
@@ -177,5 +174,7 @@ void enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(t_trip
 void enviar_mensajes_en_sabotaje_a_imongo_store_para_BITACORA(t_tripulante *tripulante,char* mensaje);
 void volver_a_actividad();
 void enviar_tarea_de_ES_a_imongostore(t_tripulante* t);
+void peticion_ES_RR(t_tripulante *tripulante);
+void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida_RR(t_tripulante *tripulante);
 
 #endif

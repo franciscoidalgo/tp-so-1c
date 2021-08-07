@@ -4,189 +4,195 @@ void planificar_RR(t_tripulante *tripulante)
 {
     //buscar tarea inicial a RAM
     buscar_tarea_a_RAM(tripulante);
-
-    //pasar a ready (crear funcioon que setea la variable estado del hilo y agregarlo a la cola de READY)
     add_queue(_READY_, tripulante);
 
     while (1)
-    {                       //para pausar la planificacion, en accion de PAUSAR_PLANIFICACION se decrementara un semaforo que estará en funciones de exe y entrada_salida
+    {
+        //para pausar la planificacion, en accion de PAUSAR_PLANIFICACION se decrementara un semaforo que estará en funciones de exe y entrada_salida
+        control_de_tripulantes_listos(tripulante);
         sem_wait(&sem_exe); //semaforo de multiprocesamiento
-        log_info(logger, "EJECUTANDO Tripulante %d de patota %d", tripulante->tid, tripulante->puntero_pcb);
-        //sacar de lista de READY y pasar a EXE
-        pthread_mutex_lock(&mutex_lista_ready);
-        t_tripulante *tripulante_exe = list_remove(READY, 0);
-        pthread_mutex_unlock(&mutex_lista_ready);
-        add_queue(_EXEC_, tripulante_exe);
-
-        tripulante_exe->QUANTUM_ACTUAL = 5;
-        while (tripulante_exe->QUANTUM_ACTUAL > 0)
+        if (tripulante->estado == 'F')
         {
-            moverme_hacia_tarea_RR(tripulante_exe);
-            realizar_tarea_comun_RR(tripulante_exe);
-
-            if (tripulante_exe->QUANTUM_ACTUAL == -1)
-            {
-                if (!es_tarea_comun(tripulante_exe))
-                {
-                    pthread_mutex_lock(&mutex_lista_exec);
-                   mover_tripulante_entre_listas_si_existe(_EXEC_,_BLOCKED_,tripulante_exe->puntero_pcb,tripulante_exe->tid);
-                    pthread_mutex_unlock(&mutex_lista_exec);
-                    sem_post(&sem_IO_queue);
-                    if ((list_size(EXEC) < GRADO_MULTITAREA && list_size(READY) > 0))
-                        sem_post(&sem_exe);
-                    if (list_size(BLOCKED) > 0)
-                        sem_post(&sem_IO);
-                    break;
-                }
-                else
-                {
-                    buscar_tarea_a_RAM(tripulante_exe);
-                    expulsar_si_no_hay_tarea(tripulante_exe);
-                }
-            }
+            sem_post(&sem_exe);
+            break;
         }
+        tripulante = list_remove(READY, 0); //se saca el primer tripulante de la cola de ready
+        add_queue(_EXEC_, tripulante);
+        tripulante->QUANTUM_ACTUAL = QUANTUM;
 
-        pthread_mutex_lock(&mutex_lista_exec);
-        mover_tripulante_entre_listas_si_existe(_EXEC_,_READY_,tripulante_exe->puntero_pcb,tripulante_exe->tid);
-        pthread_mutex_unlock(&mutex_lista_exec);
-        sem_post(&sem_exe);
+        do
+        {
+            moverme_hacia_tarea_RR(tripulante);
+            realizar_tarea_comun_RR(tripulante);
+            buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida_RR(tripulante);
+            expulsar_si_no_hay_tarea(tripulante);
+            if (tripulante->estado == 'E' && tripulante->QUANTUM_ACTUAL <= 0)
+            {
+                mover_tripulante_entre_listas_si_existe(_EXEC_, _READY_, tripulante->puntero_pcb, tripulante->tid);
+            }
+        } while (tripulante->estado == 'E');
     }
 }
 
 void realizar_tarea_comun_RR(t_tripulante *tripulante)
 {
-
-    if (!(tripulante->tarea->posicion_x == tripulante->posicion_x && tripulante->tarea->posicion_y == tripulante->posicion_y) || tripulante->QUANTUM_ACTUAL <= 0)
+    if (es_tarea_comun(tripulante))
     {
-        return ;
-    }
-
-    if (tripulante->tarea->parametro == -1)
-    {
-
-        //int tiempo_tarea = tripulante->tarea->tiempo;
-        int Q = tripulante->QUANTUM_ACTUAL;
-        for (size_t i = 1; i <= Q; i++)
+        // enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Comienza ejecución de tarea ");
+        log_info(logger, "Tripu %d de Patota %d, realizando mi tarea %s que me lleva %d segundos",
+                 tripulante->tid, tripulante->puntero_pcb, tripulante->tarea->accion,
+                 tripulante->tarea->tiempo);
+        while (tripulante->tarea->tiempo != 0)
         {
-            log_info(logger, "Tripu %d de Patota %d, realizando mi tarea %s quedan %d",
-                     tripulante->tid, tripulante->puntero_pcb, tripulante->tarea->accion,
-                     tripulante->tarea->tiempo);
-            tripulante->tarea->tiempo = tripulante->tarea->tiempo - 1;
-            //sacar
-            tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL - 1;
-            //comprobar QUANTUM
-            if (tripulante->QUANTUM_ACTUAL >= 0 && tripulante->tarea->tiempo == 0)
-            {
-                //if(tiempo_tarea==(i+1)){
-                tripulante->QUANTUM_ACTUAL = -1; //me llevo que terminó la tarea cuando su Q es 0
-                sleep(1);
-                log_info(logger, "Tarea %s realizada tripu %d de Patota %d",
-                         tripulante->tarea->accion, tripulante->tid, tripulante->puntero_pcb);
+            if (tripulante->QUANTUM_ACTUAL <= 0)
                 return;
-                //}
-            }
-
-            sleep(1);
+            log_info(logger, "%d", tripulante->tarea->tiempo);
+            verificar_existencia_de_sabotaje();
+            verificar_existencia_de_pausado();
+            tripulante->tarea->tiempo -= 1;
+            tripulante->QUANTUM_ACTUAL -= 1;
+            sleep(RETARDO_CICLO_CPU);
         }
-    }else{
-                if (tripulante->QUANTUM_ACTUAL > 0)
-            {
-                peticion_ES(tripulante);
-                tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL -1;
-            }else
-            {
-                return ;
-            }
-
+        // enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Se finaliza la tarea ");
     }
-        
 }
 
 void moverme_hacia_tarea_RR(t_tripulante *tripulante)
 {
-    int cantidad_de_pasos_en_x = abs(tripulante->posicion_x - tripulante->tarea->posicion_x);
-    int cantidad_de_pasos_en_y = abs(tripulante->posicion_y - tripulante->tarea->posicion_y);
+    //se envia la posicion inicial del tripulante y la coordenada de la tarea
 
-    if (tripulante->posicion_x < tripulante->tarea->posicion_x)
+    // enviar_movimiento_a_imongo_store_para_BITACORA(tripulante);
+
+    do
     {
-        for (size_t i = 0; i < cantidad_de_pasos_en_x; i++)
+        int socket;
+        while (tripulante->posicion_x < tripulante->tarea->posicion_x)
         {
-            log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-                     tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-                     tripulante->posicion_x + 1, tripulante->posicion_y);
-            tripulante->posicion_x = tripulante->posicion_x + 1;
-
-            tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL - 1;
-            //comprobar QUANTUM
-            if (tripulante->QUANTUM_ACTUAL == 0)
+            if (tripulante->estado == 'E')
             {
-                sleep(1);
-                return ;
+                if (tripulante->QUANTUM_ACTUAL <= 0)
+                    return;
+                log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+                         tripulante->tid, tripulante->puntero_pcb, tripulante->posicion_x, tripulante->posicion_y,
+                         tripulante->posicion_x + 1, tripulante->posicion_y);
+                tripulante->posicion_x = tripulante->posicion_x + 1;
+                tripulante->QUANTUM_ACTUAL -= 1;
+                verificar_existencia_de_sabotaje();
+                verificar_existencia_de_pausado();
+                socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+                enviar_posicion_a_ram(tripulante, socket);
+                liberar_conexion(socket);
+                sleep(RETARDO_CICLO_CPU);
             }
-
-            sleep(1);
+            // enviar_posicion_a_ram(tripulante, socket);
+            if (tripulante->estado == 'F')
+                pthread_exit((void *)pthread_self());
         }
-    }
 
-    if (tripulante->posicion_x > tripulante->tarea->posicion_x)
+        while (tripulante->posicion_x > tripulante->tarea->posicion_x)
+        {
+            if (tripulante->estado == 'E')
+            {
+                if (tripulante->QUANTUM_ACTUAL <= 0)
+                    return;
+
+                log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+                         tripulante->tid, tripulante->puntero_pcb, tripulante->posicion_x, tripulante->posicion_y,
+                         tripulante->posicion_x - 1, tripulante->posicion_y);
+                tripulante->posicion_x = tripulante->posicion_x - 1;
+                tripulante->QUANTUM_ACTUAL -= 1;
+                verificar_existencia_de_sabotaje();
+                verificar_existencia_de_pausado();
+                socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+                enviar_posicion_a_ram(tripulante, socket);
+                liberar_conexion(socket);
+                sleep(RETARDO_CICLO_CPU);
+            }
+            if (tripulante->estado == 'F')
+                pthread_exit((void *)pthread_self());
+        }
+
+        while (tripulante->posicion_y < tripulante->tarea->posicion_y)
+        {
+            if (tripulante->estado == 'E')
+            {
+                if (tripulante->QUANTUM_ACTUAL <= 0)
+                    return;
+
+                log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+                         tripulante->tid, tripulante->puntero_pcb, tripulante->posicion_x, tripulante->posicion_y,
+                         tripulante->posicion_x, tripulante->posicion_y + 1);
+                tripulante->posicion_y = tripulante->posicion_y + 1;
+                tripulante->QUANTUM_ACTUAL -= 1;
+                verificar_existencia_de_sabotaje();
+                verificar_existencia_de_pausado();
+                socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+                enviar_posicion_a_ram(tripulante, socket);
+                liberar_conexion(socket);
+                sleep(RETARDO_CICLO_CPU);
+            }
+            // if(strcmp(&tripulante->estado, "E") == 0) enviar_posicion_a_ram(tripulante, socket);
+            if (tripulante->estado == 'F')
+                pthread_exit((void *)pthread_self());
+
+            // if((strcmp(&tripulante->estado, "F") == 0)) pthread_exit((void*) pthread_self());
+        }
+
+        while (tripulante->posicion_y > tripulante->tarea->posicion_y)
+        {
+            if (tripulante->estado == 'E')
+            {
+                if (tripulante->QUANTUM_ACTUAL <= 0)
+                    return;
+
+                log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+                         tripulante->tid, tripulante->puntero_pcb, tripulante->posicion_x, tripulante->posicion_y,
+                         tripulante->posicion_x, tripulante->posicion_y - 1);
+                tripulante->posicion_y = tripulante->posicion_y - 1;
+                tripulante->QUANTUM_ACTUAL -= 1;
+                verificar_existencia_de_sabotaje();
+                verificar_existencia_de_pausado();
+                socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
+                enviar_posicion_a_ram(tripulante, socket);
+                liberar_conexion(socket);
+                sleep(RETARDO_CICLO_CPU);
+            }
+            if (tripulante->estado == 'F')
+                pthread_exit((void *)pthread_self());
+        }
+    } while (!(tripulante->posicion_x == tripulante->tarea->posicion_x && tripulante->posicion_y == tripulante->tarea->posicion_y));
+}
+
+void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida_RR(t_tripulante *tripulante)
+{
+    if (tripulante->QUANTUM_ACTUAL <= 0)
+        return;
+    if (es_tarea_comun(tripulante))
     {
-        for (size_t i = 0; i < cantidad_de_pasos_en_x; i++)
-        {
-            log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-                     tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-                     tripulante->posicion_x - 1, tripulante->posicion_y);
-            tripulante->posicion_x = tripulante->posicion_x - 1;
-
-            tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL - 1;
-            //comprobar QUANTUM
-            if (tripulante->QUANTUM_ACTUAL == 0)
-            {
-                sleep(1);
-                return ;
-            }
-
-            sleep(1);
-        }
+        free(tripulante->tarea->accion);
+        free(tripulante->tarea);
+        verificar_existencia_de_sabotaje();
+        verificar_existencia_de_pausado();
+        buscar_tarea_a_RAM(tripulante);
     }
-
-    if (tripulante->posicion_y < tripulante->tarea->posicion_y)
+    else
     {
-        for (size_t i = 0; i < cantidad_de_pasos_en_y; i++)
-        {
-            log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-                     tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-                     tripulante->posicion_x, tripulante->posicion_y + 1);
-            tripulante->posicion_y = tripulante->posicion_y + 1;
+        peticion_ES_RR(tripulante);
 
-            tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL - 1;
-            //comprobar QUANTUM
-            if (tripulante->QUANTUM_ACTUAL == 0)
-            {
-                sleep(1);
-                return ;
-            }
+        mover_tripulante_entre_listas_si_existe(_EXEC_, _BLOCKED_, tripulante->puntero_pcb, tripulante->tid);
 
-            sleep(1);
-        }
+        entrada_salida();
     }
+}
 
-    if (tripulante->posicion_y > tripulante->tarea->posicion_y)
-    {
-        for (size_t i = 0; i < cantidad_de_pasos_en_y; i++)
-        {
-            log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-                     tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-                     tripulante->posicion_x, tripulante->posicion_y - 1);
-            tripulante->posicion_y = tripulante->posicion_y - 1;
+void peticion_ES_RR(t_tripulante *tripulante)
+{
+    if (tripulante->QUANTUM_ACTUAL <= 0)
+        return;
+    // enviar_tarea_de_ES_a_imongostore(tripulante);
+    verificar_existencia_de_sabotaje();
+    verificar_existencia_de_pausado();
 
-            tripulante->QUANTUM_ACTUAL = tripulante->QUANTUM_ACTUAL - 1;
-            //comprobar QUANTUM
-            if (tripulante->QUANTUM_ACTUAL == 0)
-            {
-                sleep(1);
-                return ;
-            }
-            sleep(1);
-        }
-    }
+    log_info(logger, "Peticion de E/S en EXE de %d-%d", tripulante->tid, tripulante->puntero_pcb);
+    sleep(RETARDO_CICLO_CPU);
 }
