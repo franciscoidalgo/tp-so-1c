@@ -13,6 +13,7 @@
 #include <commons/collections/list.h>
 #include <commons/config.h>
 #include <commons/log.h>
+#include <commons/string.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -63,7 +64,6 @@ void atender_cliente (int socket_cliete){
 
 void realizar_operaciones(void* conexion){
 	int size;
-	char msj_bitacora [250];
 	conexion_t* conexion_cliente = (conexion_t*) conexion;
 	switch (conexion_cliente->cod_op) {
 		case MENSAJE: ;
@@ -73,10 +73,9 @@ void realizar_operaciones(void* conexion){
 		case BITACORA: ;
 			char* buffer = recibir_buffer(&size, conexion_cliente->socket_cliente);
 			log_info(logger_fs,"mensaje: %s", buffer);
-			uint32_t id_patota;
-			uint32_t id_tripulante;
-			sscanf(buffer, "%lu-%lu-%s", &id_patota, &id_tripulante, msj_bitacora);
-			generar_bitacora(id_patota, id_tripulante, msj_bitacora, strlen(msj_bitacora)+1);
+			char** bita = string_split(buffer, "-");
+			//sscanf(buffer, "%lu-%lu-%s", &id_patota, &id_tripulante, msj_bitacora);
+			generar_bitacora(bita[0], bita[1], bita[2], strlen(bita[2])+1);
 			break;
 		case SABOTAJE:
 			log_info(logger_fs,"Se establecio socket para sabotaje.",conexion_cliente->socket_cliente);
