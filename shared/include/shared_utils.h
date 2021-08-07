@@ -34,7 +34,8 @@ typedef enum	//un tipo de forma para discriminar los diferentes tipos de mensaje
 	FINALIZACION,
 	SABOTAJE,
 	SABOTAJE_RESUELTO,
-	BITACORA
+	BITACORA,
+	ENVIAR_BITACORA
 }op_code;
 
 //t_log* logger;

@@ -76,6 +76,22 @@ void realizar_operaciones(void* conexion){
 			char** bita = string_split(buffer, "-");
 			//sscanf(buffer, "%lu-%lu-%s", &id_patota, &id_tripulante, msj_bitacora);
 			generar_bitacora(bita[0], bita[1], bita[2], strlen(bita[2])+1);
+			free(bita[0]);
+			free(bita[1]);
+			free(bita[2]);
+			free(bita);
+			free(buffer);
+			break;
+		case ENVIAR_BITACORA:;
+			char* buf = recibir_buffer(&size, conexion_cliente->socket_cliente);
+			char** datos_ped = string_split(buf, "-");
+			char* bitacora_obtenida = obtener_bitacora(datos_ped[0], datos_ped[1]);
+			enviar_mensaje(bitacora_obtenida, conexion_cliente->socket_cliente);
+			free(bitacora_obtenida);
+			free(datos_ped[0]);
+			free(datos_ped[1]);
+			free(datos_ped);
+			free(buf);
 			break;
 		case SABOTAJE:
 			log_info(logger_fs,"Se establecio socket para sabotaje.",conexion_cliente->socket_cliente);

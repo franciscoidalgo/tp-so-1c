@@ -146,23 +146,31 @@ void enviar_bitacora(t_bitacora* bitacora, int socket_cliente){
 
 	free(a_enviar);
 	eliminar_paquete(paquete);
+}
 
-	/*
-	int tamanio_bitacora = sizeof(uint32_t) * 3 + bitacora->length_mensaje + 1;
-	t_paquete* paquete = malloc(tamanio_bitacora + sizeof(int) + sizeof(op_code));
-	paquete->codigo_operacion = BITACORA;
-	paquete->buffer = malloc(tamanio_bitacora + sizeof(int));
-	paquete->buffer->size = tamanio_bitacora;
-	memcpy(paquete->buffer->stream, bitacora, paquete->buffer->size);
-	
-	void* a_enviar = serializar_paquete(paquete, sizeof(op_code) + sizeof(int) + paquete->buffer->size);
+char* obtener_bitacoras(uint32_t id_patota, uint32_t id_tripulante, int socket_cliente){
+	int size;
+	char* msj = string_from_format("%lu-%lu", id_patota, id_tripulante);
+	t_paquete* paquete = malloc(sizeof(t_paquete));
 
-	send(socket_cliente, a_enviar, paquete->buffer->size + sizeof(op_code) + sizeof(int), 0);
-	
+	paquete->codigo_operacion = ENVIAR_BITACORA;
+	paquete->buffer = malloc(sizeof(t_buffer));
+	paquete->buffer->size = strlen(msj) + 1;
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+	memcpy(paquete->buffer->stream, msj, paquete->buffer->size);
 
-	free(paquete);
+	int bytes = paquete->buffer->size + 2*sizeof(int);
+
+	void* a_enviar = serializar_paquete(paquete, bytes);
+
+	send(socket_cliente, a_enviar, bytes, 0);
+
 	free(a_enviar);
-	*/
+	eliminar_paquete(paquete);
+
+	recibir_operacion(socket_cliente);
+	return recibir_buffer(&size, socket_cliente);
+
 }
 
 
