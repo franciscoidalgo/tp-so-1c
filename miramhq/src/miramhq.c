@@ -37,8 +37,8 @@ typedef struct{
 typedef struct{
 			uint32_t marco;			
 			char* estado;
-			uint32_t proceso;
-			uint32_t pagina; 		
+			char* proceso;
+			char* pagina; 		
 		} dump_memoria;
 
 typedef struct{
@@ -882,6 +882,7 @@ char* estado_marco(uint32_t marco){
 }
 
 void hacer_dump(){
+
 	char *timestamp = (char *)malloc(sizeof(char) * 16);
 	char *timestamp2 = (char *)malloc(sizeof(char) * 16);
 	time_t ltime;
@@ -904,11 +905,14 @@ void hacer_dump(){
 
 	void barrer_un_proceso(uint32_t marco){
 		if(marco<OFFSET){
+			char* procesoId = string_itoa(aux_pid);
+			char* paginaId = string_itoa(aux_pag);
+
 			dump_memoria dto;
 			dto.marco = marco;
 			dto.estado = estado_marco(marco);
-			dto.proceso =  aux_pid;
-			dto.pagina = aux_pag; 
+			dto.proceso = procesoId;
+			dto.pagina = paginaId; 
 
 			void* aux;
 			aux = malloc(sizeof(dump_memoria));
@@ -930,7 +934,25 @@ void hacer_dump(){
 		return (a->marco < b->marco);
 	}
 
+
 	list_iterate(TABLA_DE_PAGINAS, llenar_lista);
+	for(uint32_t i = 0; i<CANTIDAD_MARCOS; i++){
+		if(ESTADO_MARCOS[i]==0){
+			dump_memoria dto;
+			dto.marco = i;
+			dto.estado = "LIBRE  ";
+			dto.proceso =  "-";
+			dto.pagina = "-"; 
+
+			void* aux;
+			aux = malloc(sizeof(dump_memoria));
+
+			memcpy(aux, &dto, sizeof(dump_memoria));
+
+			list_add(lista_dump, aux);
+		}
+	}
+
 	list_sort(lista_dump, ordenar);	
 
 	char filename[32];
@@ -948,14 +970,16 @@ void hacer_dump(){
 	fprintf(fp, "%s\n", timestamp);
 
 	void imprimir_en_archivo(dump_memoria* data){
-		fprintf(fp, "Marco:%d Estado:%s Proceso:%d Pagina:%d \n",data->marco, data->estado, data->proceso, data->pagina);
+		fprintf(fp, "Marco:%d Estado:%s Proceso:%s Pagina:%s \n",data->marco, data->estado, data->proceso, data->pagina);
 	}
 
 	list_iterate(lista_dump, imprimir_en_archivo);
 
     fclose(fp);
 
-	list_destroy(lista_dump);
+	list_destroy_and_destroy_elements(lista_dump, free);
+	//free(timestamp2);
+	//free(timestamp);
 }
 
 void mostrar_array_marcos(){
@@ -1237,15 +1261,17 @@ uint32_t main () {
 	mockwrapeado3.lista_de_tcb = tcblist3;
 	mockwrapeado3.lista_de_tareas = pepe3;
 
+	
 
 	iniciar_patota(&mockwrapeado);
 	mostrar_tabla_de_paginas();
+	hacer_dump();
 	iniciar_patota(&mockwrapeado2);
 	mostrar_tabla_de_paginas();
+	hacer_dump();
 	iniciar_patota(&mockwrapeado3);
 	mostrar_tabla_de_paginas();
-	printf("%s\n", proxima_tarea(3, 30));
-	printf("%s\n", proxima_tarea(2, 20));
+	
 
 	
 	/*cambiar_ubicacion_tripulante(1, 10, 2, 3);
