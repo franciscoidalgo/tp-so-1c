@@ -525,8 +525,8 @@ void atender_sabotaje()
 	{	
 		log_info(logger, "Conectandome con IMONGOSTORE por situaciones de sabotaje");
 		// int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
-		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
 		int socket_conexion = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
+		log_info(logger, "Socket %d id_sabotaje %d", socket_conexion, SABOTAJE);
 		int *f = (int *)SABOTAJE;
 		send(socket_conexion, &f, sizeof(int), 0);
 		int direccion_size;
@@ -548,11 +548,13 @@ void atender_sabotaje()
 		//dar aviso a IMONGO STORE de sabotaje resuelto
 		// int socket = crear_conexion(IP_I_MONGO_STORE, PUERTO_I_MONGO_STORE);
 				// int *a = (int *)SABOTAJE_RESUELTO;
-		enviar_mensaje("SABOTAJE_OK",socket_conexion);
+		char* respuesta_de_sabotaje = malloc(strlen("SABOTAJE_OK")+1);
+		strcpy(respuesta_de_sabotaje,"SABOTAJE_OK");
+		enviar_mensaje(respuesta_de_sabotaje,socket_conexion);
 		// send(socket, &a, sizeof(int), 0);
 
 		//dar aviso a IMONGO STORE de sabotaje resuelto
-
+		free(respuesta_de_sabotaje);
 		list_clean(BLOCKED_EMERGENCY);
 		volver_a_actividad();
 		desactivar_sabotaje();
@@ -642,16 +644,9 @@ void resolver_sabotaje_por_tripulante_mas_cercano_a_posicion(int x, int y)
 	//aca deberia sacar al tripulante mas cercano a la posicion (x,y)
 	t_tripulante *tripulante = list_get(BLOCKED_EMERGENCY, 0);
 				log_info(logger,"%s","Lo copie de la cola de emergencia para mover hacia la tarea de sabotaje");
-		iterator(tripulante);
 
-		for (size_t i = 0; i < list_size(BLOCKED_EMERGENCY); i++)
-		{
-			t_tripulante* emergencia = list_get(BLOCKED_EMERGENCY,i);
 
-			emergencia->estado = 'S';
-		}
-		
-	moverme_hacia_tarea_en_sabotaje(tripulante, 5, 5);
+	moverme_hacia_tarea_en_sabotaje(tripulante,x,y);
 
 	//realizar tarea
 	for (size_t i = 0; i < DURACION_SABOTAJE; i++)
@@ -678,9 +673,9 @@ void moverme_hacia_tarea_en_sabotaje(t_tripulante *tripulante, int x, int y)
 	int socket;
 	while (tripulante->posicion_x < x)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x + 1, tripulante->posicion_y);
+		log_info(logger, "%d-%d me muevo en sabotaje de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x + 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x + 1;
 		sleep(1);
 		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
@@ -690,9 +685,9 @@ void moverme_hacia_tarea_en_sabotaje(t_tripulante *tripulante, int x, int y)
 
 	while (tripulante->posicion_x > x)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x - 1, tripulante->posicion_y);
+		log_info(logger, "%d-%d me muevo en sabotaje de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x - 1, tripulante->posicion_y);
 		tripulante->posicion_x = tripulante->posicion_x - 1;
 		sleep(1);
 		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
@@ -702,9 +697,9 @@ void moverme_hacia_tarea_en_sabotaje(t_tripulante *tripulante, int x, int y)
 
 	while (tripulante->posicion_y < y)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x, tripulante->posicion_y + 1);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x, tripulante->posicion_y + 1);
 		tripulante->posicion_y = tripulante->posicion_y + 1;
 		sleep(1);
 		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);
@@ -714,9 +709,9 @@ void moverme_hacia_tarea_en_sabotaje(t_tripulante *tripulante, int x, int y)
 
 	while (tripulante->posicion_y > y)
 	{
-		// log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
-		// 		 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
-		// 		 tripulante->posicion_x, tripulante->posicion_y - 1);
+		log_info(logger, "%d-%d me muevo de (%d,%d) a (%d,%d)",
+				 tripulante->puntero_pcb, tripulante->tid, tripulante->posicion_x, tripulante->posicion_y,
+				 tripulante->posicion_x, tripulante->posicion_y - 1);
 		tripulante->posicion_y = tripulante->posicion_y - 1;
 		sleep(1);
 		socket = crear_conexion(IP_MI_RAM_HQ, PUERTO_MI_RAM_HQ);

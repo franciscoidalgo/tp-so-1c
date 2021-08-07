@@ -233,9 +233,9 @@ void realizar_tarea_comun(t_tripulante *tripulante)
 			log_info(logger, "%d-%d tiempo tarea %d",tripulante->tid ,tripulante->puntero_pcb,tripulante->tarea->tiempo);
 			verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
-			pthread_mutex_lock(&mutex_movimiento);
+			// pthread_mutex_lock(&mutex_movimiento);
 			tripulante->tarea->tiempo -= 1;
-			pthread_mutex_unlock(&mutex_movimiento);
+			// pthread_mutex_unlock(&mutex_movimiento);
 			sleep(RETARDO_CICLO_CPU);
 		}
 		// enviar_comienzo_o_finalizacion_de_tarea_a_imongo_store_para_BITACORA(tripulante,"Se finaliza la tarea ");
@@ -250,7 +250,7 @@ bool es_tarea_comun(t_tripulante *tripulante)
 void peticion_ES(t_tripulante *tripulante)
 {
 	// enviar_tarea_de_ES_a_imongostore(tripulante);
-				verificar_existencia_de_sabotaje();
+			verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
 	log_info(logger, "Peticion de E/S en EXE de %d-%d", tripulante->tid, tripulante->puntero_pcb);
 	sleep(1);
@@ -262,16 +262,14 @@ void buscar_proxima_a_RAM_o_realizar_peticion_de_entrada_salida(t_tripulante *tr
 	{
 		free(tripulante->tarea->accion);
 		free(tripulante->tarea);
-					verificar_existencia_de_sabotaje();
+			verificar_existencia_de_sabotaje();
 			verificar_existencia_de_pausado();
 		buscar_tarea_a_RAM(tripulante);
 	}
 	else
 	{
 		peticion_ES(tripulante);
-
 		mover_tripulante_entre_listas_si_existe(_EXEC_, _BLOCKED_, tripulante->puntero_pcb, tripulante->tid);
-
 		entrada_salida();
 	}
 }
